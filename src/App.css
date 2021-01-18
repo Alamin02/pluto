@@ -1,0 +1,39 @@
+/******* Slider custom css start *******/
+.slider-container{
+    height: 400px;
+   
+    margin: auto;
+    text-align: center;
+    color: white;
+    line-height: 400px;
+    position: relative;
+}
+.main-container{
+    position: relative;
+    width: 1200px;
+    height: 400px;
+    background:#34495e;
+    margin: auto;
+   
+}
+
+.arrow-left{
+    color: #ecf0f1;
+    font-size: 30px;
+    position: absolute;
+    z-index: 1;
+    top:50%;
+    left: 10%;
+  
+  
+}
+.arrow-right{
+    color: #ecf0f1;
+    font-size: 30px;
+    position: absolute;
+    z-index: 1;
+    top:50%;
+    right: 10%;
+}
+
+/******* Slider custom css end *******/

@@ -34,8 +34,7 @@ export default class Slider extends Component {
       slidesToScroll: 1,
     };
     return (
-      // className="main-container"
-      <>
+      <div className="main-container">
         <LeftOutlined className="arrow-left" onClick={this.previous} />
         {/* <DoubleLeftOutlined className='arrow-left' onClick={this.previous}/> */}
 
@@ -78,7 +77,7 @@ export default class Slider extends Component {
         </Carousel>
         <RightOutlined className="arrow-right" onClick={this.next} />
         {/* <DoubleRightOutlined className='arrow-right' onClick={this.next}/> */}
-      </>
+      </div>
     );
   }
 }

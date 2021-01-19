@@ -8,9 +8,7 @@ import Slider from './components/Slider.jsx';
 function App() {
   return (
   
-     <Slider/>
-
- 
+   <Slider/>
  
   );
 }

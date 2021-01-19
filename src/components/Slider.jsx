@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Carousel} from "antd";
-import {LeftCircleOutlined,RightCircleOutlined,DoubleLeftOutlined,DoubleRightOutlined,LeftOutlined} from '@ant-design/icons';
+import { Carousel,Button} from "antd";
+import {LeftCircleOutlined,RightOutlined,DoubleLeftOutlined,DoubleRightOutlined,LeftOutlined} from '@ant-design/icons';
+const slideHeading="MINIMAL SUMMER COLLECTION";
+const description="But I must explain you how all this mistaken idea of organized by the charms demouncing plesure and pain was";
 
 export default class Slider extends Component {
   constructor(props) {
@@ -20,34 +22,51 @@ export default class Slider extends Component {
     const props = {
       dots: true,
       infinite: true,
-      speed: 500,
+      speed: 1000,
       slidesToShow: 1,
       slidesToScroll: 1
     };
     return (
       <div className='main-container'>
-         {/* <LeftCircleOutlined className='arrow' onClick={this.previous}/> */}
-         <DoubleLeftOutlined className='arrow-left' onClick={this.previous}/>
+         <LeftOutlined className='arrow-left' onClick={this.previous}/>
+         {/* <DoubleLeftOutlined className='arrow-left' onClick={this.previous}/> */}
 
-        <Carousel className='slider-container' ref={node => (this.carousel = node)} {...props}>
+        <Carousel autoplay effect='fade' className='slider-container' ref={node => (this.carousel = node)} {...props}>
        
-          <div className='slider' >
-            <h3>1</h3>
+          <div className='slider one' >
+            {/* <img src="images/slider-image1.jpg" alt="images"/> */}
+          <div className="t-box">
+          <h1>{slideHeading}</h1>
+          <p>{description}</p>
+          <Button className='btn-custom'>Shop Now</Button>
           </div>
-          <div className='slider'>
-            <h3>2</h3>
           </div>
-          <div>
-            <h3>3</h3>
+          <div className='slider two'>
+          <div className="t-box">
+          <h1>{slideHeading}</h1>
+          <p>{description}</p>
+          <Button className='btn-custom'>Shop Now</Button>
           </div>
-          <div>
-            <h3>4</h3>
+          </div>
+          <div className='slider three'>
+          <div className="t-box">
+          <h1>{slideHeading}</h1>
+          <p>{description}</p>
+          <Button className='btn-custom'>Shop Now</Button>
+          </div>
+          </div>
+          <div className='slider four'>
+          <div className="t-box">
+          <h1>{slideHeading}</h1>
+          <p>{description}</p>
+          <Button className='btn-custom'>Shop Now</Button>
+          </div>
           </div>
          
         </Carousel>
-        {/* <RightCircleOutlined className='arrow2' onClick={this.next}/> */}
-        <DoubleRightOutlined className='arrow-right' onClick={this.next}/>
-        {/* <Icon type="right-circle"  /> */}
+        <RightOutlined className='arrow-right' onClick={this.next}/>
+        {/* <DoubleRightOutlined className='arrow-right' onClick={this.next}/> */}
+      
       </div>
     );
   }

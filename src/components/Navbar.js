@@ -10,31 +10,35 @@ import {
   ShopOutlined,
   ReadOutlined,
   AppstoreOutlined,
-  ShoppingOutlined
+  ShoppingOutlined,
 } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
 
 class Navbar extends React.Component {
   state = {
-    current: 'mail',
+    current: "mail",
   };
-  
+
   handleClick = (e) => {
     console.log("click ", e);
     this.setState({ current: e.key });
   };
 
   render() {
-    const { current } = this.state;
     return (
       <div className="navbar">
         <nav className="navbar-top">
           <div>
             <PhoneOutlined /> +880 1234 123456
           </div>
-          <div style={{fontSize: "2rem"}} className="site-name">PLUTO</div>
-          <div>Log in&nbsp;&nbsp;|&nbsp;&nbsp;<ShoppingOutlined /></div>
+          <div style={{ fontSize: "2rem" }} className="site-name">
+            PLUTO
+          </div>
+          <div>
+            Log in &nbsp;|&nbsp;&nbsp;
+            <ShoppingOutlined />
+          </div>
         </nav>
         <hr className="nav-hr" />
         <Menu

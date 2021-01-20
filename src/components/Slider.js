@@ -1,6 +1,6 @@
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Button, Carousel } from "antd";
 import React, { Component } from "react";
-import { Carousel, Button } from "antd";
-import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 const slideHeading = "MINIMAL SUMMER COLLECTION";
 const description =
   "But I must explain you how all this mistaken idea of organized by the charms demouncing plesure and pain was";

@@ -8,3 +8,14 @@
   font-size: 30px;
   margin-bottom: 30px;
 }
+
+.view-products {
+  text-align: center;
+  margin: 50px;
+}
+.view-products .my-button {
+  background: #333333;
+  padding: 5px 20px;
+  color: #fff;
+  text-transform: uppercase;
+}

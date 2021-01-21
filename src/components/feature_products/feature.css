@@ -43,15 +43,13 @@
 .container {
   position: relative;  
 }
-
 .image {
   display: block;
   width: 100%;  
 }
-
 .overlay {
   position: absolute; 
-  bottom: 14px; 
+  bottom: 15px; 
   background: rgb(0, 0, 0);
   background: rgba(0, 0, 0, 0.5); /* Black see-through */
   color: #f1f1f1; 
@@ -63,21 +61,11 @@
   padding: 20px;
   text-align: center;
 }
-
 .container:hover .overlay {
   opacity: 1;
 }
 
 /* overlay of Glass */
-.container {
-  position: relative;  
-}
-
-.image {
-  display: block;
-  width: 100%;  
-}
-
 .overlayGlass {
   position: absolute; 
   bottom: 6px; 
@@ -92,7 +80,29 @@
   padding: 20px;
   text-align: center;
 }
-
 .container:hover .overlayGlass {
+  opacity: 1;
+}
+
+/* overlay of Bagpack */
+.image {
+  display: block;
+  width: 100%;  
+}
+.overlayBagpack {
+  position: absolute; 
+  bottom: 6px; 
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  color: #f1f1f1; 
+  width: 100%;
+  transition: .5s ease;
+  opacity:0;
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+  text-align: center;
+}
+.container:hover .overlayBagpack {
   opacity: 1;
 }

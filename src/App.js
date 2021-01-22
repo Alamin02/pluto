@@ -2,7 +2,7 @@ import "antd/dist/antd.css";
 import "./App.css";
 
 import Slider from "./components/Slider.js";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Feature from "./components/feature_products/feature";
 
 function App() {

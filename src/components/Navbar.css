@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+
+.site-name {
+  font-family: "Playfair Display", serif;
+}
+
+.navbar {
+  margin-left: 20rem;
+  margin-right: 20rem;
+}
+
+.nav-hr{
+  border: 1px solid #eeeeee;
+  border-radius: 1px;
+  border-radius: 9999px;
+}
+
+.navbar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+}
+
+.navbar-bottom {
+  text-align: center;
+  padding: 1rem;
+  border-bottom: none;
+  margin-bottom: 0.5rem;
+}
+
+

@@ -1,8 +1,8 @@
 import "antd/dist/antd.css";
-import "./App.css";
-import Slider from "./components/Slider.jsx";
+import "./product.css";
+import Product from "./components/Product";
 
 function App() {
-  return <Slider />;
+  return <Product />;
 }
 export default App;

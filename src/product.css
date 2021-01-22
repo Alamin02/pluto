@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Cantata+One&family=Montserrat:wght@400;600;700&display=swap");
+/******* Product custom css start *******/
+.imgs1 {
+  height: 400px;
+  width: 525px;
+}
+.img2 {
+  height: 100px;
+  width: 134px;
+  border: 10px solid white;
+  border-left: 0px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+img {
+  width: 100%;
+  height: 100%;
+}
+.preview-active {
+  opacity: 1;
+}
+.btnblack {
+  color: white;
+  background: #000;
+  margin-left: 5px;
+}
+.margin-c {
+  margin-bottom: 70px;
+}
+/******* Product custom css end *******/

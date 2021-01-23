@@ -1,19 +1,20 @@
 import React from "react";
-import "antd/dist/antd.css";
-import Features from "./components/popular-products/Features";
+import 'antd/dist/antd.css';
 
-import "antd/dist/antd.css";
 import "./App.css";
 
-import Slider from "./components/Slider.js";
-import Navbar from "./components/Navbar";
+import Slider from "./components/Slider";
+import Navbar from "./components/navbar/Navbar";
+import Feature from "./components/featured-products/feature";
+import ProductList from "./components/product/ProductList";
 
 function App() {
   return (
     <div>
       <Navbar />
       <Slider />
-      <Features />
+      <Feature />
+      <ProductList />
     </div>
   );
 }

@@ -6,13 +6,6 @@ import image2 from "../images/watch-2-small.jpg";
 import image3 from "../images/watch-3-small.jpg";
 import image4 from "../images/watch-4-small.jpg";
 // import '../product.css';
-const ProductImg = ({ imglink }) => {
-  return (
-    <div className="img2">
-      <img alt="example" src={imglink} />
-    </div>
-  );
-};
 const Description1 = () => {
   return (
     <>
@@ -28,12 +21,10 @@ const Description1 = () => {
       <Row>
         <Radio.Group>
           <Radio.Button>
-            {" "}
             <PlusOutlined />
           </Radio.Button>
           <Radio.Button>0</Radio.Button>
           <Radio.Button>
-            {" "}
             <MinusOutlined />
           </Radio.Button>
         </Radio.Group>
@@ -56,34 +47,47 @@ const Description2 = () => {
 };
 
 function Product() {
+  const [imgSrc, setImgSrc] = useState(image1);
+
+  const imgSrcFunc = (e) => {
+    e.target.classList.remove("preview-active");
+    const pImageSrc = e.target.getAttribute("src");
+
+    setImgSrc(pImageSrc);
+  };
+
+  const ProductImg = ({ imgLink }) => {
+    return (
+      <Col>
+        <div className="img2">
+          <img
+            alt="example"
+            className="preview-active"
+            onClick={imgSrcFunc}
+            src={imgLink}
+          />
+        </div>
+      </Col>
+    );
+  };
   return (
     <Row style={{ marginTop: 50 }}>
       <Col offset={4}></Col>
       <Col offset={1}>
         <div className="imgs1">
-          <img alt="example" src={image1} />
+          <img alt="example" src={imgSrc} />
         </div>
         <Row>
-          <Col>
-            <ProductImg imglink={image1} />
-          </Col>
-          <Col>
-            <ProductImg imglink={image2} />
-          </Col>
-          <Col>
-            <ProductImg imglink={image3} />
-          </Col>
-          <Col>
-            <ProductImg imglink={image4} />
-          </Col>
+          <ProductImg imgLink={image1} />
+          <ProductImg imgLink={image2} />
+          <ProductImg imgLink={image3} />
+          <ProductImg imgLink={image4} />
         </Row>
       </Col>
 
       <Col span={8}>
         <Description1 />
-
         <Space size="large" direction="vertical">
-          {" "}
           <Description2 />
         </Space>
       </Col>

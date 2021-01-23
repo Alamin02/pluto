@@ -1,0 +1,24 @@
+/* title holder */
+.titleHolder {
+  text-align: center;
+  position: relative;
+  text-transform: uppercase;
+  padding: 0 0 20px;
+  margin: 0 0 40px;
+}
+
+.titleHolder:after {
+  transform: translateX(-50%);
+  content: '';
+  background: #1890ff;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 3px;
+  width: 80px;
+}
+
+.titleHolder h2 {
+  font-size: 38px;
+  margin: 0;
+}

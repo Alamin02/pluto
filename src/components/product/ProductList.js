@@ -13,6 +13,7 @@ import image7 from "../../assets/images/denim-tshirt.jpg";
 import image8 from "../../assets/images/full-black.jpg";
 
 import CardItem from "./ProductCard";
+import TitleHolder from './TitleHolder';
 
 const itemList = [
   {
@@ -68,9 +69,7 @@ const itemList = [
 function ProductList() {
   return (
     <div className={styles.containerFluid}>
-      <div className="title-holder">
-        <h2>POPULAR PRODUCTS</h2>
-      </div>
+      <TitleHolder title='popular products' />
       <Row gutter={[16, 16]}>
         {itemList.map((item) => (
           <Col span={6} key={item.id}>

@@ -1,9 +1,13 @@
-import "antd/dist/antd.css";
+import React from "react";
+import 'antd/dist/antd.css';
+
 import "./App.css";
 
-import Slider from "./components/Slider.js";
+import Slider from "./components/Slider";
 import Navbar from "./components/navbar/Navbar";
-import Feature from "./components/feature_products/feature";
+import Feature from "./components/featured-products/feature";
+import ProductList from "./components/product/ProductList";
+
 
 function App() {
   return (
@@ -11,6 +15,7 @@ function App() {
       <Navbar />
       <Slider />
       <Feature />
+      <ProductList />
     </div>
   );
 }

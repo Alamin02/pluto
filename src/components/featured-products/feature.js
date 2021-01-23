@@ -3,9 +3,9 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import { Row, Col, Image } from "antd";
 import "./feature.css";
 
-import watchImage from "./images/watch.jpg";
-import glassImage from "./images/glass.jpg";
-import bagpackImage from "./images/bagpack.jpg";
+import watchImage from "../../assets/images/watch.jpg";
+import glassImage from "../../assets/images/glass.jpg";
+import bagpackImage from "../../assets/images/bagpack.jpg";
 
 const { Link } = Typography;
 
@@ -29,12 +29,11 @@ const FeatureProducts = () => {
                     style={{ marginBottom: "10px", border: "1px solid black" }}
                     className="image"
                   />
-                  <div className="overlay"  >
-                    <Link href="#" target="_blank" style={{color: "white"}}>
-                      Watch 
+                  <div className="overlay">
+                    <Link href="#" target="_blank" style={{ color: "white" }}>
+                      Watch
                       <ArrowRightOutlined />
                     </Link>
-                    
                   </div>
                 </div>
               </Row>
@@ -49,10 +48,10 @@ const FeatureProducts = () => {
                     className="image"
                   />
                   <div className="overlayGlass">
-                    <Link href="#" target="_blank" style={{color: "white"}}>
-                      Glass 
+                    <Link href="#" target="_blank" style={{ color: "white" }}>
+                      Glass
                       <ArrowRightOutlined />
-                    </Link>                    
+                    </Link>
                   </div>
                 </div>
               </Row>

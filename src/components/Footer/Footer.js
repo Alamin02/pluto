@@ -40,19 +40,19 @@ function Footer() {
                 <Col span={8} className={styles.allAbout}>
                     <ul>
                         <li>
-                            <a href="#">blog</a>
+                            <a href="#" target="_blank">blog</a>
                         </li>
                         <li>
-                            <a href="#">About us</a>
+                            <a href="#" target="_blank">About us</a>
                         </li>
                         <li>
-                            <a href="#">contact us</a>
+                            <a href="#" target="_blank">contact us</a>
                         </li>
                         <li>
-                            <a href="#">faq</a>
+                            <a href="#" target="_blank">faq</a>
                         </li>
                         <li>
-                            <a href="#">my account</a>
+                            <a href="#" target="_blank">my account</a>
                         </li>
                     </ul>
                 </Col>

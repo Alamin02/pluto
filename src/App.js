@@ -7,6 +7,7 @@ import Slider from "./components/Slider";
 import Navbar from "./components/navbar/Navbar";
 import Feature from "./components/featured-products/feature";
 import ProductList from "./components/product/ProductList";
+import Footer from './components/Footer/Footer'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Slider />
       <Feature />
       <ProductList />
+      <Footer />
     </div>
   );
 }

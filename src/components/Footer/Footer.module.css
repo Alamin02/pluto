@@ -1,0 +1,48 @@
+.footer {
+  background: #fafafa;
+  padding: 25px 0;
+}
+.footerSectionOne,
+.footerSectionTwo {
+  max-width: 1050px;
+  margin: auto;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.footerSectionOne .inputField input[type='text'] {
+  width: 100%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 1px solid #b7b7b7;
+}
+
+.footerSectionOne::after {
+  content: '';
+  height: 2px;
+  width: 100%;
+  background: #e7e7e7;
+  margin: 25px 0px;
+}
+
+.allAbout ul {
+  padding-left: 0px;
+}
+.allAbout ul li {
+  list-style-type: none;
+  display: inline-block;
+}
+
+.allAbout ul li a {
+  color: black;
+  margin-right: 12px;
+}
+
+.iconSection {
+  text-align: end;
+}
+.iconSection span {
+  margin-left: 8px;
+  font-size: 13px;
+}

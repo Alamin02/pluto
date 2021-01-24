@@ -1,6 +1,5 @@
 import React from "react";
 import { Row, Col } from "antd";
-import { Button } from "antd";
 import styles from "./ProductList.module.css";
 
 import image1 from "../../assets/images/addidas.jpg";
@@ -14,6 +13,7 @@ import image8 from "../../assets/images/full-black.jpg";
 
 import CardItem from "./ProductCard";
 import TitleHolder from './TitleHolder';
+import ViewButton from './Button'
 
 const itemList = [
   {
@@ -81,11 +81,7 @@ function ProductList() {
           </Col>
         ))}
       </Row>
-      <div className="view-products">
-        <Button type="link" className="my-button">
-          View all products
-        </Button>
-      </div>
+      <ViewButton type="link" />
     </div>
   );
 }

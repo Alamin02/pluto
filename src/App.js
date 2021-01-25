@@ -1,8 +1,14 @@
+
 import "antd/dist/antd.css";
-import "./product.css";
-import Product from "./components/Product";
+import ProductView from "./components/productView/ProductView";
+import Slider from "./components/Slider/Slider";
 
 function App() {
-  return <Product />;
+  return (
+    <>
+      <Slider />
+      <ProductView />
+    </>
+  );
 }
 export default App;

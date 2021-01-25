@@ -1,7 +1,7 @@
-import React from "react";
-import "./Navbar.css";
 import { Menu } from "antd";
-import "./Navbar.css";
+
+import styles from "./Navbar.module.css";
+
 import {
   PhoneOutlined,
   StarOutlined,
@@ -14,74 +14,78 @@ import {
 } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
+const shopList = [
+  {
+    id: 1,
+    listItem: "Smartphone",
+    href: "#",
+  },
+  {
+    id: 2,
+    listItem: "Desktop",
+    href: "#",
+  },
+  {
+    id: 3,
+    listItem: "Laptop",
+    href: "#",
+  },
+  {
+    id: 4,
+    listItem: "Printer",
+    href: "#",
+  },
+];
 
-class Navbar extends React.Component {
-  state = {
-    current: "mail",
-  };
-
-  handleClick = (e) => {
-    console.log("click ", e);
-    this.setState({ current: e.key });
-  };
-
-  render() {
-    return (
-      <div className="navbar">
-        <nav className="navbar-top">
-          <div>
-            <PhoneOutlined /> +880 1234 123456
-          </div>
-          <div style={{ fontSize: "2rem" }} className="site-name">
-            PLUTO
-          </div>
-          <div>
-            Log in &nbsp;|&nbsp;&nbsp;
+function Navbar() {
+  return (
+    <div className={styles.navContainer}>
+      <nav className={styles.navbarTop}>
+        <div>
+          <PhoneOutlined /> +880 1234 123456
+        </div>
+        <div className={styles.siteName}>PLUTO</div>
+        <div>
+          <a href=".">Log in</a>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <a href=".">
             <ShoppingOutlined />
-          </div>
-        </nav>
-        <hr className="nav-hr" />
-        <Menu
-          onClick={this.handleClick}
-          mode="horizontal"
-          className="navbar-bottom"
-        >
-          <Menu.Item key="Home" icon={<HomeOutlined />}>
-            Home
-          </Menu.Item>
+          </a>
+        </div>
+      </nav>
+      <hr className={styles.navHr} />
+      <Menu mode="horizontal" className={styles.navbarBottom}>
+        <Menu.Item icon={<HomeOutlined />}>
+          <a href=".">Home</a>
+        </Menu.Item>
 
-          <SubMenu key="Shop" icon={<ShopOutlined />} title="Shop">
-            <Menu.ItemGroup title="Desktop">
-              <Menu.Item key="Shop:1">Option 1</Menu.Item>
-              <Menu.Item key="Shop:2">Option 2</Menu.Item>
-            </Menu.ItemGroup>
-            <Menu.ItemGroup title="Laptop">
-              <Menu.Item key="Shop:3">Option 3</Menu.Item>
-              <Menu.Item key="Shop:4">Option 4</Menu.Item>
-            </Menu.ItemGroup>
-          </SubMenu>
+        <SubMenu icon={<ShopOutlined />} title="Shop">
+          {shopList.map((listItemEach) => (
+            <Menu.Item key={listItemEach.id}>
+              <a href={listItemEach.href}></a>
+              {listItemEach.listItem}
+            </Menu.Item>
+          ))}
+        </SubMenu>
 
-          <Menu.Item key="Features" icon={<StarOutlined />}>
-            Features
-          </Menu.Item>
+        <Menu.Item icon={<StarOutlined />}>
+          <a href=".">Features</a>
+        </Menu.Item>
 
-          <Menu.Item key="Portfolio" icon={<AppstoreOutlined />}>
-            <a href="https://ant.design" target="_blank" rel="noreferrer">
-              Portfolio
-            </a>
-          </Menu.Item>
+        <Menu.Item icon={<AppstoreOutlined />}>
+          <a href=".">Portfolio</a>
+        </Menu.Item>
 
-          <Menu.Item key="Blog" icon={<ReadOutlined />}>
-            Blog
-          </Menu.Item>
+        <Menu.Item icon={<ReadOutlined />}>
+          <a href=".">Blog</a>
+        </Menu.Item>
 
-          <Menu.Item key="Contact" icon={<MailOutlined />}>
-            Contact
-          </Menu.Item>
-        </Menu>
-      </div>
-    );
-  }
+        <Menu.Item icon={<MailOutlined />}>
+          <a href=".">Contact</a>
+        </Menu.Item>
+      </Menu>
+    </div>
+  );
 }
 
 export default Navbar;

@@ -122,7 +122,6 @@ function ProductView() {
       </Col>
     );
   };
-
   return (
     <Row style={{ marginTop: 50 }} justify="center" gutter={32}>
       <Col>

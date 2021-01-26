@@ -12,7 +12,7 @@ import image7 from "../../assets/images/denim-tshirt.jpg";
 import image8 from "../../assets/images/full-black.jpg";
 
 import CardItem from "./ProductCard";
-import TitleHolder from './TitleHolder';
+import Header from './Header';
 import ViewButton from './Button'
 
 const itemList = [
@@ -69,7 +69,7 @@ const itemList = [
 function ProductList() {
   return (
     <div className={styles.containerFluid}>
-      <TitleHolder title='popular products' />
+      <Header title='popular products' />
       <Row gutter={[16, 16]}>
         {itemList.map((item) => (
           <Col span={6} key={item.id}>

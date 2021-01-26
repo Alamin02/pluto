@@ -10,6 +10,16 @@
   text-transform: uppercase;
   font-size: 12px;
 }
+.footerSectionOne ul {
+  padding-left: 0px;
+}
+.footerSectionOne ul li {
+  list-style-type: none;
+  margin-bottom: 10px;
+}
+.footerSectionOne ul li a {
+  color: black;
+}
 
 .footerSectionOne .inputField input[type='text'] {
   width: 100%;
@@ -45,4 +55,7 @@
 .iconSection span {
   margin-left: 8px;
   font-size: 13px;
+}
+.iconSection span a {
+  color: #545454;
 }

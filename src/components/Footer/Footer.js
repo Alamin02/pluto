@@ -1,82 +1,114 @@
 import React from 'react';
+import { BrowserRouter, Link } from 'react-router-dom';
 import { Row, Col } from 'antd';
 import {
-    TwitterOutlined,
-    FacebookOutlined,
-    InstagramOutlined,
-    WhatsAppOutlined,
-    YoutubeOutlined,
+  TwitterOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
+  WhatsAppOutlined,
+  YoutubeOutlined,
 } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import styles from './Footer.module.css';
 
 function Footer() {
-    return (
-        <div className={styles.footer}>
-            <Row className={styles.footerSectionOne}>
-                <Col span={8}>
-                    <p>Contact us</p>
-                    <p>Shipping & Returns</p>
-                    <p>Gift Cards</p>
-                    <p>Privacy</p>
-                </Col>
-                <Col span={8}>
-                    <p>About Us</p>
-                    <p>The concept</p>
-                    <p>Press</p>
-                    <p>Artists</p>
-                </Col>
-                <Col span={8}>
-                    <p>Stay in Touch</p>
-                    <div className={styles.inputField}>
-                        <input type="text" placeholder="SUBSCRIBE" />
-                    </div>
-                </Col>
-            </Row>
-            <Row className={styles.footerSectionTwo}>
-                <Col span={8} className={styles.copyRight}>
-                    <p>Copyright &copy; 2020</p>
-                </Col>
-                <Col span={8} className={styles.allAbout}>
-                    <ul>
-                        <li>
-                            <a href="#" target="_blank">blog</a>
-                        </li>
-                        <li>
-                            <a href="#" target="_blank">About us</a>
-                        </li>
-                        <li>
-                            <a href="#" target="_blank">contact us</a>
-                        </li>
-                        <li>
-                            <a href="#" target="_blank">faq</a>
-                        </li>
-                        <li>
-                            <a href="#" target="_blank">my account</a>
-                        </li>
-                    </ul>
-                </Col>
-                <Col span={8} className={styles.iconSection}>
-                    <span>
-                        <TwitterOutlined />
-                    </span>
-                    <span>
-                        <FacebookOutlined />
-                    </span>
-                    <span>
-                        <InstagramOutlined />
-                    </span>
-                    <span>
-                        <WhatsAppOutlined />
-                    </span>
-                    <span>
-                        <YoutubeOutlined />
-                    </span>
-                </Col>
-            </Row>
-        </div>
-    );
+  return (
+    <BrowserRouter>
+      <div className={styles.footer}>
+        <Row className={styles.footerSectionOne}>
+          <Col span={8}>
+            <ul>
+              <li>
+                <Link>Contact us</Link>
+              </li>
+              <li>
+                <Link>Shipping & Returns</Link>
+              </li>
+              <li>
+                <Link>Gift Cards</Link>
+              </li>
+              <li>
+                <Link>Privacy</Link>
+              </li>
+            </ul>
+          </Col>
+          <Col span={8}>
+            <ul>
+              <li>
+                <Link>About Us</Link>
+              </li>
+              <li>
+                <Link>The concept</Link>
+              </li>
+              <li>
+                <Link>Press</Link>
+              </li>
+              <li>
+                <Link>Artists</Link>
+              </li>
+            </ul>
+          </Col>
+          <Col span={8}>
+            <p>Stay in Touch</p>
+            <div className={styles.inputField}>
+              <input type="text" placeholder="SUBSCRIBE" />
+            </div>
+          </Col>
+        </Row>
+        <Row className={styles.footerSectionTwo}>
+          <Col span={8} className={styles.copyRight}>
+            <p>Copyright &copy; 2020</p>
+          </Col>
+          <Col span={8} className={styles.allAbout}>
+            <ul>
+              <li>
+                <Link to="#">blog</Link>
+              </li>
+              <li>
+                <Link to="#">About us</Link>
+              </li>
+              <li>
+                <Link to="#">contact us</Link>
+              </li>
+              <li>
+                <Link to="#">faq</Link>
+              </li>
+              <li>
+                <Link to="#">my account</Link>
+              </li>
+            </ul>
+          </Col>
+          <Col span={8} className={styles.iconSection}>
+            <span>
+              <Link to="#">
+                <TwitterOutlined />
+              </Link>
+            </span>
+            <span>
+              <Link to="#">
+                <FacebookOutlined />
+              </Link>
+            </span>
+            <span>
+              <Link to="#">
+                <InstagramOutlined />
+              </Link>
+            </span>
+            <span>
+              <Link to="#">
+                <WhatsAppOutlined />
+              </Link>
+            </span>
+            <span>
+              <Link to="#">
+                <YoutubeOutlined />
+              </Link>
+            </span>
+          </Col>
+        </Row>
+      </div>
+    </BrowserRouter>
+  );
 }
 
 export default Footer;
-

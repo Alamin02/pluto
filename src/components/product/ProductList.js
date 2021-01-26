@@ -1,6 +1,5 @@
 import React from "react";
 import { Row, Col } from "antd";
-import { Button } from "antd";
 import styles from "./ProductList.module.css";
 
 import image1 from "../../assets/images/addidas.jpg";
@@ -13,7 +12,8 @@ import image7 from "../../assets/images/denim-tshirt.jpg";
 import image8 from "../../assets/images/full-black.jpg";
 
 import CardItem from "./ProductCard";
-import TitleHolder from './TitleHolder';
+import Header from './Header';
+import ViewButton from './Button'
 
 const itemList = [
   {
@@ -69,7 +69,7 @@ const itemList = [
 function ProductList() {
   return (
     <div className={styles.containerFluid}>
-      <TitleHolder title='popular products' />
+      <Header title='popular products' />
       <Row gutter={[16, 16]}>
         {itemList.map((item) => (
           <Col span={6} key={item.id}>
@@ -81,11 +81,7 @@ function ProductList() {
           </Col>
         ))}
       </Row>
-      <div className="view-products">
-        <Button type="link" className="my-button">
-          View all products
-        </Button>
-      </div>
+      <ViewButton type="link" />
     </div>
   );
 }

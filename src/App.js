@@ -7,7 +7,7 @@ import Slider from "./components/Slider";
 import Navbar from "./components/navbar/Navbar";
 import Feature from "./components/featured-products/feature";
 import ProductList from "./components/product/ProductList";
-import Footer from './components/Footer/Footer'
+import Footer from './components/footer/Footer'
 
 function App() {
   return (

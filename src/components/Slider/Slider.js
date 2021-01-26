@@ -68,7 +68,6 @@ export default class Slider extends Component {
       slidesToShow: 1,
       slidesToScroll: 1,
     };
-
     return (
       <Row>
         <div className={styles.mainContainer}>

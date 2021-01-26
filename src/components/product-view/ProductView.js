@@ -24,7 +24,7 @@ const Description2Text = ` Lorem ipsum dolor, sit amet consectetur adipisicing e
 aliquam minima ab accusantium beatae blanditiis impedit, laudantium quae
 dolorem explicabo.`;
 
-const Description1 = ({ DText }) => {
+const Description1 = ({ description }) => {
   return (
     <>
       <div className={styles.marginBottom}>
@@ -32,7 +32,7 @@ const Description1 = ({ DText }) => {
         <h2>
           <b>$ 155.99</b>
         </h2>
-        <p>{DText}</p>
+        <p>{description}</p>
       </div>
       <Row>
         <Radio.Group>
@@ -44,17 +44,17 @@ const Description1 = ({ DText }) => {
             <PlusOutlined />
           </Radio.Button>
         </Radio.Group>
-
         <ButtonStyled title="Add to Cart" />
       </Row>
     </>
   );
 };
-const Description2 = ({ DText }) => {
+
+const Description2 = ({ description }) => {
   return (
     <>
       <h4>Description</h4>
-      <p>{DText}</p>
+      <p>{description}</p>
     </>
   );
 };
@@ -81,7 +81,9 @@ const DeskCollapse = ({ title, k, text }) => {
     </Collapse>
   );
 };
+
 const { Link } = Anchor;
+
 const titleA = [
   { id: "1", title: "Need help?" },
   { id: "2", title: "Contact us" },
@@ -92,6 +94,22 @@ const titleA = [
   { id: "7", title: "T-shirt" },
   { id: "8", title: "shirt" },
 ];
+
+const ProductImage = ({ imgLink, onClick }) => {
+  return (
+    <Col>
+      <div className={styles.img2}>
+        <img
+          className={styles.previewActive}
+          alt="example"
+          onClick={onClick}
+          src={imgLink}
+        />
+      </div>
+    </Col>
+  );
+};
+
 const Category = () => {
   return (
     <Anchor affix={false}>
@@ -101,27 +119,14 @@ const Category = () => {
     </Anchor>
   );
 };
+
 function ProductView() {
   const [imgSrc, setImgSrc] = useState(image1_large);
-  const imgSrcFunc = (e) => {
-    e.target.classList.remove("ProductView_previewActive__3JzWI");
-    const pImageSrc = e.target.getAttribute("src");
-    setImgSrc(pImageSrc);
+
+  const imgSrcFunc = (image) => {
+    setImgSrc(image);
   };
-  const ProductImg = ({ imgLink }) => {
-    return (
-      <Col>
-        <div className={styles.img2}>
-          <img
-            className={styles.previewActive}
-            alt="example"
-            onClick={imgSrcFunc}
-            src={imgLink}
-          />
-        </div>
-      </Col>
-    );
-  };
+
   return (
     <Row style={{ marginTop: 50 }} justify="center" gutter={32}>
       <Col>
@@ -129,25 +134,29 @@ function ProductView() {
           <img alt="example" src={imgSrc} />
         </div>
         <Row>
-          <ProductImg imgLink={image1} />
-          <ProductImg imgLink={image2} />
-          <ProductImg imgLink={image3} />
-          <ProductImg imgLink={image4} />
+          <ProductImage imgLink={image1} onClick={() => imgSrcFunc(image1)} />
+          <ProductImage imgLink={image2} onClick={() => imgSrcFunc(image2)} />
+          <ProductImage imgLink={image3} onClick={() => imgSrcFunc(image3)} />
+          <ProductImage imgLink={image4} onClick={() => imgSrcFunc(image4)} />
         </Row>
       </Col>
+
       <Col xl={{ span: 8 }} xs={{ span: 15 }}>
         <Space size={50} direction="vertical">
           <Description1 DText={Description1Text} />
           <Description2 DText={Description2Text} />
         </Space>
+
         <Space direction="vertical" size={15}>
           <DeskCollapse title="Description" k="1" text={textCollapse} />
           <DeskCollapse title="Ratings(0)" k="2" text={textCollapse} />
           <Category />
+
           <ButtonStyled title={[[<UserOutlined />, "Share This"]]} />
         </Space>
       </Col>
     </Row>
   );
 }
+
 export default ProductView;

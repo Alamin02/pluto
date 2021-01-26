@@ -1,0 +1,13 @@
+.imgStyle {
+  width: 100%;
+}
+
+.prodImageFullStyle {
+  margin-bottom: 0.5rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}

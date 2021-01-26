@@ -1,7 +1,6 @@
-
 import "antd/dist/antd.css";
-import ProductView from "./components/productView/ProductView";
-import Slider from "./components/Slider/Slider";
+import ProductView from "./components/product-view/ProductView";
+import Slider from "./components/slider/Slider";
 
 function App() {
   return (

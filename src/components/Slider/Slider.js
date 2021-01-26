@@ -1,17 +1,17 @@
-import React, { Component} from "react";
-import { Carousel, Button, Row } from "antd";
+import React, { Component } from "react";
+import { Carousel, Row } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import styles from "./Slider.module.css";
 import "./SliderDots.css";
-import ButtonStyled from "../ButtonStyled"
-const btnText="Shop Now";
+import ButtonStyled from "../ButtonStyled";
+const btnText = "Shop Now";
 const Slide = ({ imageClass, heading, desc }) => {
   return (
     <div className={imageClass}>
       <div className={styles.tBox}>
         <h1>{heading}</h1>
         <p>{desc}</p>
-        <ButtonStyled title={btnText}/>
+        <ButtonStyled title={btnText} />
       </div>
     </div>
   );
@@ -70,27 +70,26 @@ export default class Slider extends Component {
     };
 
     return (
-     <Row>
+      <Row>
         <div className={styles.mainContainer}>
-        <LeftOutlined className={styles.arrowLeft} onClick={this.previous} />
-        <Carousel
-          autoplay
-          effect="fade"
-         
-          ref={(node) => (this.carousel = node)}
-          {...props}
-        >
-          {slideList.map((slide) => (
-            <Slide
-              imageClass={slide.imgClass}
-              heading={slide.slideHeading}
-              desc={slide.description}
-            />
-          ))}
-        </Carousel>
-        <RightOutlined className={styles.arrowRight} onClick={this.next} />
-      </div>
-     </Row>
+          <LeftOutlined className={styles.arrowLeft} onClick={this.previous} />
+          <Carousel
+            autoplay
+            effect="fade"
+            ref={(node) => (this.carousel = node)}
+            {...props}
+          >
+            {slideList.map((slide) => (
+              <Slide
+                imageClass={slide.imgClass}
+                heading={slide.slideHeading}
+                desc={slide.description}
+              />
+            ))}
+          </Carousel>
+          <RightOutlined className={styles.arrowRight} onClick={this.next} />
+        </div>
+      </Row>
     );
   }
 }

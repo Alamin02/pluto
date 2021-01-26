@@ -29,6 +29,9 @@ const Description1 = ({ DText }) => {
     <>
       <div className={styles.marginBottom}>
         <h1>Gravida Est Quis Euismod</h1>
+        <h2>
+          <b>$ 155.99</b>
+        </h2>
         <p>{DText}</p>
       </div>
       <Row>
@@ -108,7 +111,7 @@ function ProductView() {
   const ProductImg = ({ imgLink }) => {
     return (
       <Col>
-        <div className={styles.Img2}>
+        <div className={styles.img2}>
           <img
             className={styles.previewActive}
             alt="example"
@@ -122,7 +125,7 @@ function ProductView() {
   return (
     <Row style={{ marginTop: 50 }} justify="center" gutter={32}>
       <Col>
-        <div className={styles.Img1}>
+        <div className={styles.img1}>
           <img alt="example" src={imgSrc} />
         </div>
         <Row>

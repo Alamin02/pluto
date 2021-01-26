@@ -18,7 +18,7 @@
   margin-bottom: 10px;
 }
 .footerSectionOne ul li a {
-  color: black;
+  color: #545454;
 }
 
 .footerSectionOne .inputField input[type='text'] {
@@ -45,7 +45,7 @@
 }
 
 .allAbout ul li a {
-  color: black;
+  color: #545454;
   margin-right: 12px;
 }
 

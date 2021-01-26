@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Cantata+One&family=Montserrat:wght@400;600;700&display=swap");
+/******* Product custom css start *******/
+* {
+  font-family: "Montserrat";
+}
+.img1 {
+  height: 400px;
+  width: 525px;
+}
+.img2 {
+  height: 100px;
+  width: 134px;
+  border: 10px solid white;
+  border-left: 0px;
+  cursor: pointer;
+  overflow: hidden;
+  /* opacity: 0.7; */
+}
+img {
+  width: 100%;
+  height: 100%;
+}
+.previewActive {
+  opacity: 0.6;
+}
+.dInline {
+  display: inline-block;
+  line-height: 30px;
+  font-family: "Montserrat";
+  font-weight: 600;
+  /* font-size: 16px; */
+}
+.marginBottom {
+  margin-bottom: 50px;
+}
+
+/******* Product custom css end *******/

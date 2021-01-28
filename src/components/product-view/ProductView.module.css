@@ -3,11 +3,11 @@
 * {
   font-family: "Montserrat";
 }
-.img1 {
+.imageLarge {
   height: 400px;
   width: 525px;
 }
-.img2 {
+.imageSmall {
   height: 100px;
   width: 134px;
   border: 10px solid white;

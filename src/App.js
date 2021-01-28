@@ -1,13 +1,13 @@
 import React from "react";
 import "antd/dist/antd.css";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
-
+import CheckOut from "./components/check-out/CheckOut";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import ProductView from "./components/product-view/ProductView";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
       <Switch>
         <Route path="/" component={Home} exact />
         <Route path="/product" component={ProductDetails} exact />
+        <Route path="/checkOut" component={CheckOut} exact />
       </Switch>
       <Footer />
     </Router>

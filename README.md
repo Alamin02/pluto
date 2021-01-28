@@ -1,5 +1,5 @@
 <div align="center">
-    <a href="https://allcontributors.org">
+    <a href="https://github.com/Alamin02/pluto/">
         <img src="https://i.imgur.com/ld4xrld.png" alt="Pluto logo" width="20%"/>
     </a>
 </div>

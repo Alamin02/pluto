@@ -1,6 +1,8 @@
 import { Button } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 
+import { Link } from "react-router-dom";
+
 import styles from "./Error404.module.css";
 import ShockedMan from "./404.gif";
 
@@ -16,13 +18,15 @@ function Error404() {
         <br />
         The page you are looking for is not available!
       </p>
-      <Button
-        type="primary"
-        className={styles.buttonStyle}
-        icon={<HomeOutlined />}
-      >
-        Go back to home page
-      </Button>
+      <Link to="/">
+        <Button
+          type="primary"
+          className={styles.buttonStyle}
+          icon={<HomeOutlined />}
+        >
+          Go back to home page
+        </Button>
+      </Link>
     </div>
   );
 }

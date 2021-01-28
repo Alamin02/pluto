@@ -7,8 +7,6 @@ import ProductDetails from "./pages/ProductDetails";
 import CheckOut from "./components/check-out/CheckOut";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
-import ProductView from "./components/product-view/ProductView";
-
 function App() {
   return (
     <Router>

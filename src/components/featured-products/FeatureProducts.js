@@ -1,7 +1,9 @@
-import { ArrowRightOutlined } from "@ant-design/icons";
-import { Row, Col, Image, Typography } from "antd";
+import { Row, Col, Typography } from "antd";
+
 import styles from "./Feature.module.css";
 import FeatureImage from "./FeatureImage";
+import FeatureOverlay from "./FeatureOverlay";
+import Heading from "../heading/Heading";
 
 import watchImage from "../../assets/images/watch.jpg";
 import glassImage from "../../assets/images/glass.jpg";
@@ -14,62 +16,76 @@ const FeatureProducts = () => {
     <>
       <div className={`${styles.bgColor} ${styles.block}`}>
         <div className={styles.containerFluid}>
-          <div className={styles.titleHolder}>
-            <h2>Feature Products</h2>
-          </div>
+          <Heading
+            headingStyle={styles.titleHolder}
+            headingTitle="Feature Products"
+          />          
           <Row>
             <Col span={16}>
               {/* Image of Watch */}
               <Row>
-                <div className={`${styles.container} ${styles.image}`}>
+                <div className={`${styles.container} ${styles.image}`}>            
                   <Link>
-                    <FeatureImage
+                    <FeatureImage     
+                      blur={styles.blur}
                       source={watchImage}
                       style={{
-                        marginBottom: "10px",
                         border: "1px solid black",
-                        objectFit: "cover",
-                      }}
+                        objectFit: "cover",                        
+                        marginBottom: "10px",
+                        height: "395px",
+                        width: "780px"
+                      }}                                          
                     />
                   </Link>                  
-                  {/*<div className="overlay">
-                    <Link href="#" target="_blank" style={{ color: "white" }}>
-                      Watch
-                      <ArrowRightOutlined />
-                    </Link>
-                  </div>*/}
-                </div>
+                  <FeatureOverlay
+                    overlayStyle = {styles.overlay}
+                    name="Watch"
+                  />
+               </div>
               </Row>
               {/* Image of Glass */}
               <Row>
                 <div className={`${styles.container} ${styles.image}`}>
-                  <FeatureImage
-                    source={glassImage}
-                    style={{ 
-                      border: "1px solid black", 
-                      objectFit: "cover",
-                    }}
+                  <Link>
+                    <FeatureImage
+                      blur={styles.blur}
+                      source={glassImage}
+                      style={{ 
+                        border: "1px solid black", 
+                        objectFit: "cover",
+                        height: "395px",
+                        width: "780px"
+                      }}
+                    />
+                  </Link>                                                                 
+                  <FeatureOverlay
+                    overlayStyle = {styles.overlayGlass}
+                    name="Glass"
                   />
-                  {/* <div className="overlayGlass">
-                    <Link href="#" target="_blank" style={{ color: "white" }}>
-                      Glass
-                      <ArrowRightOutlined />
-                    </Link>
-                  </div> */}
                 </div>
               </Row>
             </Col>
             <Col span={8}>
               {/* Image of Bagpack */}
-              <FeatureImage 
-                  source = {bagpackImage}
-                  style={{
-                    margin: "0 0 0 15px",
-                    border: "1px solid black",
-                    objectFit: "cover",
-                    height: "1050px",
-                  }}
-              />
+              <div className={`${styles.container} ${styles.bagpackImage}`}>
+                <Link>
+                  <FeatureImage 
+                    blur={styles.blur}
+                    source = {bagpackImage}
+                    style={{
+                      margin: "0 0 0 15px",
+                      border: "1px solid black",
+                      objectFit: "cover",
+                      height: "805px",
+                    }}
+                  />
+                </Link>
+                <FeatureOverlay
+                    overlayStyle = {styles.overlayBagpack}
+                    name="Bagpack"
+                  />
+              </div>
             </Col>
           </Row>
         </div>

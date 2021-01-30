@@ -5,7 +5,7 @@ import "./App.css";
 
 import Slider from "./components/Slider";
 import Navbar from "./components/navbar/Navbar";
-import Feature from "./components/featured-products/feature";
+import Feature from "./components/featured-products/FeatureProducts";
 import ProductList from "./components/product/ProductList";
 
 

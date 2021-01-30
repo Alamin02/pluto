@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 /* body */
 .bgColor {
   background: #fafafa;
@@ -8,7 +10,7 @@
   border-bottom: 1px solid #d9d9d9;
 }
 
-.container-fluid {
+.containerFluid {
   margin: 0 auto;
   max-width: 1200px;
   padding: 0 15px;

@@ -1,0 +1,49 @@
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mainHeading {
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.eachSection {
+  border: 0.2rem solid #eeeeee;
+  border-radius: 5px;
+  padding: 1.5rem;
+}
+
+.buttonSection {
+  border: 0.2rem transparent #eeeeee;
+  border-radius: 5px;
+  padding: 1.5rem;
+}
+
+.eachSectionTitle {
+  font-weight: bold;
+}
+
+.eachProfileItem {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.infoSection {
+  width: 50%;
+}
+
+.infoSectionFirstCol {
+  width: 70%;
+  margin-bottom: 0.5rem;
+}
+
+.infoSectionSecondCol {
+  margin-left: -3rem;
+}
+
+.emptySpaceBetweenSections {
+  padding: 1rem;
+}

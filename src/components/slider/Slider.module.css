@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Cantata+One&family=Montserrat:wght@400;600;700&display=swap");
+/******* Slider custom css start *******/
+/* .sliderContainer {
+  height: 500px;
+  text-align: center;
+  color: white;
+  line-height: 400px;
+  position: relative;
+  overflow: hidden;
+} */
+
+.mainContainer {
+  position: relative;
+  height: 500px;
+  width: 100%;
+  background: #34495e;
+}
+
+.arrowLeft {
+  color: #ecf0f1;
+  color: black;
+  font-size: 20px;
+  position: absolute;
+  z-index: 1;
+  top: 45%;
+  left: 0%;
+  width: 50px;
+  height: 50px;
+  background: white;
+  line-height: 50px;
+  cursor: pointer;
+}
+.arrowRight {
+  /* color: #ecf0f1; */
+  color: black;
+  font-size: 20px;
+  position: absolute;
+  z-index: 1;
+  top: 45%;
+  right: 0%;
+  width: 50px;
+  height: 50px;
+  background: white;
+  line-height: 50px;
+  cursor: pointer;
+}
+.sliderO {
+  background-color: rgba(0, 0, 0, 0.733);
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+}
+.one {
+  background-color: rgba(0, 0, 0, 0.26);
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../assets/images/slider-image1.jpg");
+  height: 500px;
+}
+.two {
+  background-color: rgba(0, 0, 0, 0.26);
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../assets/images/slider-image2.jpg");
+  height: 500px;
+}
+.three {
+  background-color: rgba(0, 0, 0, 0.26);
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../assets/images/slider-image3.jpg");
+  height: 500px;
+}
+.four {
+  background-color: rgba(0, 0, 0, 0.185);
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../assets/images/slider-image4.jpg");
+  height: 500px;
+}
+.tBox {
+  width: 600px;
+  text-align: left;
+  padding-top: 150px;
+  margin-left: 150px;
+  color: black;
+  font-family: "Montserrat";
+}
+.tBox h1 {
+  font-size: 50px;
+  font-weight: 600;
+}
+
+.btnCustom {
+  width: 120px;
+  height: 40px;
+  background: black;
+  color: white;
+  border: 2px solid rgb(233, 193, 15);
+}
+
+/******* Slider custom css end *******/

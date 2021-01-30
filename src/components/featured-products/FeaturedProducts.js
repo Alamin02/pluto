@@ -1,8 +1,8 @@
 import { Row, Col, Typography } from "antd";
 
-import styles from "./Feature.module.css";
-import FeatureImage from "./FeatureImage";
-import FeatureOverlay from "./FeatureOverlay";
+import styles from "./Featured.module.css";
+import FeaturedImage from "./FeaturedImage";
+import FeaturedOverlay from "./FeaturedOverlay";
 import Heading from "../heading/Heading";
 
 import watchImage from "../../assets/images/watch.jpg";
@@ -18,7 +18,7 @@ const FeatureProducts = () => {
         <div className={styles.containerFluid}>
           <Heading
             headingStyle={styles.titleHolder}
-            headingTitle="Feature Products"
+            headingTitle="Featured Products"
           />          
           <Row>
             <Col span={16}>
@@ -26,7 +26,7 @@ const FeatureProducts = () => {
               <Row>
                 <div className={`${styles.container} ${styles.image}`}>            
                   <Link>
-                    <FeatureImage     
+                    <FeaturedImage     
                       blur={styles.blur}
                       source={watchImage}
                       style={{
@@ -38,7 +38,7 @@ const FeatureProducts = () => {
                       }}                                          
                     />
                   </Link>                  
-                  <FeatureOverlay
+                  <FeaturedOverlay
                     overlayStyle = {styles.overlay}
                     name="Watch"
                   />
@@ -48,7 +48,7 @@ const FeatureProducts = () => {
               <Row>
                 <div className={`${styles.container} ${styles.image}`}>
                   <Link>
-                    <FeatureImage
+                    <FeaturedImage
                       blur={styles.blur}
                       source={glassImage}
                       style={{ 
@@ -59,7 +59,7 @@ const FeatureProducts = () => {
                       }}
                     />
                   </Link>                                                                 
-                  <FeatureOverlay
+                  <FeaturedOverlay
                     overlayStyle = {styles.overlayGlass}
                     name="Glass"
                   />
@@ -70,7 +70,7 @@ const FeatureProducts = () => {
               {/* Image of Bagpack */}
               <div className={`${styles.container} ${styles.bagpackImage}`}>
                 <Link>
-                  <FeatureImage 
+                  <FeaturedImage 
                     blur={styles.blur}
                     source = {bagpackImage}
                     style={{
@@ -81,7 +81,7 @@ const FeatureProducts = () => {
                     }}
                   />
                 </Link>
-                <FeatureOverlay
+                <FeaturedOverlay
                     overlayStyle = {styles.overlayBagpack}
                     name="Bagpack"
                   />

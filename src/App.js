@@ -8,7 +8,6 @@ import ProductDetails from "./pages/ProductDetails";
 import PageNotFound from "./pages/PageNotFound";
 
 import Navbar from "./components/navbar/Navbar";
-import Feature from "./components/featured-products/FeatureProducts";
 import ProductList from "./components/product/ProductList";
 import Footer from "./components/footer/Footer";
 

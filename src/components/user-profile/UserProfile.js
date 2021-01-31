@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { Button } from "antd";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 
@@ -46,7 +48,9 @@ function UserProfile() {
       </section>
 
       <section className={styles.buttonSection}>
-        <Button type="primary">Update Profile</Button>
+        <Link to="/update-profile">
+          <Button type="primary">Update Profile</Button>
+        </Link>
       </section>
     </div>
   );

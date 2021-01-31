@@ -30,10 +30,6 @@ const ProductImage = ({ imageLink, onClick }) => {
 function ProductView() {
   const [imgSrc, setImgSrc] = useState(image1_large);
 
-  const imgSrcFunc = (image) => {
-    setImgSrc(image);
-  };
-
   return (
     <Row style={{ marginTop: 50 }} justify="center" gutter={32}>
       <Col>
@@ -41,10 +37,10 @@ function ProductView() {
           <img alt="example" src={imgSrc} />
         </div>
         <Row>
-          <ProductImage imageLink={image1} onClick={() => imgSrcFunc(image1)} />
-          <ProductImage imageLink={image2} onClick={() => imgSrcFunc(image2)} />
-          <ProductImage imageLink={image3} onClick={() => imgSrcFunc(image3)} />
-          <ProductImage imageLink={image4} onClick={() => imgSrcFunc(image4)} />
+          <ProductImage imageLink={image1} onClick={() => setImgSrc(image1)} />
+          <ProductImage imageLink={image2} onClick={() => setImgSrc(image2)} />
+          <ProductImage imageLink={image3} onClick={() => setImgSrc(image3)} />
+          <ProductImage imageLink={image4} onClick={() => setImgSrc(image4)} />
         </Row>
       </Col>
 

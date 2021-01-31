@@ -15,35 +15,38 @@
   padding: 1.5rem;
 }
 
+.eachSectionTitle {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
 .buttonSection {
   border: 0.2rem transparent #eeeeee;
   border-radius: 5px;
   padding: 1.5rem;
-}
-
-.eachSectionTitle {
-  font-weight: bold;
-}
-
-.eachProfileItem {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.infoSection {
-  width: 50%;
-}
-
-.infoSectionFirstCol {
-  width: 70%;
+  margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
-.infoSectionSecondCol {
-  margin-left: -3rem;
+.basicInfo {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
 }
 
-.emptySpaceBetweenSections {
+.userAvatar {
+  width: 5rem;
+}
+
+.basicInfoText {
+  margin-left: 2rem;
+}
+
+.welcomeMessage {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.emptySpace {
   padding: 1rem;
 }

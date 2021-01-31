@@ -6,6 +6,6 @@ const Heading = ({ headingStyle, headingTitle }) => {
       </div>
     </>
   );
-}
- 
+};
+
 export default Heading;

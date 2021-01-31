@@ -11,7 +11,7 @@ import bagpackImage from "../../assets/images/bagpack.jpg";
 
 const { Link } = Typography;
 
-const FeatureProducts = () => {
+const FeaturedProducts = () => {
   return (
     <>
       <div className={`${styles.bgColor} ${styles.block}`}>
@@ -19,30 +19,27 @@ const FeatureProducts = () => {
           <Heading
             headingStyle={styles.titleHolder}
             headingTitle="Featured Products"
-          />          
+          />
           <Row>
             <Col span={16}>
               {/* Image of Watch */}
               <Row>
-                <div className={`${styles.container} ${styles.image}`}>            
+                <div className={`${styles.container} ${styles.image}`}>
                   <Link>
-                    <FeaturedImage     
+                    <FeaturedImage
                       blur={styles.blur}
                       source={watchImage}
                       style={{
                         border: "1px solid black",
-                        objectFit: "cover",                        
+                        objectFit: "cover",
                         marginBottom: "10px",
                         height: "395px",
-                        width: "780px"
-                      }}                                          
+                        width: "780px",
+                      }}
                     />
-                  </Link>                  
-                  <FeaturedOverlay
-                    overlayStyle = {styles.overlay}
-                    name="Watch"
-                  />
-               </div>
+                  </Link>
+                  <FeaturedOverlay overlayStyle={styles.overlay} name="Watch" />
+                </div>
               </Row>
               {/* Image of Glass */}
               <Row>
@@ -51,16 +48,16 @@ const FeatureProducts = () => {
                     <FeaturedImage
                       blur={styles.blur}
                       source={glassImage}
-                      style={{ 
-                        border: "1px solid black", 
+                      style={{
+                        border: "1px solid black",
                         objectFit: "cover",
                         height: "395px",
-                        width: "780px"
+                        width: "780px",
                       }}
                     />
-                  </Link>                                                                 
+                  </Link>
                   <FeaturedOverlay
-                    overlayStyle = {styles.overlayGlass}
+                    overlayStyle={styles.overlayGlass}
                     name="Glass"
                   />
                 </div>
@@ -70,9 +67,9 @@ const FeatureProducts = () => {
               {/* Image of Bagpack */}
               <div className={`${styles.container} ${styles.bagpackImage}`}>
                 <Link>
-                  <FeaturedImage 
+                  <FeaturedImage
                     blur={styles.blur}
-                    source = {bagpackImage}
+                    source={bagpackImage}
                     style={{
                       margin: "0 0 0 15px",
                       border: "1px solid black",
@@ -82,9 +79,9 @@ const FeatureProducts = () => {
                   />
                 </Link>
                 <FeaturedOverlay
-                    overlayStyle = {styles.overlayBagpack}
-                    name="Bagpack"
-                  />
+                  overlayStyle={styles.overlayBagpack}
+                  name="Bagpack"
+                />
               </div>
             </Col>
           </Row>
@@ -94,4 +91,4 @@ const FeatureProducts = () => {
   );
 };
 
-export default FeatureProducts;
+export default FeaturedProducts;

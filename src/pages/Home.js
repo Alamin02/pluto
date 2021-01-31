@@ -1,14 +1,14 @@
 import React from "react";
 
 import Slider from "../components/slider/Slider";
-import Feature from "../components/featured-products/FeaturedProducts";
+import FeaturedProducts from "../components/featured-products/FeaturedProducts";
 import ProductList from "../components/product/ProductList";
 
 const Home = () => {
   return (
     <div>
       <Slider />
-      <Feature />
+      <FeaturedProducts />
       <ProductList />
     </div>
   );

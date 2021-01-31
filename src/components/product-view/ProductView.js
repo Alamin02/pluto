@@ -8,7 +8,7 @@ import image3 from "../../assets/images/watch-3-small.jpg";
 import image4 from "../../assets/images/watch-4-small.jpg";
 import styles from "./ProductView.module.css";
 import ButtonStyled from "../ButtonStyled";
-import DescriptionCollapsible from "./DescriptionCollapsible";
+import CollapsibleDescriptionContainer from "./CollapsibleDescriptionContainer";
 import PriceDescription from "./PriceDescription";
 import Category from "./Category";
 
@@ -51,7 +51,7 @@ function ProductView() {
       <Col xl={{ span: 8 }} xs={{ span: 15 }}>
         <Space size={20} direction="vertical">
           <PriceDescription />
-          <DescriptionCollapsible />
+          <CollapsibleDescriptionContainer />
           <Category />
           <ButtonStyled title={[[<UserOutlined />, "Share This"]]} />
         </Space>

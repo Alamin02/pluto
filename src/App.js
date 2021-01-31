@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
-import CheckOut from "./components/check-out/CheckOut";
+import CheckOut from "./pages/CheckOut";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+
 function App() {
   return (
     <Router>

@@ -1,23 +1,27 @@
 import React from "react";
-import 'antd/dist/antd.css';
+import "antd/dist/antd.css";
 
-import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Slider from "./components/Slider";
+import Home from "./pages/Home";
+import ProductDetails from "./pages/ProductDetails";
+import ProductPage from "./pages/ProductPage";
+
 import Navbar from "./components/navbar/Navbar";
-import Feature from "./components/featured-products/feature";
-import ProductList from "./components/product/ProductList";
-import Footer from './components/footer/Footer'
+import Footer from "./components/footer/Footer";
+
 
 function App() {
   return (
-    <div>
+    <Router>
       <Navbar />
-      <Slider />
-      <Feature />
-      <ProductList />
+      <Switch>
+        <Route path="/" component={Home} exact />
+        <Route path="/product" component={ProductDetails} exact />
+        <Route path="/product/list" component={ProductPage} exact />
+      </Switch>
       <Footer />
-    </div>
+    </Router>
   );
 }
 

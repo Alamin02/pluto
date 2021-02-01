@@ -1,6 +1,5 @@
 import React from "react";
 import { Row, Col } from "antd";
-import { Button } from "antd";
 import styles from "./ProductList.module.css";
 
 import image1 from "../../assets/images/addidas.jpg";
@@ -90,3 +89,5 @@ function ProductList() {
 }
 
 export default ProductList;
+
+

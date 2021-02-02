@@ -1,0 +1,31 @@
+.tableRowBottomBorder {
+  border-bottom: 1px solid #eeeeee;
+  border-radius: 9999px;
+}
+
+.centerCol {
+  text-align: center;
+}
+
+img {
+  display: inline-flex;
+}
+.productNameAndImage {
+  display: flex;
+  align-items: center;
+}
+
+.productImage {
+  width: 30%;
+  height: 5rem;
+  object-fit: cover;
+}
+
+.productName {
+  margin-left: 1.5rem;
+  margin-top: 1rem;
+}
+
+td {
+  padding: 2rem;
+}

@@ -56,7 +56,7 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input disabled />
+            <Input defaultValue={userInfo.email} />
           </Form.Item>
 
           {/* name */}
@@ -71,7 +71,7 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input />
+            <Input defaultValue={userInfo.name} />
           </Form.Item>
 
           {/* phone */}
@@ -86,7 +86,7 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input />
+            <Input defaultValue={userInfo.phone} />
           </Form.Item>
 
           {/* image */}
@@ -117,7 +117,7 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Enter new password" />
           </Form.Item>
         </section>
         {/* 1st section end */}

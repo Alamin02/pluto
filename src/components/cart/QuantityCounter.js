@@ -1,24 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 
 import styles from "./QuantityCounter.module.css";
 
-function QuantityCounter() {
-  let [count, setCount] = useState(1);
+function QuantityCounter({ value, onChange }) {
   return (
     <div className={styles.counterRootDiv}>
       <div className={styles.iconStyle}>
         <button
           className={styles.buttonStyle}
-          onClick={() => setCount(count - 1)}
+          onClick={() => onChange(value - 1)}
         >
           <span className={styles.iconStyle}> - </span>
         </button>
       </div>
-      <input type="number" value={count} className={styles.counterInput} />
+      <input type="number" value={value} className={styles.counterInput} />
       <div>
         <button
           className={styles.buttonStyle}
-          onClick={() => setCount(count + 1)}
+          onClick={() => onChange(value + 1)}
         >
           <span className={styles.iconStyle}> + </span>
         </button>

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
@@ -6,6 +8,12 @@ import QuantityCounter from "./QuantityCounter";
 import styles from "./CartItem.module.css";
 
 function CartItem({ productName, price, imageUrl }) {
+  const [count, setCount] = useState(1);
+
+  const handleCount = (value) => {
+    if (value > 0) setCount(value);
+  };
+
   return (
     <tr className={styles.tableRowBottomBorder}>
       <td>
@@ -23,9 +31,9 @@ function CartItem({ productName, price, imageUrl }) {
       </td>
       <td className={styles.centerCol}>{price} BDT</td>
       <td className={styles.centerCol}>
-        <QuantityCounter />
+        <QuantityCounter value={count} onChange={handleCount} />
       </td>
-      <td className={styles.centerCol}>{price} BDT</td>
+      <td className={styles.centerCol}>{price * count} BDT</td>
     </tr>
   );
 }

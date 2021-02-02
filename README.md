@@ -4,11 +4,20 @@
     </a>
 </div>
 
+<div align="center">
 A lightweight eCommerce application (not the dwarf planet) built using `Node` and `React`.
+</div>
+
+</br>
+
+<div align="center">
 
 [![GitHub issues](https://img.shields.io/github/issues/Alamin02/pluto?style=flat-square)](https://github.com/Alamin02/pluto/issues)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Alamin02/pluto?style=flat-square)
 [![GitHub stars](https://img.shields.io/github/stars/Alamin02/pluto?style=flat-square)](https://github.com/Alamin02/pluto/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/Alamin02/pluto?style=flat-square)](https://github.com/Alamin02/pluto/network)
+![GitHub contributors](https://img.shields.io/github/contributors/Alamin02/pluto?style=flat-square)
+
+</div>
 
 ## 🛠 Development
 
@@ -18,7 +27,11 @@ A lightweight eCommerce application (not the dwarf planet) built using `Node` an
 4. Run `yarn start` to run the app in development mode.
 5. Open `http://localhost:3000/` to view the frontend.
 
-> _⚠️ Using `yarn` instead of `npm` is advised_
+<span style="color: gray;">
+
+_⚠️ Using `yarn` instead of `npm` is advised_
+
+</span>
 
 ## ✨ Contributors
 

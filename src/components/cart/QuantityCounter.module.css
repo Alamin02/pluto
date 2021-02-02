@@ -1,0 +1,38 @@
+.counterRootDiv {
+  display: flex;
+  align-items: center;
+}
+
+.counterInput {
+  width: 3.5rem;
+  text-align: center;
+}
+
+.buttonStyle {
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px none transparent;
+  text-shadow: 0px 0px 0px transparent;
+  background-color: transparent;
+  padding-left: none;
+  padding-right: none;
+  padding-top: none;
+  padding-bottom: none;
+  margin: none;
+  outline: none;
+}
+
+.iconStyle {
+  flex-wrap: wrap;
+  font-size: 2rem;
+  flex: 1 1 auto;
+}
+
+.iconStyle:hover {
+  color: #1890ff;
+}
+
+.counterInput {
+  flex: 1 1 auto;
+  width: 2rem;
+  border: 2.5px solid #333333;
+}

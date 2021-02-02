@@ -1,21 +1,24 @@
 import React from "react";
 import { Row, Col } from "antd";
-import styles from "./ProductList.module.css";
 
-import image1 from "../../assets/images/addidas.jpg";
-import image2 from "../../assets/images/mango-navy.jpg";
-import image3 from "../../assets/images/neck-tshirt.jpg";
-import image4 from "../../assets/images/polo-tshirt.jpg";
-import image5 from "../../assets/images/black.jpg";
-import image6 from "../../assets/images/casual.jpg";
-import image7 from "../../assets/images/denim-tshirt.jpg";
-import image8 from "../../assets/images/full-black.jpg";
+import MainHeader from "../components/main-header/MainHeader"
+import ProductNavbar from "../components/product/ProductNavbar"
+import ProductOption from "../components/product/option/ProductOption"
+import CardItem from "../components/product/ProductCard"
+import PageInfo from "../components/product/PageInfo"
 
-import CardItem from "./ProductCard";
-import Header from "./Header";
-import ViewButton from './Button'
 
-const itemList = [
+import image1 from "../assets/images/addidas.jpg";
+import image2 from "../assets/images/mango-navy.jpg";
+import image3 from "../assets/images/neck-tshirt.jpg";
+import image4 from "../assets/images/polo-tshirt.jpg";
+import image5 from "../assets/images/black.jpg";
+import image6 from "../assets/images/casual.jpg";
+import image7 from "../assets/images/denim-tshirt.jpg";
+import image8 from "../assets/images/full-black.jpg";
+
+
+const item = [
     {
         id: 1,
         title: "Creative Adidas T-Shirts",
@@ -66,12 +69,15 @@ const itemList = [
     },
 ];
 
-function ProductList() {
+
+const ProductPage = () => {
     return (
-        <div className={styles.containerFluid}>
-            <Header title='popular products' />
-            <Row gutter={[16, 16]}>
-                {itemList.map((item) => (
+        <div>
+            <MainHeader name='popular list' sub='home - shop - products' />
+            <ProductNavbar />
+            <ProductOption />
+            <Row gutter={[16, 16]} style={{ maxWidth: '1200px', margin: '20px auto' }}>
+                {item.map((item) => (
                     <Col span={6} key={item.id}>
                         <CardItem
                             title={item.title}
@@ -81,15 +87,10 @@ function ProductList() {
                     </Col>
                 ))}
             </Row>
-            <div className="view-products">
-                <ViewButton type='link' />
-            </div>
+            <PageInfo />
         </div>
-    );
+
+    )
 }
-
-export default ProductList;
-
-
-
+export default ProductPage;
 

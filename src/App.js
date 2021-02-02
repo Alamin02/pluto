@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
+
+import ProductPage from "./pages/ProductPage";
 import Error404 from "./components/error-404/Error404";
 import UserProfile from "./components/user-profile/UserProfile";
 import UpdateUserProfile from "./components/user-profile/UpdateUserProfile"
@@ -12,6 +14,7 @@ import CheckOut from "./pages/CheckOut";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 
+
 function App() {
   return (
     <Router>
@@ -19,6 +22,7 @@ function App() {
       <Switch>
         <Route path="/" component={Home} exact />
         <Route path="/product" component={ProductDetails} exact />
+        <Route path="/product/list" component={ProductPage} exact />
         <Route path="/profile" component={UserProfile} />
         <Route path="/update-profile" component={UpdateUserProfile} />
         <Route component={Error404} />

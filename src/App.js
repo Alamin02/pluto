@@ -12,6 +12,7 @@ import UpdateUserProfile from "./components/user-profile/UpdateUserProfile"
 import CheckOut from "./pages/CheckOut";
 
 import Navbar from "./components/navbar/Navbar";
+import ProductList from "./components/product/ProductList";
 import Footer from "./components/footer/Footer";
 
 

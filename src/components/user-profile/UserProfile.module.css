@@ -1,0 +1,52 @@
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mainHeading {
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.eachSection {
+  border: 0.2rem solid #eeeeee;
+  border-radius: 5px;
+  padding: 1.5rem;
+}
+
+.eachSectionTitle {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.buttonSection {
+  border: 0.2rem transparent #eeeeee;
+  border-radius: 5px;
+  padding: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.basicInfo {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.userAvatar {
+  width: 5rem;
+}
+
+.basicInfoText {
+  margin-left: 2rem;
+}
+
+.welcomeMessage {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.emptySpace {
+  padding: 1rem;
+}

@@ -18,6 +18,7 @@ function Cart() {
         </tr>
         {mockProductData.map((item) => (
           <CartItem
+            key={item.id}
             productName={item.productName}
             price={item.price}
             imageUrl={item.imageUrl}

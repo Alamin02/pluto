@@ -1,7 +1,7 @@
+import { Link } from "react-router-dom";
+
 import { Button } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
-
-import { Link } from "react-router-dom";
 
 import styles from "./Error404.module.css";
 import ShockedMan from "./404.gif";

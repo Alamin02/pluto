@@ -8,13 +8,13 @@ import ProductDetails from "./pages/ProductDetails";
 import ProductPage from "./pages/ProductPage";
 import Error404 from "./components/error-404/Error404";
 import UserProfile from "./components/user-profile/UserProfile";
-import UpdateUserProfile from "./components/user-profile/UpdateUserProfile"
+import UpdateUserProfile from "./components/user-profile/UpdateUserProfile";
 import CheckOut from "./pages/CheckOut";
+import Cart from "./components/cart/Cart";
 
 import Navbar from "./components/navbar/Navbar";
 import ProductList from "./components/product/ProductList";
 import Footer from "./components/footer/Footer";
-
 
 function App() {
   return (
@@ -23,11 +23,17 @@ function App() {
       <Switch>
         <Route path="/" component={Home} exact />
         <Route path="/product" component={ProductDetails} exact />
+        <Route
+          path="/products/product-details/:id"
+          component={ProductDetails}
+          exact
+        />
         <Route path="/product/list" component={ProductPage} exact />
+        <Route path="/cart" component={Cart} exact />
         <Route path="/profile" component={UserProfile} />
         <Route path="/update-profile" component={UpdateUserProfile} />
-        <Route component={Error404} />
         <Route path="/checkOut" component={CheckOut} exact />
+        <Route component={Error404} />
       </Switch>
       <Footer />
     </Router>

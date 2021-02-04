@@ -45,8 +45,8 @@ function Navbar() {
         <div>
           <PhoneOutlined /> +880 1234 123456
         </div>
-        <div className={styles.siteName}>Pluto</div>
-        <div>
+        <div className={styles.navbarTopCenter}>Pluto</div>
+        <div className={styles.navbarTopRight}>
           <Link>Log in</Link>
           &nbsp;&nbsp;|&nbsp;&nbsp;
           <Link>

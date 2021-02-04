@@ -13,7 +13,7 @@ function QuantityCounter({ value, onChange }) {
           <span className={styles.iconStyle}> - </span>
         </button>
       </div>
-      <input type="number" value={value} className={styles.counterInput} />
+      <input type="number" readOnly value={value} className={styles.counterInput} />
       <div>
         <button
           className={styles.buttonStyle}

@@ -12,6 +12,7 @@ import {
   AppstoreOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const { SubMenu } = Menu;
 const shopList = [
@@ -46,42 +47,42 @@ function Navbar() {
         </div>
         <div className={styles.siteName}>Pluto</div>
         <div>
-          <a href=".">Log in</a>
+          <Link>Log in</Link>
           &nbsp;&nbsp;|&nbsp;&nbsp;
-          <a href=".">
+          <Link>
             <ShoppingOutlined />
-          </a>
+          </Link>
         </div>
       </nav>
       <hr className={styles.navHr} />
       <Menu mode="horizontal" className={styles.navbarBottom}>
         <Menu.Item icon={<HomeOutlined />}>
-          <a href=".">Home</a>
+          <Link to="/">Home</Link>
         </Menu.Item>
 
         <SubMenu icon={<ShopOutlined />} title="Shop">
           {shopList.map((listItemEach) => (
             <Menu.Item key={listItemEach.id}>
-              <a href={listItemEach.href}></a>
+              <Link to={listItemEach.href}></Link>
               {listItemEach.listItem}
             </Menu.Item>
           ))}
         </SubMenu>
 
         <Menu.Item icon={<StarOutlined />}>
-          <a href=".">Features</a>
+          <Link>Features</Link>
         </Menu.Item>
 
         <Menu.Item icon={<AppstoreOutlined />}>
-          <a href=".">Portfolio</a>
+          <Link>Portfolio</Link>
         </Menu.Item>
 
         <Menu.Item icon={<ReadOutlined />}>
-          <a href=".">Blog</a>
+          <Link>Blog</Link>
         </Menu.Item>
 
         <Menu.Item icon={<MailOutlined />}>
-          <a href=".">Contact</a>
+          <Link>Contact</Link>
         </Menu.Item>
       </Menu>
     </div>

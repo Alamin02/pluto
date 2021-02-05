@@ -56,7 +56,7 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input defaultValue={userInfo.email} />
+            <Input defaultValue={userInfo.email} disabled />
           </Form.Item>
 
           {/* name */}
@@ -141,9 +141,9 @@ function UpdateUserProfile() {
           >
             {/* <Input /> */}
             <Select defaultValue={userInfo.address} onChange={handleChange}>
-              {shippingAddressList.map((eachAddress) => (
-                <Option value={eachAddress.address}>
-                  {eachAddress.address}
+              {shippingAddressList.map((address) => (
+                <Option value={address.address} key={address.id}>
+                  {address.address}
                 </Option>
               ))}
             </Select>

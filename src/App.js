@@ -26,8 +26,8 @@ function App() {
         <Route path="/product/list" component={ProductPage} exact />
         <Route path="/profile" component={UserProfile} />
         <Route path="/update-profile" component={UpdateUserProfile} />
-        <Route component={Error404} />
         <Route path="/checkOut" component={CheckOut} exact />
+        <Route component={Error404} />
       </Switch>
       <Footer />
     </Router>

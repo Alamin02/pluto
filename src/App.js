@@ -1,10 +1,8 @@
 import React from "react";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
-
 import ProductPage from "./pages/ProductPage";
 import Error404 from "./components/error-404/Error404";
 import UserProfile from "./components/user-profile/UserProfile";
@@ -13,7 +11,6 @@ import CheckOut from "./pages/CheckOut";
 import Cart from "./components/cart/Cart";
 
 import Navbar from "./components/navbar/Navbar";
-import ProductList from "./components/product/ProductList";
 import Footer from "./components/footer/Footer";
 
 function App() {

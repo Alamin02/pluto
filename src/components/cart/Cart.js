@@ -18,18 +18,10 @@ function Cart() {
         <tbody>
           <tr className={styles.tableRowBottomBorder}>
             <th>&nbsp;</th>
-            <th className={`${styles.productNameAndImage} ${styles.cartTableHead}`}>
-              Product
-            </th>
-            <th className={`${styles.centerCol} ${styles.cartTableHead}`}>
-              Unit price
-            </th>
-            <th className={`${styles.centerCol} ${styles.cartTableHead}`}>
-              Quantity
-            </th>
-            <th className={`${styles.centerCol} ${styles.cartTableHead}`}>
-              Total
-            </th>
+            <th className={styles.productNameAndImage}>Product</th>
+            <th className={styles.centerCol}>Unit price</th>
+            <th className={styles.centerCol}>Quantity</th>
+            <th className={styles.centerCol}>Total</th>
           </tr>
           {productData.map((item) => (
             <CartItem

@@ -18,18 +18,18 @@
   border-radius: 9999px;
 }
 
-.cartTableHead {
+.productNameAndImage {
+  width: 40%;
   padding: 2rem;
   padding-bottom: 1rem;
   text-transform: uppercase;
 }
 
-.productNameAndImage {
-  width: 40%;
-}
-
 .centerCol {
   text-align: center;
+  padding: 2rem;
+  padding-bottom: 1rem;
+  text-transform: uppercase;
 }
 
 .finalTotal {

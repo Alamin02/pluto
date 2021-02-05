@@ -3,3 +3,18 @@
 * {
   font-family: "Montserrat";
 }
+.tableData{
+  padding: 10px 33px;
+}
+.inputStyled {
+  width: 150px;
+  margin-bottom: 10px;
+}
+.imageStyled {
+  width: 200px;
+  height: 200px;
+}
+.imageStyled img {
+  width: 100%;
+  height: 100%;
+}

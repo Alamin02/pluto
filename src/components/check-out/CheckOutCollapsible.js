@@ -1,35 +1,25 @@
 import React from "react";
 import { Collapse } from "antd";
-
+import BillingInfo from "./BillingInfo";
+import ShippingInfo from "./ShippingInfo";
+import PaymentMethod from "./PaymentMethod";
 const { Panel } = Collapse;
 
 const panelHeadingAndText = [
   {
     id: "02",
-    text: `
-      A dog is a type of domesticated animal.
-      Known for its loyalty and faithfulness,
-      it can be found as a welcome guest in many households across the world.
-    `,
-    heading: `Billing Information`,
+    text: <ShippingInfo />,
+    heading: `Shipping Information`,
   },
   {
     id: "03",
-    text: `
-      A dog is a type of domesticated animal.
-      Known for its loyalty and faithfulness,
-      it can be found as a welcome guest in many households across the world.
-    `,
-    heading: `Shipping Method`,
+    text: <BillingInfo />,
+    heading: `Billing Information`,
   },
   {
     id: "04",
-    text: `
-      A dog is a type of domesticated animal.
-      Known for its loyalty and faithfulness,
-      it can be found as a welcome guest in many households across the world.
-    `,
-    heading: ` Payment Information`,
+    text: <PaymentMethod />,
+    heading: ` Payment Method`,
   },
   {
     id: "05",
@@ -45,7 +35,7 @@ const panelHeadingAndText = [
 export default function CheckOutCollapsible() {
   return (
     <>
-      <Collapse defaultActiveKey={["1"]}>
+      <Collapse>
         {panelHeadingAndText.map((single) => (
           <Panel
             showArrow={false}

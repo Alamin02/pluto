@@ -4,8 +4,8 @@
   font-family: "Montserrat";
 }
 .imageLarge {
-  height: 400px;
   width: 525px;
+  height: auto;
 }
 .imageSmall {
   height: 100px;
@@ -22,6 +22,9 @@ img {
 }
 .previewActive {
   opacity: 0.6;
+}
+.previewActive:hover {
+  opacity: 1;
 }
 .dInline {
   display: inline-block;

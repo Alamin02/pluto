@@ -13,8 +13,8 @@ function Cart() {
 
   return (
     <div className={styles.container}>
-      <h1>Your cart</h1>
-      <table>
+      <h1 className={styles.pageTitle}>Your cart</h1>
+      <table className={styles.cartTable}>
         <tbody>
           <tr className={styles.tableRowBottomBorder}>
             <th>&nbsp;</th>

@@ -11,13 +11,11 @@ function Error404() {
     <div className={styles.container}>
       <img src={ShockedMan} alt="ShockedMan" className={styles.gifStyle} />
       <p className={styles.fourOFourStyle}>Error 404!</p>
-      <p>
-        <div className={styles.firstParagraphStyle}>
-          Looks like you are lost.
-        </div>
+      <div>
+        <p className={styles.firstParagraphStyle}>Looks like you are lost.</p>
         <br />
         The page you are looking for is not available!
-      </p>
+      </div>
       <Link to="/">
         <Button
           type="primary"

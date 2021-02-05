@@ -48,7 +48,7 @@ function UserProfile() {
       </section>
 
       <section className={styles.buttonSection}>
-        <Link to="/update-profile">
+        <Link to="/profile/edit">
           <Button type="primary">Update Profile</Button>
         </Link>
       </section>

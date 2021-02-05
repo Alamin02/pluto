@@ -76,12 +76,12 @@ export default function BillingInfo() {
           <table>
             <tbody>
               <tr>
-                <td className={styles.tD}> Vat(5%)</td>
-                <td className={styles.tD}>10tk</td>
+                <td className={styles.tableData}> Vat(5%)</td>
+                <td className={styles.tableData}>10tk</td>
               </tr>
               <tr>
-                <td className={styles.tD}> Shipping cost</td>
-                <td className={styles.tD}>10tk</td>
+                <td className={styles.tableData}> Shipping cost</td>
+                <td className={styles.tableData}>10tk</td>
               </tr>
 
               <tr>

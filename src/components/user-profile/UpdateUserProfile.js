@@ -141,9 +141,9 @@ function UpdateUserProfile() {
           >
             {/* <Input /> */}
             <Select defaultValue={userInfo.address} onChange={handleChange}>
-              {shippingAddressList.map((eachAddress) => (
-                <Option value={eachAddress.address} key={eachAddress.id}>
-                  {eachAddress.address}
+              {shippingAddressList.map((address) => (
+                <Option value={address.address} key={address.id}>
+                  {address.address}
                 </Option>
               ))}
             </Select>

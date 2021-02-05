@@ -15,7 +15,7 @@ function ProductList() {
       <Row gutter={[16, 16]}>
         {sampleProductData.map((item) => (
           <Col span={6} key={item.id}>
-            <Link to={`/products/product-details/${item.id}`}>
+            <Link to={`/products/${item.id}`}>
               <CardItem
                 title={item.productName}
                 src={item.imageUrl}

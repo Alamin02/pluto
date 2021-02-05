@@ -22,16 +22,15 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/" component={Home} exact />
-        <Route path="/product" component={ProductDetails} exact />
         <Route
-          path="/products/product-details/:id"
+          path="/products/:id"
           component={ProductDetails}
           exact
         />
         <Route path="/product/list" component={ProductPage} exact />
         <Route path="/cart" component={Cart} exact />
-        <Route path="/profile" component={UserProfile} />
-        <Route path="/update-profile" component={UpdateUserProfile} />
+        <Route path="/profile" component={UserProfile} exact />
+        <Route path="/profile/edit" component={UpdateUserProfile} exact />
         <Route path="/checkOut" component={CheckOut} exact />
         <Route component={Error404} />
       </Switch>

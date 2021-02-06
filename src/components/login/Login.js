@@ -1,7 +1,9 @@
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, Typography, Row, Col } from "antd";
 
 import styles from "./Login.module.css";
 import Heading from "../heading/Heading";
+
+const { Link } = Typography;
 
 const layout = {
   labelCol: {
@@ -46,6 +48,7 @@ const Login = () => {
               padding: "20px",
             }}
           >
+            {/* Username Input */}
             <Form.Item
               label="Username"
               name="username"
@@ -58,7 +61,7 @@ const Login = () => {
             >
               <Input />
             </Form.Item>
-
+            {/* Password Input */}
             <Form.Item
               label="Password"
               name="password"
@@ -72,15 +75,30 @@ const Login = () => {
               <Input.Password />
             </Form.Item>
 
-            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
+            <Row>
+              <Col span={16}>
+                <Form.Item
+                  {...tailLayout}
+                  name="remember"
+                  valuePropName="checked"
+                >
+                  <Checkbox>Remember me</Checkbox>
+                </Form.Item>
+                <Form.Item {...tailLayout}>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item {...tailLayout} name="remember">
+                  <Link>
+                    Forget password ?
+                  </Link>
+                </Form.Item>
+              </Col>
+            </Row>
 
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
           </Form>
         </div>
       </div>

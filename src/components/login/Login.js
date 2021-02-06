@@ -92,13 +92,10 @@ const Login = () => {
               </Col>
               <Col span={8}>
                 <Form.Item {...tailLayout} name="remember">
-                  <Link>
-                    Forget password ?
-                  </Link>
+                  <Link>Forget password ?</Link>
                 </Form.Item>
               </Col>
             </Row>
-
           </Form>
         </div>
       </div>

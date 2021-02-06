@@ -11,7 +11,7 @@ const CardItem = ({ title, src, price }) => {
   return (
     <Card hoverable cover={<img alt={title} src={src} style={mystyle} />}>
       <Meta title={title} />
-      <span>&#36;{price}</span>
+      <span>৳&nbsp;{price}</span>
     </Card>
   );
 };

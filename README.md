@@ -5,7 +5,9 @@
 </div>
 
 <div align="center">
+
 A lightweight eCommerce application (not the dwarf planet) built using `Node` and `React`.
+
 </div>
 
 </br>

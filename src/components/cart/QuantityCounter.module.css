@@ -32,7 +32,7 @@
 }
 
 .counterInput {
-  flex: 1 1 auto;
-  width: 2rem;
+  width: 3rem;
   border: 2.5px solid #333333;
+  margin: auto;
 }

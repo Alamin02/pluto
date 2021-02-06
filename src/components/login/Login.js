@@ -1,101 +1,83 @@
-import { Form, Input, Button, Checkbox, Typography, Row, Col } from "antd";
+import { Form, Input, Button, Checkbox, Typography } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 import styles from "./Login.module.css";
 import Heading from "../heading/Heading";
 
 const { Link } = Typography;
 
-const layout = {
-  labelCol: {
-    span: 5,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 5,
-    span: 16,
-  },
-};
-
 const Login = () => {
   const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log("Received values of form: ", values);
   };
   return (
     <>
       <div className={`${styles.bgColor} ${styles.block}`}>
-        <div className={styles.containerFluid}>
+        <div className={styles.containerFluid} >
           <Heading
             headingStyle={styles.titleHolder}
             headingTitle="Log Into Your Account"
           />
           <Form
-            {...layout}
-            name="basic"
+            name="normal_login"
+            className={styles.loginForm}
             initialValues={{
               remember: true,
             }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            style={{
-              padding: "20px",
-            }}
           >
-            {/* Username Input */}
+            {/* Username */}
             <Form.Item
-              label="Username"
               name="username"
               rules={[
                 {
                   required: true,
-                  message: "Please input your username!",
+                  message: "Please input your Username!",
                 },
               ]}
             >
-              <Input />
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Username"
+              />
             </Form.Item>
-            {/* Password Input */}
+            {/* Password */}
             <Form.Item
-              label="Password"
               name="password"
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: "Please input your Password!",
                 },
               ]}
             >
-              <Input.Password />
+              <Input
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                type="password"
+                placeholder="Password"
+              />
             </Form.Item>
+            {/* "Remember me" Block  */}
+            <Form.Item>
+              <Form.Item name="remember" valuePropName="checked" noStyle>
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
 
-            <Row>
-              <Col span={16}>
-                <Form.Item
-                  {...tailLayout}
-                  name="remember"
-                  valuePropName="checked"
-                >
-                  <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-                <Form.Item {...tailLayout}>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item {...tailLayout} name="remember">
-                  <Link>Forget password ?</Link>
-                </Form.Item>
-              </Col>
-            </Row>
+              <Link className={styles.loginFormForgot} href="#">
+                Forgot password ?
+              </Link>
+            </Form.Item>
+            {/* Button Block */}
+            <Form.Item className={styles.antColRtl}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={styles.loginFormButton}
+              >
+                Log in
+              </Button>
+              Or <Link href="">register now!</Link>
+            </Form.Item>
           </Form>
         </div>
       </div>

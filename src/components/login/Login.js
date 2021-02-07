@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { Form, Input, Button, Checkbox, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -12,8 +13,8 @@ const Login = () => {
   };
   return (
     <>
-      <div className={`${styles.bgColor} ${styles.block}`}>
-        <div className={styles.containerFluid} >
+      <div className={classNames(styles.bgColor, styles.block)}>
+        <div className={styles.containerFluid}>
           <Heading
             headingStyle={styles.titleHolder}
             headingTitle="Log Into Your Account"

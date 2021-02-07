@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 import {
   Form,
   Input,
@@ -63,7 +65,7 @@ const Registration = () => {
   );
   return (
     <>
-      <div className={`${styles.bgColor} ${styles.block}`}>
+      <div className={classNames(styles.bgColor, styles.block)}>
         <div className={styles.containerFluid}>
           <Heading
             headingStyle={styles.titleHolder}
@@ -110,6 +112,24 @@ const Registration = () => {
             >
               <Input />
             </Form.Item>
+            {/* Phone */}
+            <Form.Item
+              name="phone"
+              label="Phone Number"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your phone number!",
+                },
+              ]}
+            >
+              <Input
+                addonBefore={prefixSelector}
+                style={{
+                  width: "100%",
+                }}
+              />
+            </Form.Item>
             {/* Password */}
             <Form.Item
               name="password"
@@ -149,24 +169,6 @@ const Registration = () => {
               ]}
             >
               <Input.Password />
-            </Form.Item>
-            {/* Phone */}
-            <Form.Item
-              name="phone"
-              label="Phone Number"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your phone number!",
-                },
-              ]}
-            >
-              <Input
-                addonBefore={prefixSelector}
-                style={{
-                  width: "100%",
-                }}
-              />
             </Form.Item>
             {/* Captcha */}
             <Form.Item

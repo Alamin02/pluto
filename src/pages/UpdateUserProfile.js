@@ -5,8 +5,8 @@ import { UploadOutlined } from "@ant-design/icons";
 
 import styles from "./UpdateUserProfile.module.css";
 
-import userInfo from "./userInfo";
-import shippingAddressList from "./shippingAddressList";
+import userInfo from "../components/user-profile/userInfo";
+import shippingAddressList from "../components/user-profile/shippingAddressList";
 
 const { Option } = Select;
 

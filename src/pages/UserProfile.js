@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "antd";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 
-import userInfo from "./userInfo";
+import userInfo from "../components/user-profile/userInfo";
 
 import styles from "./UserProfile.module.css";
 

@@ -4,7 +4,7 @@ const { Meta } = Card;
 
 const mystyle = {
   height: 250,
-  objectFit: "cover",
+  objectFit: "contain",
 };
 
 const CardItem = ({ title, src, price }) => {

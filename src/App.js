@@ -27,7 +27,7 @@ function App() {
           component={ProductDetails}
           exact
         />
-        <Route path="/product/list" component={ProductPage} exact />
+        <Route path="/product/list" component={ProductsPage} exact />
         <Route path="/cart" component={Cart} exact />
         <Route path="/profile" component={UserProfile} exact />
         <Route path="/profile/edit" component={UpdateUserProfile} exact />

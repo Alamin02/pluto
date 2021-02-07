@@ -3,7 +3,7 @@ import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
-import ProductPage from "./pages/ProductPage";
+import ProductsPage from "./pages/ProductsPage";
 import Error404 from "./components/error-404/Error404";
 import UserProfile from "./components/user-profile/UserProfile";
 import UpdateUserProfile from "./components/user-profile/UpdateUserProfile";
@@ -19,6 +19,10 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/" component={Home} exact />
+        <Route path="/product" component={ProductDetails} exact />
+        <Route path="/product/list" component={ProductsPage} exact />
+        <Route path="/profile" component={UserProfile} />
+        <Route path="/update-profile" component={UpdateUserProfile} />
         <Route
           path="/products/:id"
           component={ProductDetails}

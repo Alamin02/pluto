@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "antd";
 
 import MainHeader from "../components/main-header/MainHeader"
-import ProductNavbar from "../components/product/ProductNavbar"
+import ProductMenu from "../components/product/ProductMenu"
 import ProductOption from "../components/product/option/ProductOption"
 import CardItem from "../components/product/ProductCard"
 import PageInfo from "../components/product/PageInfo"
@@ -70,11 +70,11 @@ const item = [
 ];
 
 
-const ProductPage = () => {
+const ProductsPage = () => {
     return (
         <div>
             <MainHeader name='popular list' sub='home - shop - products' />
-            <ProductNavbar />
+            <ProductMenu />
             <ProductOption />
             <Row gutter={[16, 16]} style={{ maxWidth: '1200px', margin: '20px auto' }}>
                 {item.map((item) => (
@@ -92,5 +92,5 @@ const ProductPage = () => {
 
     )
 }
-export default ProductPage;
+export default ProductsPage;
 

@@ -3,22 +3,6 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-function onChange(value) {
-    console.log(`selected ${value}`);
-}
-
-function onBlur() {
-    console.log('blur');
-}
-
-function onFocus() {
-    console.log('focus');
-}
-
-function onSearch(val) {
-    console.log('search:', val);
-}
-
 const optionList = [
     { id: 1, name: "name" },
     { id: 2, name: "position" },
@@ -26,6 +10,23 @@ const optionList = [
 ]
 
 function OptionSelect(props) {
+
+    function onChange(value) {
+        console.log(`selected ${value}`);
+    }
+
+    function onBlur() {
+        console.log('blur');
+    }
+
+    function onFocus() {
+        console.log('focus');
+    }
+
+    function onSearch(val) {
+        console.log('search:', val);
+    }
+
     return (
         <Select
             showSearch

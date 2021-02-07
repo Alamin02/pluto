@@ -1,51 +1,20 @@
-import React, { useState } from "react";
 import {
   Form,
   Input,
-  Cascader,
   Select,
   Row,
   Col,
   Checkbox,
   Button,
-  AutoComplete,
+  Typography,
 } from "antd";
 
+import styles from "./Registration.module.css";
+import Heading from "../heading/Heading";
+
+const { Link } = Typography;
 const { Option } = Select;
-const residences = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-];
+
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -76,14 +45,11 @@ const tailFormItemLayout = {
     },
   },
 };
-
 const Registration = () => {
   const [form] = Form.useForm();
-
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
-
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -95,210 +61,165 @@ const Registration = () => {
       </Select>
     </Form.Item>
   );
-  const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-
-  const onWebsiteChange = (value) => {
-    if (!value) {
-      setAutoCompleteResult([]);
-    } else {
-      setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
-    }
-  };
-
-  const websiteOptions = autoCompleteResult.map((website) => ({
-    label: website,
-    value: website,
-  }));
-
   return (
     <>
-      <Form
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        initialValues={{
-          prefix: "88",
-        }}
-        scrollToFirstError
-      >
-        {/* Username  */}
-        <Form.Item
-          name="username"
-          label={
-            <span>
-              Username&nbsp;
-            </span>
-          }
-          rules={[
-            {
-              required: true,
-              message: "Please input your username!",
-              whitespace: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        {/* Email */}
-        <Form.Item
-          name="email"
-          label="E-mail"
-          rules={[
-            {
-              type: "email",
-              message: "The input is not valid E-mail!",
-            },
-            {
-              required: true,
-              message: "Please input your E-mail!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        {/* Password */}
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password />
-        </Form.Item>
-        {/* Confirm Password */}
-        <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={["password"]}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: "Please confirm your password!",
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-
-                return Promise.reject(
-                  "The two passwords that you entered do not match!"
-                );
-              },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-
-
-        <Form.Item
-          name="residence"
-          label="Habitual Residence"
-          rules={[
-            {
-              type: "array",
-              required: true,
-              message: "Please select your habitual residence!",
-            },
-          ]}
-        >
-          <Cascader options={residences} />
-        </Form.Item>
-
-        <Form.Item
-          name="phone"
-          label="Phone Number"
-          rules={[
-            {
-              required: true,
-              message: "Please input your phone number!",
-            },
-          ]}
-        >
-          <Input
-            addonBefore={prefixSelector}
-            style={{
-              width: "100%",
-            }}
+      <div className={`${styles.bgColor} ${styles.block}`}>
+        <div className={styles.containerFluid}>
+          <Heading
+            headingStyle={styles.titleHolder}
+            headingTitle="Register Here"
           />
-        </Form.Item>
-
-        <Form.Item
-          name="website"
-          label="Website"
-          rules={[
-            {
-              required: true,
-              message: "Please input website!",
-            },
-          ]}
-        >
-          <AutoComplete
-            options={websiteOptions}
-            onChange={onWebsiteChange}
-            placeholder="website"
+          <Form
+            {...formItemLayout}
+            form={form}
+            name="register"
+            onFinish={onFinish}
+            initialValues={{
+              prefix: "88",
+            }}
+            scrollToFirstError
           >
-            <Input />
-          </AutoComplete>
-        </Form.Item>
+            {/* Username */}
+            <Form.Item
+              name="username"
+              label={<span>Username&nbsp;</span>}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your username!",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            {/* Email */}
+            <Form.Item
+              name="email"
+              label="E-mail"
+              rules={[
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
+                {
+                  required: true,
+                  message: "Please input your E-mail!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            {/* Password */}
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.Password />
+            </Form.Item>
+            {/* Confirm Password */}
+            <Form.Item
+              name="confirm"
+              label="Confirm Password"
+              dependencies={["password"]}
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "Please confirm your password!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
 
-        <Form.Item
-          label="Captcha"
-          extra="We must make sure that your are a human."
-        >
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                name="captcha"
-                noStyle
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input the captcha you got!",
+                    return Promise.reject(
+                      "The two passwords that you entered do not match!"
+                    );
                   },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Button>Get captcha</Button>
-            </Col>
-          </Row>
-        </Form.Item>
-
-        <Form.Item
-          name="agreement"
-          valuePropName="checked"
-          rules={[
-            {
-              validator: (_, value) =>
-                value
-                  ? Promise.resolve()
-                  : Promise.reject("Should accept agreement"),
-            },
-          ]}
-          {...tailFormItemLayout}
-        >
-          <Checkbox>
-            I have read the <a href="#">agreement</a>
-          </Checkbox>
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
-            Register
-          </Button>
-        </Form.Item>
-      </Form>
+                }),
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            {/* Phone */}
+            <Form.Item
+              name="phone"
+              label="Phone Number"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your phone number!",
+                },
+              ]}
+            >
+              <Input
+                addonBefore={prefixSelector}
+                style={{
+                  width: "100%",
+                }}
+              />
+            </Form.Item>
+            {/* Captcha */}
+            <Form.Item
+              label="Captcha"
+              extra="We must make sure that your are a human."
+            >
+              <Row gutter={8}>
+                <Col span={12}>
+                  <Form.Item
+                    name="captcha"
+                    noStyle
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the captcha you got!",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Button>Get captcha</Button>
+                </Col>
+              </Row>
+            </Form.Item>
+            {/* Agreement */}
+            <Form.Item
+              name="agreement"
+              valuePropName="checked"
+              rules={[
+                {
+                  validator: (_, value) =>
+                    value
+                      ? Promise.resolve()
+                      : Promise.reject("Should accept agreement"),
+                },
+              ]}
+              {...tailFormItemLayout}
+            >
+              <Checkbox>
+                I have read the <Link href="#">agreement</Link>
+              </Checkbox>
+            </Form.Item>
+            {/* Submit Button */}
+            <Form.Item {...tailFormItemLayout}>
+              <Button type="primary" htmlType="submit">
+                Register
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
     </>
   );
 };

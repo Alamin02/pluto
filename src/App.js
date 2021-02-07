@@ -9,7 +9,6 @@ import UserProfile from "./components/user-profile/UserProfile";
 import UpdateUserProfile from "./components/user-profile/UpdateUserProfile";
 import CheckOut from "./pages/CheckOut";
 import Cart from "./components/cart/Cart";
-
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 

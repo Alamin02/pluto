@@ -26,15 +26,19 @@ img {
 .previewActive:hover {
   opacity: 1;
 }
-.dInline {
+.displayInline {
   display: inline-block;
   line-height: 30px;
   font-family: "Montserrat";
   font-weight: 600;
-  /* font-size: 16px; */
 }
 .marginBottom {
   margin-bottom: 50px;
+}
+.inputStyled {
+  width: 50px;
+  border: 1px solid #8494a3;
+  margin-bottom: 10px;
 }
 
 /******* Product custom css end *******/

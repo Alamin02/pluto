@@ -8,9 +8,22 @@ import image3 from "../../assets/images/watch-3-small.jpg";
 import image4 from "../../assets/images/watch-4-small.jpg";
 import styles from "./ProductView.module.css";
 import ButtonStyled from "../ButtonStyled";
-import CollapsibleDescriptionContainer from "./CollapsibleDescriptionContainer";
-import PriceDescription from "./PriceDescription";
+import RatingAndDescription from "./RatingAndDescription";
+import PriceAndSummary from "./PriceAndSummary";
 import Category from "./Category";
+
+const summaryText = `But I must explain to you how all this mistaken idea of ouncing and
+aising pain was born and I will give you a complete count of ut I must
+explain to you how all this aken idea of enouncing pleasure born and I
+will give you a complete account of`;
+
+const descriptionText = `
+A watch is a portable timepiece intended to be carried or worn by
+ a living being. It is designed to keep a consistent movement 
+ despite the motions caused by the person's activities. 
+`;
+const productName = "Gravida Est quist Euousmod";
+const ProductPrice = 199.99;
 
 const ProductImage = ({ imageLink, onClick }) => {
   return (
@@ -31,8 +44,8 @@ function ProductView() {
   const [imgSrc, setImgSrc] = useState(image1_large);
 
   return (
-    <Row style={{ marginTop: 50 }} justify="center" gutter={32}>
-      <Col>
+    <Row style={{ marginTop: 50 }} justify="center">
+      <Col lg={{ span: 8 }} xs={{ span: 18 }}>
         <div className={styles.imageLarge}>
           <img alt="example" src={imgSrc} />
         </div>
@@ -44,10 +57,17 @@ function ProductView() {
         </Row>
       </Col>
 
-      <Col xl={{ span: 8 }} xs={{ span: 15 }}>
+      <Col xl={{ span: 8 }} xs={{ span: 18 }}>
         <Space size={20} direction="vertical">
-          <PriceDescription />
-          <CollapsibleDescriptionContainer />
+          <PriceAndSummary
+            summaryText={summaryText}
+            productName={productName}
+            ProductPrice={ProductPrice}
+          />
+          <RatingAndDescription
+            rating={descriptionText}
+            descriptionText={descriptionText}
+          />
           <Category />
           <ButtonStyled title={[[<UserOutlined />, "Share This"]]} />
         </Space>

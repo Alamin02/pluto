@@ -11,6 +11,7 @@ import ButtonStyled from "../ButtonStyled";
 import RatingAndDescription from "./RatingAndDescription";
 import PriceAndSummary from "./PriceAndSummary";
 import Category from "./Category";
+import AddToCart from "./AddToCart";
 
 const summaryText = `But I must explain to you how all this mistaken idea of ouncing and
 aising pain was born and I will give you a complete count of ut I must
@@ -22,8 +23,7 @@ A watch is a portable timepiece intended to be carried or worn by
  a living being. It is designed to keep a consistent movement 
  despite the motions caused by the person's activities. 
 `;
-const productName = "Gravida Est quist Euousmod";
-const ProductPrice = 199.99;
+
 
 const ProductImage = ({ imageLink, onClick }) => {
   return (
@@ -40,7 +40,9 @@ const ProductImage = ({ imageLink, onClick }) => {
   );
 };
 
-function ProductView() {
+function ProductView({ product }) {
+  const { productName, price } = product;
+
   const [imgSrc, setImgSrc] = useState(image1_large);
 
   return (
@@ -62,8 +64,9 @@ function ProductView() {
           <PriceAndSummary
             summaryText={summaryText}
             productName={productName}
-            ProductPrice={ProductPrice}
+            ProductPrice={price}
           />
+          <AddToCart product={product} />
           <RatingAndDescription
             rating={descriptionText}
             descriptionText={descriptionText}

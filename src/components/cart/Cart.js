@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import CartItem from "./CartItem";
 
 import styles from "./Cart.module.css";
 
-import mockProductData from "./mockProductData";
-
 function Cart() {
-  const [productData, setProductData] = useState(mockProductData);
+  const dispatch = useDispatch();
+  const productList = useSelector((state) => state.cart.products);
 
-  console.log("rendered");
+  const handleRemoveProduct = (id) => {
+    dispatch({ type: "cart/removeProduct", payload: { id } });
+  };
 
   return (
     <div className={styles.container}>
@@ -23,12 +24,14 @@ function Cart() {
             <th className={styles.centerCol}>Quantity</th>
             <th className={styles.centerCol}>Total</th>
           </tr>
-          {productData.map((item) => (
+          {productList.map((item) => (
             <CartItem
               key={item.id}
+              id={item.id}
               productName={item.productName}
               price={item.price}
               imageUrl={item.imageUrl}
+              onRemove={handleRemoveProduct}
             />
           ))}
           <tr>

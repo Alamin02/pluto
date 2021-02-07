@@ -1,5 +1,4 @@
 import React from "react";
-import AddToCart from "./AddToCart";
 import styles from "./ProductView.module.css";
 
 export default function PriceAndSummary(props) {
@@ -13,7 +12,6 @@ export default function PriceAndSummary(props) {
         </h2>
         <p>{summaryText}</p>
       </div>
-      <AddToCart />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import QuantityCounter from "./QuantityCounter";
 
 import styles from "./CartItem.module.css";
 
-function CartItem({ productName, price, imageUrl }) {
+function CartItem({ id, productName, price, imageUrl, onRemove }) {
   const [count, setCount] = useState(1);
 
   const handleCount = (value) => {
@@ -17,7 +17,7 @@ function CartItem({ productName, price, imageUrl }) {
   return (
     <tr className={styles.tableRowBottomBorder}>
       <td>
-        <Button type="text">
+        <Button type="text" onClick={() => onRemove(id)}>
           <CloseCircleOutlined />
         </Button>
       </td>

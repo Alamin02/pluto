@@ -1,4 +1,4 @@
-let sampleProductData = [
+const sampleProductData = [
   {
     id: 1,
     productName: "Batz-Adams",

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "./ProductNavbar.module.css"
+import styles from "./ProductMenu.module.css"
 import {
     BrowserRouter,
     NavLink
@@ -10,7 +10,7 @@ const navProduct = {
     border: '1px solid black'
 }
 
-function ProductNavbar() {
+function ProductMenu() {
     return (
         <BrowserRouter>
             <div className={styles.productNav}>
@@ -42,4 +42,4 @@ function ProductNavbar() {
     );
 }
 
-export default ProductNavbar;
+export default ProductMenu;

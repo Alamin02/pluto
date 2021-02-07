@@ -49,7 +49,7 @@ function Navbar() {
         <div className={styles.navbarTopRight}>
           <Link>Log in</Link>
           &nbsp;&nbsp;|&nbsp;&nbsp;
-          <Link>
+          <Link to="/cart">
             <ShoppingOutlined />
           </Link>
         </div>

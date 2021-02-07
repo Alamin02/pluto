@@ -1,4 +1,5 @@
 import { Row, Col, Typography } from "antd";
+import classNames from "classnames";
 
 import styles from "./Featured.module.css";
 import FeaturedImage from "./FeaturedImage";
@@ -14,7 +15,7 @@ const { Link } = Typography;
 const FeaturedProducts = () => {
   return (
     <>
-      <div className={`${styles.bgColor} ${styles.block}`}>
+      <div className={classNames(styles.bgColor, styles.block)}>
         <div className={styles.containerFluid}>
           <Heading
             headingStyle={styles.titleHolder}
@@ -24,7 +25,7 @@ const FeaturedProducts = () => {
             <Col span={16}>
               {/* Image of Watch */}
               <Row>
-                <div className={`${styles.container} ${styles.image}`}>
+                <div className={classNames(styles.container, styles.image)}>
                   <Link>
                     <FeaturedImage
                       blur={styles.blur}
@@ -43,7 +44,7 @@ const FeaturedProducts = () => {
               </Row>
               {/* Image of Glass */}
               <Row>
-                <div className={`${styles.container} ${styles.image}`}>
+                <div className={classNames(styles.container, styles.image)}>
                   <Link>
                     <FeaturedImage
                       blur={styles.blur}
@@ -65,7 +66,9 @@ const FeaturedProducts = () => {
             </Col>
             <Col span={8}>
               {/* Image of Bagpack */}
-              <div className={`${styles.container} ${styles.bagpackImage}`}>
+              <div
+                className={classNames(styles.container, styles.bagpackImage)}
+              >
                 <Link>
                   <FeaturedImage
                     blur={styles.blur}

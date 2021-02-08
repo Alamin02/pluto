@@ -18,16 +18,16 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/" component={Home} exact />
-        <Route path="/product" component={ProductDetails} exact />
-        <Route path="/product/list" component={ProductsPage} exact />
-        <Route path="/profile" component={UserProfile} exact />
-        <Route path="/update-profile" component={UpdateUserProfile} exact />
+
+        <Route path="/products/list" component={ProductsPage} exact />
         <Route path="/products/:id" component={ProductDetails} exact />
-        <Route path="/product/list" component={ProductsPage} exact />
-        <Route path="/cart" component={Cart} exact />
+
         <Route path="/profile" component={UserProfile} exact />
         <Route path="/profile/edit" component={UpdateUserProfile} exact />
+
+        <Route path="/cart" component={Cart} exact />
         <Route path="/checkOut" component={CheckOut} exact />
+        
         <Route component={Error404} />
       </Switch>
       <Footer />

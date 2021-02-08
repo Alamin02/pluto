@@ -84,7 +84,7 @@ background-color: rgba(0, 0, 0, 0.123);
 .tBox {
   width: 600px;
   text-align: left;
-  padding-top: 150px;
+  padding-top: 105px;
   margin-left: 150px;
   color: black;
   font-family: "Montserrat";
@@ -100,6 +100,10 @@ background-color: rgba(0, 0, 0, 0.123);
   background: black;
   color: white;
   border: 2px solid rgb(233, 193, 15);
+}
+
+.descriptionBottomSpace{
+margin-bottom: 20px;
 }
 
 /******* Slider custom css end *******/

@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import ButtonStyled from "../ButtonStyled";
 import { Radio, InputNumber } from "antd";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 
 import styles from "./ProductView.module.css";
+import BlackButton from "../styled-components/ButtonBlack";
 
 export default function AddToCart({ product }) {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ export default function AddToCart({ product }) {
         </Radio.Button>
       </Radio.Group>
       <br />
-      <ButtonStyled title="Add to Cart" onClick={handleAddToCart} />
+      <BlackButton buttonText="Add to Cart" onClick={handleAddToCart} />
     </div>
   );
 }

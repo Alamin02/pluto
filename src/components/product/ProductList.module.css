@@ -2,3 +2,8 @@
   max-width: 1200px;
   margin: 50px auto;
 }
+
+.buttonStyle {
+  text-align: center;
+  margin-top: 2.5rem;
+}

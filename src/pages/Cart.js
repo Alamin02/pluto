@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
 import CartItem from "../components/cart/CartItem";
+import ButtonBlack from "../components/styled-components/ButtonBlack";
 
 import styles from "./Cart.module.css";
 
@@ -15,39 +16,23 @@ function Cart() {
   return (
     <div className={styles.container}>
       <h1 className={styles.pageTitle}>Your cart</h1>
-      <table className={styles.cartTable}>
-        <tbody>
-          <tr className={styles.tableRowBottomBorder}>
-            <th>&nbsp;</th>
-            <th className={styles.productNameAndImage}>Product</th>
-            <th className={styles.centerCol}>Unit price</th>
-            <th className={styles.centerCol}>Quantity</th>
-            <th className={styles.centerCol}>Total</th>
-          </tr>
-          {productList.map((item) => (
-            <CartItem
-              key={item.id}
-              id={item.id}
-              productName={item.productName}
-              price={item.price}
-              imageUrl={item.imageUrl}
-              onRemove={handleRemoveProduct}
-            />
-          ))}
-          <tr>
-            <td colSpan="4"></td>
-            <td className={styles.finalTotal}>Total Price: XXXX BDT</td>
-          </tr>
-          <tr>
-            <td colSpan="4"></td>
-            <td className={styles.checkoutButtonLayout}>
-              <button block className={styles.buttonStyle}>
-                Checkout
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <hr className={styles.cartHr} />
+      {productList.map((item) => (
+        <CartItem
+          key={item.id}
+          id={item.id}
+          productName={item.productName}
+          price={item.price}
+          imageUrl={item.imageUrl}
+          onRemove={handleRemoveProduct}
+          description={item.description}
+        />
+      ))}
+      <div className={styles.bottomSection}>
+        <div className={styles.bottomSectionContent}></div>
+        <p className={styles.totalPriceSection}>Total Price: XXXX BDT</p>
+        <ButtonBlack buttonText="Checkout" className={styles.checkoutButton} />
+      </div>
       <div className={styles.emptySpace}></div>
     </div>
   );

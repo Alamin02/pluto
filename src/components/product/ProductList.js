@@ -6,7 +6,7 @@ import sampleProductData from "../../assets/data/sampleProductData";
 
 import CardItem from "./ProductCard";
 import Header from "./Header";
-import ViewButton from "./Button";
+import ButtonBlack from "../styled-components/ButtonBlack";
 
 function ProductList() {
   return (
@@ -25,8 +25,10 @@ function ProductList() {
           </Col>
         ))}
       </Row>
-      <div className="view-products">
-        <ViewButton type="link" />
+      <div className={styles.buttonStyle}>
+        <Link to="/products/list">
+          <ButtonBlack buttonText="View all products" className={styles.buttonStyle} />
+        </Link>
       </div>
     </div>
   );

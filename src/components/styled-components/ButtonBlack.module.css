@@ -1,0 +1,30 @@
+.blackButton {
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px none transparent;
+  outline: none;
+  margin: none;
+  background-color: #333333;
+  color: white;
+  --tw-shadow: 0 0 #0000;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  text-transform: uppercase;
+  border-radius: 0.13rem;
+  padding-left: 1.7rem;
+  padding-right: 1.7rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.blackButton:hover {
+  cursor: pointer;
+  background-color: #666666;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}

@@ -1,31 +1,120 @@
-.tableRowBottomBorder {
-  border-bottom: 1px solid #eeeeee;
-  border-radius: 9999px;
+.cartItemOuterContainer {
+  position: relative;
 }
 
-.centerCol {
-  text-align: center;
-}
-
-img {
-  display: inline-flex;
-}
-.productNameAndImage {
+.cartItemInnerContainer {
   display: flex;
-  align-items: center;
+  vertical-align: top;
+  flex-direction: row;
+}
+
+.closeButtonContainer {
+  flex-grow: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-left: 4rem;
+}
+
+.removeFromCart {
+  color: white;
+  background-color: #ef4444;
+}
+
+.removeFromCart:hover {
+  color: white;
+  background-color: #f87171;
+}
+
+.removeFromCartText {
+  display: none;
 }
 
 .productImage {
-  width: 30%;
-  height: 5rem;
-  object-fit: cover;
+  width: 10rem;
+  margin-left: 4rem;
 }
 
-.productName {
-  margin-left: 1.5rem;
-  margin-top: 1rem;
+.productInfo {
+  margin-left: 4rem;
 }
 
-td {
-  padding: 2rem;
+.title {
+  font-size: 1rem;
+}
+
+.description {
+  margin-bottom: 0.5rem;
+  margin-right: 20rem;
+}
+
+.priceOnSmallScreen {
+  display: none;
+  font-weight: bold;
+}
+
+.counterStyle {
+  flex-grow: 0;
+  width: 2rem;
+}
+
+.priceOnBigScreen {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: block;
+  font-size: 1rem;
+}
+
+.cartHr {
+  border: 1px solid #eeeeee;
+  border-radius: 9999px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 600px) {
+  .cartItemInnerContainer {
+    flex-direction: column;
+  }
+
+  .closeButtonContainer {
+    padding-left: 0rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .removeFromCartText {
+    display: inline-block;
+    margin-left: 0.5rem;
+  }
+
+  .productImage {
+    margin-left: 0rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .productInfo {
+    margin-left: 0rem;
+    padding-right: 1rem;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .description {
+    margin-bottom: 0.5rem;
+    margin-right: 0rem;
+  }
+  .counterStyle {
+    margin-bottom: -0.5rem;
+    margin-left: -0.5rem;
+  }
+  .priceOnSmallScreen {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .priceOnBigScreen {
+    display: none;
+  }
 }

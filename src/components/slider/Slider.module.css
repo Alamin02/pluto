@@ -85,7 +85,7 @@
 .tBox {
   width: 600px;
   text-align: left;
-  padding-top: 150px;
+  padding-top: 105px;
   margin-left: 150px;
   color: black;
   font-family: "Montserrat";
@@ -171,5 +171,9 @@
     font-family: "Montserrat";
   } 
 }*/
+
+.descriptionBottomSpace{
+margin-bottom: 20px;
+}
 
 /******* Slider custom css end *******/

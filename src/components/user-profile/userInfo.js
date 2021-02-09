@@ -1,4 +1,4 @@
-import avatarImage from "./avatar1.png";
+import avatarImage from "../../assets/images/avatar1.png";
 
 let userInfo = {
   id: 1,

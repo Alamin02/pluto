@@ -40,9 +40,9 @@ const date = new Date().toDateString();
 export default function Blogs() {
   return (
     <div className={styles.container}>
-      <Row gutter={[8, 8]}>
+      <Row gutter={[8, 8]} >
         {titleAndDescription.map((cardDetails) => (
-          <Col key={cardDetails.id} sm={12} md={12} lg={12}>
+          <Col key={cardDetails.id} sm={18} md={12} lg={12}>
             <BlogCard
               imageSrc={cardDetails.imageSrc}
               title={cardDetails.title}

@@ -78,7 +78,7 @@ function Navbar() {
         </Menu.Item>
 
         <Menu.Item icon={<ReadOutlined />}>
-          <Link>Blog</Link>
+          <Link to="/blogs">Blog</Link>
         </Menu.Item>
 
         <Menu.Item icon={<MailOutlined />}>

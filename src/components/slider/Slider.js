@@ -3,15 +3,16 @@ import { Carousel, Row } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import styles from "./Slider.module.css";
 import "./SliderDots.css";
-import ButtonStyled from "../ButtonStyled";
+import ButtonBlack from "../styled-components/ButtonBlack"
+
 const btnText = "Shop Now";
 const Slide = ({ imageClass, heading, desc }) => {
   return (
     <div className={imageClass}>
       <div className={styles.tBox}>
         <h1>{heading}</h1>
-        <p>{desc}</p>
-        <ButtonStyled title={btnText} />
+        <p className={styles.descriptionBottomSpace}>{desc}</p>
+        <ButtonBlack buttonText={btnText} />
       </div>
     </div>
   );

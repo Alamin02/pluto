@@ -31,7 +31,6 @@ const FeaturedProducts = () => {
                       blur={styles.blur}
                       source={watchImage}
                       style={{
-                        border: "1px solid black",
                         objectFit: "cover",
                         marginBottom: "10px",
                         height: "395px",
@@ -50,7 +49,6 @@ const FeaturedProducts = () => {
                       blur={styles.blur}
                       source={glassImage}
                       style={{
-                        border: "1px solid black",
                         objectFit: "cover",
                         height: "395px",
                         width: "780px",
@@ -75,7 +73,6 @@ const FeaturedProducts = () => {
                     source={bagpackImage}
                     style={{
                       margin: "0 0 0 15px",
-                      border: "1px solid black",
                       objectFit: "cover",
                       height: "805px",
                     }}

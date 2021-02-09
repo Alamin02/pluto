@@ -1,65 +1,46 @@
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
+  padding-left: 0.5rem;
+  padding-left: 0.5rem;
 }
 
 .pageTitle {
-  text-align: center;
   text-transform: uppercase;
   margin-top: 1rem;
-}
-
-.cartTable {
-  width: 100%;
-}
-
-.tableRowBottomBorder {
-  border-bottom: 1px solid #eeeeee;
-  border-radius: 9999px;
-}
-
-.productNameAndImage {
-  width: 40%;
-  padding: 2rem;
-  padding-bottom: 1rem;
-  text-transform: uppercase;
-}
-
-.centerCol {
-  text-align: center;
-  padding: 2rem;
-  padding-bottom: 1rem;
-  text-transform: uppercase;
-}
-
-.finalTotal {
-  text-align: center;
-}
-
-.checkoutButtonLayout {
-  /* margin-left: 2rem; */
-  text-align: center;
-  padding: 0;
-}
-
-.buttonStyle {
-  width: 100%;
-  height: 100%;
-  box-shadow: none;
-  border: none;
-  text-shadow: 0px 0px 0px transparent;
   font-weight: bold;
-  color: white;
-  background: #555555;
-  text-transform: uppercase;
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
-}
-
-.buttonStyle:hover {
-  background-color: #777777;
 }
 
 .emptySpace {
   margin-bottom: 3rem;
 }
+
+.cartHr{
+  border: 1px solid #eeeeee;
+  border-radius: 9999px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.emptySpace{
+  margin-bottom: 2rem;
+}
+
+.bottomSection{
+  position: relative;
+}
+
+.bottomSectionContent{
+  position: absolute;
+  left: 0px;
+}
+
+.totalPriceSection{
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.checkoutButton{
+  margin-top: 1.5rem;
+}
+

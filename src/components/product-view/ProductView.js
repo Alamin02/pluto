@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { Row, Col, Space, Anchor } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Row, Col, Space } from "antd";
 import image1_large from "../../assets/images/watch-1-large.jpg";
 import image1 from "../../assets/images/watch-1-small.jpg";
 import image2 from "../../assets/images/watch-2-small.jpg";
 import image3 from "../../assets/images/watch-3-small.jpg";
 import image4 from "../../assets/images/watch-4-small.jpg";
 import styles from "./ProductView.module.css";
-import ButtonStyled from "../ButtonStyled";
 import RatingAndDescription from "./RatingAndDescription";
 import PriceAndSummary from "./PriceAndSummary";
 import Category from "./Category";
 import AddToCart from "./AddToCart";
+import ButtonBlack from "../styled-components/ButtonBlack"
 
 const summaryText = `But I must explain to you how all this mistaken idea of ouncing and
 aising pain was born and I will give you a complete count of ut I must
@@ -72,7 +71,7 @@ function ProductView({ product }) {
             descriptionText={descriptionText}
           />
           <Category />
-          <ButtonStyled title={[[<UserOutlined />, "Share This"]]} />
+          <ButtonBlack buttonText="Share this" />
         </Space>
       </Col>
     </Row>

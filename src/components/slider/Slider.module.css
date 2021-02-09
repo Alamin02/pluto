@@ -12,18 +12,20 @@
 .mainContainer {
   position: relative;
   height: 500px;
-  width: 100vw;
+  width: 100%;
   background: #34495e;
 }
 
 .arrowLeft {
+  position: absolute;
+  z-index: 1;
+  top: 44.8%;
+  left: 0%;
+  margin: 0;
+  padding: 0;
   color: #ecf0f1;
   color: black;
   font-size: 20px;
-  position: absolute;
-  z-index: 1;
-  top: 45%;
-  left: 0%;
   width: 50px;
   height: 50px;
   background: white;
@@ -31,12 +33,12 @@
   cursor: pointer;
 }
 .arrowRight {
-  /* color: #ecf0f1; */
+  color: #ecf0f1;
   color: black;
   font-size: 20px;
   position: absolute;
   z-index: 1;
-  top: 45%;
+  top: 44.8%;
   right: 0%;
   width: 50px;
   height: 50px;
@@ -172,8 +174,8 @@
   } 
 }*/
 
-.descriptionBottomSpace{
-margin-bottom: 20px;
+.descriptionBottomSpace {
+  margin-bottom: 20px;
 }
 
 /******* Slider custom css end *******/

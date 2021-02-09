@@ -9,7 +9,7 @@ export default function CheckOutForm() {
 
         <Form
           name="basic"
-          style={{ marginTop: "10px", width: "300px" }}
+          style={{ marginTop: "10px", width: "200px" }}
           initialValues={{ remember: true }}
           layout="vertical"
         >

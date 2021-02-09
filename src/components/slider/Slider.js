@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Carousel, Row } from "antd";
+import { Carousel, Row,Col} from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import styles from "./Slider.module.css";
 import "./SliderDots.css";
-import ButtonBlack from "../styled-components/ButtonBlack"
+import ButtonBlack from "../styled-components/ButtonBlack";
 
 const btnText = "Shop Now";
 const Slide = ({ imageClass, heading, desc }) => {
@@ -71,24 +71,29 @@ export default class Slider extends Component {
     };
     return (
       <Row>
-        <div className={styles.mainContainer}>
-          <LeftOutlined className={styles.arrowLeft} onClick={this.previous} />
-          <Carousel
-            autoplay
-            effect="fade"
-            ref={(node) => (this.carousel = node)}
-            {...props}
-          >
-            {slideList.map((slide) => (
-              <Slide
-                imageClass={slide.imgClass}
-                heading={slide.slideHeading}
-                desc={slide.description}
-              />
-            ))}
-          </Carousel>
-          <RightOutlined className={styles.arrowRight} onClick={this.next} />
-        </div>
+        <Col>
+          <div className={styles.mainContainer}>
+            <LeftOutlined
+              className={styles.arrowLeft}
+              onClick={this.previous}
+            />
+            <Carousel
+              autoplay
+              effect="fade"
+              ref={(node) => (this.carousel = node)}
+              {...props}
+            >
+              {slideList.map((slide) => (
+                <Slide
+                  imageClass={slide.imgClass}
+                  heading={slide.slideHeading}
+                  desc={slide.description}
+                />
+              ))}
+            </Carousel>
+            <RightOutlined className={styles.arrowRight} onClick={this.next} />
+          </div>
+        </Col>
       </Row>
     );
   }

@@ -10,6 +10,7 @@ import UpdateUserProfile from "./components/user-profile/UpdateUserProfile";
 import CheckOut from "./pages/CheckOut";
 import Cart from "./components/cart/Cart";
 import Navbar from "./components/navbar/Navbar";
+import BlogPage from "./pages/BlogPage";
 import Footer from "./components/footer/Footer";
 
 function App() {
@@ -22,16 +23,13 @@ function App() {
         <Route path="/product/list" component={ProductsPage} exact />
         <Route path="/profile" component={UserProfile} />
         <Route path="/update-profile" component={UpdateUserProfile} />
-        <Route
-          path="/products/:id"
-          component={ProductDetails}
-          exact
-        />
+        <Route path="/products/:id" component={ProductDetails} exact />
         <Route path="/product/list" component={ProductsPage} exact />
         <Route path="/cart" component={Cart} exact />
         <Route path="/profile" component={UserProfile} exact />
         <Route path="/profile/edit" component={UpdateUserProfile} exact />
         <Route path="/checkOut" component={CheckOut} exact />
+        <Route path="/blogs" component={BlogPage} exact />
         <Route component={Error404} />
       </Switch>
       <Footer />

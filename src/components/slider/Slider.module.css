@@ -12,7 +12,7 @@
 .mainContainer {
   position: relative;
   height: 500px;
-  width: 100%;
+  width: 100vw;
   background: #34495e;
 }
 
@@ -56,6 +56,7 @@
   background-size: cover;
   background-image: url("../../assets/images/slider-image1.jpg");
   height: 500px;
+  box-sizing: border-box;
 }
 .two {
   background-color: rgba(0, 0, 0, 0.123);
@@ -74,7 +75,7 @@
   height: 500px;
 }
 .four {
-background-color: rgba(0, 0, 0, 0.123);
+  background-color: rgba(0, 0, 0, 0.123);
   background-blend-mode: multiply;
   background-repeat: no-repeat;
   background-size: cover;
@@ -101,5 +102,74 @@ background-color: rgba(0, 0, 0, 0.123);
   color: white;
   border: 2px solid rgb(233, 193, 15);
 }
+/* @media (max-width: 768px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 250px;
+
+    background-size: cover;
+  }
+  .mainContainer {
+    height: auto;
+    width: 100vw;
+  }
+  .tBox {
+   
+    width: 220px;
+    text-align: left;
+    padding-top: 10px;
+    margin-left: 10px;
+    color: black;
+    font-family: "Montserrat";
+  }
+  .tBox h1 {
+    font-size: 20px;
+    font-weight: 300;
+  }
+  .tBox p {
+    font-size: 13px;
+  }
+  .arrowLeft,
+  .arrowRight {
+    background: none;
+    visibility: hidden;
+  }
+}
+@media (min-width: 576px) {
+  .tBox {
+  
+    width: 300px;
+    text-align: left;
+    padding-top: 10px;
+    margin-left: 10px;
+    color: black;
+    font-family: "Montserrat";
+  }
+} */
+/* @media (min-width: 768px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 400px;
+
+    background-size: cover;
+  }
+  .mainContainer {
+    height: auto;
+    width: 100vw;
+  } */
+/* .tBox {
+   
+    width: 500px;
+    text-align: left;
+    padding-top: 100px;
+    margin-left: 100px;
+    color: black;
+    font-family: "Montserrat";
+  } 
+}*/
 
 /******* Slider custom css end *******/

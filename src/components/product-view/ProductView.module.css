@@ -3,9 +3,9 @@
 * {
   font-family: "Montserrat";
 }
-.container{
+.container {
   max-width: 1170px;
-  margin:50px auto;
+  margin: 50px auto;
   padding-bottom: 50pc;
 }
 
@@ -25,8 +25,7 @@ img {
   font-family: "Montserrat";
   font-weight: 600;
 }
-.marginBottom {
-}
+
 .inputStyled {
   width: 50px;
   border: 1px solid #8494a3;

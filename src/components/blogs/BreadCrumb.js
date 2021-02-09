@@ -2,7 +2,7 @@ import React from "react";
 import { Pagination } from "antd";
 import styles from "./Blogs.module.css";
 
-export default function BreadCrump() {
+export default function BreadCrumb() {
   return (
     <div>
       <div className={styles.paginationContainer}>

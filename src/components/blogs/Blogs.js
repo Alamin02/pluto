@@ -41,12 +41,12 @@ export default function Blogs() {
   return (
     <div className={styles.container}>
       <Row gutter={[8, 8]} justify="center">
-        {titleAndDescription.map((cardDetails) => (
-          <Col key={cardDetails.id} sm={18} md={12} lg={12}>
+        {titleAndDescription.map((blog) => (
+          <Col key={blog.id} sm={18} md={12} lg={12}>
             <BlogCard
-              imageSrc={cardDetails.imageSrc}
-              title={cardDetails.title}
-              description={cardDetails.description}
+              imageSrc={blog.imageSrc}
+              title={blog.title}
+              description={blog.description}
               date={date}
               author="admin"
               category="web design"

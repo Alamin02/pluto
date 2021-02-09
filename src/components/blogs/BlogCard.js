@@ -1,7 +1,7 @@
 import React from "react";
 import { Space } from "antd";
 import styles from "./Blogs.module.css";
-import ButtonStyled from "../ButtonStyled";
+import ButtonBlack from "../styled-components/ButtonBlack";
 const BlogCard = ({ imageSrc, description, title, date, author, category }) => {
   return (
     <div className={styles.cardContainer}>
@@ -15,7 +15,7 @@ const BlogCard = ({ imageSrc, description, title, date, author, category }) => {
               <b>{category}</b>
             </p>
             <p>{description}</p>
-            <ButtonStyled title="Read More" onClick={() => onclick} />
+            <ButtonBlack buttonText="Read More" onClick={() => onclick} />
           </div>
         </Space>
       </div>

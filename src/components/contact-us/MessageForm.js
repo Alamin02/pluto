@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { Typography } from 'antd';
 import { Row, Col } from 'antd';
 import { Input } from 'antd';
-import { Button } from 'antd';
 import styles from './MessageForm.module.css'
+import ButtonBlack from '../styled-components/ButtonBlack'
 
 
 const { TextArea } = Input;
@@ -14,10 +15,8 @@ const labelStyle = {
     fontSize: '15px',
     fontWeight: 'bold',
 }
-const submitButton = {
-    color: '#ffffff',
-    backgroundColor: '#d7df23',
-    border: '1px solid #fff'
+const textAreaStyle = {
+    marginBottom: '20px'
 }
 
 function MessageForm() {
@@ -49,7 +48,7 @@ function MessageForm() {
                             <div style={labelStyle}>
                                 <label htmlFor='email'>Email</label>
                             </div>
-                            <div className={styles.emailInput}>
+                            <div>
                                 <Input size="large" type="email" />
                             </div>
                         </Col>
@@ -57,13 +56,16 @@ function MessageForm() {
                     <div style={labelStyle} >
                         <label htmlFor='Comments'>Comments</label>
                     </div>
-                    <div className={styles.commentsInput}>
+                    <div style={textAreaStyle}>
                         <TextArea rows={4} />
                     </div>
-                    <div className={styles.buttonSection}>
-                        <Button style={submitButton}>
-                            Submit
-                        </Button>
+                    <div className={styles.buttonStyle}>
+                        <Link to="#">
+                            <ButtonBlack
+                                buttonText="Submit"
+                                className={styles.buttonStyle}
+                            />
+                        </Link>
                     </div>
                 </Col>
             </Row>

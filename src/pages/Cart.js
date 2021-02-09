@@ -29,9 +29,20 @@ function Cart() {
         />
       ))}
       <div className={styles.bottomSection}>
-        <div className={styles.bottomSectionContent}></div>
-        <p className={styles.totalPriceSection}>Total Price: XXXX BDT</p>
-        <ButtonBlack buttonText="Checkout" className={styles.checkoutButton} />
+        <div>&nbsp;</div>
+        <div>
+          <p className={styles.totalPriceSection}>Total Price: XXXX BDT</p>
+        </div>
+      </div>
+
+      <div className={styles.bottomSection}>
+        <div>&nbsp;</div>
+        <div>
+          <ButtonBlack
+            buttonText="Checkout"
+            className={styles.checkoutButton}
+          />
+        </div>
       </div>
       <div className={styles.emptySpace}></div>
     </div>

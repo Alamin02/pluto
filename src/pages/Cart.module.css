@@ -1,8 +1,8 @@
 .container {
   max-width: 1200px;
   margin: auto;
-  padding-left: 0.5rem;
-  padding-left: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .pageTitle {
@@ -27,16 +27,11 @@
 }
 
 .bottomSection{
-  position: relative;
-}
-
-.bottomSectionContent{
-  position: absolute;
-  left: 0px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .totalPriceSection{
-  text-align: left;
   margin-bottom: 1.5rem;
 }
 

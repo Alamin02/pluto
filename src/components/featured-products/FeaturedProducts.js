@@ -4,7 +4,7 @@ import classNames from "classnames";
 import styles from "./Featured.module.css";
 import FeaturedImage from "./FeaturedImage";
 import FeaturedOverlay from "./FeaturedOverlay";
-import Heading from "../heading/Heading";
+import HeaderSection from "../styled-components/HeaderSection";
 
 import watchImage from "../../assets/images/watch.jpg";
 import glassImage from "../../assets/images/glass.jpg";
@@ -17,10 +17,7 @@ const FeaturedProducts = () => {
     <>
       <div className={classNames(styles.bgColor, styles.block)}>
         <div className={styles.containerFluid}>
-          <Heading
-            headingStyle={styles.titleHolder}
-            headingTitle="Featured Products"
-          />
+          <HeaderSection headerText="featured products" />
           <Row>
             <Col span={16}>
               {/* Image of Watch */}

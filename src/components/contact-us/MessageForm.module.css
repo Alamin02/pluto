@@ -1,0 +1,19 @@
+.contactUsContainer {
+  max-width: 1200px;
+  margin: 40px 130px;
+}
+.contactTitle {
+  color: #003164 !important;
+  font-size: 40px !important;
+  text-transform: capitalize;
+  font-weight: bold !important;
+}
+.contactDescription {
+  font-size: 17px;
+}
+.lastLabel {
+  margin-top: 33px !important;
+}
+.buttonSection {
+  margin-top: 20px;
+}

@@ -11,19 +11,21 @@
 
 .mainContainer {
   position: relative;
-  height: 500px;
+  height: 600px;
   width: 100%;
   background: #34495e;
 }
 
 .arrowLeft {
+  position: absolute;
+  z-index: 1;
+  top: 44.8%;
+  left: 0%;
+  margin: 0;
+  padding: 0;
   color: #ecf0f1;
   color: black;
   font-size: 20px;
-  position: absolute;
-  z-index: 1;
-  top: 45%;
-  left: 0%;
   width: 50px;
   height: 50px;
   background: white;
@@ -31,12 +33,12 @@
   cursor: pointer;
 }
 .arrowRight {
-  /* color: #ecf0f1; */
+  color: #ecf0f1;
   color: black;
   font-size: 20px;
   position: absolute;
   z-index: 1;
-  top: 45%;
+  top: 44.8%;
   right: 0%;
   width: 50px;
   height: 50px;
@@ -55,7 +57,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("../../assets/images/slider-image1.jpg");
-  height: 500px;
+  height: 600px;
 }
 .two {
   background-color: rgba(0, 0, 0, 0.123);
@@ -63,7 +65,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("../../assets/images/slider-image2.jpg");
-  height: 500px;
+  height: 600px;
 }
 .three {
   background-color: rgba(0, 0, 0, 0.123);
@@ -71,15 +73,15 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("../../assets/images/slider-image3.jpg");
-  height: 500px;
+  height: 600px;
 }
 .four {
-background-color: rgba(0, 0, 0, 0.123);
+  background-color: rgba(0, 0, 0, 0.123);
   background-blend-mode: multiply;
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("../../assets/images/slider-image4.jpg");
-  height: 500px;
+  height: 600px;
 }
 .tBox {
   width: 600px;
@@ -101,9 +103,98 @@ background-color: rgba(0, 0, 0, 0.123);
   color: white;
   border: 2px solid rgb(233, 193, 15);
 }
+@media (max-width: 768px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 250px;
 
-.descriptionBottomSpace{
-margin-bottom: 20px;
+    background-size: cover;
+  }
+  .mainContainer {
+    height: auto;
+    width: 100vw;
+  }
+  .tBox {
+    width: 220px;
+    text-align: left;
+    padding-top: 20px;
+    margin-left: 20px;
+    color: black;
+    font-family: "Montserrat";
+  }
+  .tBox h1 {
+    font-size: 20px;
+    font-weight: 300;
+  }
+  .tBox p {
+    font-size: 13px;
+  }
+  .arrowLeft,
+  .arrowRight {
+    background: none;
+    visibility: hidden;
+  }
+}
+@media (min-width: 576px) {
+  .tBox {
+    width: 280px;
+    text-align: left;
+    padding-top: 20px;
+    margin-left: 20px;
+    color: black;
+    font-family: "Montserrat";
+  }
+}
+@media (min-width: 768px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 400px;
+
+    background-size: cover;
+  }
+  .mainContainer {
+    height: auto;
+    width: 100vw;
+  }
+  .tBox {
+    width: 300px;
+    text-align: left;
+    padding-top: 70px;
+    margin-left: 70px;
+    color: black;
+    font-family: "Montserrat";
+  }
+  .tBox h1 {
+    font-size: 30px;
+  }
+}
+
+.descriptionBottomSpace {
+  margin-bottom: 20px;
+}
+@media (min-width: 992px) {
+  .tBox {
+    width: 400px;
+    text-align: left;
+    padding-top: 100px;
+    margin-left: 100px;
+    color: black;
+    font-family: "Montserrat";
+  }
+}
+@media (min-width: 1250px) {
+  .tBox {
+    width: 480px;
+    text-align: left;
+    padding-top: 100px;
+    margin-left: 100px;
+    color: black;
+    font-family: "Montserrat";
+  }
 }
 
 /******* Slider custom css end *******/

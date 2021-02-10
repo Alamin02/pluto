@@ -58,9 +58,11 @@ const data = [
 export default function BillingInfo() {
   return (
     <div>
-      <Table columns={columns} dataSource={data} pagination={false} />
-      <Row>
-        <Col span={10} offset={2}>
+      <Row justify="center">
+        <Col sm={24}>
+          <Table columns={columns} dataSource={data} pagination={false} />
+        </Col>
+        <Col sm={12} lg={10} offset={2}>
           <div style={{ marginTop: "30px" }}>
             Apply Coupon: &nbsp;
             <Input
@@ -72,7 +74,7 @@ export default function BillingInfo() {
             </span>
           </div>
         </Col>
-        <Col span={8} offset={2}>
+        <Col xs={8} lg={{ span: 9, offset: 2 }}>
           <table>
             <tbody>
               <tr>
@@ -85,8 +87,8 @@ export default function BillingInfo() {
               </tr>
 
               <tr>
-                <td className={styles.tD}> Total(+tax)</td>
-                <td className={styles.tD}>10tk</td>
+                <td className={styles.tableData}> Total(+tax)</td>
+                <td className={styles.tableData}>10tk</td>
               </tr>
             </tbody>
           </table>

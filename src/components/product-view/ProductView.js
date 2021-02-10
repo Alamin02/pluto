@@ -10,7 +10,7 @@ import RatingAndDescription from "./RatingAndDescription";
 import PriceAndSummary from "./PriceAndSummary";
 import Category from "./Category";
 import AddToCart from "./AddToCart";
-import ButtonBlack from "../styled-components/ButtonBlack"
+import ButtonBlack from "../styled-components/ButtonBlack";
 
 const summaryText = `But I must explain to you how all this mistaken idea of ouncing and
 aising pain was born and I will give you a complete count of ut I must
@@ -23,11 +23,10 @@ A watch is a portable timepiece intended to be carried or worn by
  despite the motions caused by the person's activities. 
 `;
 
-
 const ProductImage = ({ imageLink, onClick }) => {
   return (
-    <Col>
-      <div className={styles.imageSmall}>
+    <Col span={6}>
+      <div>
         <img
           className={styles.previewActive}
           alt="example"
@@ -41,40 +40,57 @@ const ProductImage = ({ imageLink, onClick }) => {
 
 function ProductView({ product }) {
   const { productName, price } = product;
-
   const [imgSrc, setImgSrc] = useState(image1_large);
 
   return (
-    <Row style={{ marginTop: 50 }} justify="center">
-      <Col lg={{ span: 8 }} xs={{ span: 18 }}>
-        <div className={styles.imageLarge}>
-          <img alt="example" src={imgSrc} />
-        </div>
-        <Row>
-          <ProductImage imageLink={image1} onClick={() => setImgSrc(image1)} />
-          <ProductImage imageLink={image2} onClick={() => setImgSrc(image2)} />
-          <ProductImage imageLink={image3} onClick={() => setImgSrc(image3)} />
-          <ProductImage imageLink={image4} onClick={() => setImgSrc(image4)} />
-        </Row>
-      </Col>
+    <div className={styles.container}>
+      <Row justify="center">
+        <Col sm={18} md={12} lg={12}>
+          <div style={{ padding: "20px" }}>
+            <div>
+              <img alt="example" src={imgSrc} />
+            </div>
+            <Row gutter={[6, 6]} style={{ marginTop: "2px" }}>
+              <ProductImage
+                imageLink={image1}
+                onClick={() => setImgSrc(image1)}
+              />
+              <ProductImage
+                imageLink={image2}
+                onClick={() => setImgSrc(image2)}
+              />
+              <ProductImage
+                imageLink={image3}
+                onClick={() => setImgSrc(image3)}
+              />
+              <ProductImage
+                imageLink={image4}
+                onClick={() => setImgSrc(image4)}
+              />
+            </Row>
+          </div>
+        </Col>
+        <Col sm={18} md={12} lg={12}>
+          <div style={{ padding: "20px" }}>
+            <Space size={20} direction="vertical">
+              <PriceAndSummary
+                summaryText={summaryText}
+                productName={productName}
+                ProductPrice={price}
+              />
+              <AddToCart product={product} />
 
-      <Col xl={{ span: 8 }} xs={{ span: 18 }}>
-        <Space size={20} direction="vertical">
-          <PriceAndSummary
-            summaryText={summaryText}
-            productName={productName}
-            ProductPrice={price}
-          />
-          <AddToCart product={product} />
-          <RatingAndDescription
-            rating={descriptionText}
-            descriptionText={descriptionText}
-          />
-          <Category />
-          <ButtonBlack buttonText="Share this" />
-        </Space>
-      </Col>
-    </Row>
+              <RatingAndDescription
+                rating={descriptionText}
+                descriptionText={descriptionText}
+              />
+              <Category />
+              <ButtonBlack buttonText="Share this" />
+            </Space>
+          </div>
+        </Col>
+      </Row>
+    </div>
   );
 }
 

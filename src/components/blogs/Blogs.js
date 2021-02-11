@@ -4,8 +4,6 @@ import styles from "./Blogs.module.css";
 import BlogCard from "./BlogCard";
 import sampleBlogList from "./sampleBlogList";
 
-const date = new Date().toDateString();
-
 export default function Blogs() {
   return (
     <div className={styles.container}>
@@ -17,9 +15,9 @@ export default function Blogs() {
               imageSrc={blog.imageSrc}
               title={blog.title}
               description={blog.description}
-              date={date}
-              author="admin"
-              category="web design"
+              date={blog.date}
+              author={blog.author}
+              category={blog.category}
             />
           </Col>
         ))}

@@ -40,15 +40,15 @@ function FeaturedProductsAlt() {
                 src={featuredProductsAltInfo.image1Src}
                 alt={featuredProductsAltInfo.image1Title}
               />
+              <div
+                className={classNames(
+                  { [styles.imageTitle]: screens },
+                  { [styles.imageTitleXs]: screens.xs }
+                )}
+              >
+                {featuredProductsAltInfo.image1Title}
+              </div>
             </Link>
-            <div
-              className={classNames(
-                { [styles.imageTitle]: screens },
-                { [styles.imageTitleXs]: screens.xs }
-              )}
-            >
-              {featuredProductsAltInfo.image1Title}
-            </div>
           </div>
 
           {/* bottom image of 1st flexbox container */}
@@ -67,15 +67,15 @@ function FeaturedProductsAlt() {
                 src={featuredProductsAltInfo.image2Src}
                 alt={featuredProductsAltInfo.image2Title}
               />
+              <div
+                className={classNames(
+                  { [styles.imageTitle]: screens },
+                  { [styles.imageTitleXs]: screens.xs }
+                )}
+              >
+                {featuredProductsAltInfo.image2Title}
+              </div>
             </Link>
-            <div
-              className={classNames(
-                { [styles.imageTitle]: screens },
-                { [styles.imageTitleXs]: screens.xs }
-              )}
-            >
-              {featuredProductsAltInfo.image2Title}
-            </div>
           </div>
         </section>
 
@@ -105,15 +105,15 @@ function FeaturedProductsAlt() {
               src={featuredProductsAltInfo.image3HSrc}
               alt={featuredProductsAltInfo.image3Title}
             />
+            <div
+              className={classNames(
+                { [styles.imageTitle]: screens },
+                { [styles.imageTitleXs]: screens.xs }
+              )}
+            >
+              {featuredProductsAltInfo.image3Title}
+            </div>
           </Link>
-          <div
-            className={classNames(
-              { [styles.imageTitle]: screens },
-              { [styles.imageTitleXs]: screens.xs }
-            )}
-          >
-            {featuredProductsAltInfo.image3Title}
-          </div>
         </section>
       </section>
       {/* flexbox end */}

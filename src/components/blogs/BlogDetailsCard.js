@@ -26,7 +26,7 @@ const BlogDetailsCard = ({ blog }) => (
     <div className={styles.imageContainer}>
       <img className={styles.imageStyled} src={blog.imageSrc} alt="demo" />
     </div>
-    <p style={{ textAlign: "justify", fontSize: "15px" }}>{blog.description}</p>
+    <p className={styles.descriptionText}>{blog.description}</p>
     <Link to="/blogs">
       <ButtonBlack buttonText="Back " onClick={() => onclick} />
     </Link>

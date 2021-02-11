@@ -13,8 +13,7 @@ const sampleBlogList = [
     author: author,
     category: category,
     imageSrc: image1,
-    title:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit Sint quod soluta accusantium minu",
+    title: "This is a demo title 1",
     description: `It is a long established fact that a reader will be distracted 
     by the readable content of a page when looking at its layout. It is a long established fact that a reader will be distracted 
     by the readable content of a page when looking at its layout. It is a long established fact that a reader will be distracted 

@@ -23,12 +23,8 @@ const BlogDetailsCard = ({ blog }) => (
         </li>
       </ul>
     </div>
-    <div className={styles.blogImgContainer}>
-      <img
-        className={styles.blogDetailsImgStyled}
-        src={blog.imageSrc}
-        alt="demo"
-      />
+    <div className={styles.imageContainer}>
+      <img className={styles.imageStyled} src={blog.imageSrc} alt="demo" />
     </div>
     <p style={{ textAlign: "justify", fontSize: "15px" }}>{blog.description}</p>
     <Link to="/blogs">

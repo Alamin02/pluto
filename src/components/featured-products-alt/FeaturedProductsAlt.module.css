@@ -33,6 +33,12 @@
   width: 100%;
   object-fit: cover;
   height: 20rem;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+.firstFlexBoxImage:hover {
+  transform: scale(1.1);
 }
 .firstFlexBoxImageXs {
   height: 11.5rem;
@@ -82,19 +88,25 @@
   margin-left: 0rem;
 }
 
-.secondFlexBoxImageH {
+.secondFlexBoxImageV {
   display: block;
   object-fit: cover;
   height: 100%;
   width: 100%;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
-.secondFlexBoxImageHXs {
-  display: none;
-}
-.secondFlexBoxImageV {
-  display: none;
+.secondFlexBoxImageV:hover {
+  transform: scale(1.1);
 }
 .secondFlexBoxImageVXs {
+  display: none;
+}
+.secondFlexBoxImageH {
+  display: none;
+}
+.secondFlexBoxImageHXs {
   object-fit: cover;
   display: block;
   height: 11.5rem;

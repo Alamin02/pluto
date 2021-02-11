@@ -93,7 +93,7 @@ function FeaturedProductsAlt() {
                 { [styles.secondFlexBoxImageH]: screens },
                 { [styles.secondFlexBoxImageHXs]: screens.xs }
               )}
-              src={featuredProductsAltInfo.image3VSrc}
+              src={featuredProductsAltInfo.image3HSrc}
               alt={featuredProductsAltInfo.image3Title}
             />
             {/* horizontal 3rd image */}
@@ -102,7 +102,7 @@ function FeaturedProductsAlt() {
                 { [styles.secondFlexBoxImageV]: screens },
                 { [styles.secondFlexBoxImageVXs]: screens.xs }
               )}
-              src={featuredProductsAltInfo.image3HSrc}
+              src={featuredProductsAltInfo.image3VSrc}
               alt={featuredProductsAltInfo.image3Title}
             />
             <div

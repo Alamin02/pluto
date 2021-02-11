@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Button, Row, Collapse } from "antd";
+import { Col, Row, Collapse } from "antd";
 import CheckOutForm from "../components/check-out/CheckOutForm";
 import CheckOutRegister from "../components/check-out/CheckOutRegister";
 import CheckOutCollapsible from "../components/check-out/CheckOutCollapsible";

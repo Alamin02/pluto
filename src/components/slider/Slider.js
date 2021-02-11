@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Carousel, Row,Col} from "antd";
+import { Carousel, Row, Col } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import styles from "./Slider.module.css";
 import "./SliderDots.css";
-import ButtonBlack from "../styled-components/ButtonBlack";
 
 const btnText = "Shop Now";
 const Slide = ({ imageClass, heading, desc }) => {
@@ -12,7 +11,7 @@ const Slide = ({ imageClass, heading, desc }) => {
       <div className={styles.tBox}>
         <h1>{heading}</h1>
         <p className={styles.descriptionBottomSpace}>{desc}</p>
-        <ButtonBlack buttonText={btnText} />
+        <button className={styles.btnCustom}>{btnText}</button>
       </div>
     </div>
   );
@@ -85,6 +84,7 @@ export default class Slider extends Component {
             >
               {slideList.map((slide) => (
                 <Slide
+                  key={slide.id}
                   imageClass={slide.imgClass}
                   heading={slide.slideHeading}
                   desc={slide.description}

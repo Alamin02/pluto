@@ -12,6 +12,7 @@ import Navbar from "./components/navbar/Navbar";
 import BlogPage from "./pages/BlogPage";
 import Footer from "./components/footer/Footer";
 import Error404 from "./components/error-404/Error404";
+import RegistrationPage from "./pages/Registration";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/cart" component={Cart} exact />
         <Route path="/checkOut" component={CheckOut} exact />
         <Route path="/blogs" component={BlogPage} exact />
+        <Route path="/registration" component={RegistrationPage} exact />
         <Route component={Error404} />
       </Switch>
       <Footer />

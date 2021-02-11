@@ -1,8 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-
 import CartItem from "../components/cart/CartItem";
 import ButtonBlack from "../components/styled-components/ButtonBlack";
-
 import styles from "./Cart.module.css";
 
 function Cart() {

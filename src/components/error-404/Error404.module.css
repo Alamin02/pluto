@@ -10,6 +10,9 @@
   height: auto;
   margin-top: -5rem;
 }
+.gifStyleXs{
+  margin-top: 0rem;
+}
 
 .fourOFourStyle {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
@@ -18,6 +21,9 @@
   font-size: 4rem;
   font-weight: bold;
   margin-top: -4.5rem;
+}
+.fourOFourStyleXs{
+  margin-top: 0rem;
 }
 
 .firstParagraphStyle {
@@ -29,4 +35,8 @@
 .buttonStyle {
   margin-top: 0.5rem;
   margin-bottom: 1.9rem;
+}
+
+.emptySpace{
+  padding: 1rem;
 }

@@ -6,13 +6,13 @@ import styles from "./ProductList.module.css";
 import sampleProductData from "../../assets/data/sampleProductData";
 
 import CardItem from "./ProductCard";
-import Header from "./Header";
+import HeaderSection from "../styled-components/HeaderSection";
 import ButtonBlack from "../styled-components/ButtonBlack";
 
 function ProductList() {
   return (
     <div className={styles.containerFluid}>
-      <Header title="popular products" />
+      <HeaderSection headerText="popular products" />
       <Row gutter={[16, 16]}>
         {sampleProductData.map((item) => (
           <Col xxl={6} xl={8} md={12} sm={12} xs={24} key={item.id}>

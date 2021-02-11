@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
 import ButtonBlack from "../styled-components/ButtonBlack";
-import styles from "../blogs/Blogs.module.css";
+import styles from "../blogs/BlogDetails.module.css";
 const BlogDetailsCard = ({ blog }) => (
   <>
     <h1 className={styles.h1Styled}>{blog.title}</h1>

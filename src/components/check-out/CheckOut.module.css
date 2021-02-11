@@ -3,7 +3,11 @@
 * {
   font-family: "Montserrat";
 }
-.tableData{
+.container {
+  max-width: 1170px;
+  margin: 50px auto;
+}
+.tableData {
   padding: 10px 33px;
 }
 .inputStyled {

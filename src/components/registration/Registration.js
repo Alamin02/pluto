@@ -74,6 +74,7 @@ const Registration = () => {
           <Form
             {...formItemLayout}
             form={form}
+            className={styles.containerFluid}
             name="register"
             onFinish={onFinish}
             initialValues={{

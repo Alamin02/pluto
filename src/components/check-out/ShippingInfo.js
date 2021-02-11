@@ -16,7 +16,7 @@ export default function ShippingInfo() {
           <Select
             defaultValue="Choose Another"
             size={"large"}
-            style={{ width: 180 }}
+            style={{ width: 130 }}
             onChange={handleChange}
           >
             <Option value="Dhaka">Dhaka</Option>

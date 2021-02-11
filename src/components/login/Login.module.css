@@ -5,13 +5,11 @@
   max-width: 1200px;
   padding: 0 15px;
 }
-
 .titleHolder {
   text-align: center;
   position: relative;
   padding: 0 0 20px;
 }
-
 .loginForm {
   max-width: 300px;
 }
@@ -23,4 +21,8 @@
 }
 .loginFormButton {
   width: 100%;
+}
+.navHr {
+  border: 1px solid #eeeeee;
+  border-radius: 9999px;
 }

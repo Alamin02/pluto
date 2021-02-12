@@ -39,15 +39,15 @@ const ProductImage = ({ imageLink, onClick }) => {
 };
 
 function ProductView({ product }) {
-  const { productName, price } = product;
-  const [imgSrc, setImgSrc] = useState(image1_large);
+  const { productName, price, imageUrl } = product;
+  const [imgSrc, setImgSrc] = useState(imageUrl);
 
   return (
     <div className={styles.container}>
       <Row justify="center">
         <Col sm={18} md={12} lg={12}>
-          <div style={{ padding: "20px" }}>
-            <div>
+          <div className={styles.imageWrapper}>
+            <div className={styles.imgStyled}>
               <img alt="example" src={imgSrc} />
             </div>
             <Row gutter={[6, 6]} style={{ marginTop: "2px" }}>

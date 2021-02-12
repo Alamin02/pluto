@@ -4,7 +4,6 @@ import ProductCard from "../components/product/ProductCard";
 import MainHeader from "../components/main-header/MainHeader";
 import ProductList from "../assets/data/sampleProductData";
 import styles from "../components/offers/Offers.module.css";
-import image1 from "../assets/images/watch-1-large.jpg";
 
 function Offers() {
   return (
@@ -16,7 +15,7 @@ function Offers() {
             if (product.offer) {
               return (
                 <Col span="8" key={product.id}>
-                  <Badge.Ribbon color="red" text="10% off">
+                  <Badge.Ribbon color="red" text={product.offer}>
                     <ProductCard
                       id={product.id}
                       title={product.productName}

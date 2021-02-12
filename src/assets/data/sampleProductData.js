@@ -2,7 +2,7 @@ const sampleProductData = [
   {
     id: 1,
     productName: "Batz-Adams",
-    offer: true,
+    offer: "10% off",
     price: 403,
     description:
       "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
@@ -24,7 +24,7 @@ const sampleProductData = [
   {
     id: 3,
     productName: "Pfeffer, Cronin and Jaskolski",
-    offer: true,
+    offer: "5% off",
     price: 622,
     description:
       "great outerwear jackets for Spring/Autumn/Winter, suitable for many occasions, such as working, hiking, camping, mountain/rock climbing, cycling, traveling or other outdoors. Good gift choice for you or your family member. A warm hearted love to Father, husband or son in this thanksgiving or Christmas Day.",
@@ -35,7 +35,7 @@ const sampleProductData = [
   {
     id: 4,
     productName: "Baumbach-Little",
-    offer: true,
+    offer: "7% off",
     price: 374,
     description:
       "The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.",
@@ -68,7 +68,7 @@ const sampleProductData = [
   {
     id: 7,
     productName: "Rolfson-Anderson",
-    offer: true,
+    offer: "4% off",
     price: 144,
     description:
       "Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her. Gifts to spoil your love more for Engagement, Wedding, Anniversary, Valentine's Day...",
@@ -101,7 +101,7 @@ const sampleProductData = [
   {
     id: 10,
     productName: "Torphy-Friesen",
-    offer: true,
+    offer: "9% off",
     price: 239,
     description:
       "Easy upgrade for faster boot up, shutdown, application load and response (As compared to 5400 RPM SATA 2.5” hard drive; Based on published specifications and internal benchmarking tests using PCMark vantage scores) Boosts burst write performance, making it ideal for typical PC workloads The perfect balance of performance and reliability Read/write speeds of up to 535MB/s/450MB/s (Based on internal testing; Performance may vary depending upon drive capacity, host device, OS and application.)",
@@ -122,7 +122,7 @@ const sampleProductData = [
   {
     id: 12,
     productName: "McCullough, Walsh and Roob",
-    offer: true,
+    offer: "12% off",
     price: 955,
     description:
       "Expand your PS4 gaming experience, Play anywhere Fast and easy, setup Sleek design with high capacity, 3-year manufacturer's limited warranty",
@@ -153,7 +153,7 @@ const sampleProductData = [
   {
     id: 15,
     productName: "Feil LLC",
-    offer: true,
+    offer: "11% off",
     price: 816,
     description:
       "Note:The Jackets is US standard size, Please choose size as your usual wear Material: 100% Polyester; Detachable Liner Fabric: Warm Fleece. Detachable Functional Liner: Skin Friendly, Lightweigt and Warm.Stand Collar Liner jacket, keep you warm in cold weather. Zippered Pockets: 2 Zippered Hand Pockets, 2 Zippered Pockets on Chest (enough to keep cards or keys)and 1 Hidden Pocket Inside.Zippered Hand Pockets and Hidden Pocket keep your things secure. Humanized Design: Adjustable and Detachable Hood and Adjustable cuff to prevent the wind and water,for a comfortable fit. 3 in 1 Detachable Design provide more convenience, you can separate the coat and inner as needed, or wear it together. It is suitable for different season and help you adapt to different climates",
@@ -174,7 +174,7 @@ const sampleProductData = [
   {
     id: 17,
     productName: "Watsica Group",
-    offer: true,
+    offer: "10% off",
     price: 463,
     description:
       "95% RAYON 5% SPANDEX, Made in USA or Imported, Do Not Bleach, Lightweight fabric with great stretch for comfort, Ribbed on sleeves and neckline / Double stitching on bottom hem",

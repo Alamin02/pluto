@@ -12,7 +12,7 @@ const Login = () => {
     console.log("Received values of form: ", values);
   };
   return (
-    <>
+    <>      
       <div className={classNames(styles.bgColor, styles.block)}>
         <div className={styles.containerFluid}>
           <Heading
@@ -21,7 +21,7 @@ const Login = () => {
           />
           <Form
             name="normal_login"
-            className={styles.loginForm}
+            className={classNames(styles.loginForm, styles.containerFluid)}
             initialValues={{
               remember: true,
             }}

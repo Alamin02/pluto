@@ -4,6 +4,7 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  padding: 0 1rem;
 }
 
 .navbarTop {
@@ -16,13 +17,19 @@
 
 .navbarTopCenter {
   font-family: "Playfair Display", serif;
-  font-size: 2rem;
+  font-size: 2.5rem;
   text-transform: uppercase;
   text-align: center;
+}
+.navbarTopCenterXs{
+  font-size: 1.5rem;
 }
 
 .navbarTopRight {
   text-align: right;
+}
+.navbarTopRight::first-letter{
+  text-transform: uppercase;
 }
 
 .navHr {

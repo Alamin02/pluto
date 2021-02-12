@@ -1,88 +1,84 @@
-import { Menu } from "antd";
-
-import styles from "./Navbar.module.css";
-
+import { Link } from "react-router-dom";
+import { Menu, Grid } from "antd";
 import {
   PhoneOutlined,
-  StarOutlined,
-  HomeOutlined,
-  MailOutlined,
-  ShopOutlined,
-  ReadOutlined,
-  AppstoreOutlined,
   ShoppingOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import classNames from "classnames";
 
+import styles from "./Navbar.module.css";
+import { navbarMenus, shopSubmenus } from "./navbarInfo";
+
+const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
-const shopList = [
-  {
-    id: 1,
-    listItem: "Smartphone",
-    href: "#",
-  },
-  {
-    id: 2,
-    listItem: "Desktop",
-    href: "#",
-  },
-  {
-    id: 3,
-    listItem: "Laptop",
-    href: "#",
-  },
-  {
-    id: 4,
-    listItem: "Printer",
-    href: "#",
-  },
-];
+const menuStyle = {
+  textTransform: "capitalize",
+};
+const downOutlinedStyle = {
+  marginLeft: "0.5rem",
+  marginRight: "0",
+  fontSize: "0.8rem",
+};
 
 function Navbar() {
+  const screens = useBreakpoint();
+
   return (
     <div className={styles.navContainer}>
       <nav className={styles.navbarTop}>
         <div>
           <PhoneOutlined /> +880 1234 123456
         </div>
-        <div className={styles.navbarTopCenter}>Pluto</div>
+        <div className={classNames(
+          { [styles.navbarTopCenter]: screens },
+          { [styles.navbarTopCenterXs]: screens.xs },
+        )}>Pluto</div>
         <div className={styles.navbarTopRight}>
-          <Link>Log in</Link>
+          <Link to={navbarMenus.loginUrl}>log in</Link>
           &nbsp;&nbsp;|&nbsp;&nbsp;
-          <Link to="/cart">
+          <Link to={navbarMenus.cartUrl}>
             <ShoppingOutlined />
           </Link>
         </div>
       </nav>
       <hr className={styles.navHr} />
+
+      {/* bottom navbar */}
       <Menu mode="horizontal" className={styles.navbarBottom}>
-        <Menu.Item icon={<HomeOutlined />}>
-          <Link to="/">Home</Link>
+        <Menu.Item>
+          <Link to={navbarMenus.homeUrl} style={menuStyle}>
+            {navbarMenus.home}
+          </Link>
         </Menu.Item>
 
-        <SubMenu icon={<ShopOutlined />} title="Shop">
-          {shopList.map((listItemEach) => (
-            <Menu.Item key={listItemEach.id}>
-              <Link to={listItemEach.href}></Link>
-              {listItemEach.listItem}
+        <SubMenu
+          title={
+            <span>
+              {navbarMenus.shop}
+              <DownOutlined style={downOutlinedStyle} />
+            </span>
+          }
+          style={menuStyle}
+        >
+          {shopSubmenus.map((shopSubmenu) => (
+            <Menu.Item key={shopSubmenu.id} style={menuStyle}>
+              <Link to={shopSubmenu.shopSubmenuUrl}></Link>
+              {shopSubmenu.submenu}
             </Menu.Item>
           ))}
         </SubMenu>
 
-        <Menu.Item icon={<StarOutlined />}>
-          <Link>Features</Link>
+        <Menu.Item>
+          <Link to={navbarMenus.offersUrl} style={menuStyle}>{navbarMenus.offers}</Link>
         </Menu.Item>
 
-        <Menu.Item icon={<AppstoreOutlined />}>
-          <Link>Portfolio</Link>
+        <Menu.Item>
+          <Link to={navbarMenus.blogUrl} style={menuStyle}>{navbarMenus.blog}</Link>
         </Menu.Item>
 
-        <Menu.Item icon={<ReadOutlined />}>
-          <Link to="/blogs">Blog</Link>
-        </Menu.Item>
-
-        <Menu.Item icon={<MailOutlined />}>
-          <Link>Contact</Link>
+        <Menu.Item>
+          <Link to={navbarMenus.contactUrl} style={menuStyle}>{navbarMenus.contact}</Link>
         </Menu.Item>
       </Menu>
     </div>

@@ -15,6 +15,7 @@ import Error404 from "./components/error-404/Error404";
 import BlogDetails from "./pages/BlogDetails";
 import RegistrationPage from "./pages/Registration";
 import LoginPage from "./pages/Login";
+import Offers from "./pages/Offers";
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
         <Route path="/blogs" component={BlogPage} exact />
         <Route path="/blogs/:id" component={BlogDetails} exact />
         <Route path="/registration" component={RegistrationPage} exact />
-        <Route path="/login" component={LoginPage}/>
+        <Route path="/login" component={LoginPage} />
+        <Route path="/offers" component={Offers} />
         <Route component={Error404} />
       </Switch>
       <Footer />

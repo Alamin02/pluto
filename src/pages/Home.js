@@ -9,8 +9,8 @@ const Home = () => {
   return (
     <div>
       <Slider />
-      <FeaturedProducts />
-      {/* <FeaturedProductsAlt /> */}
+      {/* <FeaturedProducts /> */}
+      <FeaturedProductsAlt />
       <ProductList />
     </div>
   );

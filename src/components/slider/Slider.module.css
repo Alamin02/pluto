@@ -38,7 +38,6 @@
   cursor: pointer;
 }
 .one {
-  background-color: rgba(0, 0, 0, 0.397);
   background-blend-mode: multiply;
   background-repeat: no-repeat;
   background-size: cover;
@@ -46,7 +45,6 @@
   height: 600px;
 }
 .two {
-  background-color: rgba(0, 0, 0, 0.397);
   background-blend-mode: multiply;
   background-repeat: no-repeat;
   background-size: cover;
@@ -54,7 +52,6 @@
   height: 600px;
 }
 .three {
-  background-color: rgba(0, 0, 0, 0.397);
   background-blend-mode: multiply;
   background-repeat: no-repeat;
   background-size: cover;
@@ -62,7 +59,6 @@
   height: 600px;
 }
 .four {
-  background-color: rgba(0, 0, 0, 0.397);
   background-blend-mode: multiply;
   background-repeat: no-repeat;
   background-size: cover;

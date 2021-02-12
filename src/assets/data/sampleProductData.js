@@ -57,6 +57,7 @@ const sampleProductData = [
   {
     id: 6,
     productName: "Cruickshank, Bode and Funk",
+    offer: "6% offer",
     price: 364,
     description:
       "Satisfaction Guaranteed. Return or exchange any order within 30 days.Designed and sold by Hafeez Center in the United States. Satisfaction Guaranteed. Return or exchange any order within 30 days.",

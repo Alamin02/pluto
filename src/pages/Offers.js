@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Row, Col, Badge } from "antd";
 import ProductCard from "../components/product/ProductCard";
 import MainHeader from "../components/main-header/MainHeader";
@@ -17,6 +18,7 @@ function Offers() {
                 return (
                   <Col xs={12} sm={10} md={8} key={product.id}>
                     <div className={styles.cardContainer}>
+                    <Link to={`/products/${product.id}`}>
                       <Badge.Ribbon color="red" text={product.offer}>
                         <ProductCard
                           id={product.id}
@@ -25,6 +27,7 @@ function Offers() {
                           src={product.imageUrl}
                         />
                       </Badge.Ribbon>
+                      </Link>
                     </div>
                   </Col>
                 );

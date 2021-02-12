@@ -19,7 +19,7 @@ function ProductList() {
           if (item.offer) {
             return (
               <Col xxl={6} xl={8} md={12} sm={12} xs={24} key={item.id}>
-                <Link to={`/products/${item.id}`}>
+                <Link to={`/offers`}>
                   <Badge.Ribbon color="red" text={item.offer}>
                     <CardItem
                       title={item.productName}

@@ -1,10 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Badge } from "antd";
-
 import styles from "./ProductList.module.css";
 import sampleProductData from "../../assets/data/sampleProductData";
-
 import CardItem from "./ProductCard";
 import HeaderSection from "../styled-components/HeaderSection";
 import ButtonBlack from "../styled-components/ButtonBlack";

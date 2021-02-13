@@ -36,16 +36,17 @@ export default function CheckOutCollapsible() {
   return (
     <>
       <Collapse>
-        {panelHeadingAndText.map((single) => (
+        {panelHeadingAndText.map((panel) => (
           <Panel
+            key={panel.id}
             showArrow={false}
             header={
               <h4 style={{ textTransform: "upperCase", fontWeight: "600" }}>
-                {[single.id, ". ", single.heading]}
+                {[panel.id, ". ", panel.heading]}
               </h4>
             }
           >
-            <p>{single.text}</p>
+            {panel.text}
           </Panel>
         ))}
       </Collapse>

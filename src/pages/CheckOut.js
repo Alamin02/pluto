@@ -34,7 +34,7 @@ export default function CheckOut() {
   return (
     <div className={styles.container}>
       <Row justify="center">
-        <Col xs={24} sm={24} lg={18}>
+        <Col xs={24} sm={24} md={22} lg={18}>
           <div style={{ padding: "20px" }}>
             <DescriptionCollapse
               k="a"
@@ -42,12 +42,6 @@ export default function CheckOut() {
               register={<CheckOutRegister />}
               form={<CheckOutForm />}
             />
-            {/* </Col> */}
-            {/* </Row> */}
-
-            {/* {/* <Row justify="center"> */}
-            {/* <Col sm={24} lg={18}> */}
-
             <CheckOutCollapsible />
           </div>
         </Col>

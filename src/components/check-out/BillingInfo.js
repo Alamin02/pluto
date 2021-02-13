@@ -1,6 +1,8 @@
 import React from "react";
-import { Row, Table, Col, Input, Button } from "antd";
+import { Row, Table, Col, Input } from "antd";
 import styles from "./CheckOut.module.css";
+const { Search } = Input;
+const onSearch = (value) => console.log(value);
 const columns = [
   {
     title: "Product",
@@ -46,64 +48,59 @@ const data = [
     Quantity: "1",
     Total: "110tk",
   },
-  {
-    key: "3",
-    Product: "Item3",
-    unitprice: 32,
-    Quantity: "1",
-    Total: "110tk",
-  },
 ];
 export default function BillingInfo() {
   return (
     <div>
       <Row justify="center">
-        <Col sm={24}>
-          <Table
-            columns={columns}
-            size={"small"}
-            dataSource={data}
-            align="center"
-            bordered={true}
-            pagination={false}
-          />
-        </Col>
-        <Col sm={12} lg={10} offset={2}>
-          <div style={{ marginTop: "30px" }}>
-            Apply Coupon: &nbsp;
-            <Input
-              className={styles.inputStyled}
-              placeholder="Enter a coupon code..."
+        <Col xs={24} sm={24} md={24}>
+          <div className={styles.tableContainer}>
+            <Table
+              columns={columns}
+              size={"large"}
+              dataSource={data}
+              bordered={true}
+              pagination={false}
             />
-            <span style={{ marginLeft: "120px" }}>
-              <Button type="primary">Submit</Button>
-            </span>
           </div>
         </Col>
-        <Col xs={8} lg={{ span: 9, offset: 2 }}>
-          <table
-            style={{
-              background: "rgba(0, 0, 0,0.1)",
-              borderRadius: "5px",
-              margin: "10px",
-            }}
-          >
-            <h4 style={{ textAlign: "center" }}>Cart Totals</h4>
-            <tbody>
-              <tr className={styles.tableRowStyled}>
-                <td className={styles.tableData}> Vat(5%)</td>
-                <td className={styles.tableData}>10tk</td>
-              </tr>
-              <tr className={styles.tableRowStyled}>
-                <td className={styles.tableData}> Shipping cost</td>
-                <td className={styles.tableData}>10tk</td>
-              </tr>
-              <tr className={styles.tableRowStyled}>
-                <td className={styles.tableData}> Total(+tax)</td>
-                <td className={styles.tableData}>10tk</td>
-              </tr>
-            </tbody>
-          </table>
+
+        <Col
+          xs={{ offset: 6, span: 18 }}
+          sm={{ offset: 10, span: 14 }}
+          md={{ span: 10, offset: 14 }}
+        >
+          <div className={styles.couponCode}>
+            <Search
+              placeholder="Apply Coupon Code.."
+              allowClear
+              enterButton="Submit"
+              size="middle"
+              onSearch={onSearch}
+            />
+          </div>
+        </Col>
+        <Col xs={20} sm={12} md={12} lg={12}>
+          <div className={styles.cardTotalTableContainer}>
+            <h2 className={styles.cardTitle}>Cart Total</h2>
+            <table className={styles.cardTable}>
+              <tbody>
+                <tr>
+                  <td className={styles.tableData}>Vat(5%)</td>
+                  <td className={styles.tableData}>10tk</td>
+                </tr>
+
+                <tr>
+                  <td className={styles.tableData}> Shipping cost</td>
+                  <td className={styles.tableData}>10tk</td>
+                </tr>
+                <tr>
+                  <td className={styles.tableData}> Total(+tax)</td>
+                  <td className={styles.tableData}>10tk</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </Col>
       </Row>
     </div>

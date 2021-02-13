@@ -5,13 +5,11 @@ import ProductCard from "../components/product/ProductCard";
 import MainHeader from "../components/main-header/MainHeader";
 import ProductList from "../assets/data/sampleProductData";
 import styles from "./Offers.module.css";
-// import HeaderSection from "../components/styled-components/HeaderSection";
 
 function Offers() {
   return (
     <>
       <MainHeader name="Latest Offer" sub="home-shop-offer" />
-      {/* <HeaderSection headerText=" Offers Product" /> */}
       <div style={{ padding: "0 20px" }}>
         <div className={styles.container}>
           <Row justify="center">

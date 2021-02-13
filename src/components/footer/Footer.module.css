@@ -1,12 +1,26 @@
 .footer {
   background: #fafafa;
-  padding: 25px 0;
 }
-.footerSectionOne,
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1rem;
+  margin-top: 1rem;
+}
+.footerSectionOne {
+  max-width: 1200px;
+  margin-top: 1rem;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.footerSectionOneXs{
+  margin-top: 0rem;
+}
 .footerSectionTwo {
-  max-width: 1050px;
-  margin: auto;
-  font-family: 'Montserrat', sans-serif;
+  max-width: 1200px;
+  font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
   font-size: 12px;
 }
@@ -21,7 +35,7 @@
   color: #545454;
 }
 
-.footerSectionOne .inputField input[type='text'] {
+.footerSectionOne .inputField input[type="text"] {
   width: 100%;
   padding: 12px 20px;
   box-sizing: border-box;
@@ -29,7 +43,7 @@
 }
 
 .footerSectionOne::after {
-  content: '';
+  content: "";
   height: 2px;
   width: 100%;
   background: #e7e7e7;
@@ -52,6 +66,10 @@
 .iconSection {
   text-align: end;
 }
+.iconSectionXs {
+  text-align: center;
+}
+
 .iconSection span {
   margin-left: 8px;
   font-size: 13px;

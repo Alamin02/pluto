@@ -1,9 +1,13 @@
 .containerFluid {
   max-width: 1200px;
-  margin: 50px auto;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
 }
 
 .buttonStyle {
   text-align: center;
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
 }

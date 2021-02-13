@@ -54,13 +54,19 @@ const data = [
     Total: "110tk",
   },
 ];
-
 export default function BillingInfo() {
   return (
     <div>
       <Row justify="center">
         <Col sm={24}>
-          <Table columns={columns} dataSource={data} pagination={false} />
+          <Table
+            columns={columns}
+            size={"small"}
+            dataSource={data}
+            align="center"
+            bordered={true}
+            pagination={false}
+          />
         </Col>
         <Col sm={12} lg={10} offset={2}>
           <div style={{ marginTop: "30px" }}>
@@ -75,18 +81,24 @@ export default function BillingInfo() {
           </div>
         </Col>
         <Col xs={8} lg={{ span: 9, offset: 2 }}>
-          <table>
+          <table
+            style={{
+              background: "rgba(0, 0, 0,0.1)",
+              borderRadius: "5px",
+              margin: "10px",
+            }}
+          >
+            <h4 style={{ textAlign: "center" }}>Cart Totals</h4>
             <tbody>
-              <tr>
+              <tr className={styles.tableRowStyled}>
                 <td className={styles.tableData}> Vat(5%)</td>
                 <td className={styles.tableData}>10tk</td>
               </tr>
-              <tr>
+              <tr className={styles.tableRowStyled}>
                 <td className={styles.tableData}> Shipping cost</td>
                 <td className={styles.tableData}>10tk</td>
               </tr>
-
-              <tr>
+              <tr className={styles.tableRowStyled}>
                 <td className={styles.tableData}> Total(+tax)</td>
                 <td className={styles.tableData}>10tk</td>
               </tr>

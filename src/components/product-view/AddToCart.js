@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Radio, InputNumber } from "antd";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 
@@ -8,24 +8,33 @@ import BlackButton from "../styled-components/ButtonBlack";
 
 export default function AddToCart({ product }) {
   const dispatch = useDispatch();
+  const productNumber = useSelector((state) => state.update.count);
 
   const handleAddToCart = () => {
     dispatch({ type: "cart/addProduct", payload: product });
+  };
+  const handlePlusButton = () => {
+    dispatch({ type: "Add" });
+  };
+  const handleMinusButton = () => {
+    dispatch({ type: "Remove" });
   };
 
   return (
     <div>
       <Radio.Group>
-        <Radio.Button>
+        <Radio.Button onClick={() => handleMinusButton()}>
           <MinusOutlined />
         </Radio.Button>
         <InputNumber
           min={1}
           max={20}
+          step={1}
           className={styles.inputStyled}
-          defaultValue={1}
+          defaultValue={productNumber}
+          value={productNumber}
         />
-        <Radio.Button>
+        <Radio.Button onClick={() => handlePlusButton()}>
           <PlusOutlined />
         </Radio.Button>
       </Radio.Group>

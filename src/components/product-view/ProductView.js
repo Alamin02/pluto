@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Row, Col, Space } from "antd";
-import image1_large from "../../assets/images/watch-1-large.jpg";
 import image1 from "../../assets/images/watch-1-small.jpg";
 import image2 from "../../assets/images/watch-2-small.jpg";
 import image3 from "../../assets/images/watch-3-small.jpg";
@@ -41,6 +41,7 @@ const ProductImage = ({ imageLink, onClick }) => {
 function ProductView({ product }) {
   const { productName, price, imageUrl } = product;
   const [imgSrc, setImgSrc] = useState(imageUrl);
+  const ProductNumber = useSelector((state) => state.update.count);
 
   return (
     <div className={styles.container}>
@@ -76,7 +77,7 @@ function ProductView({ product }) {
               <PriceAndSummary
                 summaryText={summaryText}
                 productName={productName}
-                ProductPrice={price}
+                ProductPrice={price * ProductNumber}
               />
               <AddToCart product={product} />
 

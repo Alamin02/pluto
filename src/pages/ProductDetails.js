@@ -14,7 +14,7 @@ const ProductDetails = () => {
 
   return (
     <div>
-      <MainHeader name="popular products" sub="home - shop - products" />
+      <MainHeader name="product details" sub="home ⋅ shop ⋅ products" />
       <ProductView product={product} />
     </div>
   );

@@ -3,6 +3,10 @@ import image2 from "../../assets/images/featured-products-alt/image2.jpg";
 import image3horizontal from "../../assets/images/featured-products-alt/image3horizontal.jpg";
 import image3vertical from "../../assets/images/featured-products-alt/image3vertical.jpg";
 
+// Guide: Image format
+// image1 & image2 will be in 16:9 aspect ratio for optimal viewing experience
+// image 3 has two versions. Aspect ratio for the horizontal version of image3 is 16:9 whereas for the vertical one it's 9:16
+
 const featuredProductsAlt = {
   id: 1,
   image1Title: "Vintage watch",

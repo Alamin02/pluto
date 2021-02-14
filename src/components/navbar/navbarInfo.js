@@ -1,5 +1,10 @@
+import site_logo from "../../assets/logo/pluto_logo_transparent_bg.png";
+
 const navbarMenus = {
   id: 1,
+  logoSrc: site_logo,
+  logoAlt: "pluto",
+
   home: "home",
   homeUrl: "/",
 
@@ -12,7 +17,7 @@ const navbarMenus = {
   blogUrl: "/blogs",
 
   contact: "contact",
-  contactUrl: "",
+  contactUrl: "/contact",
 
   loginUrl: "",
   cartUrl: "/cart",

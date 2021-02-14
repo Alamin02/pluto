@@ -86,7 +86,7 @@ function FeaturedProductsAlt() {
             { [styles.secondFlexBoxContainerXs]: screens.xs }
           )}
         >
-          {/* vertical 3rd image */}
+          {/* horizontal 3rd image */}
           <Link to={featuredProductsAltInfo.image3Url}>
             <img
               className={classNames(
@@ -96,7 +96,7 @@ function FeaturedProductsAlt() {
               src={featuredProductsAltInfo.image3HSrc}
               alt={featuredProductsAltInfo.image3Title}
             />
-            {/* horizontal 3rd image */}
+            {/* vertical 3rd image */}
             <img
               className={classNames(
                 { [styles.secondFlexBoxImageV]: screens },

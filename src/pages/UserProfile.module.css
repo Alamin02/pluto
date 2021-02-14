@@ -2,6 +2,8 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 1rem;
+  padding: 0 1rem;
 }
 
 .mainHeading {
@@ -30,21 +32,40 @@
 
 .basicInfo {
   display: flex;
-  align-items: center;
   margin-top: 1rem;
+  flex-direction: row;
+}
+.basicInfoXs{
+  flex-direction: column;
 }
 
 .userAvatar {
-  width: 5rem;
+  width: 6rem;
+}
+.userAvatarXs{
+  width: 9rem;
+  margin-bottom: 1.7rem;
+  margin-top: 0.5rem;
+  align-self: center;
 }
 
 .basicInfoText {
-  margin-left: 2rem;
+  margin-left: 2.5rem;
+}
+.basicInfoTextXs{
+  margin-left: 0;
 }
 
 .welcomeMessage {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+.welcomeMessageXs{
+  font-size: 1.4rem;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  margin-bottom: 1.2rem;
 }
 
 .emptySpace {

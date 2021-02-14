@@ -17,7 +17,6 @@ export default function HeaderSection({ headerText }) {
       >
         {headerText}
       </h2>
-      <hr className={styles.hrStyle} />
     </div>
   );
 }

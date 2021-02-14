@@ -47,7 +47,6 @@ function ProductList() {
         <Link to="/products/list">
           <ButtonBlack
             buttonText="View all products"
-            className={styles.buttonStyle}
           />
         </Link>
       </div>

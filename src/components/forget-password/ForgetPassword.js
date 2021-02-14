@@ -12,6 +12,7 @@ const ForgetPassword = () => {
           <Heading
             headingStyle={styles.titleHolder}
             headingTitle="Recover Password"
+            
           />
           <Form
             name="forget-password"

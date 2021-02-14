@@ -8,7 +8,37 @@
   margin: 50px auto;
 }
 .tableData {
-  padding: 10px 33px;
+  padding: 2vmin;
+  border-bottom: 0.4px solid rgba(184, 183, 183, 0.733);
+}
+.tableContainer {
+  max-width: 100%;
+  overflow-x: scroll;
+  font-size: 18px;
+}
+.couponCode {
+  margin-top: 10px;
+}
+.cardTotalTableContainer {
+  background: rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+  text-align: center;
+  max-width: 100%;
+  font-size: 16px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+.cardTitle {
+  border-bottom: 5px solid gray;
+  display: inline-block;
+}
+.cardTable {
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
 }
 .inputStyled {
   width: 150px;

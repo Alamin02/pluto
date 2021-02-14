@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import CartItem from "../components/cart/CartItem";
 import ButtonBlack from "../components/styled-components/ButtonBlack";
 import styles from "./Cart.module.css";
@@ -36,10 +37,12 @@ function Cart() {
       <div className={styles.bottomSection}>
         <div>&nbsp;</div>
         <div>
-          <ButtonBlack
-            buttonText="Checkout"
-            className={styles.checkoutButton}
-          />
+          <Link to="checkOut">
+            <ButtonBlack
+              buttonText="Checkout"
+              className={styles.checkoutButton}
+            />
+          </Link>
         </div>
       </div>
       <div className={styles.emptySpace}></div>

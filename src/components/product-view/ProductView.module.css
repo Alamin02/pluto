@@ -5,12 +5,18 @@
 }
 .container {
   max-width: 1170px;
-  margin: 0 auto;
+  margin: 50px auto;
 }
-
-img {
+.imageWrapper {
+  padding: 20px;
+}
+.imageWrapper img {
   width: 100%;
   height: 100%;
+}
+.imgStyled img {
+  max-width: 100%;
+  height: auto;
 }
 .previewActive {
   opacity: 0.6;

@@ -11,7 +11,7 @@ const navbarMenus = {
   shop: "shop",
 
   offers: "offers",
-  offersUrl: "",
+  offersUrl: "/offers",
 
   blog: "blog",
   blogUrl: "/blogs",

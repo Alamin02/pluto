@@ -15,6 +15,7 @@ import Error404 from "./components/error-404/Error404";
 import BlogDetails from "./pages/BlogDetails";
 import RegistrationPage from "./pages/Registration";
 import LoginPage from "./pages/Login";
+import Offers from "./pages/Offers";
 import ContactUs from "./pages/ContactUs";
 import ForgetPasswordPage from "./pages/ForgetPassword";
 import ResetPasswordPage from "./pages/ResetPassword";
@@ -34,6 +35,8 @@ function App() {
         <Route path="/blogs" component={BlogPage} exact />
         <Route path="/blogs/:id" component={BlogDetails} exact />
         <Route path="/registration" component={RegistrationPage} exact />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/offers" component={Offers} />
         <Route path="/contact" component={ContactUs} />
         <Route path="/login" component={LoginPage} exact/>
         <Route path="/forgetPassword" component={ForgetPasswordPage} exact />

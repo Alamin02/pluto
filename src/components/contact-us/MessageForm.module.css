@@ -1,6 +1,6 @@
 .contactUsContainer {
   max-width: 1200px;
-  margin: 40px 130px;
+  margin: 40px 70px;
 }
 .contactTitle {
   color: #003164 !important;
@@ -8,8 +8,18 @@
   text-transform: capitalize;
   font-weight: bold !important;
 }
-.contactDescription {
-  font-size: 17px;
+.contactTitleXs {
+  text-align: center;
+  font-size: 25px !important;
+}
+.contactTitleMd {
+  text-align: center;
+}
+.contactTitleLg {
+  text-align: left;
+}
+.lastLabelStyle {
+  margin-top: -25px;
 }
 .lastLabel {
   margin-top: 33px !important;

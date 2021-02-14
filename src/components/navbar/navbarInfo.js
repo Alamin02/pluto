@@ -12,7 +12,7 @@ const navbarMenus = {
   blogUrl: "/blogs",
 
   contact: "contact",
-  contactUrl: "",
+  contactUrl: "/contact",
 
   loginUrl: "",
   cartUrl: "/cart",

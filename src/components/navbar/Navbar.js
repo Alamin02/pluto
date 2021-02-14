@@ -35,7 +35,7 @@ function Navbar() {
           { [styles.navbarTopCenterXs]: screens.xs },
         )}>Pluto</div>
         <div className={styles.navbarTopRight}>
-          <Link to={navbarMenus.loginUrl}>log in</Link>
+          <Link to="/login">log in</Link>
           &nbsp;&nbsp;|&nbsp;&nbsp;
           <Link to={navbarMenus.cartUrl}>
             <ShoppingOutlined />

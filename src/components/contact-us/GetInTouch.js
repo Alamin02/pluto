@@ -36,7 +36,7 @@ function GetInTouch() {
             <Row gutter={[24, 24]} justify="center">
                 {getInTouchData.map((element) => {
                     return (
-                        <Col span={8} key={element.id} xs={24} sm={22} md={20} lg={8} xl={8}>
+                        <Col span={8} key={element.id} xs={22} sm={20} md={18} lg={8} xl={8}>
                             <div className={styles.headStyle}>
                                 <div className={styles.bodyStyle}>
                                     <img src={element.imageUrl} alt={element.option} className={styles.imgStyle} />

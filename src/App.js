@@ -16,6 +16,7 @@ import BlogDetails from "./pages/BlogDetails";
 import RegistrationPage from "./pages/Registration";
 import LoginPage from "./pages/Login";
 import ForgetPasswordPage from "./pages/ForgetPassword";
+import ResetPasswordPage from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/registration" component={RegistrationPage} exact />
         <Route path="/login" component={LoginPage} exact/>
         <Route path="/forgetPassword" component={ForgetPasswordPage} exact />
+        <Route path="/resetPassword" component={ResetPasswordPage} exact />
         <Route component={Error404} />
       </Switch>
       <Footer />

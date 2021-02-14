@@ -31,7 +31,7 @@ function App() {
         <Route path="/blogs" component={BlogPage} exact />
         <Route path="/blogs/:id" component={BlogDetails} exact />
         <Route path="/registration" component={RegistrationPage} exact />
-        <Route path="/login" component={LoginPage}/>
+        <Route path="/login" component={LoginPage} exact/>
         <Route component={Error404} />
       </Switch>
       <Footer />

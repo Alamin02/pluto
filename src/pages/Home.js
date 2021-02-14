@@ -3,7 +3,7 @@ import React from "react";
 import Slider from "../components/slider/Slider";
 import FeaturedProducts from "../components/featured-products/FeaturedProducts";
 import ProductList from "../components/product/ProductList";
-import FeaturedProductsAlt from "../components/featured-products-alt/FeaturedProductsAlt";
+// import FeaturedProductsAlt from "../components/featured-products-alt/FeaturedProductsAlt";
 
 const Home = () => {
   return (

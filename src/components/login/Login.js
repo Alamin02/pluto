@@ -1,11 +1,12 @@
 import classNames from "classnames";
 import { Form, Input, Button, Checkbox, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 import styles from "./Login.module.css";
 import Heading from "../heading/Heading";
 
-const { Link } = Typography;
+// const { Link } = Typography;
 
 const Login = () => {
   const onFinish = (values) => {
@@ -77,7 +78,7 @@ const Login = () => {
               >
                 Log in
               </Button>
-              Or <Link href="">register now!</Link>
+              Or <Link to="/registration">register now!</Link>
             </Form.Item>
           </Form>
         </div>

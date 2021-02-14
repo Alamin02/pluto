@@ -1,4 +1,4 @@
-import site_logo from "../../assets/logo/pluto_logo.png";
+import site_logo from "../../assets/logo/pluto_logo_transparent_bg.png";
 
 const navbarMenus = {
   id: 1,

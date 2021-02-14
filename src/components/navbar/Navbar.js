@@ -25,6 +25,7 @@ function Navbar() {
   const screens = useBreakpoint();
 
   return (
+    <div className={styles.navBackgroundColor}>
     <div className={styles.navContainer}>
       <nav className={styles.navbarTop}>
         <div>
@@ -53,7 +54,7 @@ function Navbar() {
       <hr className={styles.navHr} />
 
       {/* bottom navbar */}
-      <Menu mode="horizontal" className={styles.navbarBottom}>
+      <Menu mode="horizontal" className={styles.navbarBottom} style={{ backgroundColor: "#FAFAFA" }} >
         <Menu.Item>
           <Link to={navbarMenus.homeUrl} style={menuStyle}>
             {navbarMenus.home}
@@ -95,6 +96,7 @@ function Navbar() {
           </Link>
         </Menu.Item>
       </Menu>
+    </div>
     </div>
   );
 }

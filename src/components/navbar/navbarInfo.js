@@ -1,5 +1,10 @@
+import site_logo from "../../assets/logo/pluto_logo.png";
+
 const navbarMenus = {
   id: 1,
+  logoSrc: site_logo,
+  logoAlt: "pluto",
+
   home: "home",
   homeUrl: "/",
 

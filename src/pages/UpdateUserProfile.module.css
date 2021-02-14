@@ -2,6 +2,8 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 1rem;
+  padding: 0 1rem;
 }
 
 .mainHeading {
@@ -27,8 +29,11 @@
   padding-top: 1.5rem;
 }
 
-.avatarStyle {
-margin-right: 1rem;  
+.inputStyle{
+  margin-left: 3rem;
+}
+.inputStyleXs{
+  margin-left: 0rem;
 }
 
 .emptySpace {

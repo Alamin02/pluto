@@ -1,20 +1,24 @@
 import { Link } from "react-router-dom";
-
-import { Form, Input, Button, Upload, Select } from "antd";
+import { Form, Input, Button, Upload, Select, Grid } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
 import styles from "./UpdateUserProfile.module.css";
 
 import userInfo from "../components/user-profile/userInfo";
 import shippingAddressList from "../components/user-profile/shippingAddressList";
+import HeaderSection from "../components/styled-components/HeaderSection"
 
 const { Option } = Select;
+const { useBreakpoint } = Grid;
 
 function handleChange(value) {
   console.log(`selected ${value}`);
 }
 
 function UpdateUserProfile() {
+  const screens = useBreakpoint();
+
   const layout = {
     labelCol: {
       span: 3,
@@ -26,14 +30,14 @@ function UpdateUserProfile() {
 
   const tailLayout = {
     wrapperCol: {
-      offset: 1,
       span: 8,
     },
   };
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.mainHeading}>Update my account</h1>
+      {/* <h1 className={styles.mainHeading}>Update my account</h1> */}
+      <HeaderSection headerText="update my profile" />
 
       <Form
         {...layout}
@@ -56,7 +60,14 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input defaultValue={userInfo.email} disabled />
+            <Input
+              defaultValue={userInfo.email}
+              disabled
+              className={classNames(
+                { [styles.inputStyle]: screens },
+                { [styles.inputStyleXs]: screens.xs }
+              )}
+            />
           </Form.Item>
 
           {/* name */}
@@ -71,7 +82,13 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input defaultValue={userInfo.name} />
+            <Input
+              defaultValue={userInfo.name}
+              className={classNames(
+                { [styles.inputStyle]: screens },
+                { [styles.inputStyleXs]: screens.xs }
+              )}
+            />
           </Form.Item>
 
           {/* phone */}
@@ -86,7 +103,13 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input defaultValue={userInfo.phone} />
+            <Input
+              defaultValue={userInfo.phone}
+              className={classNames(
+                { [styles.inputStyle]: screens },
+                { [styles.inputStyleXs]: screens.xs }
+              )}
+            />
           </Form.Item>
 
           {/* image */}
@@ -102,7 +125,15 @@ function UpdateUserProfile() {
             ]}
           >
             <Upload>
-              <Button icon={<UploadOutlined />}>Select file</Button>
+              <Button
+                icon={<UploadOutlined />}
+                className={classNames(
+                  { [styles.inputStyle]: screens },
+                  { [styles.inputStyleXs]: screens.xs }
+                )}
+              >
+                Select file
+              </Button>
             </Upload>
           </Form.Item>
 
@@ -117,7 +148,13 @@ function UpdateUserProfile() {
               },
             ]}
           >
-            <Input.Password placeholder="Enter new password" />
+            <Input.Password
+              placeholder="Enter new password"
+              className={classNames(
+                { [styles.inputStyle]: screens },
+                { [styles.inputStyleXs]: screens.xs }
+              )}
+            />
           </Form.Item>
         </section>
         {/* 1st section end */}
@@ -140,7 +177,14 @@ function UpdateUserProfile() {
             ]}
           >
             {/* <Input /> */}
-            <Select defaultValue={userInfo.address} onChange={handleChange}>
+            <Select
+              defaultValue={userInfo.address}
+              className={classNames(
+                { [styles.inputStyle]: screens },
+                { [styles.inputStyleXs]: screens.xs }
+              )}
+              onChange={handleChange}
+            >
               {shippingAddressList.map((address) => (
                 <Option value={address.address} key={address.id}>
                   {address.address}

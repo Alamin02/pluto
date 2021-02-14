@@ -25,15 +25,24 @@ function Navbar() {
   const screens = useBreakpoint();
 
   return (
+    <div className={styles.navBackgroundColor}>
     <div className={styles.navContainer}>
       <nav className={styles.navbarTop}>
         <div>
           <PhoneOutlined /> +880 1234 123456
         </div>
-        <div className={classNames(
-          { [styles.navbarTopCenter]: screens },
-          { [styles.navbarTopCenterXs]: screens.xs },
-        )}>Pluto</div>
+        <div className={styles.logoContainer}>
+          <Link to={navbarMenus.homeUrl}>
+            <img
+              src={navbarMenus.logoSrc}
+              alt={navbarMenus.logoAlt}
+              className={classNames(
+                { [styles.logo]: screens },
+                { [styles.logoXs]: screens.xs }
+              )}
+            />
+          </Link>
+        </div>
         <div className={styles.navbarTopRight}>
           <Link to="/login">log in</Link>
           &nbsp;&nbsp;|&nbsp;&nbsp;
@@ -45,7 +54,7 @@ function Navbar() {
       <hr className={styles.navHr} />
 
       {/* bottom navbar */}
-      <Menu mode="horizontal" className={styles.navbarBottom}>
+      <Menu mode="horizontal" className={styles.navbarBottom} style={{ backgroundColor: "#FAFAFA" }} >
         <Menu.Item>
           <Link to={navbarMenus.homeUrl} style={menuStyle}>
             {navbarMenus.home}
@@ -70,17 +79,24 @@ function Navbar() {
         </SubMenu>
 
         <Menu.Item>
-          <Link to={navbarMenus.offersUrl} style={menuStyle}>{navbarMenus.offers}</Link>
+          <Link to={navbarMenus.offersUrl} style={menuStyle}>
+            {navbarMenus.offers}
+          </Link>
         </Menu.Item>
 
         <Menu.Item>
-          <Link to={navbarMenus.blogUrl} style={menuStyle}>{navbarMenus.blog}</Link>
+          <Link to={navbarMenus.blogUrl} style={menuStyle}>
+            {navbarMenus.blog}
+          </Link>
         </Menu.Item>
 
         <Menu.Item>
-          <Link to={navbarMenus.contactUrl} style={menuStyle}>{navbarMenus.contact}</Link>
+          <Link to={navbarMenus.contactUrl} style={menuStyle}>
+            {navbarMenus.contact}
+          </Link>
         </Menu.Item>
       </Menu>
+    </div>
     </div>
   );
 }

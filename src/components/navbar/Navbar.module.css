@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+.navBackgroundColor{
+  background-color: #FAFAFA;
+}
 
 .navContainer {
   max-width: 1200px;
@@ -11,18 +13,20 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
-  padding-top: 1rem;
+  padding-top: 1.5rem;
   padding-bottom: 1rem;
 }
 
-.navbarTopCenter {
-  font-family: "Playfair Display", serif;
-  font-size: 2.5rem;
-  text-transform: uppercase;
+.logoContainer{
   text-align: center;
 }
-.navbarTopCenterXs{
-  font-size: 1.5rem;
+.logo{
+  height: 3rem;
+  width: auto;
+}
+.logoXs{
+  height: 2rem;
+  width: auto;
 }
 
 .navbarTopRight {
@@ -41,5 +45,4 @@
   text-align: center;
   padding: 1rem;
   border-bottom: none;
-  margin-bottom: 0.5rem;
 }

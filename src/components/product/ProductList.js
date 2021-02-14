@@ -15,7 +15,7 @@ function ProductList() {
       <HeaderSection headerText="popular products" />
       <Row gutter={[16, 16]}>
         {sampleProductData.map((item) => (
-          <Col xxl={6} xl={8} md={12} sm={12} xs={24} key={item.id}>
+          <Col xl={6} md={8} sm={12} xs={12} key={item.id}>
             <Link to={`/products/${item.id}`}>
               <CardItem
                 title={item.productName}
@@ -30,7 +30,6 @@ function ProductList() {
         <Link to="/products/list">
           <ButtonBlack
             buttonText="View all products"
-            className={styles.buttonStyle}
           />
         </Link>
       </div>

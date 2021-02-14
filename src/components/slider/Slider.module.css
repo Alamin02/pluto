@@ -88,10 +88,12 @@
 .btnCustom {
   width: 120px;
   height: 40px;
-  background: black;
+  background: #222222;
   color: white;
-  border: 2px solid rgb(233, 193, 15);
+  border: 2px solid #111111;
   margin-top: 15px;
+  cursor: pointer;
+  border-radius: 0.13rem;
 }
 @media screen and (max-width: 550px) {
   .one,

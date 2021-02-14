@@ -5,11 +5,9 @@ export default function PriceAndSummary(props) {
   const { summaryText, productName, ProductPrice } = props;
   return (
     <div>
-      <div className={styles.marginBottom}>
+      <div>
         <h1>{productName}</h1>
-        <h2>
-          <b>BDT&nbsp;{ProductPrice}</b>
-        </h2>
+        <b>৳&nbsp;{ProductPrice}</b>
         <p>{summaryText}</p>
       </div>
     </div>

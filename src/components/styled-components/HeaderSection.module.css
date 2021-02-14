@@ -1,25 +1,17 @@
 .header {
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 2.5rem;
-  color: #333333;
+  text-transform: capitalize;
+  letter-spacing: -0.03em;
+  font-size: 2rem;
+  color: #666666;
   margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 .headerSm {
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: bold;
+  text-transform: capitalize;
+  letter-spacing: -0.025em;
   font-size: 1.5rem;
   color: #333333;
   margin-top: 0;
-}
-
-.hrStyle {
-  border: 2px solid #1890ff;
-  border-radius: 9999px;
-  width: 10%;
-  margin-top: -0.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }

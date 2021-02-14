@@ -9,7 +9,6 @@ function ContactUs() {
             <GetInTouch />
             <MessageForm />
         </div>
-
     )
 }
 export default ContactUs;

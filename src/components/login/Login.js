@@ -1,19 +1,17 @@
 import classNames from "classnames";
-import { Form, Input, Button, Checkbox, Typography } from "antd";
+import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import styles from "./Login.module.css";
 import Heading from "../heading/Heading";
 
-// const { Link } = Typography;
-
 const Login = () => {
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
   return (
-    <>      
+    <>
       <div className={classNames(styles.bgColor, styles.block)}>
         <div className={styles.containerFluid}>
           <Heading

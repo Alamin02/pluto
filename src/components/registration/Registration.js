@@ -84,12 +84,12 @@ const Registration = () => {
           >
             {/* Username */}
             <Form.Item
-              name="username"
-              label={<span>Username&nbsp;</span>}
+              name="fullname"
+              label={<span>Fullname&nbsp;</span>}
               rules={[
                 {
                   required: true,
-                  message: "Please input your username!",
+                  message: "Please input your fullname!",
                   whitespace: true,
                 },
               ]}

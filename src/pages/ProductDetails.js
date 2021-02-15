@@ -5,12 +5,10 @@ import ProductView from "../components/product-view/ProductView";
 import productList from "../assets/data/sampleProductData";
 import Error404 from "../components/error-404/Error404";
 import HeaderSection from "../components/styled-components/HeaderSection";
+import appStyles from "../App.module.css";
 
 const container = {
-  maxWidth: "1200px",
-  margin: "0 auto",
-  marginTop: "25px",
-  padding: "0 1rem",
+  marginTop: "20px",
 };
 
 const ProductDetails = () => {
@@ -21,9 +19,9 @@ const ProductDetails = () => {
   if (!product) return <Error404 />;
 
   return (
-    <div>
-      {/* <MainHeader name="product details" sub="home ⋅ shop ⋅ products" /> */}
+    <div className={appStyles.containerMain}>
       <div style={container}>
+        {/* <MainHeader name="product details" sub="home ⋅ shop ⋅ products" /> */}
         <HeaderSection headerText="product details" />
       </div>
       <ProductView product={product} />

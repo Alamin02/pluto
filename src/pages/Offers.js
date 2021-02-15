@@ -6,10 +6,11 @@ import MainHeader from "../components/main-header/MainHeader";
 import HeaderSection from "../components/styled-components/HeaderSection";
 import ProductList from "../assets/data/sampleProductData";
 import styles from "./Offers.module.css";
+import appStyles from "../App.module.css"
 
 function Offers() {
   return (
-    <>
+    <div className={appStyles.containerMain}>
       {/* <MainHeader name="Latest Offer" sub="home-shop-offer" /> */}
       <div className={styles.container}>
         <HeaderSection headerText="latest offers" />
@@ -38,7 +39,7 @@ function Offers() {
           })}
         </Row>
       </div>
-    </>
+    </div>
   );
 }
 

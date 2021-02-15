@@ -1,11 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Cantata+One&family=Montserrat:wght@400;600;700&display=swap");
 
-* {
+/* * {
   font-family: "Montserrat";
-}
+} */
 .container {
-  max-width: 1170px;
-  margin: 50px auto;
+  margin: 20px 0;
 }
 .tableData {
   padding: 2vmin;

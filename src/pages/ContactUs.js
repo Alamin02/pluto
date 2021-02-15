@@ -3,12 +3,10 @@ import MessageForm from "../components/contact-us/MessageForm";
 import MainHeader from "../components/main-header/MainHeader";
 import GetInTouch from "../components/contact-us/GetInTouch";
 import HeaderSection from "../components/styled-components/HeaderSection";
+import appStyles from "../App.module.css";
 
 const container = {
-  maxWidth: "1200px",
-  margin: "0 auto",
   marginTop: "1rem",
-  padding: "0 1rem",
 };
 
 const getInTouchContainer = {
@@ -17,14 +15,16 @@ const getInTouchContainer = {
 
 function ContactUs() {
   return (
-    <div style={container}>
-      {/* <MainHeader name="Get In Touch" sub="" /> */}
-      <HeaderSection headerText="get in touch" />
-      <div style={getInTouchContainer}>
-        <GetInTouch />
+    <div className={appStyles.containerMain}>
+      <div style={container}>
+        {/* <MainHeader name="Get In Touch" sub="" /> */}
+        <HeaderSection headerText="get in touch" />
+        <div style={getInTouchContainer}>
+          <GetInTouch />
+        </div>
+        <br />
+        <MessageForm />
       </div>
-      <br />
-      <MessageForm />
     </div>
   );
 }

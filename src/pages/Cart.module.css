@@ -1,8 +1,5 @@
 .container {
-  max-width: 1200px;
-  margin: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  margin-top: 1rem;
 }
 
 .pageTitle {
@@ -15,27 +12,26 @@
   margin-bottom: 3rem;
 }
 
-.cartHr{
+.cartHr {
   border: 1px solid #eeeeee;
   border-radius: 9999px;
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
 
-.emptySpace{
+.emptySpace {
   margin-bottom: 2rem;
 }
 
-.bottomSection{
+.bottomSection {
   display: flex;
   justify-content: space-between;
 }
 
-.totalPriceSection{
+.totalPriceSection {
   margin-bottom: 1.5rem;
 }
 
-.checkoutButton{
+.checkoutButton {
   margin-top: 1.5rem;
 }
-

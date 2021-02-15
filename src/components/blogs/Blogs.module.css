@@ -1,19 +1,17 @@
-.container {
+/* .container {
   max-width: 1170px;
   margin: 50px auto;
   padding-bottom: 50px;
-}
-.cardContainer {
+} */
+/* .cardContainer {
   padding: 10px;
-}
+} */
 .cardBody {
   border: 2px solid rgb(239, 240, 240);
   overflow: hidden;
 }
 .cardBodyText {
   padding: 20px;
-  padding-bottom: 40px;
-  text-align: justify;
 }
 .textClip {
   overflow: hidden;
@@ -21,6 +19,7 @@
   display: -webkit-box;
   -webkit-line-clamp: 3; /* number of lines to show */
   -webkit-box-orient: vertical;
+  margin-bottom: 20px;
 }
 .imgStyled {
   width: 100%;
@@ -31,13 +30,13 @@
   -ms-transition: 0.5s ease-in;
   -o-transition: 0.5s ease-in;
 }
-img.imgStyled:hover {
+/* img.imgStyled:hover {
   transform: scale(1.1);
   -webkit-transform: scale(1.1);
   -moz-transform: scale(1.1);
   -ms-transform: scale(1.1);
   -o-transform: scale(1.1);
-}
+} */
 .paginationContainer {
   display: flex;
   justify-content: center;

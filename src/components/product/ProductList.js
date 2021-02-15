@@ -16,8 +16,8 @@ function ProductList() {
         {sampleProductData.map((item) => {
           if (item.offer) {
             return (
-              <Col xxl={6} xl={8} md={12} sm={12} xs={24} key={item.id}>
-                <Link to={`/offers`}>
+              <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={item.id}>
+                <Link to={`/products/${item.id}`}>
                   <Badge.Ribbon color="red" text={item.offer}>
                     <CardItem
                       title={item.productName}
@@ -30,7 +30,7 @@ function ProductList() {
             );
           } else {
             return (
-              <Col xxl={6} xl={8} md={12} sm={12} xs={24} key={item.id}>
+              <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={item.id}>
                 <Link to={`/products/${item.id}`}>
                   <CardItem
                     title={item.productName}

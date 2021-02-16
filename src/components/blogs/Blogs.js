@@ -7,9 +7,9 @@ import sampleBlogList from "./sampleBlogList";
 export default function Blogs() {
   return (
     <div className={styles.container}>
-      <Row gutter={[8, 8]} justify="center">
+      <Row gutter={[32, 32]}>
         {sampleBlogList.map((blog) => (
-          <Col key={blog.id} sm={18} md={12} lg={12}>
+          <Col key={blog.id} sm={24} md={12} lg={12}>
             <BlogCard
               id={blog.id}
               imageSrc={blog.imageSrc}

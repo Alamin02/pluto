@@ -5,6 +5,7 @@ import sampleBlogList from "../components/blogs/sampleBlogList";
 import BlogDetailsCard from "../components/blogs/BlogDetailsCard";
 import Error404 from "../components/error-404/Error404";
 import styles from "../components/blogs/Blogs.module.css";
+import appStyles from "../App.module.css";
 
 export default function BlogDetails() {
   const { id } = useParams();
@@ -14,12 +15,8 @@ export default function BlogDetails() {
   if (!blog) return <Error404 />;
 
   return (
-    <div className={styles.container}>
-      <Row justify="center">
-        <Col span="18">
-          <BlogDetailsCard blog={blog} />
-        </Col>
-      </Row>
+    <div className={appStyles.containerMain}>
+      <BlogDetailsCard blog={blog} />
     </div>
   );
 }

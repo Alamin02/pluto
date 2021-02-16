@@ -1,9 +1,5 @@
 .container {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
   margin-top: 1rem;
-  padding: 0 1rem;
 }
 
 .mainHeading {
@@ -35,14 +31,14 @@
   margin-top: 1rem;
   flex-direction: row;
 }
-.basicInfoXs{
+.basicInfoXs {
   flex-direction: column;
 }
 
 .userAvatar {
   width: 6rem;
 }
-.userAvatarXs{
+.userAvatarXs {
   width: 9rem;
   margin-bottom: 1.7rem;
   margin-top: 0.5rem;
@@ -52,7 +48,7 @@
 .basicInfoText {
   margin-left: 2.5rem;
 }
-.basicInfoTextXs{
+.basicInfoTextXs {
   margin-left: 0;
 }
 
@@ -61,7 +57,7 @@
   margin-bottom: 1rem;
   letter-spacing: -0.03em;
 }
-.welcomeMessageXs{
+.welcomeMessageXs {
   font-size: 1.4rem;
   line-height: 1.2;
   letter-spacing: -0.035em;

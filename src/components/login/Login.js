@@ -87,9 +87,15 @@ const Login = () => {
           </Form>
           <Divider style={{ marginTop: "-10px" }}>Or Login Using </Divider>
           <div className={styles.icon}>
-            <Link to="#"><FacebookFilled style={{ color: "#08c" }} /></Link>
-            <Link to="#"><GoogleSquareFilled style={{ color: "#db3236" }} /></Link>
-            <Link to="#"><TwitterSquareFilled style={{ color: "#1da1f2" }} /></Link>                                    
+            <Link to="#">
+              <FacebookFilled style={{ color: "#08c" }} />
+            </Link>
+            <Link to="#">
+              <GoogleSquareFilled style={{ color: "#db3236" }} />
+            </Link>
+            <Link to="#">
+              <TwitterSquareFilled style={{ color: "#1da1f2" }} />
+            </Link>                        
           </div>
         </div>
       </div>

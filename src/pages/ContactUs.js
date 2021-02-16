@@ -10,7 +10,7 @@ const container = {
 };
 
 const getInTouchContainer = {
-  padding: "10px 100px",
+  padding: "10px 25px",
 };
 
 function ContactUs() {

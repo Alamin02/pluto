@@ -23,8 +23,8 @@ const ProductDetails = () => {
       <div style={container}>
         {/* <MainHeader name="product details" sub="home ⋅ shop ⋅ products" /> */}
         <HeaderSection headerText="product details" />
+        <ProductView product={product} />
       </div>
-      <ProductView product={product} />
     </div>
   );
 };

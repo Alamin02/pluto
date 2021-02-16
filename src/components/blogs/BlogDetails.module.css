@@ -24,7 +24,6 @@
   -o-border-radius: 2%; */
 }
 .descriptionText {
-  text-align: justify;
   font-size: 18px;
 }
 @media (max-width: 576px) {

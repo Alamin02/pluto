@@ -87,9 +87,15 @@ const Login = () => {
           </Form>
           <Divider>Or</Divider>
           <div className={styles.icon}>
-            <FacebookFilled style={{ color: "#08c" }} />
-            <GoogleSquareFilled style={{ color: "#db3236" }} />
-            <TwitterSquareFilled style={{ color: "#1da1f2" }} />
+            <Link to="#">
+              <FacebookFilled style={{ color: "#08c" }} />
+            </Link>
+            <Link to="#">
+              <GoogleSquareFilled style={{ color: "#db3236" }} />
+            </Link>
+            <Link to="#">
+              <TwitterSquareFilled style={{ color: "#1da1f2" }} />
+            </Link>                        
           </div>
         </div>
       </div>

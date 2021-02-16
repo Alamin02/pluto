@@ -3,3 +3,13 @@
   background: #454545;
   padding: 116px;
 }
+.myTitle {
+  color: #fff !important;
+  text-transform: uppercase;
+}
+.myTitleXs {
+  font-size: 20px !important;
+}
+.subTitleXs {
+  font-size: 15px !important;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Space } from "antd";
+import { Image } from 'antd';
 import image1_large from "../../assets/images/watch-1-large.jpg";
 import image1 from "../../assets/images/watch-1-small.jpg";
 import image2 from "../../assets/images/watch-2-small.jpg";
@@ -48,7 +49,8 @@ function ProductView({ product }) {
         <Col sm={18} md={12} lg={12}>
           <div style={{ padding: "20px" }}>
             <div>
-              <img alt="example" src={imgSrc} />
+              <Image src={imgSrc} alt='example' />
+              {/* <img alt="example" src={imgSrc} /> */}
             </div>
             <Row gutter={[6, 6]} style={{ marginTop: "2px" }}>
               <ProductImage

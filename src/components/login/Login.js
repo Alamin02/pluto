@@ -1,6 +1,12 @@
 import classNames from "classnames";
-import { Form, Input, Button, Checkbox } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Checkbox, Divider } from "antd";
+import {
+  UserOutlined,
+  LockOutlined,
+  FacebookFilled,
+  GoogleSquareFilled,
+  TwitterSquareFilled,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import styles from "./Login.module.css";
@@ -79,6 +85,12 @@ const Login = () => {
               Or <Link to="/registration">register now!</Link>
             </Form.Item>
           </Form>
+          <Divider>Or</Divider>
+          <div className={styles.icon}>
+            <FacebookFilled style={{ color: "#08c" }} />
+            <GoogleSquareFilled style={{ color: "#db3236" }} />
+            <TwitterSquareFilled style={{ color: "#1da1f2" }} />
+          </div>
         </div>
       </div>
     </>

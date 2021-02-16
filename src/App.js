@@ -14,7 +14,7 @@ import Footer from "./components/footer/Footer";
 import Error404 from "./components/error-404/Error404";
 import BlogDetails from "./pages/BlogDetails";
 import RegistrationPage from "./pages/Registration";
-import LoginPage from "./pages/Login";
+import LoginPage from "./pages/login-page/Login";
 import Offers from "./pages/Offers";
 import ContactUs from "./pages/ContactUs";
 import ForgetPasswordPage from "./pages/ForgetPassword";

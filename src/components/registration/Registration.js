@@ -9,7 +9,13 @@ import {
   Checkbox,
   Button,
   Typography,
+  Divider
 } from "antd";
+import {
+  FacebookFilled,
+  GoogleSquareFilled,
+  TwitterSquareFilled,
+} from "@ant-design/icons";
 
 import styles from "./Registration.module.css";
 import Heading from "../heading/Heading";
@@ -69,13 +75,14 @@ const Registration = () => {
         <div className={styles.containerFluid}>
           <Heading
             headingStyle={styles.titleHolder}
-            headingTitle="Register Here"
+            headingTitle="Create Your Account"
           />
           <Form
             {...formItemLayout}
             form={form}
             className={styles.containerFluid}
             name="register"
+            labelAlign="left" 
             onFinish={onFinish}
             initialValues={{
               prefix: "88",
@@ -221,6 +228,18 @@ const Registration = () => {
               </Button>
             </Form.Item>
           </Form>
+          <Divider style={{ marginTop: "-10px" }}>Or Register Using </Divider>
+          <div className={styles.icon}>
+            <Link to="#">
+              <FacebookFilled style={{ color: "#08c" }} />
+            </Link>
+            <Link to="#">
+              <GoogleSquareFilled style={{ color: "#db3236" }} />
+            </Link>
+            <Link to="#">
+              <TwitterSquareFilled style={{ color: "#1da1f2" }} />
+            </Link>                        
+          </div>
         </div>
       </div>
     </>

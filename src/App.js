@@ -13,7 +13,7 @@ import BlogPage from "./pages/BlogPage";
 import Footer from "./components/footer/Footer";
 import Error404 from "./components/error-404/Error404";
 import BlogDetails from "./pages/BlogDetails";
-import RegistrationPage from "./pages/Registration";
+import RegistrationPage from "./pages/registration-page/Registration";
 import LoginPage from "./pages/login-page/Login";
 import Offers from "./pages/Offers";
 import ContactUs from "./pages/ContactUs";

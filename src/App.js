@@ -17,7 +17,7 @@ import RegistrationPage from "./pages/registration-page/Registration";
 import LoginPage from "./pages/login-page/Login";
 import Offers from "./pages/Offers";
 import ContactUs from "./pages/ContactUs";
-import ForgetPasswordPage from "./pages/ForgetPassword";
+import ForgetPasswordPage from "./pages/forget-pw-page/ForgetPassword";
 import ResetPasswordPage from "./pages/ResetPassword";
 
 function App() {

@@ -1,8 +1,10 @@
 import classNames from "classnames";
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Typography } from 'antd';
 
 import styles from './ForgetPassword.module.css';
 import Heading from "../heading/Heading";
+
+const { Text } = Typography;
 
 const ForgetPassword = () => {
   return (
@@ -11,12 +13,17 @@ const ForgetPassword = () => {
         <div className={styles.containerFluid}>
           <Heading
             headingStyle={styles.titleHolder}
-            headingTitle="Recover Password"
-            
+            headingTitle="Recover Your Password"            
           />
+          <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+            <Text>
+              <span></span>Enter the email address associated with your account and we will send you a link to reset your password
+            </Text>
+          </div>
           <Form
             name="forget-password"
             className={classNames(styles.forgetPassForm, styles.containerFluid)}
+            layout="vertical"
             initialValues={{
               remember: true,
             }}
@@ -24,7 +31,7 @@ const ForgetPassword = () => {
             {/* Email */}
             <Form.Item
               name="email"
-              label="Type Your E-mail"
+              label="E-mail"
               rules={[
                 {
                   type: "email",

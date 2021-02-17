@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { Form, Input, Button, Typography } from 'antd';
+import { Link } from "react-router-dom";
 
 import styles from './ForgetPassword.module.css';
 import Heading from "../heading/Heading";
@@ -56,6 +57,11 @@ const ForgetPassword = () => {
               </Button>
             </Form.Item>
           </Form>
+          <div style={{ textAlign: 'center' }}>
+            <Text>
+              Don't have an account ? <Link to="/registration">register now!</Link>
+            </Text>
+          </div>
         </div>
       </div>
     </>

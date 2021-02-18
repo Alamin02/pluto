@@ -1,0 +1,17 @@
+.header {
+  text-transform: capitalize;
+  letter-spacing: -0.03em;
+  font-size: 2rem;
+  color: #666666;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.headerSm {
+  text-transform: capitalize;
+  letter-spacing: -0.025em;
+  font-size: 1.5rem;
+  color: #333333;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}

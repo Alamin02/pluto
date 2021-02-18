@@ -1,0 +1,39 @@
+.h1Styled {
+  font-weight: 600;
+  font-size: 4vmin;
+  margin-top: 1rem;
+}
+.listStyled {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 35%;
+  display: flex;
+  justify-content: space-between;
+}
+.imageContainer {
+  padding: 30px 0px;
+}
+.imageStyled {
+  max-width: 100%;
+  height: auto;
+  /* border-radius: 2%;
+  -webkit-border-radius: 2%;
+  -moz-border-radius: 2%;
+  -ms-border-radius: 2%;
+  -o-border-radius: 2%; */
+}
+.descriptionText {
+  font-size: 18px;
+}
+@media (max-width: 576px) {
+  .listStyled {
+    width: 100%;
+    font-size: 2.5vmin;
+  }
+}
+@media (min-width: 577px) and (max-width: 950px) {
+  .listStyled {
+    width: 80%;
+  }
+}

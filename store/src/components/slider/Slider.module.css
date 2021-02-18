@@ -1,0 +1,253 @@
+@import url("https://fonts.googleapis.com/css2?family=Cantata+One&family=Montserrat:wght@400;600;700&display=swap");
+/******* Slider custom css start *******/
+.mainContainer {
+  position: relative;
+  height: auto;
+  max-width: 100%;
+  background: #34495e;
+}
+
+.arrowLeft {
+  position: absolute;
+  z-index: 1;
+  top: 44.8%;
+  left: 0%;
+  margin: 0;
+  padding: 0;
+  color: #ecf0f1;
+  color: black;
+  font-size: 20px;
+  width: 50px;
+  height: 50px;
+  background: white;
+  line-height: 50px;
+  cursor: pointer;
+}
+.arrowRight {
+  color: #ecf0f1;
+  color: black;
+  font-size: 20px;
+  position: absolute;
+  z-index: 1;
+  top: 44.8%;
+  right: 0%;
+  width: 50px;
+  height: 50px;
+  background: white;
+  line-height: 50px;
+  cursor: pointer;
+}
+.one {
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../assets/images/slider-image1.jpg");
+  height: 600px;
+}
+.two {
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../assets/images/slider-image2.jpg");
+  height: 600px;
+}
+.three {
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../assets/images/slider-image3.jpg");
+  height: 600px;
+}
+.four {
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../assets/images/slider-image4.jpg");
+  height: 600px;
+}
+.tBox {
+  width: 600px;
+  text-align: left;
+  padding-top: 100px;
+  margin-left: 150px;
+  color: black;
+  font-family: "Montserrat";
+}
+.tBox h1 {
+  font-size: 40px;
+  font-weight: 400;
+}
+.tBox p {
+  color: rgb(0, 0, 0);
+}
+
+.btnCustom {
+  width: 120px;
+  height: 40px;
+  background: #222222;
+  color: white;
+  border: 2px solid #111111;
+  margin-top: 15px;
+  cursor: pointer;
+  border-radius: 0.13rem;
+}
+@media screen and (max-width: 550px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 200px !important;
+
+    background-size: cover;
+  }
+  .arrowRight,
+  .arrowLeft {
+    visibility: hidden;
+  }
+  .btnCustom {
+    width: 90px !important;
+    height: 30px;
+    font-size: 12px !important;
+    background: black;
+    color: white;
+    border: 2px solid rgb(233, 193, 15);
+  }
+
+  .tBox {
+    width: 180px !important;
+    text-align: left;
+    padding-top: 20px;
+    margin-left: 20px;
+    color: black;
+    font-family: "Montserrat";
+  }
+  .tBox h1 {
+    font-size: 15px !important;
+    font-weight: 200 !important;
+  }
+  .tBox p {
+    font-size: 10px !important;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 768px) {
+  .tBox {
+    width: 280px !important;
+    text-align: left;
+    padding-top: 20px;
+    margin-left: 20px;
+    color: black;
+    font-family: "Montserrat";
+  }
+}
+@media screen and (max-width: 768px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 250px;
+
+    background-size: cover;
+  }
+  .btnCustom {
+    width: 90px !important;
+    height: 30px;
+    font-size: 12px !important;
+    background: black;
+    color: white;
+    border: 2px solid rgb(233, 193, 15);
+  }
+  .tBox {
+    width: 220px;
+    text-align: left;
+    padding-top: 20px;
+    margin-left: 20px;
+    color: black;
+    font-family: "Montserrat";
+  }
+  .tBox h1 {
+    font-size: 20px;
+    font-weight: 300;
+  }
+  .tBox p {
+    font-size: 13px;
+  }
+  .arrowLeft,
+  .arrowRight {
+    background: none;
+    visibility: hidden;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 300px;
+
+    background-size: cover;
+  }
+
+  .tBox {
+    width: 300px;
+    text-align: left;
+    padding-top: 50px;
+    margin-left: 50px;
+    color: black;
+    font-family: "Montserrat";
+  }
+  .tBox h1 {
+    font-size: 23px;
+    font-weight: 300;
+  }
+  .tBox p {
+    font-size: 14px;
+  }
+  .arrowLeft,
+  .arrowRight {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 15px;
+  }
+}
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 400px;
+
+    background-size: cover;
+  }
+
+  .tBox {
+    width: 400px;
+    text-align: left;
+    padding-top: 90px;
+    margin-left: 100px;
+    color: black;
+    font-family: "Montserrat";
+  }
+  .tBox h1 {
+    font-size: 40px;
+    font-weight: 300;
+  }
+  .tBox p {
+    font-size: 13px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .one,
+  .two,
+  .three,
+  .four {
+    height: 500px;
+    background-size: cover;
+  }
+  .tBox {
+    width: 500px;
+  }
+}
+
+/******* Slider custom css end *******/

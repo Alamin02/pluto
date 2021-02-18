@@ -1,0 +1,37 @@
+.container {
+  margin-top: 1rem;
+}
+
+.pageTitle {
+  text-transform: uppercase;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.emptySpace {
+  margin-bottom: 3rem;
+}
+
+.cartHr {
+  border: 1px solid #eeeeee;
+  border-radius: 9999px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.emptySpace {
+  margin-bottom: 2rem;
+}
+
+.bottomSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totalPriceSection {
+  margin-bottom: 1.5rem;
+}
+
+.checkoutButton {
+  margin-top: 1.5rem;
+}

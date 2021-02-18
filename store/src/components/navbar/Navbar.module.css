@@ -1,0 +1,41 @@
+.navBackgroundColor {
+  background-color: #fafafa;
+}
+
+.navbarTop {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.logoContainer {
+  text-align: center;
+}
+.logo {
+  height: 3rem;
+  width: auto;
+}
+.logoXs {
+  height: 2rem;
+  width: auto;
+}
+
+.navbarTopRight {
+  text-align: right;
+}
+.navbarTopRight::first-letter {
+  text-transform: uppercase;
+}
+
+.navHr {
+  border: 1px solid #eeeeee;
+  border-radius: 9999px;
+}
+
+.navbarBottom {
+  text-align: center;
+  padding: 1rem;
+  border-bottom: none;
+}

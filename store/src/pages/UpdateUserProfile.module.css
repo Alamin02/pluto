@@ -1,0 +1,37 @@
+.container {
+  margin-top: 1rem;
+}
+
+.mainHeading {
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.eachSection {
+  border: 0.2rem solid #eeeeee;
+  border-radius: 5px;
+  padding: 1.5rem;
+}
+
+.eachSectionTitle {
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-bottom: 1.5rem;
+}
+
+.buttonSection {
+  border: 0.2rem transparent #eeeeee;
+  padding-left: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+.inputStyle{
+  margin-left: 3rem;
+}
+.inputStyleXs{
+  margin-left: 0rem;
+}
+
+.emptySpace {
+  padding: 1rem;
+}

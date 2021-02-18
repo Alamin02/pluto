@@ -11,6 +11,12 @@ export default function AddToCart({ product }) {
   const dispatch = useDispatch();
   const productNumber = useSelector((state) => state.update.count);
 
+  const productList = useSelector((state) => state.cart.products);
+
+  const isProductOnCart = !!productList.find(
+    (_product) => _product.id === product.id
+  );
+
   const handleAddToCart = () => {
     dispatch({ type: "cart/addProduct", payload: product });
     openNotification({ productTitle: product.productName, type: "success" });
@@ -41,7 +47,11 @@ export default function AddToCart({ product }) {
         </Radio.Button>
       </Radio.Group>
       <br />
-      <BlackButton buttonText="Add to Cart" onClick={handleAddToCart} />
+      {isProductOnCart ? (
+        <BlackButton buttonText="Visit Cart" />
+      ) : (
+        <BlackButton buttonText="Add to Cart" onClick={handleAddToCart} />
+      )}
     </div>
   );
 }

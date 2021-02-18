@@ -52,14 +52,9 @@ function ProductView({ product }) {
         <Col sm={18} md={12} lg={12}>
 
           <div style={{ padding: "20px" }}>
-            <div>
-              <Image src={imgSrc} alt='example' />
-              {/* <img alt="example" src={imgSrc} /> */}
-            </div>
             <div className={styles.imageWrapper}>
               <div className={styles.imgStyled}>
-                <img alt="example" src={imgSrc} />
-
+                <Image src={imgSrc} alt="example" />
               </div>
               <Row gutter={[6, 6]} style={{ marginTop: "2px" }}>
                 <ProductImage

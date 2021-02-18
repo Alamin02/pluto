@@ -44,7 +44,7 @@ const ProductImage = ({ imageLink, onClick }) => {
 function ProductView({ product }) {
   const { productName, price, imageUrl } = product;
   const [imgSrc, setImgSrc] = useState(imageUrl);
-  const ProductNumber = useSelector((state) => state.update.count);
+  const productNumber = useSelector((state) => state.update.count);
 
   return (
     <div className={styles.container}>
@@ -88,7 +88,7 @@ function ProductView({ product }) {
               <PriceAndSummary
                 summaryText={summaryText}
                 productName={productName}
-                ProductPrice={price * ProductNumber}
+                ProductPrice={price * productNumber}
               />
               <AddToCart product={product} />
 

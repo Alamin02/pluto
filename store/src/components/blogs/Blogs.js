@@ -1,13 +1,13 @@
 import React from "react";
 import { Row, Col } from "antd";
-import styles from "./Blogs.module.css";
+import AppStyles from "../../App.module.css";
 import BlogCard from "./BlogCard";
 import sampleBlogList from "./sampleBlogList";
 
 export default function Blogs() {
   return (
-    <div className={styles.container}>
-      <Row gutter={[32, 32]}>
+    <div className={AppStyles.containerMain}>
+      <Row>
         {sampleBlogList.map((blog) => (
           <Col key={blog.id} sm={24} md={12} lg={12}>
             <BlogCard

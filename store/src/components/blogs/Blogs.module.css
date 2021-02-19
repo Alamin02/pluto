@@ -1,17 +1,17 @@
-/* .container {
+.container {
   max-width: 1170px;
   margin: 50px auto;
-  padding-bottom: 50px;
-} */
-/* .cardContainer {
-  padding: 10px;
-} */
+}
+.cardContainer {
+  padding: 15px;
+}
 .cardBody {
   border: 2px solid rgb(239, 240, 240);
   overflow: hidden;
 }
 .cardBodyText {
   padding: 20px;
+  padding-bottom: 30px;
 }
 .textClip {
   overflow: hidden;

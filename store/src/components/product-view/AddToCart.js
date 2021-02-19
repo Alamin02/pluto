@@ -6,11 +6,8 @@ import openNotification from "../notification/openNotification";
 
 import styles from "./ProductView.module.css";
 import BlackButton from "../styled-components/ButtonBlack";
-
 export default function AddToCart({ product }) {
   const dispatch = useDispatch();
-  const productNumber = useSelector((state) => state.update.count);
-
   const productList = useSelector((state) => state.cart.products);
 
   const isProductOnCart = !!productList.find(
@@ -21,17 +18,11 @@ export default function AddToCart({ product }) {
     dispatch({ type: "cart/addProduct", payload: product });
     openNotification({ productTitle: product.productName, type: "success" });
   };
-  const handlePlusButton = () => {
-    dispatch({ type: "Add" });
-  };
-  const handleMinusButton = () => {
-    dispatch({ type: "Remove" });
-  };
 
   return (
     <div>
       <Radio.Group>
-        <Radio.Button onClick={() => handleMinusButton()}>
+        <Radio.Button>
           <MinusOutlined />
         </Radio.Button>
         <InputNumber
@@ -39,10 +30,9 @@ export default function AddToCart({ product }) {
           max={20}
           step={1}
           className={styles.inputStyled}
-          defaultValue={productNumber}
-          value={productNumber}
+          defaultValue={1}
         />
-        <Radio.Button onClick={() => handlePlusButton()}>
+        <Radio.Button>
           <PlusOutlined />
         </Radio.Button>
       </Radio.Group>

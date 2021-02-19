@@ -1,7 +1,6 @@
-import { Grid, Card } from "antd";
+import { Card } from "antd";
 
 const { Meta } = Card;
-const { useBreakpoint } = Grid;
 
 const cardStyle = {
   height: 250,
@@ -21,8 +20,6 @@ const priceStyle = {
 };
 
 const CardItem = ({ title, src, price }) => {
-  const screens = useBreakpoint();
-
   return (
     <Card
       hoverable
@@ -31,7 +28,10 @@ const CardItem = ({ title, src, price }) => {
     >
       <Meta style={productTitleStyle} title={title} />
       <p style={priceStyle}>
-        <sup>৳</sup>&nbsp;{price}
+        <b>
+          {/* <sup> ৳</sup>&nbsp;{price} */}
+          ৳&nbsp;{price}
+        </b>
       </p>
     </Card>
   );

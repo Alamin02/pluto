@@ -7,7 +7,7 @@ import sampleProductData from "../../assets/data/sampleProductData";
 import CardItem from "./ProductCard";
 import HeaderSection from "../styled-components/HeaderSection";
 import ButtonBlack from "../styled-components/ButtonBlack";
-import ProductDetails from "../../pages/ProductDetails";
+// import ProductDetails from "../../pages/ProductDetails";
 
 function ProductList() {
   return (

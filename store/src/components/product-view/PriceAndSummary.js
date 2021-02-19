@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./ProductView.module.css";
 
 export default function PriceAndSummary(props) {
   const { summaryText, productName, ProductPrice } = props;
@@ -7,7 +6,9 @@ export default function PriceAndSummary(props) {
     <div>
       <div>
         <h1>{productName}</h1>
-        <b>৳&nbsp;{ProductPrice}</b>
+        <h2>
+          <b>৳&nbsp;{ProductPrice}</b>
+        </h2>
         <p>{summaryText}</p>
       </div>
     </div>

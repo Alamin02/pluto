@@ -5,7 +5,7 @@ export default function CheckOutForm() {
     <>
       <Space direction="vertical">
         <b>Are you Already Registered?</b>
-        <a href="#">please LogIn below</a>
+        <a href="/">please LogIn below</a>
 
         <Form
           name="basic"

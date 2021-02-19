@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
-import MainHeader from "../components/main-header/MainHeader";
+// import MainHeader from "../components/main-header/MainHeader";
 import ProductView from "../components/product-view/ProductView";
-
 import productList from "../assets/data/sampleProductData";
 import Error404 from "../components/error-404/Error404";
 import HeaderSection from "../components/styled-components/HeaderSection";

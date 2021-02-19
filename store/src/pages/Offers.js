@@ -14,7 +14,7 @@ function Offers() {
       {/* <MainHeader name="Latest Offer" sub="home-shop-offer" /> */}
       <div className={styles.container}>
         <HeaderSection headerText="latest offers" />
-        <Row gutter={[16, 16]}>
+        <Row gutter={[16, 16]} justify="center">
           {ProductList.map((product) => {
             if (product.offer) {
               return (

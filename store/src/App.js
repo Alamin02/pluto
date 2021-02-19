@@ -38,7 +38,7 @@ function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/offers" component={Offers} />
         <Route path="/contact" component={ContactUs} />
-        <Route path="/login" component={LoginPage} exact/>
+        <Route path="/login" component={LoginPage} exact />
         <Route path="/forgetPassword" component={ForgetPasswordPage} exact />
         <Route path="/resetPassword" component={ResetPasswordPage} exact />
         <Route component={Error404} />

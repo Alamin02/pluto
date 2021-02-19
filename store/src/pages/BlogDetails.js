@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-// import { Row, Col } from "antd";
+import { Row, Col } from "antd";
 import sampleBlogList from "../components/blogs/sampleBlogList";
 import BlogDetailsCard from "../components/blogs/BlogDetailsCard";
 import Error404 from "../components/error-404/Error404";
@@ -15,7 +15,11 @@ export default function BlogDetails() {
 
   return (
     <div className={appStyles.containerMain}>
-      <BlogDetailsCard blog={blog} />
+      <Row justify="center" gutter={[8, 8]}>
+        <Col lg={18}>
+          <BlogDetailsCard blog={blog} />
+        </Col>
+      </Row>
     </div>
   );
 }

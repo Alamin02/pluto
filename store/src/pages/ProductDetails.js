@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-// import MainHeader from "../components/main-header/MainHeader";
 import ProductView from "../components/product-view/ProductView";
 import productList from "../assets/data/sampleProductData";
 import Error404 from "../components/error-404/Error404";
@@ -20,7 +19,6 @@ const ProductDetails = () => {
   return (
     <div className={appStyles.containerMain}>
       <div style={container}>
-        {/* <MainHeader name="product details" sub="home ⋅ shop ⋅ products" /> */}
         <HeaderSection headerText="product details" />
         <ProductView product={product} />
       </div>

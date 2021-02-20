@@ -4,12 +4,26 @@ import logger = require("morgan");
 import { createConnection } from "typeorm";
 const debug = require("debug")("app");
 
+import { userRouter, productRouter } from './route';
+import { User } from "./entity";
+
 const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Routers
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/products", productRouter);
+
+createConnection({
+  type: "sqlite",
+  database: "./db.sqlite",
+  entities: [User],
+  synchronize: true,
+});
 
 app.use(function (
   err: any,

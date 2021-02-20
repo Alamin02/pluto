@@ -12,6 +12,7 @@
     "backend"
   ],
   "scripts": {
-    "start:frontend": "yarn workspace @pluto/store start"
+    "start:frontend": "yarn workspace @pluto/store start",
+    "start:backend": "yarn workspace @pluto/backend start"
   }
 }

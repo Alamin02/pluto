@@ -12,31 +12,52 @@ const secret = process.env.JWT_SECRET || "";
 
 const saltRounds = 10;
 
-router.post("/login", async (req: express.Request, res: express.Response) => {
-  const { email, password } = req.body;
+// @POST - /login
+// User Login
+router.post(
+  "/login",
+  [
+    body("email").isEmail().withMessage("Invalid Email address"),
+    body("password").not().isEmpty().withMessage("Password must not be empty"),
+  ],
 
-  const userRepository = getConnection().getRepository(User);
-  const previousEntry = await userRepository.findOne({ email });
+  async (req: express.Request, res: express.Response) => {
+    // Validation result
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-  if (!previousEntry) {
-    return res
-      .status(400)
-      .json({ errors: [{ msg: "Email or password doesnot match" }] });
+    const { email, password } = req.body;
+    // Find the user
+    const userRepository = getConnection().getRepository(User);
+    const previousEntry = await userRepository.findOne({ email });
+
+    if (!previousEntry) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Email or password doesnot match" }] });
+    }
+
+    const isPasswordMatch = bcrypt.compare(
+      password,
+      previousEntry.password
+    );
+
+    if (!isPasswordMatch) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Email or password doesnot match" }] });
+    }
+
+    const token = jwt.sign({ email }, "secret", { expiresIn: "1h" });
+
+    res.json({ token });
   }
+);
 
-  const isPasswordMatch = bcrypt.compareSync(password, previousEntry.password);
-
-  if (!isPasswordMatch) {
-    return res
-      .status(400)
-      .json({ errors: [{ msg: "Email or password doesnot match" }] });
-  }
-
-  const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
-
-  res.json({ token });
-});
-
+// @POST - /register
+// User Registration
 router.post(
   "/register",
   [

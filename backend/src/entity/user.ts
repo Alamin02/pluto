@@ -2,18 +2,18 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity("users")
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id!: number;
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
 
-  @Column('varchar')
+  @Column("varchar")
   name!: string;
 
-  @Column({ type: 'varchar', unique: true })
+  @Column({ type: "varchar", unique: true })
   email!: string;
 
-  @Column('varchar')
+  @Column("varchar")
   phone!: string;
 
-  @Column('varchar')
+  @Column("varchar")
   password!: string;
 }

@@ -1,13 +1,13 @@
 import express = require("express");
 const router = express.Router();
 
+import { createProductController } from "../controller";
+
 router.get("/", (req: express.Request, res: express.Response) => {
   res.send("Product list");
 });
 
-router.post("/", (req: express.Request, res: express.Response) => {
-  res.send("Create product");
-});
+router.post("/", createProductController);
 
 router.get("/:productId", (req: express.Request, res: express.Response) => {
   res.send("product : " + req.params.productId);

@@ -3,3 +3,5 @@ export {
   userRegistration as userRegistrationController,
   users as usersController,
 } from "./auth";
+
+export { createProduct as createProductController } from "./products";

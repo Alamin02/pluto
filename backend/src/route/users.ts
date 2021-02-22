@@ -1,9 +1,15 @@
 import express = require("express");
-const router = express.Router();
 import { body } from "express-validator";
 
 import { authenticationMiddleware } from "../middleware";
-const { userLogin, userRegistration, users } = require("../controller/auth");
+
+import {
+  userLoginController,
+  userRegistrationController,
+  usersController,
+} from "../controller";
+
+const router = express.Router();
 
 // @POST - /api/v1/users/login
 router.post(
@@ -12,7 +18,7 @@ router.post(
     body("email").isEmail().withMessage("Invalid Email address"),
     body("password").not().isEmpty().withMessage("Password must not be empty"),
   ],
-  userLogin
+  userLoginController
 );
 
 // @POST - /api/v1/users/register
@@ -23,14 +29,10 @@ router.post(
     body("email").isEmail().withMessage("Invalid Email address"),
     body("password").not().isEmpty().withMessage("Password must not be empty"),
   ],
-  userRegistration
+  userRegistrationController
 );
 
 // @GET - /api/v1/users/
-router.get(
-  "/",
-  authenticationMiddleware,
-  users
-);
+router.get("/", authenticationMiddleware, usersController);
 
 export default router;

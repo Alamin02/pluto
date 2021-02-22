@@ -12,11 +12,7 @@ const saltRounds = 10;
 
 // @POST - /api/v1/users/login
 // User Login
-module.exports.userLogin = async (
-  req: express.Request,
-  res: express.Response
-) => {
-
+export async function userLogin(req: express.Request, res: express.Response) {
   // Validation result
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -31,7 +27,7 @@ module.exports.userLogin = async (
     return res
       .status(400)
       .json({ errors: [{ msg: "Email or password doesnot match" }] });
-  };
+  }
 
   // Verifying the password
   const isPasswordMatch = bcrypt.compareSync(password, previousEntry.password);
@@ -39,20 +35,20 @@ module.exports.userLogin = async (
     return res
       .status(400)
       .json({ errors: [{ msg: "Email or password doesnot match" }] });
-  };
+  }
 
   // Generating a token
-  const token = jwt.sign({ email }, "secret", { expiresIn: "1h" });
+  const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
 
   res.json({ token });
-};
+}
 
 // @POST - /api/v1/users/register
 // User Registration
-module.exports.userRegistration = async (
+export async function userRegistration(
   req: express.Request,
   res: express.Response
-) => {
+) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -80,17 +76,17 @@ module.exports.userRegistration = async (
   }
 
   res.json({ msg: "Create new user!" });
-};
+}
 
 // @GET - /api/v1/users/
 // All users
-module.exports.users = async (req: express.Request, res: express.Response) => {
+export async function users(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const users = await userRepository.find({
     select: ["name", "email", "phone"],
   });
 
   res.json({ data: users });
-};
+}
 
 export default router;

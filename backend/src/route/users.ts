@@ -3,11 +3,9 @@ const router = express.Router();
 import { body } from "express-validator";
 
 import { authenticationMiddleware } from "../middleware";
-
-
 const { userLogin, userRegistration, users } = require("../controller/auth");
 
-// @POST - /login
+// @POST - /api/v1/users/login
 router.post(
   "/login",
   [
@@ -17,7 +15,7 @@ router.post(
   userLogin
 );
 
-// @POST - /register
+// @POST - /api/v1/users/register
 router.post(
   "/register",
   [
@@ -28,11 +26,11 @@ router.post(
   userRegistration
 );
 
-// @GET - /
+// @GET - /api/v1/users/
 router.get(
   "/",
   authenticationMiddleware,
-
+  users
 );
 
 export default router;

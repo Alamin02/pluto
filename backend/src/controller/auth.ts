@@ -3,19 +3,20 @@ const router = express.Router();
 import bcrypt = require("bcrypt");
 import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
-import { body, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 
 import { User } from "../entity";
-import { authenticationMiddleware } from "../middleware";
 
 const secret = process.env.JWT_SECRET || "";
 const saltRounds = 10;
 
+// @POST - /api/v1/users/login
 // User Login
 module.exports.userLogin = async (
   req: express.Request,
   res: express.Response
 ) => {
+
   // Validation result
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -26,26 +27,27 @@ module.exports.userLogin = async (
   // Find the user
   const userRepository = getConnection().getRepository(User);
   const previousEntry = await userRepository.findOne({ email });
-
   if (!previousEntry) {
     return res
       .status(400)
       .json({ errors: [{ msg: "Email or password doesnot match" }] });
-  }
+  };
 
-  const isPasswordMatch = bcrypt.compare(password, previousEntry.password);
-
+  // Verifying the password
+  const isPasswordMatch = bcrypt.compareSync(password, previousEntry.password);
   if (!isPasswordMatch) {
     return res
       .status(400)
       .json({ errors: [{ msg: "Email or password doesnot match" }] });
-  }
+  };
 
+  // Generating a token
   const token = jwt.sign({ email }, "secret", { expiresIn: "1h" });
 
   res.json({ token });
 };
 
+// @POST - /api/v1/users/register
 // User Registration
 module.exports.userRegistration = async (
   req: express.Request,
@@ -80,6 +82,7 @@ module.exports.userRegistration = async (
   res.json({ msg: "Create new user!" });
 };
 
+// @GET - /api/v1/users/
 // All users
 module.exports.users = async (req: express.Request, res: express.Response) => {
   const userRepository = getConnection().getRepository(User);
@@ -89,3 +92,5 @@ module.exports.users = async (req: express.Request, res: express.Response) => {
 
   res.json({ data: users });
 };
+
+export default router;

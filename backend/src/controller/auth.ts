@@ -49,19 +49,24 @@ export async function userRegistration(
   req: express.Request,
   res: express.Response
 ) {
+  //validation result
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   const { name, email, password, phone } = req.body;
 
+  // If there is a user
+  const userRepository = getConnection().getRepository(User);
+  const previousEntry = await userRepository.findOne({ email });
+  if (previousEntry) throw Error('User already exists');
+
+  // Hasn the password
   const hash = await bcrypt.hash(password, saltRounds);
 
   // Create a new user
   try {
-    const userRepository = getConnection().getRepository(User);
     const newUser = new User();
 
     newUser.name = name;

@@ -7,6 +7,7 @@ router.get("/", (req: express.Request, res: express.Response) => {
   res.send("Product list");
 });
 
+// @POST - /api/v1/products
 router.post("/", createProductController);
 
 router.get("/:productId", (req: express.Request, res: express.Response) => {

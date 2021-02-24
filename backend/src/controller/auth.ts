@@ -57,7 +57,7 @@ export async function userRegistration(
 
   const { name, email, password, phone } = req.body;
 
-  // If there is a user
+  // If there is an user
   const userRepository = getConnection().getRepository(User);
   const previousEntry = await userRepository.findOne({ email });
   if (previousEntry) throw Error('User already exists');

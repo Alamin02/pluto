@@ -11,7 +11,6 @@ export async function createProduct(
 ) {
   const { name, price, summary, description } = req.body;
 
-  // Save to database
   const productsRepository = getConnection().getRepository(Product);
   const newProduct = new Product();
 
@@ -20,7 +19,71 @@ export async function createProduct(
   newProduct.description = description;
   newProduct.summary = summary;
 
-  await productsRepository.save(newProduct);
+  try {
+    // Save to database
+    await productsRepository.save(newProduct);
+    res.json({ msg: "Product created" });
+  } catch (error) {
+    res.status(400).json({ error: "Something went wrong" });
+    return;
+  }
+}
 
-  res.json({ msg: "Product created" });
+// @GET - /api/v1/products
+// List of all products
+export async function getProduct(req: express.Request, res: express.Response) {
+  // Find all the products
+  try {
+    const productsRepository = getConnection().getRepository(Product);
+    const products = await productsRepository.find({});
+
+    res.json({ data: products });
+    // console.log(req.params);
+  } catch (error) {
+    res.status(400).json({ error: "Something went wrong" });
+    return;
+  }
+}
+
+// @GET - /api/v1/products/:id
+// Get a product details
+export async function productDetails(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const productsRepository = getConnection().getRepository(Product);
+    const productDetails = await productsRepository.findOne(req.params.productId);
+    res.json({ data: productDetails });
+  } catch (error) {
+    res.status(400).json({ error: "Something went wrong" });
+    return;
+  }
+}
+
+
+// @PATCH - /api/v1/products/:id
+// Update a product details
+export async function updateProduct(
+  req: express.Request,
+  res: express.Response
+) {
+  const { name, price, summary, description } = req.body;
+
+  const productsRepository = getConnection().getRepository(Product);
+
+  const newProduct = new Product();
+
+  newProduct.name = name;
+  newProduct.price = price;
+  newProduct.description = description;
+  newProduct.summary = summary;
+
+  try {
+    await productsRepository.update({id: req.params.productId},newProduct);
+    res.json({ msg: "Product updated" });
+  } catch (error) {
+    res.status(400).json({ error: "Something went wrong" });
+    return;
+  }
 }

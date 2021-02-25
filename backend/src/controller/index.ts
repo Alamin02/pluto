@@ -4,4 +4,10 @@ export {
   users as usersController,
 } from "./auth";
 
-export { createProduct as createProductController } from "./products";
+export {
+  createProduct as createProductController,
+  getAllProducts as getAllProductsController,
+  getProduct as getProductController,
+  updateProduct as updateProductController,
+  deleteProduct as deleteProductController,
+} from "./products";

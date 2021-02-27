@@ -14,45 +14,43 @@ export async function createBlog(req: express.Request,res: express.Response) {
   }
 
   const { title, author, description } = req.body;
-  
+
   try{
   // Save to database
-  const BlogsRepository = getConnection().getRepository(Blog);
-  const newBlog = new Blog();
+    const blogRepository = getConnection().getRepository(Blog);
+    const newBlog = new Blog();
 
-  newBlog.title = title;
-  newBlog.author = author;
-  newBlog.description = description;
+    newBlog.title = title;
+    newBlog.author = author;
+    newBlog.description = description;
 
-  await BlogsRepository.save(newBlog)
+    await blogRepository.save(newBlog)
 
   }catch(err){
-   res.json({ error: err})
+    res.json({ error: err})
     return;
   }
-  res.json({ msg: "Blog created" });
-  
+  res.json({ msg: "Blog created" });  
 }
 
 
 // @GET - /api/v1/blogs/
 // Get All Blogs
 export async function getAllBlogs(req: express.Request, res: express.Response) {
-  const BlogsRepository = getConnection().getRepository(Blog);
-  const blogs = await BlogsRepository.find({
+  const blogRepository = getConnection().getRepository(Blog);
+  const blogs = await blogRepository.find({
     select: ["id","title", "author", "description"],
   });
-
   res.json({ data: blogs});
 }
 
 
-// @GET - /api/v1/blogs/
+// @GET - /api/v1/blogs/:blogId
 //  Get a Blog
 export async function getSingleBlog(req: express.Request, res: express.Response) {
   const id = req.params.blogId
-  const blogsRepository = getConnection().getRepository(Blog);
-  const singleblog = await blogsRepository.findOne({id});
+  const blogRepository = getConnection().getRepository(Blog);
+  const singleblog = await blogRepository.findOne({id});
   if(!singleblog){
     return res.status(400).json({msg:"Blog is not found"})
   }
@@ -66,19 +64,19 @@ export async function updateSingleBlog(req: express.Request, res: express.Respon
 
     try {
       const { title, author, description } = req.body;
-      const blogsRepository = getConnection().getRepository(Blog);
+      const blogRepository = getConnection().getRepository(Blog);
       const newBlog = new Blog();
       newBlog.title =title;
       newBlog.author =author;
       newBlog.description =description;
 
-      await blogsRepository.update(
+      await blogRepository.update(
         { id: req.params.blogId },
         newBlog,
       );
       
     } catch(err) {
-      res.json({err:'Blog is not updated'});
+      res.json({errors:'Blog is not updated'});
     }
     res.json({msg:'Blog is now updated'})
   }
@@ -86,17 +84,16 @@ export async function updateSingleBlog(req: express.Request, res: express.Respon
 
 // // @DELETE - /api/v1/blogs/:blogId
 // // update blog
-export async function deletedBlog(req: express.Request, res: express.Response){
+export async function deleteBlog(req: express.Request, res: express.Response){
     const id=req.params.blogId;
-    const blogsRepository= getConnection().getRepository(Blog)
+    const blogRepository= getConnection().getRepository(Blog)
     try{    
-        if(await blogsRepository.delete({id})){
+        if(await blogRepository.delete({id})){
             return res.json({msg:'delete successfully'})
         }
     }catch(err){
-        res.json({error:'deleted blog is not identified'})
-    }
-   
+        res.json({errors:'blog is not identified'})
+    }  
 }
   
 

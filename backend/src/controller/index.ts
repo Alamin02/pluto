@@ -17,5 +17,5 @@ export{
     getAllBlogs as getAllBlogsController,
     getSingleBlog as getSingleBlogController,
     updateSingleBlog as updateSingleBlogController,
-    deletedBlog as deletedBlogController
+    deleteBlog as deletedBlogController
 } from "./blog";

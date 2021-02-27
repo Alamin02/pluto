@@ -8,7 +8,7 @@ import {
   getAllBlogsController,
   getSingleBlogController,
   updateSingleBlogController,
-  deletedBlogController
+  deleteBlogController
 } from "../controller";
 import { authenticationMiddleware } from "../middleware";
 
@@ -49,6 +49,6 @@ router.put(
 );
 
 // Delete blog 
-router.delete("/:blogId", authenticationMiddleware,deletedBlogController);
+router.delete("/:blogId", authenticationMiddleware,deleteBlogController);
 
 export default router;

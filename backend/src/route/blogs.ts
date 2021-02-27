@@ -1,8 +1,5 @@
 import express = require("express");
 import { body } from "express-validator";
-
-const router = express.Router();
-
 import {
   createBlogController,
   getAllBlogsController,
@@ -11,6 +8,8 @@ import {
   deleteBlogController
 } from "../controller";
 import { authenticationMiddleware } from "../middleware";
+
+const router = express.Router();
 
 // Get all blogs list
 router.get("/", authenticationMiddleware, getAllBlogsController);

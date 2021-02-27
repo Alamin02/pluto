@@ -38,7 +38,23 @@ router.post(
 router.get("/:productId", getProductController);
 
 // Update product
-router.put("/:productId", authenticationMiddleware, updateProductController);
+router.put(
+  "/:productId",
+  authenticationMiddleware,
+  [
+    body("name").not().isEmpty().withMessage("Product name can not be empty"),
+    body("price").not().isEmpty().withMessage("Product price can not be empty"),
+    body("summary")
+      .not()
+      .isEmpty()
+      .withMessage("Product summary can not be empty"),
+    body("description")
+      .not()
+      .isEmpty()
+      .withMessage("Product description can not be empty"),
+  ],
+  updateProductController
+);
 
 // Delete a product
 router.delete("/:productId", authenticationMiddleware, deleteProductController);

@@ -5,7 +5,7 @@ import { createConnection } from "typeorm";
 const debug = require("debug")("app");
 
 import { userRouter, productRouter } from './route';
-import { User } from "./entity";
+import { User, Product } from "./entity";
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use("/api/v1/products", productRouter);
 createConnection({
   type: "sqlite",
   database: "./db.sqlite",
-  entities: [User],
+  entities: [User, Product],
   synchronize: true,
 });
 

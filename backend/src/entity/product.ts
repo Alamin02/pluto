@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from "typeorm";
 import { Category } from "./categories";
 
 @Entity("products")
@@ -6,7 +12,7 @@ export class Product {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column("varchar")
+  @Column({ type: "varchar", unique: true })
   name!: string;
 
   @Column("float")
@@ -17,18 +23,18 @@ export class Product {
 
   @Column("text")
   description!: string;
-  
-  @ManyToMany(() => Category)
-  @JoinTable()
-  categories!: Category[];
 
-  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  createdAt!: Date;
-  
-  @Column({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP",
-    onUpdate: "CURRENT_TIMESTAMP",
-  })
-  updatedAt!: Date;
+  // @ManyToMany(() => Category)
+  // @JoinTable()
+  // categories!: Category[];
+
+  // @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  // createdAt!: Date;
+
+  // @Column({
+  //   type: "timestamp",
+  //   default: () => "CURRENT_TIMESTAMP",
+  //   onUpdate: "CURRENT_TIMESTAMP",
+  // })
+  // updatedAt!: Date;
 }

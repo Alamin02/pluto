@@ -4,8 +4,8 @@ import logger = require("morgan");
 import { createConnection } from "typeorm";
 const debug = require("debug")("app");
 
-import { userRouter, productRouter, blogRouter } from './route';
-import { User, Product, Blog} from "./entity";
+import { userRouter, productRouter, blogRouter } from "./route";
+import { User, Product, Blog } from "./entity";
 
 const app = express();
 
@@ -18,7 +18,6 @@ app.use(cookieParser());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/blogs", blogRouter);
-
 
 createConnection({
   type: "sqlite",

@@ -25,7 +25,6 @@ export async function createBlog(req: express.Request,res: express.Response) {
     newBlog.description = description;
 
     await blogRepository.save(newBlog)
-
   }catch(err){
     res.json({ error: err})
     return;
@@ -61,7 +60,6 @@ export async function getSingleBlog(req: express.Request, res: express.Response)
 // @PUT - /api/v1/blogs/:blogId
 // update a Blog
 export async function updateSingleBlog(req: express.Request, res: express.Response) {
-
     try {
       const { title, author, description } = req.body;
       const blogRepository = getConnection().getRepository(Blog);
@@ -73,17 +71,16 @@ export async function updateSingleBlog(req: express.Request, res: express.Respon
       await blogRepository.update(
         { id: req.params.blogId },
         newBlog,
-      );
-      
-    } catch(err) {
+      ); 
+    }catch(err) {
       res.json({errors:'Blog is not updated'});
     }
     res.json({msg:'Blog is now updated'})
   }
 
 
-// // @DELETE - /api/v1/blogs/:blogId
-// // update blog
+// @DELETE - /api/v1/blogs/:blogId
+// delete blog
 export async function deleteBlog(req: express.Request, res: express.Response){
     const id=req.params.blogId;
     const blogRepository= getConnection().getRepository(Blog)

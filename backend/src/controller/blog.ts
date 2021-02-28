@@ -26,7 +26,7 @@ export async function createBlog(req: express.Request,res: express.Response) {
 
     await blogRepository.save(newBlog)
   }catch(err){
-    res.json({ error: err})
+    res.json({ errors: 'Blog could not be added'})
     return;
   }
   res.json({ msg: "Blog created" });  

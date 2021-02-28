@@ -4,8 +4,9 @@ import {
   Column,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from "typeorm";
-import { Category } from "./categories";
+import { Category, ProductImage } from "../entity";
 
 @Entity("products")
 export class Product {
@@ -23,6 +24,9 @@ export class Product {
 
   @Column("text")
   description!: string;
+
+  @OneToMany(() => ProductImage, (productImage) => productImage.product)
+  images!: ProductImage[];
 
   // @ManyToMany(() => Category)
   // @JoinTable()

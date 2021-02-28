@@ -11,11 +11,25 @@ export async function getAllProducts(
   res: express.Response
 ) {
   const productRepository = getConnection().getRepository(Product);
-  const products = await productRepository.find({
+
+  const page: number = parseInt(<string>req.query.page) || 1;
+  const perPage: number = parseInt(<string>req.query.perPage) || 10;
+
+  const [products, productCount] = await productRepository.findAndCount({
     select: ["name", "price", "summary"],
+    take: perPage,
+    skip: (page - 1) * perPage,
   });
 
-  res.json({ data: products });
+  res.json({
+    data: {
+      products,
+      productCount,
+      currentPage: page,
+      maxPages: Math.ceil(productCount / perPage),
+      perPage,
+    },
+  });
 }
 
 // @POST - /api/v1/products

@@ -2,7 +2,7 @@ export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
   users as usersController,
-} from "./auth";
+  } from "./auth";
 
 export {
   createProduct as createProductController,
@@ -10,4 +10,12 @@ export {
   getProduct as getProductController,
   updateProduct as updateProductController,
   deleteProduct as deleteProductController,
-} from "./products";
+  } from "./products";
+
+export{ 
+  createBlog as createBlogController,
+  getAllBlogs as getAllBlogsController,
+  getSingleBlog as getSingleBlogController,
+  updateSingleBlog as updateSingleBlogController,
+  deleteBlog as deleteBlogController
+} from "./blog";

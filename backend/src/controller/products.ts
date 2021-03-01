@@ -17,7 +17,7 @@ export async function getAllProducts(
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ['name', 'price', 'summary'],
-    take: perPage,
+    take: page * perPage,
     skip: (page - 1) * perPage,
   });
 

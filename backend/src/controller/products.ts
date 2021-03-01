@@ -45,13 +45,24 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
+  const { name, price, summary, description } = req.body;
+
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
 
+    const newProduct = new Product();
+
+    newProduct.name = name;
+    newProduct.description = description;
+    newProduct.price = price;
+    newProduct.summary = summary;
+    newProduct.images = [];
+
     // save data to repository from request body
-    await productsRepository.save(req.body);
+    await productsRepository.save(newProduct);
   } catch (e) {
+    console.error(e);
     res.status(400).json({ error: "Product already exists in db" });
     return;
   }

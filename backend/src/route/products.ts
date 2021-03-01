@@ -9,8 +9,9 @@ import {
   getProductController,
   updateProductController,
   deleteProductController,
+  uploadImageController
 } from "../controller";
-import { authenticationMiddleware } from "../middleware";
+import { authenticationMiddleware, uploadImage } from "../middleware";
 
 // Get all products list
 router.get("/", authenticationMiddleware, getAllProductsController);
@@ -58,5 +59,9 @@ router.put(
 
 // Delete a product
 router.delete("/:productId", authenticationMiddleware, deleteProductController);
+
+// Upload a image
+router.post('/productImage', uploadImage, uploadImageController);
+
 
 export default router;

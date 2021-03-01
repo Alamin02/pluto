@@ -1,23 +1,7 @@
 import express = require("express");
-import multer = require("multer");
-const path = require("path");
-
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
-import { Product } from "../entity";
-
-//multer setup for product image 
-let storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './public/product-image');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }, 
-});
-let upload = multer({
-  storage: storage,  
-}).single('productImage');
+import { Product, ProductImage } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -123,4 +107,22 @@ export async function deleteProduct(
   }
 
   res.json({ msg: "Product deleted" });
+}
+// @POST - /api/v1/productImage
+// Upload a image
+export async function uploadImage(req: express.Request, res: express.Response){
+  const path = req.file && req.file.path;
+  if(path){
+    let imagePath = "/myUploads/" + req.file.filename;
+    const productsRepository = getConnection().getRepository(ProductImage);
+
+    const newProductImage = new ProductImage();
+    newProductImage.path = imagePath;
+    
+
+  } else {
+    res.json({
+      msg: "File not uploaded successfully"
+    })
+  }
 }

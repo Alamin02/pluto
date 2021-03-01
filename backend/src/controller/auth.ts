@@ -4,6 +4,7 @@ import bcrypt = require("bcrypt");
 import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
+require('dotenv').config()
 
 import { User } from "../entity";
 

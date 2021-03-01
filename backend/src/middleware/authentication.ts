@@ -4,6 +4,7 @@ import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
 const debug = require("debug")("app");
 import { User } from "../entity";
+require('dotenv').config()
 
 const secret = process.env.JWT_SECRET || "";
 

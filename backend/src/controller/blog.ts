@@ -35,10 +35,30 @@ export async function createBlog(req: express.Request, res: express.Response) {
 // Get All Blogs
 export async function getAllBlogs(req: express.Request, res: express.Response) {
   const blogRepository = getConnection().getRepository(Blog);
-  const blogs = await blogRepository.find({
+
+  const page = parseInt(<string>req.query.page);
+  const perPage = parseInt(<string>req.query.perPage);
+
+  const startIndex = (page - 1) * perPage;
+  const endIndex = page * perPage;
+
+  const [blogs, blogCount] = await blogRepository.findAndCount({
     select: ['id', 'title', 'author', 'description'],
+    take: endIndex,
+    skip: startIndex,
   });
-  res.json({ data: blogs });
+
+  const result: any = {};
+  if (startIndex > 0) {
+    result.previousPage = page - 1;
+    result.perPage = perPage;
+  }
+  if (endIndex < blogCount) {
+    result.nextPage = page + 1;
+    result.perPage = perPage;
+  }
+
+  res.json({ data: blogs, blogCount, result });
 }
 
 // @GET - /api/v1/blogs/:blogId

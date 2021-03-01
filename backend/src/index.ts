@@ -42,6 +42,9 @@ app.use(function (
   res.send("Error");
 });
 
+// set up public folder
+app.use(express.static("./public"));
+
 const port = 4000;
 
 app.listen(port, () => {

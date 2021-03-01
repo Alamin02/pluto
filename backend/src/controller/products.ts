@@ -1,8 +1,23 @@
 import express = require("express");
+import multer = require("multer");
+const path = require("path");
+
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
-
 import { Product } from "../entity";
+
+//multer setup for product image 
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/product-image');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }, 
+});
+let upload = multer({
+  storage: storage,  
+}).single('productImage');
 
 // @GET - /api/v1/products
 // Get all products list

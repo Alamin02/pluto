@@ -13,7 +13,7 @@ export class Offer {
 
   @Column("text")
   description!: string;
-  
+
   @OneToMany(() => Product, (product) => product.offer)
   products!: Product[];
 }

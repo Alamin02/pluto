@@ -2,7 +2,7 @@ import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
-import { Product } from "../entity";
+import { Offer, Product } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -15,19 +15,21 @@ export async function getAllProducts(
   const page: number = parseInt(<string>req.query.page) || 1;
   const perPage: number = parseInt(<string>req.query.perPage) || 10;
 
-  const [products, productCount] = await productRepository.findAndCount({
-    select: ["name", "price", "summary"],
-    take: perPage,
-    skip: (page - 1) * perPage,
-  });
+  // const [products, productCount] = await productRepository.findAndCount({
+  //   select: ["name", "price", "summary"],
+
+  //   take: perPage,
+  //   skip: (page - 1) * perPage,
+  // });
+  const products = await productRepository.find({ relations: ["offer"] });
 
   res.json({
     data: {
       products,
-      productCount,
-      currentPage: page,
-      maxPages: Math.ceil(productCount / perPage),
-      perPage,
+      // productCount,
+      // currentPage: page,
+      // maxPages: Math.ceil(productCount / perPage),
+      // perPage,
     },
   });
 }
@@ -45,24 +47,27 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, price, summary, description } = req.body;
+  const { name, price, summary, description, offerId } = req.body;
 
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
+    const offersRepository = getConnection().getRepository(Offer);
+    const offer = await offersRepository.findOne({ id: offerId });
 
     const newProduct = new Product();
-
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
     newProduct.images = [];
+    if (offer) {
+      newProduct.offer = offer;
+    }
 
     // save data to repository from request body
     await productsRepository.save(newProduct);
   } catch (e) {
-    console.error(e);
     res.status(400).json({ error: "Product already exists in db" });
     return;
   }
@@ -73,6 +78,7 @@ export async function createProduct(
 // Get a particular product
 export async function getProduct(req: express.Request, res: express.Response) {
   const id = req.params.productId;
+
   const productRepository = getConnection().getRepository(Product);
   const findProductById = await productRepository.findOne({ id });
 
@@ -90,11 +96,28 @@ export async function updateProduct(
   res: express.Response
 ) {
   const id = req.params.productId;
+  const { name, price, summary, description, offerId } = req.body;
   const productsRepository = getConnection().getRepository(Product);
 
   try {
     const findProductById: any = await productsRepository.findOne({ id });
-    productsRepository.merge(findProductById, req.body);
+    // offer repository
+    const offersRepository = getConnection().getRepository(Offer);
+    // find offer by id
+    const offer = await offersRepository.findOne({ id: offerId });
+
+    const newProduct = new Product();
+
+    newProduct.name = name;
+    newProduct.description = description;
+    newProduct.price = price;
+    newProduct.summary = summary;
+    newProduct.images = [];
+    if (offer) {
+      newProduct.offer = offer;
+    }
+    productsRepository.merge(findProductById, newProduct);
+
     await productsRepository.save(findProductById);
   } catch (e) {
     return res.status(400).json({ error: "Product could not be updated" });

@@ -5,7 +5,14 @@ import { createConnection } from "typeorm";
 const debug = require("debug")("app");
 
 import { userRouter, productRouter, blogRouter } from "./route";
-import { User, Product, Blog, ProductImage } from "./entity";
+import {
+  User,
+  Product,
+  Blog,
+  ProductImage,
+  Order,
+  OrderedProduct,
+} from "./entity";
 
 const app = express();
 
@@ -22,7 +29,7 @@ app.use("/api/v1/blogs", blogRouter);
 createConnection({
   type: "sqlite",
   database: "./db.sqlite",
-  entities: [User, Product, Blog, ProductImage],
+  entities: [User, Product, Blog, ProductImage, Order, OrderedProduct],
   synchronize: true,
 });
 

@@ -6,7 +6,7 @@ import {
   JoinTable,
   OneToMany,
 } from "typeorm";
-import { Category, ProductImage } from "../entity";
+import { Category, ProductImage, OrderedProduct } from "../entity";
 
 @Entity("products")
 export class Product {
@@ -27,6 +27,9 @@ export class Product {
 
   @OneToMany(() => ProductImage, (productImage) => productImage.product)
   images!: ProductImage[];
+
+  @OneToMany(() => OrderedProduct, (orderedProduct) => orderedProduct.product)
+  orderedProducts!: OrderedProduct[];
 
   // @ManyToMany(() => Category)
   // @JoinTable()

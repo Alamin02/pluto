@@ -15,21 +15,20 @@ export async function getAllProducts(
   const page: number = parseInt(<string>req.query.page) || 1;
   const perPage: number = parseInt(<string>req.query.perPage) || 10;
 
-  // const [products, productCount] = await productRepository.findAndCount({
-  //   select: ["name", "price", "summary"],
-
-  //   take: perPage,
-  //   skip: (page - 1) * perPage,
-  // });
-  const products = await productRepository.find({ relations: ["offer"] });
+  const [products, productCount] = await productRepository.findAndCount({
+    select: ["id", "name", "price", "summary"],
+    relations: ["offer"],
+    take: perPage,
+    skip: (page - 1) * perPage,
+  });
 
   res.json({
     data: {
       products,
-      // productCount,
-      // currentPage: page,
-      // maxPages: Math.ceil(productCount / perPage),
-      // perPage,
+      productCount,
+      currentPage: page,
+      maxPages: Math.ceil(productCount / perPage),
+      perPage,
     },
   });
 }

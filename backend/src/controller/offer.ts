@@ -26,8 +26,10 @@ export async function createOffer(req: express.Request, res: express.Response) {
   const offersRepository = getConnection().getRepository(Offer);
   const previousEntry = await offersRepository.find({ name });
 
-  try {
-    if (!previousEntry) {
+  console.log(previousEntry);
+
+  if (!previousEntry.length) {
+    try {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
@@ -35,11 +37,11 @@ export async function createOffer(req: express.Request, res: express.Response) {
 
       const offerCreated = await offersRepository.save(newOffer);
       res.status(200).json({ data: offerCreated });
-    } else {
-      res.status(400).json({ data: "offer already exist" });
+    } catch (e) {
+      res.status(400).json({ msg: e });
     }
-  } catch (e) {
-    res.status(400).json({ msg: e });
+  } else {
+    res.status(400).json({ data: "offer already exist" });
   }
 }
 
@@ -51,19 +53,19 @@ export async function updateOffer(req: express.Request, res: express.Response) {
 
   const offersRepository = getConnection().getRepository(Offer);
   const offerToUpdate = await offersRepository.findOne({ id: offerId });
-  try {
-    if (offerToUpdate) {
+  if (offerToUpdate) {
+    try {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
       await offersRepository.update(offerId, newOffer);
       res.status(200).json({ data: "offer updated" });
-    } else {
-      res.status(400).json({ data: "offer to update not found or invalid id" });
+    } catch (e) {
+      res.status(400).json({ msg: e });
     }
-  } catch (e) {
-    res.status(400).json({ msg: e });
+  } else {
+    res.status(400).json({ data: "offer to update not found or invalid id" });
   }
 }
 // @DELETE /v1/api/offers/:offerId
@@ -72,14 +74,14 @@ export async function deleteOffer(req: express.Request, res: express.Response) {
   const offerId = req.params.offerId;
   const offersRepository = getConnection().getRepository(Offer);
   const offerToUpdate = await offersRepository.findOne({ id: offerId });
-  try {
-    if (offerToUpdate) {
+  if (offerToUpdate) {
+    try {
       await offersRepository.delete(offerId);
       res.json({ data: "offer deleted" });
-    } else {
-      res.status(400).json({ data: "offer to delete not found or invalid id" });
+    } catch (e) {
+      res.status(400).json({ msg: e });
     }
-  } catch (e) {
-    res.status(400).json({ msg: e });
+  } else {
+    res.status(400).json({ data: "offer to delete not found or invalid id" });
   }
 }

@@ -13,7 +13,7 @@ import {
 import { authenticationMiddleware } from "../middleware";
 
 // Get all products list
-router.get("/", authenticationMiddleware, getAllProductsController);
+router.get("/", getAllProductsController);
 
 // Create product
 router.post(

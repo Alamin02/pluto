@@ -17,7 +17,9 @@ export async function createOrder(req: express.Request, res: express.Response) {
   // Save to database
   try {
     const orderRepository = getConnection().getRepository(Order);
-    const orderedProductRepository = getConnection().getRepository(OrderedProduct);
+    const orderedProductRepository = getConnection().getRepository(
+      OrderedProduct
+    );
 
     const createdOrderedProducts = [];
 
@@ -26,7 +28,9 @@ export async function createOrder(req: express.Request, res: express.Response) {
       newOrderedProduct.product = orderedProduct.product;
       newOrderedProduct.quantity = orderedProduct.quantity;
 
-      const savedOrderedProduct = await orderedProductRepository.save(newOrderedProduct);
+      const savedOrderedProduct = await orderedProductRepository.save(
+        newOrderedProduct
+      );
       createdOrderedProducts.push(savedOrderedProduct);
     }
 
@@ -59,7 +63,7 @@ export async function getAllOrders(
 
   const [orders, orderCount] = await orderRepository.findAndCount({
     select: ['id', 'status', 'paymentMethod'],
-    relations: ['user', 'orderedProducts'],
+    relations: ['user', 'orderedProducts', 'orderedProducts.product'],
     take: page * perPage,
     skip: (page - 1) * perPage,
   });
@@ -81,9 +85,14 @@ export async function getSingleOrder(
   req: express.Request,
   res: express.Response
 ) {
-  const id = req.params.blogId;
+  const id = req.params.orderId;
+  console.log(typeof id);
   const orderRepository = getConnection().getRepository(Order);
-  const singleOrder = await orderRepository.findOne({ id });
+  const singleOrder = await orderRepository.findOne({
+    select: ['id', 'status', 'paymentMethod'],
+    relations: ['user', 'orderedProducts', 'orderedProducts.product'],
+    where: [{ id: id }],
+  });
 
   if (!singleOrder) {
     return res.status(400).json({ msg: 'Order is not found' });
@@ -97,17 +106,37 @@ export async function updateSingleOrder(
   req: express.Request,
   res: express.Response
 ) {
+  const { user, orderedProducts, status, paymentMethod } = req.body;
+  const id = req.params.orderId;
+
   try {
-    const { user, orderedProducts, status, paymentMethod } = req.body;
     const orderRepository = getConnection().getRepository(Order);
+    const orderedProductRepository = getConnection().getRepository(
+      OrderedProduct
+    );
+
+    const createdOrderedProducts = [];
+
+    for (const orderedProduct of orderedProducts) {
+      const newOrderedProduct = new OrderedProduct();
+      newOrderedProduct.product = orderedProduct.product;
+      newOrderedProduct.quantity = orderedProduct.quantity;
+
+      const savedOrderedProduct = await orderedProductRepository.save(
+        newOrderedProduct
+      );
+      createdOrderedProducts.push(savedOrderedProduct);
+    }
+
     const newOrder = new Order();
 
     newOrder.user = user;
-    newOrder.orderedProducts = orderedProducts;
+    newOrder.orderedProducts = createdOrderedProducts;
     newOrder.status = status;
     newOrder.paymentMethod = paymentMethod;
 
-    await orderRepository.update({ id: req.params.blogId }, newOrder);
+    const findOrderById: any = await orderRepository.findOne({ id });
+    await orderRepository.update(findOrderById, newOrder);
   } catch (err) {
     res.json({ errors: 'Order is not updated' });
   }
@@ -117,8 +146,9 @@ export async function updateSingleOrder(
 // @DELETE - /api/v1/orders/:orderId
 // delete order
 export async function deleteOrder(req: express.Request, res: express.Response) {
-  const id = req.params.blogId;
+  const id = req.params.orderId;
   const orderRepository = getConnection().getRepository(Order);
+
   try {
     if (await orderRepository.delete({ id })) {
       return res.json({ msg: 'delete successfully' });

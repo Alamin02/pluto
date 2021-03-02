@@ -1,7 +1,7 @@
 import express = require('express');
 import { getConnection } from 'typeorm';
 import { validationResult } from 'express-validator';
-import { Order } from '../entity';
+import { Order, OrderedProduct } from '../entity';
 
 // @POST - /api/v1/orders
 // Create a order
@@ -17,10 +17,23 @@ export async function createOrder(req: express.Request, res: express.Response) {
   // Save to database
   try {
     const orderRepository = getConnection().getRepository(Order);
+    const orderedProductRepository = getConnection().getRepository(OrderedProduct);
+
+    const createdOrderedProducts = [];
+
+    for (const orderedProduct of orderedProducts) {
+      const newOrderedProduct = new OrderedProduct();
+      newOrderedProduct.product = orderedProduct.product;
+      newOrderedProduct.quantity = orderedProduct.quantity;
+
+      const savedOrderedProduct = await orderedProductRepository.save(newOrderedProduct);
+      createdOrderedProducts.push(savedOrderedProduct);
+    }
+
     const newOrder = new Order();
 
     newOrder.user = user;
-    newOrder.orderedProducts = orderedProducts;
+    newOrder.orderedProducts = createdOrderedProducts;
     newOrder.status = status;
     newOrder.paymentMethod = paymentMethod;
 

@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 
 import { Product } from "./product";
 
-@Entity("products")
+@Entity("productImages")
 export class ProductImage {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -10,6 +10,6 @@ export class ProductImage {
   @Column("varchar")
   path!: string;
 
-  @ManyToOne(() => Product, product => product.images)
+  @ManyToOne(() => Product, (product) => product.images)
   product!: Product;
 }

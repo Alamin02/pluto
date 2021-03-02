@@ -16,7 +16,7 @@ export async function getAllProducts(
   const perPage: number = parseInt(<string>req.query.perPage) || 10;
 
   const [products, productCount] = await productRepository.findAndCount({
-    select: ['name', 'price', 'summary'],
+    select: ['id', 'name', 'price', 'summary'],
     take: page * perPage,
     skip: (page - 1) * perPage,
   });
@@ -45,12 +45,22 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
+  const { name, price, summary, description } = req.body;
+
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
 
+    const newProduct = new Product();
+
+    newProduct.name = name;
+    newProduct.description = description;
+    newProduct.price = price;
+    newProduct.summary = summary;
+    newProduct.images = [];
+
     // save data to repository from request body
-    await productsRepository.save(req.body);
+    await productsRepository.save(newProduct);
   } catch (e) {
     res.status(400).json({ error: 'Product already exists in db' });
     return;

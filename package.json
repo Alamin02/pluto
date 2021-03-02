@@ -8,11 +8,13 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
+    "admin",
     "store",
     "backend"
   ],
   "scripts": {
     "start:frontend": "yarn workspace @pluto/store start",
-    "start:backend": "yarn workspace @pluto/backend start"
+    "start:backend": "yarn workspace @pluto/backend start",
+    "start:admin": "yarn workspace @pluto/admin start"
   }
 }

@@ -5,3 +5,4 @@ export { ProductImage } from "./productImage";
 export { Category } from "./category";
 export { Order } from "./order";
 export { OrderedProduct } from "./orderedProduct";
+export { Address } from "./address";

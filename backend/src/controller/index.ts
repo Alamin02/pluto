@@ -18,7 +18,15 @@ export {
   getSingleBlog as getSingleBlogController,
   updateSingleBlog as updateSingleBlogController,
   deleteBlog as deleteBlogController,
-} from "./blog";
+} from './blog';
+
+export {
+  createOrder as createOrderController,
+  getAllOrders as getAllOrdersController,
+  getSingleOrder as getSingleOrderController,
+  updateSingleOrder as updateSingleOrderController,
+  deleteOrder as deleteOrderController,
+} from './order';
 
 export {
   createAddress as createAddressController,

@@ -31,7 +31,7 @@ export async function createAddress(
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { division, district, city, address } = req.body;
+  const { division, district, city, address, user } = req.body;
 
   try {
     // get the repository from product entity
@@ -43,6 +43,7 @@ export async function createAddress(
     newAddress.district = district;
     newAddress.city = city;
     newAddress.address = address;
+    newAddress.user = user;
 
     // save data to repository from request body
     await addressRepository.save(newAddress);
@@ -85,7 +86,7 @@ export async function updateAddress(
   }
 
   try {
-    const { division, city, district, address } = req.body;
+    const { division, city, district, address, user } = req.body;
 
     const newAddress = new Address();
 
@@ -93,6 +94,7 @@ export async function updateAddress(
     newAddress.district = district;
     newAddress.city = city;
     newAddress.address = address;
+    newAddress.user = user;
 
     await addressRepository.update({ id: req.params.addressId }, newAddress);
   } catch (e) {

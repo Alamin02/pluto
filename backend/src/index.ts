@@ -1,10 +1,12 @@
-import express = require("express");
-import cookieParser = require("cookie-parser");
-import logger = require("morgan");
-import { createConnection } from "typeorm";
-const debug = require("debug")("app");
+import express = require('express');
+import cookieParser = require('cookie-parser');
+import logger = require('morgan');
+import { createConnection } from 'typeorm';
+const debug = require('debug')('app');
 
-import { userRouter, productRouter, blogRouter, categoryRouter } from "./route";
+
+import { userRouter, productRouter, blogRouter, orderRouter, addressRouter ,categoryRouter} from './route';
+
 import {
   User,
   Product,
@@ -13,33 +15,29 @@ import {
   Order,
   OrderedProduct,
   Category,
+  Address,
 } from "./entity";
 
 const app = express();
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routers
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/products", productRouter);
-app.use("/api/v1/blogs", blogRouter);
+
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/products', productRouter);
+app.use('/api/v1/blogs', blogRouter);
+app.use('/api/v1/orders', orderRouter);
+app.use("/api/v1/addresses", addressRouter);
 app.use("/api/v1/category", categoryRouter);
 
 createConnection({
-  type: "sqlite",
-  database: "./db.sqlite",
-  entities: [
-    User,
-    Product,
-    Blog,
-    ProductImage,
-    Order,
-    OrderedProduct,
-    Category,
-  ],
+  type: 'sqlite',
+  database: './db.sqlite',
+  entities: [User, Product, Blog, ProductImage, Order, OrderedProduct, Address, Category,],
   synchronize: true,
 });
 
@@ -51,12 +49,12 @@ app.use(function (
 ) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
 
-  res.send("Error");
+  res.send('Error');
 });
 
 const port = 4000;

@@ -7,7 +7,8 @@ import {
   ManyToMany,
   ManyToOne,
 } from "typeorm";
-import { Category, ProductImage, OrderedProduct } from "../entity";
+
+import { Category, ProductImage, OrderedProduct,Offer} from "../entity";
 
 @Entity("products")
 export class Product {
@@ -29,11 +30,19 @@ export class Product {
   @OneToMany(() => ProductImage, (productImage) => productImage.product)
   images!: ProductImage[];
 
+  @ManyToOne(() => Offer, (offer) => offer.products)
+  offer!: Offer;
+
   @OneToMany(() => OrderedProduct, (orderedProduct) => orderedProduct.product)
   orderedProducts!: OrderedProduct[];
 
   @ManyToOne(() => Category, (category) => category.products)
   category!: Category;
+
+
+  // @ManyToMany(() => Category)
+  // @JoinTable()
+  // categories!: Category[];
 
   // @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   // createdAt!: Date;

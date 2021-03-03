@@ -1,0 +1,17 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: #475569;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  color: white;
+}
+
+.siteLogo {
+  margin-right: 1rem;
+  height: 2rem;
+}
+
+.siteName {
+  text-transform: capitalize;
+}

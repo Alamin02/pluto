@@ -45,6 +45,7 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
+  var imagePath = "/myUploads/" + req.file.filename;
   const { name, price, summary, description } = req.body;
 
   try {

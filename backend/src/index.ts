@@ -4,8 +4,8 @@ import logger = require('morgan');
 import { createConnection } from 'typeorm';
 const debug = require('debug')('app');
 
+import { userRouter, productRouter, blogRouter, orderRouter, addressRouter ,categoryRouter} from './route';
 
-import { userRouter, productRouter, blogRouter, orderRouter, addressRouter, categoryRouter} from './route';
 
 import {
   User,
@@ -33,7 +33,7 @@ app.use('/api/v1/blogs', blogRouter);
 app.use('/api/v1/orders', orderRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/addresses", addressRouter);
-
+app.use("/api/v1/category", categoryRouter);
 
 createConnection({
   type: 'sqlite',

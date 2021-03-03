@@ -1,5 +1,5 @@
-import express = require('express');
-import { body } from 'express-validator';
+import express = require("express");
+import { body } from "express-validator";
 
 const router = express.Router();
 
@@ -9,49 +9,58 @@ import {
   getProductController,
   updateProductController,
   deleteProductController,
-} from '../controller';
-import { authenticationMiddleware, imageUpload } from '../middleware';
+  uploadProductImageController,
+} from "../controller";
+import { authenticationMiddleware, imageUpload } from "../middleware";
 
 // Get all products list
-router.get('/', getAllProductsController);
+router.get("/", getAllProductsController);
 
 // Create product
 router.post(
-  '/',
-  imageUpload,
+  "/",
   // authenticationMiddleware,
   [
-    body('name').not().isEmpty().withMessage('Product name can not be empty'),
-    body('price').not().isEmpty().withMessage('Product price can not be empty'),
-    body('summary').not().isEmpty().withMessage('Product summary can not be empty'),
-    body('description').not().isEmpty().withMessage('Product description can not be empty'),
+    body("name").not().isEmpty().withMessage("Product name can not be empty"),
+    body("price").not().isEmpty().withMessage("Product price can not be empty"),
+    body("summary")
+      .not()
+      .isEmpty()
+      .withMessage("Product summary can not be empty"),
+    body("description")
+      .not()
+      .isEmpty()
+      .withMessage("Product description can not be empty"),
   ],
   createProductController
 );
 
 // Get a particular product
-router.get('/:productId', getProductController);
+router.get("/:productId", getProductController);
 
 // Update product
 router.put(
-  '/:productId',
+  "/:productId",
   authenticationMiddleware,
   [
-    body('name').not().isEmpty().withMessage('Product name can not be empty'),
-    body('price').not().isEmpty().withMessage('Product price can not be empty'),
-    body('summary')
+    body("name").not().isEmpty().withMessage("Product name can not be empty"),
+    body("price").not().isEmpty().withMessage("Product price can not be empty"),
+    body("summary")
       .not()
       .isEmpty()
-      .withMessage('Product summary can not be empty'),
-    body('description')
+      .withMessage("Product summary can not be empty"),
+    body("description")
       .not()
       .isEmpty()
-      .withMessage('Product description can not be empty'),
+      .withMessage("Product description can not be empty"),
   ],
   updateProductController
 );
 
 // Delete a product
-router.delete('/:productId', authenticationMiddleware, deleteProductController);
+router.delete("/:productId", authenticationMiddleware, deleteProductController);
+
+// Upload a product image
+router.post("/productImage", imageUpload , uploadProductImageController);
 
 export default router;

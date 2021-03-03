@@ -10,6 +10,7 @@ export {
   getProduct as getProductController,
   updateProduct as updateProductController,
   deleteProduct as deleteProductController,
+  uploadProductImage as uploadProductImageController,
 } from "./products";
 
 export {
@@ -18,7 +19,7 @@ export {
   getSingleBlog as getSingleBlogController,
   updateSingleBlog as updateSingleBlogController,
   deleteBlog as deleteBlogController,
-} from './blog';
+} from "./blog";
 
 export {
   createOrder as createOrderController,
@@ -26,7 +27,7 @@ export {
   getSingleOrder as getSingleOrderController,
   updateSingleOrder as updateSingleOrderController,
   deleteOrder as deleteOrderController,
-} from './order';
+} from "./order";
 
 export {
   createAddress as createAddressController,

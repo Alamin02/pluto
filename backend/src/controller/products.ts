@@ -1,8 +1,8 @@
-import express = require('express');
-import { getConnection } from 'typeorm';
-import { validationResult } from 'express-validator';
+import express = require("express");
+import { getConnection } from "typeorm";
+import { validationResult } from "express-validator";
 
-import { Product } from '../entity';
+import { Address, Product, ProductImage } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -16,7 +16,7 @@ export async function getAllProducts(
   const perPage: number = parseInt(<string>req.query.perPage) || 10;
 
   const [products, productCount] = await productRepository.findAndCount({
-    select: ['id', 'name', 'price', 'summary'],
+    select: ["id", "name", "price", "summary"],
     take: page * perPage,
     skip: (page - 1) * perPage,
   });
@@ -45,7 +45,6 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
-  var imagePath = "/myUploads/" + req.file.filename;
   const { name, price, summary, description } = req.body;
 
   try {
@@ -63,10 +62,10 @@ export async function createProduct(
     // save data to repository from request body
     await productsRepository.save(newProduct);
   } catch (e) {
-    res.status(400).json({ error: 'Product already exists in db' });
+    res.status(400).json({ error: "Product already exists in db" });
     return;
   }
-  res.json({ msg: 'Product created' });
+  res.json({ msg: "Product created" });
 }
 
 // @GET - /api/v1/products/:productId
@@ -77,10 +76,10 @@ export async function getProduct(req: express.Request, res: express.Response) {
   const findProductById = await productRepository.findOne({ id });
 
   if (!findProductById) {
-    return res.status(400).json({ error: 'Product not found' });
+    return res.status(400).json({ error: "Product not found" });
   }
 
-  res.json({ msg: 'product found', data: findProductById });
+  res.json({ msg: "product found", data: findProductById });
 }
 
 // @PUT - /api/v1/products/:productId
@@ -97,10 +96,10 @@ export async function updateProduct(
     productsRepository.merge(findProductById, req.body);
     await productsRepository.save(findProductById);
   } catch (e) {
-    return res.status(400).json({ error: 'Product could not be updated' });
+    return res.status(400).json({ error: "Product could not be updated" });
   }
 
-  res.json({ msg: 'Product updated' });
+  res.json({ msg: "Product updated" });
 }
 
 // @DELETE - /api/v1/products/:productId
@@ -115,8 +114,30 @@ export async function deleteProduct(
   try {
     await productRepository.delete(id);
   } catch (e) {
-    return res.status(400).json({ error: 'Product could not be deleted' });
+    return res.status(400).json({ error: "Product could not be deleted" });
   }
+  res.json({ msg: "Product deleted" });
+}
 
-  res.json({ msg: 'Product deleted' });
+// @POST - /api/v1/products/productImage
+// Upload Product Image
+export async function uploadProductImage(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    
+    let imagePath = "/myUploads/" + req.file.filename;
+    const imageRepository = getConnection().getRepository(ProductImage);
+  
+    const newProductImage = new ProductImage();
+  
+    newProductImage.path = imagePath;
+  
+    // save data to repository from request body
+    await imageRepository.save(newProductImage);  
+    res.json({ msg: "Product image uploaded" });  
+  } catch (error) {    
+    res.json({ error: error });
+  }  
 }

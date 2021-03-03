@@ -5,7 +5,10 @@ import { Offer } from "../entity";
 
 // @GET /v1/api/offers
 // all offers
-export async function offers(req: express.Request, res: express.Response) {
+export async function getAllOffers(
+  req: express.Request,
+  res: express.Response
+) {
   const offersRepository = getConnection().getRepository(Offer);
   const allOffers = await offersRepository.find();
 

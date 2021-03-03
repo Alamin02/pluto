@@ -3,15 +3,17 @@ import { body } from "express-validator";
 const router = express.Router();
 
 import {
-  offersController,
+  getAllOffersController,
   createOfferController,
   updateOfferController,
   deleteOfferController,
 } from "../controller";
 
 import { authenticationMiddleware } from "../middleware";
+
 // get all offers
-router.get("/", offersController);
+router.get("/", getAllOffersController);
+
 // create offer
 router.post(
   "/",
@@ -26,8 +28,10 @@ router.post(
   authenticationMiddleware,
   createOfferController
 );
+
 // update offer
 router.put("/:offerId", authenticationMiddleware, updateOfferController);
+
 // delete offer
 router.delete("/:offerId", authenticationMiddleware, deleteOfferController);
 

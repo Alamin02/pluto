@@ -8,25 +8,23 @@ import {
   ManyToOne,
 } from "typeorm";
 
-
 import { Category, ProductImage, OrderedProduct,Offer} from "../entity";
 
-
-@Entity("products")
+@Entity('products')
 export class Product {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: "varchar", unique: true })
+  @Column({ type: 'varchar', unique: true })
   name!: string;
 
-  @Column("float")
+  @Column('float')
   price!: number;
 
-  @Column("text")
+  @Column('text')
   summary!: String;
 
-  @Column("text")
+  @Column('text')
   description!: string;
 
   @OneToMany(() => ProductImage, (productImage) => productImage.product)

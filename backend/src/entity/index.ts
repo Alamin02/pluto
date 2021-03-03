@@ -6,3 +6,4 @@ export { Category } from "./category";
 export { Offer } from "./offer";
 export { Order } from "./order";
 export { OrderedProduct } from "./orderedProduct";
+export { Address } from "./address";

@@ -24,11 +24,9 @@ export async function createOffer(req: express.Request, res: express.Response) {
   const { name, discount, description } = req.body;
 
   const offersRepository = getConnection().getRepository(Offer);
-  const previousEntry = await offersRepository.find({ name });
+  const previousEntry = await offersRepository.findOne({ name });
 
-  console.log(previousEntry);
-
-  if (!previousEntry.length) {
+  if (!previousEntry) {
     try {
       const newOffer = new Offer();
       newOffer.name = name;

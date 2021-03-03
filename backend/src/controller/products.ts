@@ -126,18 +126,17 @@ export async function uploadProductImage(
   res: express.Response
 ) {
   try {
-    
-    let imagePath = "/myUploads/" + req.file.filename;
+    let imagePath = "../public/images/" + req.file.filename;
     const imageRepository = getConnection().getRepository(ProductImage);
-  
+
     const newProductImage = new ProductImage();
-  
+
     newProductImage.path = imagePath;
-  
+
     // save data to repository from request body
-    await imageRepository.save(newProductImage);  
-    res.json({ msg: "Product image uploaded" });  
-  } catch (error) {    
+    await imageRepository.save(newProductImage);
+    res.json({ msg: "Product image uploaded" });
+  } catch (error) {
     res.json({ error: error });
-  }  
+  }
 }

@@ -53,7 +53,6 @@ function App() {
         (
           <Login login={login} error={error} />
         )}
-
     </div>
   )
 }

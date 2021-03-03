@@ -20,7 +20,7 @@ router.post(
   "/sub",
   [
     body("name").not().isEmpty().withMessage("name must not be empty"),
-    body("parent").not().isEmpty().withMessage("parent must not be empty"),
+    body("parentId").not().isEmpty().withMessage("parent must not be empty"),
   ],
   createSubCategoryController
 );

@@ -46,7 +46,7 @@ export async function createSubCategory(
   req: express.Request,
   res: express.Response
 ) {
-  const { name, parent } = req.body;
+  const { name, parentId } = req.body;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -55,16 +55,20 @@ export async function createSubCategory(
 
   const categoryRepository = getConnection().getRepository(Category);
   const checkDuplicate = await categoryRepository.find({
-    where: parent && name,
+    where: {
+      name,
+      parent: {
+        id: parentId,
+      },
+    },
   });
-  console.log(checkDuplicate);
-  const checkParent = await categoryRepository.find({ id: parent });
-  if (!checkDuplicate) {
+  const checkParent = await categoryRepository.find({ id: parentId });
+  if (!checkDuplicate.length) {
     const newCategory = new Category();
     newCategory.name = name;
 
     if (checkParent.length) {
-      newCategory.parent = parent;
+      newCategory.parent = parentId;
       const data = await categoryRepository.save(newCategory);
       res.json({ data: data });
     } else {
@@ -101,17 +105,17 @@ export async function updateSubCategory(
   res: express.Response
 ) {
   const subCategoryId = req.params.subCategoryId;
-  const { name, parent } = req.body;
+  const { name, parentId } = req.body;
 
   const categoryRepository = getConnection().getRepository(Category);
   const checkCategory = await categoryRepository.findOne({ id: subCategoryId });
-  const checkParent = await categoryRepository.findOne({ id: parent });
+  const checkParent = await categoryRepository.findOne({ id: parentId });
 
   if (checkCategory) {
     const newCategory = new Category();
     newCategory.name = name;
     if (checkParent) {
-      newCategory.parent = parent;
+      newCategory.parent = parentId;
       await categoryRepository.update(subCategoryId, newCategory);
       res.json({ msg: "Sub-category updated" });
     } else {

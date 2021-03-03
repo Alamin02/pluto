@@ -8,20 +8,26 @@ import {
   userRouter,
   productRouter,
   blogRouter,
+  offerRouter,
   orderRouter,
   addressRouter,
+  categoryRouter,
 } from "./route";
+
 import {
   User,
   Product,
   Blog,
   ProductImage,
+  Offer,
   Order,
   OrderedProduct,
+  Category,
   Address,
 } from "./entity";
 
 const app = express();
+
 // // set up public folder
 app.use(express.static("./public"));
 app.use(logger("dev"));
@@ -32,16 +38,26 @@ app.use(cookieParser());
 // Routers
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/offers", offerRouter);
+app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
 
-
-
 createConnection({
   type: "sqlite",
   database: "./db.sqlite",
-  entities: [User, Product, Blog, ProductImage, Order, OrderedProduct, Address],
+  entities: [
+    User,
+    Product,
+    Blog,
+    ProductImage,
+    Offer,
+    Category,
+    Order,
+    OrderedProduct,
+    Address,
+  ],
   synchronize: true,
 });
 

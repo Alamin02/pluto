@@ -22,6 +22,22 @@ export {
 } from "./blog";
 
 export {
+  category as categoryController,
+  createCategory as createCategoryController,
+  createSubCategory as createSubCategoryController,
+  updateCategory as updateCategoryController,
+  updateSubCategory as updateSubCategoryController,
+  deleteCategory as deleteCategoryController,
+} from "./category";
+
+export {
+  getAllOffers as getAllOffersController,
+  createOffer as createOfferController,
+  updateOffer as updateOfferController,
+  deleteOffer as deleteOfferController,
+} from "./offer";
+
+export {
   createOrder as createOrderController,
   getAllOrders as getAllOrdersController,
   getSingleOrder as getSingleOrderController,

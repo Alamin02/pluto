@@ -2,7 +2,7 @@ import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
-import { Address, Product, ProductImage } from "../entity";
+import { Product, Offer, Category, ProductImage, Address } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -17,7 +17,8 @@ export async function getAllProducts(
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ["id", "name", "price", "summary"],
-    take: page * perPage,
+    relations: ["category", "offer"],
+    take: perPage,
     skip: (page - 1) * perPage,
   });
 
@@ -45,19 +46,35 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, price, summary, description } = req.body;
+  const { name, price, summary, description, offerId, categoryId } = req.body;
 
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
 
-    const newProduct = new Product();
+    const categoryRepository = getConnection().getRepository(Category);
+    const categoryCheck = await categoryRepository.findOne({
+      id: categoryId,
+    });
+    // console.log(categoryCheck);
 
+    const offersRepository = getConnection().getRepository(Offer);
+    const offer = await offersRepository.findOne({ id: offerId });
+
+    const newProduct = new Product();
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
+    if (categoryCheck) {
+      newProduct.category = categoryId;
+    } else {
+      res.status(400).json({ msg: "category not found" });
+    }
     newProduct.images = [];
+    if (offer) {
+      newProduct.offer = offer;
+    }
 
     // save data to repository from request body
     await productsRepository.save(newProduct);
@@ -72,6 +89,7 @@ export async function createProduct(
 // Get a particular product
 export async function getProduct(req: express.Request, res: express.Response) {
   const id = req.params.productId;
+
   const productRepository = getConnection().getRepository(Product);
   const findProductById = await productRepository.findOne({ id });
 
@@ -89,11 +107,28 @@ export async function updateProduct(
   res: express.Response
 ) {
   const id = req.params.productId;
+  const { name, price, summary, description, offerId } = req.body;
   const productsRepository = getConnection().getRepository(Product);
 
   try {
     const findProductById: any = await productsRepository.findOne({ id });
-    productsRepository.merge(findProductById, req.body);
+    // offer repository
+    const offersRepository = getConnection().getRepository(Offer);
+    // find offer by id
+    const offer = await offersRepository.findOne({ id: offerId });
+
+    const newProduct = new Product();
+
+    newProduct.name = name;
+    newProduct.description = description;
+    newProduct.price = price;
+    newProduct.summary = summary;
+    newProduct.images = [];
+    if (offer) {
+      newProduct.offer = offer;
+    }
+    productsRepository.merge(findProductById, newProduct);
+
     await productsRepository.save(findProductById);
   } catch (e) {
     return res.status(400).json({ error: "Product could not be updated" });
@@ -132,7 +167,6 @@ export async function uploadProductImage(
     const newProductImage = new ProductImage();
 
     newProductImage.path = imagePath;
-
     // save data to repository from request body
     await imageRepository.save(newProductImage);
     res.json({ msg: "Product image uploaded" });

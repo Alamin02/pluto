@@ -1,8 +1,8 @@
-import express = require('express');
-import { getConnection } from 'typeorm';
-import { validationResult } from 'express-validator';
+import express = require("express");
+import { getConnection } from "typeorm";
+import { validationResult } from "express-validator";
 
-import { Product } from '../entity';
+import { Product, Category } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -16,8 +16,9 @@ export async function getAllProducts(
   const perPage: number = parseInt(<string>req.query.perPage) || 10;
 
   const [products, productCount] = await productRepository.findAndCount({
-    select: ['id', 'name', 'price', 'summary'],
-    take: page * perPage,
+    select: ["id", "name", "price", "summary"],
+    relations: ["category"],
+    take: perPage,
     skip: (page - 1) * perPage,
   });
 
@@ -45,11 +46,16 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, price, summary, description } = req.body;
+  const { name, price, summary, description, categoryId } = req.body;
 
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
+    const categoryRepository = getConnection().getRepository(Category);
+    const categoryCheck = await categoryRepository.findOne({
+      id: categoryId,
+    });
+    // console.log(categoryCheck);
 
     const newProduct = new Product();
 
@@ -57,15 +63,20 @@ export async function createProduct(
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
+    if (categoryCheck) {
+      newProduct.category = categoryId;
+    } else {
+      res.status(400).json({ msg: "category not found" });
+    }
     newProduct.images = [];
 
     // save data to repository from request body
     await productsRepository.save(newProduct);
   } catch (e) {
-    res.status(400).json({ error: 'Product already exists in db' });
+    res.status(400).json({ error: "Product already exists in db" });
     return;
   }
-  res.json({ msg: 'Product created' });
+  res.json({ msg: "Product created" });
 }
 
 // @GET - /api/v1/products/:productId
@@ -76,10 +87,10 @@ export async function getProduct(req: express.Request, res: express.Response) {
   const findProductById = await productRepository.findOne({ id });
 
   if (!findProductById) {
-    return res.status(400).json({ error: 'Product not found' });
+    return res.status(400).json({ error: "Product not found" });
   }
 
-  res.json({ msg: 'product found', data: findProductById });
+  res.json({ msg: "product found", data: findProductById });
 }
 
 // @PUT - /api/v1/products/:productId
@@ -96,10 +107,10 @@ export async function updateProduct(
     productsRepository.merge(findProductById, req.body);
     await productsRepository.save(findProductById);
   } catch (e) {
-    return res.status(400).json({ error: 'Product could not be updated' });
+    return res.status(400).json({ error: "Product could not be updated" });
   }
 
-  res.json({ msg: 'Product updated' });
+  res.json({ msg: "Product updated" });
 }
 
 // @DELETE - /api/v1/products/:productId
@@ -114,8 +125,8 @@ export async function deleteProduct(
   try {
     await productRepository.delete(id);
   } catch (e) {
-    return res.status(400).json({ error: 'Product could not be deleted' });
+    return res.status(400).json({ error: "Product could not be deleted" });
   }
 
-  res.json({ msg: 'Product deleted' });
+  res.json({ msg: "Product deleted" });
 }

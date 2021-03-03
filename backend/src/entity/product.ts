@@ -2,27 +2,28 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  JoinTable,
   OneToMany,
-} from 'typeorm';
-import { Category, ProductImage, OrderedProduct } from '../entity';
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+} from "typeorm";
+import { Category, ProductImage, OrderedProduct } from "../entity";
 
-@Entity('products')
+@Entity("products")
 export class Product {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column({ type: 'varchar', unique: true })
+  @Column({ type: "varchar", unique: true })
   name!: string;
 
-  @Column('float')
+  @Column("float")
   price!: number;
 
-  @Column('text')
+  @Column("text")
   summary!: String;
 
-  @Column('text')
+  @Column("text")
   description!: string;
 
   @OneToMany(() => ProductImage, (productImage) => productImage.product)
@@ -31,9 +32,8 @@ export class Product {
   @OneToMany(() => OrderedProduct, (orderedProduct) => orderedProduct.product)
   orderedProducts!: OrderedProduct[];
 
-  // @ManyToMany(() => Category)
-  // @JoinTable()
-  // categories!: Category[];
+  @ManyToOne(() => Category, (category) => category.products)
+  category!: Category;
 
   // @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   // createdAt!: Date;

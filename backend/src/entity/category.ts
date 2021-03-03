@@ -2,9 +2,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  JoinTable,
   ManyToOne,
   OneToMany,
 } from "typeorm";
+import { Product } from "./product";
 
 // import { Product } from "./product";
 
@@ -22,9 +24,8 @@ export class Category {
   @OneToMany((type) => Category, (category) => category.parent)
   children!: Category[];
 
-  //   @ManyToMany(() => Product)
-  //   @JoinTable()
-  //   products!: Product[];
+  @OneToMany((type) => Product, (product) => product.category)
+  products!: Product[];
 
   //   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   //   createdAt!: Date;

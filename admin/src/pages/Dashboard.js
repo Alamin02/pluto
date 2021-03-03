@@ -32,14 +32,16 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboard}>
       {/* sidebar */}
-      <div className={styles.sidebar}>
-        {sidebarInfo.map((item) => (
-          <div key={item.id}>
-            <Link to={item.itemUrl} className={styles.sidebarItem}>
-              {item.itemName}
-            </Link>
-          </div>
-        ))}
+      <div className={styles.sidebarContainer}>
+        <div className={styles.sidebar}>
+          {sidebarInfo.map((item) => (
+            <div key={item.id}>
+              <Link to={item.itemUrl} className={styles.sidebarItem}>
+                {item.itemName}
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* content */}

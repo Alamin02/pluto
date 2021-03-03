@@ -2,6 +2,11 @@
   display: flex;
 }
 
+.sidebarContainer {
+  background-color: #64748b;
+  min-height: 100vh;
+}
+
 .sidebar {
   background-color: #64748b;
   padding: 1rem 1rem;

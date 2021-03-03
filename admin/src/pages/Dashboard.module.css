@@ -1,0 +1,34 @@
+.dashboard {
+  display: flex;
+}
+
+.sidebarContainer {
+  background-color: #64748b;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background-color: #64748b;
+  padding: 1rem 1rem;
+  display: grid;
+  row-gap: 1rem;
+  color: white;
+  margin-right: 1rem;
+}
+
+.sidebarItem {
+  padding: 0.4rem 1.2rem;
+  border-radius: 0.25rem;
+  text-transform: capitalize;
+  color: white;
+}
+
+.sidebarItem:hover {
+  background-color: #475569;
+  color: white;
+}
+
+.content {
+  padding: 1rem 1rem;
+  margin-right: 1rem;
+}

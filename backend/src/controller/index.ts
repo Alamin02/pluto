@@ -19,6 +19,7 @@ export {
   updateSingleBlog as updateSingleBlogController,
   deleteBlog as deleteBlogController,
 } from "./blog";
+
 export {
   category as categoryController,
   createCategory as createCategoryController,
@@ -27,3 +28,19 @@ export {
   updateSubCategory as updateSubCategoryController,
   deleteCategory as deleteCategoryController,
 } from "./category";
+
+export {
+  createOrder as createOrderController,
+  getAllOrders as getAllOrdersController,
+  getSingleOrder as getSingleOrderController,
+  updateSingleOrder as updateSingleOrderController,
+  deleteOrder as deleteOrderController,
+} from "./order";
+
+export {
+  createAddress as createAddressController,
+  getAllAddresses as getAllAddressesController,
+  getAddress as getAddressController,
+  updateAddress as updateAddressController,
+  deleteAddress as deleteAddressController,
+} from "./addresses";

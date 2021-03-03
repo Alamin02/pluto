@@ -1,14 +1,14 @@
-import express = require("express");
+import express = require('express');
 const router = express.Router();
-import bcrypt = require("bcrypt");
-import jwt = require("jsonwebtoken");
-import { getConnection } from "typeorm";
-import { validationResult } from "express-validator";
-require('dotenv').config()
+import bcrypt = require('bcrypt');
+import jwt = require('jsonwebtoken');
+import { getConnection } from 'typeorm';
+import { validationResult } from 'express-validator';
+require('dotenv').config();
 
-import { User } from "../entity";
+import { User } from '../entity';
 
-const secret = process.env.JWT_SECRET || "";
+const secret = process.env.JWT_SECRET || '';
 const saltRounds = 10;
 
 // @POST - /api/v1/users/login
@@ -27,7 +27,7 @@ export async function userLogin(req: express.Request, res: express.Response) {
   if (!previousEntry) {
     return res
       .status(400)
-      .json({ errors: [{ msg: "Email or password doesnot match" }] });
+      .json({ errors: [{ msg: 'Email or password doesnot match' }] });
   }
 
   // Verifying the password
@@ -35,11 +35,11 @@ export async function userLogin(req: express.Request, res: express.Response) {
   if (!isPasswordMatch) {
     return res
       .status(400)
-      .json({ errors: [{ msg: "Email or password doesnot match" }] });
+      .json({ errors: [{ msg: 'Email or password doesnot match' }] });
   }
 
   // Generating a token
-  const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
+  const token = jwt.sign({ email }, secret, { expiresIn: '1h' });
 
   res.json({ token });
 }
@@ -72,11 +72,11 @@ export async function userRegistration(
 
     await userRepository.save(newUser);
   } catch (e) {
-    res.status(400).json({ error: "Something went wrong" });
+    res.status(400).json({ error: 'Something went wrong' });
     return;
   }
 
-  res.json({ msg: "Create new user!" });
+  res.json({ msg: 'Create new user!' });
 }
 
 // @GET - /api/v1/users/
@@ -84,7 +84,7 @@ export async function userRegistration(
 export async function users(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const users = await userRepository.find({
-    select: ["name", "email", "phone"],
+    select: ['id', 'name', 'email', 'phone'],
   });
 
   res.json({ data: users });

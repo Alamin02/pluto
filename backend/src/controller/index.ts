@@ -18,7 +18,14 @@ export {
   getSingleBlog as getSingleBlogController,
   updateSingleBlog as updateSingleBlogController,
   deleteBlog as deleteBlogController,
-} from './blog';
+} from "./blog";
+
+export {
+  getAllOffers as getAllOffersController,
+  createOffer as createOfferController,
+  updateOffer as updateOfferController,
+  deleteOffer as deleteOfferController,
+} from "./offer";
 
 export {
   createOrder as createOrderController,
@@ -26,7 +33,7 @@ export {
   getSingleOrder as getSingleOrderController,
   updateSingleOrder as updateSingleOrderController,
   deleteOrder as deleteOrderController,
-} from './order';
+} from "./order";
 
 export {
   createAddress as createAddressController,

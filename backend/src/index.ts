@@ -7,10 +7,11 @@ const debug = require("debug")("app");
 import {
   userRouter,
   productRouter,
-  offerRouter,
   blogRouter,
+  offerRouter,
   orderRouter,
   addressRouter,
+  categoryRouter,
 } from "./route";
 
 import {
@@ -21,6 +22,7 @@ import {
   Offer,
   Order,
   OrderedProduct,
+  Category,
   Address,
 } from "./entity";
 
@@ -35,6 +37,7 @@ app.use(cookieParser());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/offers", offerRouter);
+app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
@@ -48,6 +51,7 @@ createConnection({
     Blog,
     ProductImage,
     Offer,
+    Category,
     Order,
     OrderedProduct,
     Address,

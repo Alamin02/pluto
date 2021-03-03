@@ -2,7 +2,7 @@ import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
-import { Offer, Product } from "../entity";
+import { Product,Offer, Category } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -17,7 +17,9 @@ export async function getAllProducts(
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ["id", "name", "price", "summary"],
-    relations: ["offer"],
+
+    relations: ["category","offer"],
+
     take: perPage,
     skip: (page - 1) * perPage,
   });
@@ -46,19 +48,34 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, price, summary, description, offerId } = req.body;
+
+  const { name, price, summary, description, offerId, categoryId } = req.body;
+
 
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
+
+    const categoryRepository = getConnection().getRepository(Category);
+    const categoryCheck = await categoryRepository.findOne({
+      id: categoryId,
+    });
+    // console.log(categoryCheck);
+
     const offersRepository = getConnection().getRepository(Offer);
     const offer = await offersRepository.findOne({ id: offerId });
+
 
     const newProduct = new Product();
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
+    if (categoryCheck) {
+      newProduct.category = categoryId;
+    } else {
+      res.status(400).json({ msg: "category not found" });
+    }
     newProduct.images = [];
     if (offer) {
       newProduct.offer = offer;

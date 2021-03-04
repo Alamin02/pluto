@@ -2,7 +2,7 @@ import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
-import { Product, Offer, Category, ProductImage, Address } from "../entity";
+import { Product, Offer, Category } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -56,7 +56,6 @@ export async function createProduct(
     const categoryCheck = await categoryRepository.findOne({
       id: categoryId,
     });
-    // console.log(categoryCheck);
 
     const offersRepository = getConnection().getRepository(Offer);
     const offer = await offersRepository.findOne({ id: offerId });
@@ -152,25 +151,4 @@ export async function deleteProduct(
     return res.status(400).json({ error: "Product could not be deleted" });
   }
   res.json({ msg: "Product deleted" });
-}
-
-// @POST - /api/v1/products/productImage
-// Upload Product Image
-export async function uploadProductImage(
-  req: express.Request,
-  res: express.Response
-) {
-  try {
-    let imagePath = "../public/images/" + req.file.filename;
-    const imageRepository = getConnection().getRepository(ProductImage);
-
-    const newProductImage = new ProductImage();
-
-    newProductImage.path = imagePath;
-    // save data to repository from request body
-    await imageRepository.save(newProductImage);
-    res.json({ msg: "Product image uploaded" });
-  } catch (error) {
-    res.json({ error: error });
-  }
 }

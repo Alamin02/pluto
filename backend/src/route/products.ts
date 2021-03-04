@@ -8,10 +8,9 @@ import {
   getAllProductsController,
   getProductController,
   updateProductController,
-  deleteProductController,
-  uploadProductImageController,
+  deleteProductController,  
 } from "../controller";
-import { authenticationMiddleware, imageUpload } from "../middleware";
+import { authenticationMiddleware } from "../middleware";
 
 // Get all products list
 router.get("/", getAllProductsController);
@@ -20,7 +19,7 @@ router.get("/", getAllProductsController);
 router.post(
   "/",
 
-  authenticationMiddleware,
+  // authenticationMiddleware,
 
   [
     body("name").not().isEmpty().withMessage("Product name can not be empty"),
@@ -66,12 +65,5 @@ router.put(
 
 // Delete a product
 router.delete("/:productId", authenticationMiddleware, deleteProductController);
-
-// Upload a product image
-router.post(
-  "/productImage",
-  imageUpload.single("productImage"),
-  uploadProductImageController
-);
 
 export default router;

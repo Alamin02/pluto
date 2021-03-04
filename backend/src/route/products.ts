@@ -9,7 +9,6 @@ import {
   getProductController,
   updateProductController,
   deleteProductController,
-  uploadImageController,
 } from "../controller";
 
 import { authenticationMiddleware, imageUpload } from "../middleware";
@@ -68,6 +67,5 @@ router.put(
 
 // Delete a product
 router.delete("/:productId", authenticationMiddleware, deleteProductController);
-
 
 export default router;

@@ -17,7 +17,7 @@ export async function getAllProducts(
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ["id", "name", "price", "summary"],
-    relations: ["category", "offer"],
+    relations: ["category", "offer", "images"],
     take: perPage,
     skip: (page - 1) * perPage,
   });
@@ -60,11 +60,20 @@ export async function createProduct(
     const offersRepository = getConnection().getRepository(Offer);
     const offer = await offersRepository.findOne({ id: offerId });
 
+    // const imagePath = "../public/images/" + req.file.filename;
+    // const productImageRepository = getConnection().getRepository(ProductImage);
+
+    // const newProductImage = new ProductImage();
+    // newProductImage.path = imagePath;
+    // const imageSave = await productImageRepository.save(newProductImage);
+    // const imageIds = [];
+    // imageIds.push(imageSave);
     const newProduct = new Product();
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
+    // newProduct.images = imageIds;
     if (categoryCheck) {
       newProduct.category = categoryId;
     } else {
@@ -157,13 +166,13 @@ export async function deleteProduct(
 export async function uploadImage(req: express.Request, res: express.Response) {
   const path = req.file && req.file.path;
   if (path) {
-    let imagePath = "/myUploads/" + req.file.filename;
-    const productsRepository = getConnection().getRepository(ProductImage);
+    let imagePath = "../public/images/" + req.file.filename;
+    const productImageRepository = getConnection().getRepository(ProductImage);
 
     const newProductImage = new ProductImage();
     newProductImage.path = imagePath;
-
-    res.json({ msg: "File successfully uploaded" });
+    const imageSave = await productImageRepository.save(newProductImage);
+    res.json({ msg: "File successfully uploaded", imageSave });
   } else {
     res.json({
       msg: "File not uploaded successfully",

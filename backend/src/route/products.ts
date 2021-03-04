@@ -22,6 +22,7 @@ router.post(
   "/",
 
   // authenticationMiddleware,
+  imageUpload,
 
   [
     body("name").not().isEmpty().withMessage("Product name can not be empty"),
@@ -35,10 +36,10 @@ router.post(
       .isEmpty()
       .withMessage("Product description can not be empty"),
 
-    body("categoryId")
-      .not()
-      .isEmpty()
-      .withMessage("categoryId can not be empty"),
+    // body("categoryId")
+    //   .not()
+    //   .isEmpty()
+    //   .withMessage("categoryId can not be empty"),
   ],
   createProductController
 );
@@ -69,6 +70,6 @@ router.put(
 router.delete("/:productId", authenticationMiddleware, deleteProductController);
 
 // Upload a image
-router.post("/productImage", imageUpload, uploadImageController);
+// router.post("/productImage", imageUpload, uploadImageController);
 
 export default router;

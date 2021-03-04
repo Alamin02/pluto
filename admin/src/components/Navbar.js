@@ -1,6 +1,8 @@
 import React from "react";
 import { Button } from "antd";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+
+let adminMail = "admin@mail.com";
 
 // styling start
 const navbar = {
@@ -29,6 +31,10 @@ const adminPanelText = {
   textTransform: "capitalize",
 };
 
+const adminUserName = {
+  fontSize: "1rem",
+};
+
 const logout = {
   backgroundColor: "#F1F5F9",
   marginRight: "1rem",
@@ -49,6 +55,9 @@ export default function Navbar() {
           <div style={adminPanelText}>admin panel</div>
         </div>
         <div>
+          <Button type="link" icon={<UserOutlined />}>
+            <span style={adminUserName}>{adminMail}</span>
+          </Button>
           <Button style={logout} size="large" icon={<LogoutOutlined />}>
             logout
           </Button>

@@ -4,6 +4,7 @@ import bcrypt = require("bcrypt");
 import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
+require("dotenv").config();
 
 import { User } from "../entity";
 
@@ -56,8 +57,14 @@ export async function userRegistration(
   }
 
   const { name, email, password, phone } = req.body;
-
   const hash = await bcrypt.hash(password, saltRounds);
+  
+  // If there is a user
+  const userRepository = getConnection().getRepository(User);
+  const previousEntry = await userRepository.findOne({ email });
+  if (previousEntry) {
+    res.json({ msg: "User already exits" });
+  };  
 
   // Create a new user
   try {
@@ -83,7 +90,7 @@ export async function userRegistration(
 export async function users(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const users = await userRepository.find({
-    select: ["name", "email", "phone"],
+    select: ["id", "name", "email", "phone"],
   });
 
   res.json({ data: users });

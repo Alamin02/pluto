@@ -4,11 +4,33 @@ import logger = require("morgan");
 import { createConnection } from "typeorm";
 const debug = require("debug")("app");
 
-import { userRouter, productRouter, blogRouter } from "./route";
-import { User, Product, Blog, ProductImage } from "./entity";
+import {
+  userRouter,
+  productRouter,
+  blogRouter,
+  offerRouter,
+  orderRouter,
+  addressRouter,
+  categoryRouter,
+  productImageRouter,
+} from "./route";
+
+import {
+  User,
+  Product,
+  Blog,
+  ProductImage,
+  Offer,
+  Order,
+  OrderedProduct,
+  Category,
+  Address,
+} from "./entity";
 
 const app = express();
 
+// // set up public folder
+app.use(express.static("./public"));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,12 +39,27 @@ app.use(cookieParser());
 // Routers
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/offers", offerRouter);
+app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
+app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/addresses", addressRouter);
+app.use("/api/v1/productImages", productImageRouter);
 
 createConnection({
   type: "sqlite",
   database: "./db.sqlite",
-  entities: [User, Product, Blog, ProductImage],
+  entities: [
+    User,
+    Product,
+    Blog,
+    ProductImage,
+    Offer,
+    Category,
+    Order,
+    OrderedProduct,
+    Address,
+  ],
   synchronize: true,
 });
 

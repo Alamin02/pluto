@@ -5,6 +5,8 @@ import Overview from "./Overview";
 import Products from "./Products";
 import Offers from "./Offers";
 import Users from "./Users";
+import Orders from "./Orders";
+import Catagories from "./Catagories";
 
 export default function DashboardContent() {
   return (
@@ -16,6 +18,8 @@ export default function DashboardContent() {
         <Route path="/products" component={Products} exact />
         <Route path="/offers" component={Offers} exact />
         <Route path="/users" component={Users} exact />
+        <Route path="/orders" component={Orders} exact />
+        <Route path="/catagories" component={Catagories} exact />
       </Switch>
     </div>
   );

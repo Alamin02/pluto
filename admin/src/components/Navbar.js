@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "antd";
+import { LogoutOutlined } from "@ant-design/icons";
 
 // styling start
 const navbar = {
@@ -48,7 +49,7 @@ export default function Navbar() {
           <div style={adminPanelText}>admin panel</div>
         </div>
         <div>
-          <Button style={logout} size="large">
+          <Button style={logout} size="large" icon={<LogoutOutlined />}>
             logout
           </Button>
         </div>

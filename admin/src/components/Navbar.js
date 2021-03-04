@@ -43,6 +43,11 @@ const logout = {
 // styling end
 
 export default function Navbar() {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
+
   return (
     <div>
       <div style={navbar}>
@@ -58,7 +63,12 @@ export default function Navbar() {
           <Button type="link" icon={<UserOutlined />}>
             <span style={adminUserName}>{adminMail}</span>
           </Button>
-          <Button style={logout} size="large" icon={<LogoutOutlined />}>
+          <Button
+            style={logout}
+            size="large"
+            icon={<LogoutOutlined />}
+            onClick={handleLogout}
+          >
             logout
           </Button>
         </div>

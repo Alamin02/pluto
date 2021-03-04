@@ -4,6 +4,8 @@ import logger = require("morgan");
 import { createConnection } from "typeorm";
 const debug = require("debug")("app");
 
+import cors from "cors";
+
 import {
   userRouter,
   productRouter,
@@ -29,6 +31,7 @@ import {
 const app = express();
 
 app.use(logger("dev"));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

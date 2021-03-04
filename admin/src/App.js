@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
-  const isLoggedIn = true;
+  const isLoggedIn = localStorage.getItem("token");
 
   if (!isLoggedIn) {
     return (

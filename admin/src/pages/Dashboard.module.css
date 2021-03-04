@@ -3,8 +3,9 @@
 }
 
 .sidebarContainer {
-  background-color: #64748b;
+  background-color: #001529;
   min-height: 100vh;
+  max-width: 200px;
 }
 
 .sidebar {
@@ -16,19 +17,7 @@
   margin-right: 1rem;
 }
 
-.sidebarItem {
-  padding: 0.4rem 1.2rem;
-  border-radius: 0.25rem;
-  text-transform: capitalize;
-  color: white;
-}
-
-.sidebarItem:hover {
-  background-color: #475569;
-  color: white;
-}
-
-.content {
+.contentContainer {
   padding: 1rem 1rem;
   margin-right: 1rem;
 }

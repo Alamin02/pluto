@@ -9,8 +9,10 @@ import {
   getProductController,
   updateProductController,
   deleteProductController,
+  uploadImageController,
 } from "../controller";
-import { authenticationMiddleware } from "../middleware";
+
+import { authenticationMiddleware, imageUpload } from "../middleware";
 
 // Get all products list
 router.get("/", getAllProductsController);
@@ -18,7 +20,9 @@ router.get("/", getAllProductsController);
 // Create product
 router.post(
   "/",
-  //authenticationMiddleware,
+
+  // authenticationMiddleware,
+
   [
     body("name").not().isEmpty().withMessage("Product name can not be empty"),
     body("price").not().isEmpty().withMessage("Product price can not be empty"),
@@ -30,6 +34,7 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Product description can not be empty"),
+
     body("categoryId")
       .not()
       .isEmpty()
@@ -62,5 +67,8 @@ router.put(
 
 // Delete a product
 router.delete("/:productId", authenticationMiddleware, deleteProductController);
+
+// Upload a image
+router.post("/productImage", imageUpload, uploadImageController);
 
 export default router;

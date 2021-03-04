@@ -1,7 +1,7 @@
-import express = require('express');
-import { getConnection } from 'typeorm';
-import { validationResult } from 'express-validator';
-import { Blog } from '../entity';
+import express = require("express");
+import { getConnection } from "typeorm";
+import { validationResult } from "express-validator";
+import { Blog } from "../entity";
 
 // @POST - /api/v1/blogs
 // Create a Blog
@@ -25,10 +25,10 @@ export async function createBlog(req: express.Request, res: express.Response) {
 
     await blogRepository.save(newBlog);
   } catch (err) {
-    res.json({ errors: 'Blog could not be added' });
+    res.json({ errors: "Blog could not be added" });
     return;
   }
-  res.json({ msg: 'Blog created' });
+  res.json({ msg: "Blog created" });
 }
 
 // @GET - /api/v1/blogs/
@@ -40,7 +40,7 @@ export async function getAllBlogs(req: express.Request, res: express.Response) {
   const perPage = parseInt(<string>req.query.perPage);
 
   const [blogs, blogCount] = await blogRepository.findAndCount({
-    select: ['id', 'title', 'author', 'description'],
+    select: ["id", "title", "author", "description"],
     take: page * perPage,
     skip: (page - 1) * perPage,
   });
@@ -66,7 +66,7 @@ export async function getSingleBlog(
   const blogRepository = getConnection().getRepository(Blog);
   const singleblog = await blogRepository.findOne({ id });
   if (!singleblog) {
-    return res.status(400).json({ msg: 'Blog is not found' });
+    return res.status(400).json({ msg: "Blog is not found" });
   }
   res.json({ data: singleblog });
 }
@@ -87,9 +87,9 @@ export async function updateSingleBlog(
 
     await blogRepository.update({ id: req.params.blogId }, newBlog);
   } catch (err) {
-    res.json({ errors: 'Blog is not updated' });
+    res.json({ errors: "Blog is not updated" });
   }
-  res.json({ msg: 'Blog is now updated' });
+  res.json({ msg: "Blog is now updated" });
 }
 
 // @DELETE - /api/v1/blogs/:blogId
@@ -99,9 +99,9 @@ export async function deleteBlog(req: express.Request, res: express.Response) {
   const blogRepository = getConnection().getRepository(Blog);
   try {
     if (await blogRepository.delete({ id })) {
-      return res.json({ msg: 'delete successfully' });
+      return res.json({ msg: "delete successfully" });
     }
   } catch (err) {
-    res.json({ errors: 'blog is not identified' });
+    res.json({ errors: "blog is not identified" });
   }
 }

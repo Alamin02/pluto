@@ -1,70 +1,88 @@
-import React, { useState } from 'react';
-import { Input, Button } from 'antd';
-import {
-  MailOutlined,
-  UserOutlined,
-  LockOutlined
-} from '@ant-design/icons';
+import React from "react";
+import { Form, Input, Button, Checkbox, Card } from "antd";
 
-import "antd/dist/antd.css"
-import styles from './Login.module.css'
+export const Login = () => {
+  const onFinish = (values) => {
+    fetch("http://localhost:4000/api/v1/users/login", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        window.location.reload();
+      });
+  };
 
-function Login({ login, error }) {
-
-  const [details, setDetails] = useState({ name: "", email: "", password: "" })
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    login(details);
-  }
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
   return (
-    <form>
-      <div className={styles.formInner}>
-        <h2 className={styles.titleName}>Login</h2>
-        {(error !== " ") ? (<div className={styles.errorStyle}>{error}</div>) : ""}
-        <div className={styles.formGroup}>
-          <div className={styles.labelItem}>
-            <label htmlFor="name">Name:</label>
-          </div>
-          <Input
-            size="large"
-            type="text"
-            id="name"
-            className={styles.inputItem}
-            onChange={e => setDetails({ ...details, name: e.target.value })}
-            value={details.name}
-            prefix={<UserOutlined />} />
-        </div>
-        <div className={styles.formGroup}>
-          <div className={styles.labelItem}>
-            <label htmlFor="email">Email:</label>
-          </div>
-          <Input
-            size="large"
-            type="email"
-            id="email"
-            className={styles.inputItem}
-            onChange={e => setDetails({ ...details, email: e.target.value })}
-            value={details.email}
-            prefix={<MailOutlined />} />
-        </div>
-        <div className={styles.formGroup}>
-          <div className={styles.labelItem}>
-            <label htmlFor="password">Password:</label>
-          </div>
-          <Input
-            size="large"
-            type="password"
-            id="password"
-            className={styles.inputItem}
-            onChange={e => setDetails({ ...details, password: e.target.value })}
-            value={details.password}
-            prefix={<LockOutlined />} />
-        </div>
-        <Button type="primary" size="large" onClick={onSubmitHandler}>Login</Button>
-      </div>
-    </form>
-  )
-}
+    <div
+      style={{
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
+      <Card title="Admin Login">
+        <Form
+          name="basic"
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+              {
+                type: "email",
+                message: "Please input a valid email",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item name="remember">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </div>
+  );
+};
 
 export default Login;

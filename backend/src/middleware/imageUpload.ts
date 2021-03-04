@@ -6,6 +6,7 @@ var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../public/images"));
   },
+
   filename: function (req, file, cb) {
     cb(
       null,
@@ -13,6 +14,7 @@ var storage = multer.diskStorage({
     );
   },
 });
+
 export const imageUpload = multer({
   storage: storage,
-}).single("productImage");
+}).array("productImage");

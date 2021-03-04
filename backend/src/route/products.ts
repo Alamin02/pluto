@@ -69,7 +69,5 @@ router.put(
 // Delete a product
 router.delete("/:productId", authenticationMiddleware, deleteProductController);
 
-// Upload a image
-// router.post("/productImage", imageUpload, uploadImageController);
 
 export default router;

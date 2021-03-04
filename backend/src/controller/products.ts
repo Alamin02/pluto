@@ -60,26 +60,28 @@ export async function createProduct(
     const offersRepository = getConnection().getRepository(Offer);
     const offer = await offersRepository.findOne({ id: offerId });
 
-    // const imagePath = "../public/images/" + req.file.filename;
-    // const productImageRepository = getConnection().getRepository(ProductImage);
+    const productImageRepository = getConnection().getRepository(ProductImage);
 
-    // const newProductImage = new ProductImage();
-    // newProductImage.path = imagePath;
-    // const imageSave = await productImageRepository.save(newProductImage);
-    // const imageIds = [];
-    // imageIds.push(imageSave);
+    let files = req.files as Express.Multer.File[];
+    const allImages = [];
+    for (let i = 0; i < files.length; i++) {
+      let imagePath = "../public/images/" + files[i].filename;
+      const newProductImage = new ProductImage();
+      newProductImage.path = imagePath;
+      const imageSave = await productImageRepository.save(newProductImage);
+      allImages.push(imageSave);
+    }
     const newProduct = new Product();
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
-    // newProduct.images = imageIds;
+    newProduct.images = allImages;
     if (categoryCheck) {
       newProduct.category = categoryId;
     } else {
       res.status(400).json({ msg: "category not found" });
     }
-    newProduct.images = [];
     if (offer) {
       newProduct.offer = offer;
     }
@@ -160,22 +162,4 @@ export async function deleteProduct(
     return res.status(400).json({ error: "Product could not be deleted" });
   }
   res.json({ msg: "Product deleted" });
-}
-// @POST - /api/v1/productImage
-// Upload a image
-export async function uploadImage(req: express.Request, res: express.Response) {
-  const path = req.file && req.file.path;
-  if (path) {
-    let imagePath = "../public/images/" + req.file.filename;
-    const productImageRepository = getConnection().getRepository(ProductImage);
-
-    const newProductImage = new ProductImage();
-    newProductImage.path = imagePath;
-    const imageSave = await productImageRepository.save(newProductImage);
-    res.json({ msg: "File successfully uploaded", imageSave });
-  } else {
-    res.json({
-      msg: "File not uploaded successfully",
-    });
-  }
 }

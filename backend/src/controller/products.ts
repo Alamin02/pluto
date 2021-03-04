@@ -162,6 +162,8 @@ export async function uploadImage(req: express.Request, res: express.Response) {
 
     const newProductImage = new ProductImage();
     newProductImage.path = imagePath;
+
+    res.json({ msg: "File successfully uploaded" });
   } else {
     res.json({
       msg: "File not uploaded successfully",

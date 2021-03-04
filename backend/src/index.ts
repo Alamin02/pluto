@@ -14,6 +14,7 @@ import {
   orderRouter,
   addressRouter,
   categoryRouter,
+  productImageRouter,
 } from "./route";
 
 import {
@@ -30,6 +31,8 @@ import {
 
 const app = express();
 
+// // set up public folder
+app.use(express.static("./public"));
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
@@ -44,6 +47,7 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
+app.use("/api/v1/productImages", productImageRouter);
 
 createConnection({
   type: "sqlite",
@@ -77,6 +81,9 @@ app.use(function (
 
   res.send("Error");
 });
+
+// set up public folder
+app.use(express.static("./public"));
 
 const port = 4000;
 

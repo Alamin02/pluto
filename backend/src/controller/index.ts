@@ -10,6 +10,7 @@ export {
   getProduct as getProductController,
   updateProduct as updateProductController,
   deleteProduct as deleteProductController,
+  uploadImage as uploadImageController,
 } from "./products";
 
 export {
@@ -51,3 +52,5 @@ export {
   updateAddress as updateAddressController,
   deleteAddress as deleteAddressController,
 } from "./addresses";
+
+export { uploadProductImage as uploadProductImageController } from "./productImage";

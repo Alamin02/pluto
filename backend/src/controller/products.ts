@@ -2,7 +2,7 @@ import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
-import { Product,Offer, Category } from "../entity";
+import { Product, Offer, Category, ProductImage } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -17,9 +17,7 @@ export async function getAllProducts(
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ["id", "name", "price", "summary"],
-
-    relations: ["category","offer"],
-
+    relations: ["category", "offer"],
     take: perPage,
     skip: (page - 1) * perPage,
   });
@@ -48,9 +46,7 @@ export async function createProduct(
     return res.status(400).json({ errors: errors.array() });
   }
 
-
   const { name, price, summary, description, offerId, categoryId } = req.body;
-
 
   try {
     // get the repository from product entity
@@ -60,11 +56,9 @@ export async function createProduct(
     const categoryCheck = await categoryRepository.findOne({
       id: categoryId,
     });
-    // console.log(categoryCheck);
 
     const offersRepository = getConnection().getRepository(Offer);
     const offer = await offersRepository.findOne({ id: offerId });
-
 
     const newProduct = new Product();
     newProduct.name = name;
@@ -156,6 +150,23 @@ export async function deleteProduct(
   } catch (e) {
     return res.status(400).json({ error: "Product could not be deleted" });
   }
-
   res.json({ msg: "Product deleted" });
+}
+// @POST - /api/v1/productImage
+// Upload a image
+export async function uploadImage(req: express.Request, res: express.Response) {
+  const path = req.file && req.file.path;
+  if (path) {
+    let imagePath = "/myUploads/" + req.file.filename;
+    const productsRepository = getConnection().getRepository(ProductImage);
+
+    const newProductImage = new ProductImage();
+    newProductImage.path = imagePath;
+
+    res.json({ msg: "File successfully uploaded" });
+  } else {
+    res.json({
+      msg: "File not uploaded successfully",
+    });
+  }
 }

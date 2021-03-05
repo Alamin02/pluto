@@ -45,38 +45,36 @@ export async function createProduct(
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const path = req.files;
   const { name, price, summary, description, offerId, categoryId } = req.body;
 
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
+    const categoryRepository = getConnection().getRepository(Category);
+    const categoryCheck = await categoryRepository.findOne({
+      id: categoryId,
+    });
 
-    // const categoryRepository = getConnection().getRepository(Category);
-    // const categoryCheck = await categoryRepository.findOne({
-    //   id: categoryId,
-    // });
-
-    // const offersRepository = getConnection().getRepository(Offer);
-    // const offer = await offersRepository.findOne({ id: offerId });
+    const offersRepository = getConnection().getRepository(Offer);
+    const offer = await offersRepository.findOne({ id: offerId });
 
     const productImageRepository = getConnection().getRepository(ProductImage);
-    const createProductImage = [];
 
+    const createProductImage = [];
     const files = req.files as Express.Multer.File[];
-    if (files.length < 4) {
+    if (files.length) {
       for (let i = 0; i < files.length; i++) {
         const imagePath = "../../public/images/" + files[i].filename;
         const productImage = new ProductImage();
         productImage.path = imagePath;
 
-        const savedProductimage = await productImageRepository.save(
+        const savedProductImage = await productImageRepository.save(
           productImage
         );
-        createProductImage.push(savedProductimage);
+        createProductImage.push(savedProductImage);
       }
     } else {
-      return res.json("Image no found");
+      return res.json("Image not found");
     }
 
     const newProduct = new Product();
@@ -85,15 +83,15 @@ export async function createProduct(
     newProduct.price = price;
     newProduct.summary = summary;
     newProduct.images = createProductImage;
-    // if (categoryCheck) {
-    //   newProduct.category = categoryId;
-    // } else {
-    //   res.status(400).json({ msg: "category not found" });
-    // }
-    // newProduct.images = [];
-    // if (offer) {
-    //   newProduct.offer = offer;
-    // }
+    if (categoryCheck) {
+      newProduct.category = categoryId;
+    } else {
+      res.status(400).json({ msg: "category not found" });
+    }
+    newProduct.images = [];
+    if (offer) {
+      newProduct.offer = offer;
+    }
 
     // save data to repository from request body
     await productsRepository.save(newProduct);

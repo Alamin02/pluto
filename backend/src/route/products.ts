@@ -34,10 +34,10 @@ router.post(
       .isEmpty()
       .withMessage("Product description can not be empty"),
 
-    // body("categoryId")
-    //   .not()
-    //   .isEmpty()
-    //   .withMessage("categoryId can not be empty"),
+    body("categoryId")
+      .not()
+      .isEmpty()
+      .withMessage("categoryId can not be empty"),
   ],
   createProductController
 );

@@ -89,10 +89,12 @@ app.use(function (
 
   // render the error page
   if (err instanceof multer.MulterError) {
-    res.json({ msg: "only image file and maximum 4 images can be uploaded " });
+    res.json({
+      msg:
+        "key name must be productImage, only image file and maximum 4 images can be uploaded ",
+    });
   } else {
     res.status(err.status || 500);
-
     res.send("Error");
   }
 });

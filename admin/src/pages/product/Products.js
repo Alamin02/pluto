@@ -1,56 +1,76 @@
 import React, { useState, useEffect } from "react";
 import {
   Table,
+  Tag,
   Space,
   Button,
   Popconfirm,
   message,
+  Typography,
   Row,
   Col,
-  Typography,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import UserForm from "./UserForm";
+
+import ProductForm from "./ProductForm";
 
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
+
+// delete button message
 function confirmDelete() {
   message.info("Clicked on Yes.");
 }
+
 const columns = [
   {
     title: "Id",
     dataIndex: "id",
     key: "id",
-    ellipsis: true,
-    // pass the userId as "id" to edit button
     render: (id) => <span>{id}</span>,
   },
   {
-    title: "User Name",
+    title: "Product Name",
     dataIndex: "name",
     key: "name",
   },
   {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
+    title: "Price",
+    dataIndex: "price",
+    key: "price",
   },
   {
-    title: "Phone",
-    dataIndex: "phone",
-    key: "phone",
+    title: "Offer",
+    dataIndex: "offer",
+    key: "offer",
+    render: (offer) => {
+      if (offer) {
+        return <Tag color="green">{offer}</Tag>;
+      }
+    },
   },
-  // update, delete action
+  {
+    title: "Rating",
+    dataIndex: "rating",
+    key: "rating",
+  },
+  {
+    title: "Category",
+    dataIndex: "category",
+    key: "category",
+  },
+  {
+    title: "Summary",
+    dataIndex: "summary",
+    key: "summary",
+  },
   {
     title: "Action",
     key: "action",
     fixed: "right",
     render: (id, record) => (
       <Space size="middle">
-        {/* <Button icon={<EditOutlined />}>Edit&nbsp;{record.id}</Button> */}
         <Button icon={<EditOutlined />}>Edit</Button>
-        {/* pop up when clicked on delete button*/}
         <Popconfirm
           placement="top"
           title={deleteMessage}
@@ -67,7 +87,7 @@ const columns = [
   },
 ];
 
-export const Users = () => {
+export default function Products() {
   const [visible, setVisible] = useState(false);
 
   const onCreate = (values) => {
@@ -75,12 +95,11 @@ export const Users = () => {
     setVisible(false);
   };
 
-  const [userData, setUserData] = useState([]);
+  const [productData, setProductData] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
-    fetch("http://localhost:4000/api/v1/users", {
+    fetch("http://localhost:4000/api/v1/products", {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -89,14 +108,15 @@ export const Users = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setUserData(data);
+        console.log(data);
+        setProductData(data);
       });
   }, []);
 
   return (
     <div>
       <Space direction="vertical" size="middle">
-        {/* add user button */}
+        {/* add product button */}
         <Button
           type="primary"
           style={{ textTransform: "capitalize" }}
@@ -105,10 +125,10 @@ export const Users = () => {
             setVisible(true);
           }}
         >
-          add user
+          add product
         </Button>
 
-        <UserForm
+        <ProductForm
           visible={visible}
           onCreate={onCreate}
           onCancel={() => {
@@ -116,12 +136,14 @@ export const Users = () => {
           }}
         />
 
+        {/* table */}
         <Table
-          dataSource={userData.data}
           size="middle"
+          // dataSource={productData.data.products}
           columns={columns}
           bordered
           sticky
+          scroll={{ y: 1330 }}
           pagination={{ pageSize: 10 }}
           title={() => (
             <Row justify="space-between">
@@ -130,15 +152,19 @@ export const Users = () => {
                   level={4}
                   style={{ marginBottom: 0, textTransform: "capitalize" }}
                 >
-                  All users info
+                  All products info
                 </Title>
               </Col>
+              <Col></Col>
             </Row>
+          )}
+          footer={() => (
+            <div>
+              <p>Total products: XX</p>
+            </div>
           )}
         />
       </Space>
     </div>
   );
-};
-
-export default Users;
+}

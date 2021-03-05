@@ -88,7 +88,7 @@ export const Users = () => {
       },
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(({ data }) => {
         setUserData(data);
       });
   }, []);
@@ -117,7 +117,7 @@ export const Users = () => {
         />
 
         <Table
-          dataSource={userData.data}
+          dataSource={userData}
           size="middle"
           columns={columns}
           bordered

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Button } from "antd";
+
 import {
   DoubleRightOutlined,
   DoubleLeftOutlined,
@@ -57,7 +58,6 @@ const sidebarInfo = [
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
-
   const [menuId, setMenuId] = useState(1);
 
   return (
@@ -76,13 +76,7 @@ export default function Dashboard() {
               collapsed ? DoubleRightOutlined : DoubleLeftOutlined
             )}
           </Button>
-          <Menu
-            // defaultSelectedKeys={["1"]}
-            defaultSelectedKeys={menuId}
-            mode="vertical"
-            theme="dark"
-            inlineCollapsed={collapsed}
-          >
+          <Menu mode="vertical" theme="dark" inlineCollapsed={collapsed}>
             {sidebarInfo.map((item) => (
               <Menu.Item
                 key={item.id}

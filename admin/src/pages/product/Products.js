@@ -45,7 +45,7 @@ const columns = [
     key: "offer",
     render: (offer) => {
       if (offer) {
-        return <Tag color="green">{offer}</Tag>;
+        return <Tag color="green">{offer.name}</Tag>;
       }
     },
   },
@@ -107,9 +107,9 @@ export default function Products() {
       },
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setProductData(data);
+      .then(({ data }) => {
+        console.log(data.products);
+        setProductData(data.products);
       });
   }, []);
 
@@ -139,7 +139,7 @@ export default function Products() {
         {/* table */}
         <Table
           size="middle"
-          // dataSource={productData.data.products}
+          dataSource={productData}
           columns={columns}
           bordered
           sticky

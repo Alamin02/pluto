@@ -4,10 +4,9 @@ import logger = require("morgan");
 import multer = require("multer");
 import fs = require("fs");
 import path = require("path");
-import { createConnection } from "typeorm";
-const debug = require("debug")("app");
-
 import cors from "cors";
+const debug = require("debug")("app");
+import { createConnection } from "typeorm";
 
 import {
   userRouter,

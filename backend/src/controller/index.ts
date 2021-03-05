@@ -2,7 +2,7 @@ export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
   users as usersController,
-} from "./auth";
+} from './auth';
 
 export {
   createProduct as createProductController,
@@ -10,8 +10,7 @@ export {
   getProduct as getProductController,
   updateProduct as updateProductController,
   deleteProduct as deleteProductController,
-  uploadImage as uploadImageController,
-} from "./products";
+} from './products';
 
 export {
   createBlog as createBlogController,
@@ -19,7 +18,7 @@ export {
   getSingleBlog as getSingleBlogController,
   updateSingleBlog as updateSingleBlogController,
   deleteBlog as deleteBlogController,
-} from "./blog";
+} from './blog';
 
 export {
   category as categoryController,
@@ -28,14 +27,14 @@ export {
   updateCategory as updateCategoryController,
   updateSubCategory as updateSubCategoryController,
   deleteCategory as deleteCategoryController,
-} from "./category";
+} from './category';
 
 export {
   getAllOffers as getAllOffersController,
   createOffer as createOfferController,
   updateOffer as updateOfferController,
   deleteOffer as deleteOfferController,
-} from "./offer";
+} from './offer';
 
 export {
   createOrder as createOrderController,
@@ -43,7 +42,7 @@ export {
   getSingleOrder as getSingleOrderController,
   updateSingleOrder as updateSingleOrderController,
   deleteOrder as deleteOrderController,
-} from "./order";
+} from './order';
 
 export {
   createAddress as createAddressController,
@@ -51,6 +50,4 @@ export {
   getAddress as getAddressController,
   updateAddress as updateAddressController,
   deleteAddress as deleteAddressController,
-} from "./addresses";
-
-export { uploadProductImage as uploadProductImageController } from "./productImage";
+} from './addresses';

@@ -86,7 +86,10 @@ app.use(function (
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   if (err instanceof multer.MulterError) {
-    res.json({ msg: "only image file and maximum 4 images can be uploaded " });
+    res.json({
+      msg:
+        "key must be productImages, only image file and maximum 4 images can be uploaded ",
+    });
   } else {
     // render the error page
     res.status(err.status || 500);

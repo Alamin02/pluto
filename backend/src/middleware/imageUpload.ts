@@ -29,4 +29,4 @@ const fileFilter = (req: any, file: any, cb: any) => {
 export const imageUpload = multer({
   storage: storage,
   fileFilter,
-}).array("productImage", 4);
+}).array("productImages", 4);

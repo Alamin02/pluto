@@ -165,7 +165,6 @@ export async function deleteProduct(
 ) {
   const id = req.params.productId;
   const productRepository = getConnection().getRepository(Product);
-
   try {
     await productRepository.delete(id);
   } catch (e) {

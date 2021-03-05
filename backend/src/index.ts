@@ -1,6 +1,8 @@
 import express = require("express");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
+import fs = require("fs");
+import path = require("path");
 import { createConnection } from "typeorm";
 const debug = require("debug")("app");
 
@@ -30,8 +32,17 @@ import {
 
 const app = express();
 
-// // set up public folder
-app.use(express.static("./public"));
+// check public directory if not then create public and images directory
+const dir = "../public/images";
+if (!fs.existsSync(dir)) {
+  fs.mkdir(path.join(__dirname, dir), { recursive: true }, (err: any) => {
+    if (err) {
+      return console.error(err);
+    }
+  });
+}
+// set up public folder
+app.use(express.static("../public"));
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
@@ -46,7 +57,6 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
-// app.use("/api/v1/productImages", productImageRouter);
 
 createConnection({
   type: "sqlite",
@@ -65,24 +75,21 @@ createConnection({
   synchronize: true,
 });
 
-app.use(function (
-  err: any,
-  req: express.Request,
-  res: express.Response,
-  next: Function
-) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+// app.use(function (
+//   err: any,
+//   req: express.Request,
+//   res: express.Response,
+//   next: Function
+// ) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
+//   // render the error page
+//   res.status(err.status || 500);
 
-  res.send("Error");
-});
-
-// set up public folder
-app.use(express.static("./public"));
+//   res.send("Error");
+// });
 
 const port = 4000;
 

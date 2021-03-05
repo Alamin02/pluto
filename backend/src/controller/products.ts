@@ -1,8 +1,10 @@
 import express = require("express");
+import multer from "multer";
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
 import { Product, Offer, Category, ProductImage } from "../entity";
+import { imageUpload } from "../middleware";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -61,22 +63,37 @@ export async function createProduct(
     const offer = await offersRepository.findOne({ id: offerId });
 
     const productImageRepository = getConnection().getRepository(ProductImage);
-
-    let files = req.files as Express.Multer.File[];
-    const allImages = [];
-    for (let i = 0; i < files.length; i++) {
-      let imagePath = "../public/images/" + files[i].filename;
-      const newProductImage = new ProductImage();
-      newProductImage.path = imagePath;
-      const imageSave = await productImageRepository.save(newProductImage);
-      allImages.push(imageSave);
+    const productImages = [];
+    const files = req.files as Express.Multer.File[];
+    if (files.length) {
+      for (let i = 0; i < files.length; i++) {
+        if (
+          files[i].mimetype == "image/jpg" ||
+          files[i].mimetype == "image/jpeg" ||
+          files[i].mimetype == "image/png" ||
+          files[i].mimetype == "image/gif"
+        ) {
+          const imagePath = "../public/images/" + files[i].filename;
+          const newProductImage = new ProductImage();
+          newProductImage.path = imagePath;
+          const imageSave = await productImageRepository.save(newProductImage);
+          productImages.push(imageSave);
+        } else {
+          return res.json({ msg: "only image are acceptable" });
+        }
+      }
+    } else {
+      return res.json({
+        msg: "Product image not found  or image may not be uploaded",
+      });
     }
+
     const newProduct = new Product();
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
-    newProduct.images = allImages;
+    newProduct.images = productImages;
     if (categoryCheck) {
       newProduct.category = categoryId;
     } else {

@@ -14,15 +14,19 @@ var storage = multer.diskStorage({
     );
   },
 });
-
-// fileFilter: function (req, file, callback) {
-//   var ext = path.extname(file.originalname);
-//   if (ext !== ".png" && ext !== ".jpg" && ext !== ".gif" && ext !== ".jpeg") {
-//     return callback(new Error("Only images are allowed"));
-//   }
-//   callback(null, true);
-// },
-
+const fileFilter = (req: any, file: any, cb: any) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    // if validation failed then generate error
+    cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE", file), false);
+  }
+};
 export const imageUpload = multer({
   storage: storage,
+  fileFilter,
 }).array("productImage", 4);

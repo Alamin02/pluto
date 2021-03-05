@@ -1,6 +1,7 @@
 import express = require("express");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
+import multer = require("multer");
 import fs = require("fs");
 import path = require("path");
 import { createConnection } from "typeorm";
@@ -75,21 +76,25 @@ createConnection({
   synchronize: true,
 });
 
-// app.use(function (
-//   err: any,
-//   req: express.Request,
-//   res: express.Response,
-//   next: Function
-// ) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get("env") === "development" ? err : {};
+app.use(function (
+  err: any,
+  req: express.Request,
+  res: express.Response,
+  next: Function
+) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
-//   // render the error page
-//   res.status(err.status || 500);
+  if (err instanceof multer.MulterError) {
+    res.json({ msg: "only image file and maximum 4 images can be uploaded " });
+  } else {
+    // render the error page
+    res.status(err.status || 500);
 
-//   res.send("Error");
-// });
+    res.send("Error");
+  }
+});
 
 const port = 4000;
 

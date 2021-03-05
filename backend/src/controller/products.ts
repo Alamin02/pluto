@@ -63,24 +63,17 @@ export async function createProduct(
     const offer = await offersRepository.findOne({ id: offerId });
 
     const productImageRepository = getConnection().getRepository(ProductImage);
+
     const productImages = [];
     const files = req.files as Express.Multer.File[];
+
     if (files.length) {
       for (let i = 0; i < files.length; i++) {
-        if (
-          files[i].mimetype == "image/jpg" ||
-          files[i].mimetype == "image/jpeg" ||
-          files[i].mimetype == "image/png" ||
-          files[i].mimetype == "image/gif"
-        ) {
-          const imagePath = "../public/images/" + files[i].filename;
-          const newProductImage = new ProductImage();
-          newProductImage.path = imagePath;
-          const imageSave = await productImageRepository.save(newProductImage);
-          productImages.push(imageSave);
-        } else {
-          return res.json({ msg: "only image are acceptable" });
-        }
+        const imagePath = "../public/images/" + files[i].filename;
+        const newProductImage = new ProductImage();
+        newProductImage.path = imagePath;
+        const imageSave = await productImageRepository.save(newProductImage);
+        productImages.push(imageSave);
       }
     } else {
       return res.json({

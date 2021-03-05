@@ -33,10 +33,13 @@ import {
 
 const app = express();
 
+console.log(process.cwd());
+
 // if public folder not found then create public folder
-const dir = "../public/images";
+const dir = path.join(process.cwd(), "public", "images");
+
 if (!fs.existsSync(dir)) {
-  fs.mkdir(path.join(__dirname, dir), { recursive: true }, (err: any) => {
+  fs.mkdir(dir, { recursive: true }, (err: any) => {
     if (err) {
       return console.error(err);
     }
@@ -89,10 +92,12 @@ app.use(function (
 
   // render the error page
   if (err instanceof multer.MulterError) {
-    res.json({ msg: "only image file and maximum 4 images can be uploaded " });
+    res.status(400).json({
+      msg:
+        "key name must be productImages, only image file and maximum 4 images can be uploaded ",
+    });
   } else {
     res.status(err.status || 500);
-
     res.send("Error");
   }
 });

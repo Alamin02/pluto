@@ -55,6 +55,7 @@ export async function createProduct(
       id: categoryId,
     });
 
+
     const offersRepository = getConnection().getRepository(Offer);
     const offer = await offersRepository.findOne({ id: offerId });
 

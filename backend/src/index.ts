@@ -5,9 +5,9 @@ import path = require("path");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
 import { createConnection } from "typeorm";
-const debug = require("debug")("app");
-
 import cors from "cors";
+
+const debug = require("debug")("app");
 
 import {
   userRouter,

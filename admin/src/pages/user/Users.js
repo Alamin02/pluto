@@ -10,7 +10,7 @@ import {
   Typography,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import UserForm from "../components/UserForm";
+import UserForm from "./UserForm";
 
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
@@ -22,7 +22,6 @@ const columns = [
     title: "Id",
     dataIndex: "id",
     key: "id",
-    width: 100,
     ellipsis: true,
     // pass the userId as "id" to edit button
     render: (id) => <span>{id}</span>,
@@ -31,31 +30,26 @@ const columns = [
     title: "User Name",
     dataIndex: "name",
     key: "name",
-    width: 150,
   },
   {
     title: "Email",
     dataIndex: "email",
     key: "email",
-    width: 150,
   },
   {
     title: "Phone",
     dataIndex: "phone",
     key: "phone",
-    width: 150,
   },
   // update, delete action
   {
     title: "Action",
     key: "action",
     fixed: "right",
-    width: 230,
     render: (id, record) => (
       <Space size="middle">
-        <Button icon={<EditOutlined />} onClick={this.showModal}>
-          Edit&nbsp;{record.id}
-        </Button>
+        {/* <Button icon={<EditOutlined />}>Edit&nbsp;{record.id}</Button> */}
+        <Button icon={<EditOutlined />}>Edit</Button>
         {/* pop up when clicked on delete button*/}
         <Popconfirm
           placement="top"
@@ -122,7 +116,8 @@ export const Users = () => {
           }}
         />
         <Table
-          // dataSource={userData}
+          dataSource={userData.data}
+          size="middle"
           columns={columns}
           bordered
           sticky

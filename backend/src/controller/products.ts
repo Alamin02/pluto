@@ -64,7 +64,7 @@ export async function createProduct(
     const createProductImage = [];
 
     const files = req.files as Express.Multer.File[];
-    if (files.length < 4) {
+    if (files.length) {
       for (let i = 0; i < files.length; i++) {
         const imagePath = "../../public/images/" + files[i].filename;
         const productImage = new ProductImage();
@@ -90,7 +90,7 @@ export async function createProduct(
     } else {
       res.status(400).json({ msg: "category not found" });
     }
-    newProduct.images = [];
+
     if (offer) {
       newProduct.offer = offer;
     }

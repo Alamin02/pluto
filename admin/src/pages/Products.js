@@ -267,7 +267,6 @@ export default class Products extends React.Component {
             <Button icon={<EditOutlined />} onClick={this.showModal}>
               Edit&nbsp;{record.id}
             </Button>
-            {console.log(record.id)}
             {/* pop up when clicked on delete button*/}
             <Popconfirm
               placement="top"

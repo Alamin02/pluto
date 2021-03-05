@@ -52,21 +52,21 @@ export async function createProduct(
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
 
-    const categoryRepository = getConnection().getRepository(Category);
-    const categoryCheck = await categoryRepository.findOne({
-      id: categoryId,
-    });
+    // const categoryRepository = getConnection().getRepository(Category);
+    // const categoryCheck = await categoryRepository.findOne({
+    //   id: categoryId,
+    // });
 
-    const offersRepository = getConnection().getRepository(Offer);
-    const offer = await offersRepository.findOne({ id: offerId });
+    // const offersRepository = getConnection().getRepository(Offer);
+    // const offer = await offersRepository.findOne({ id: offerId });
 
     const productImageRepository = getConnection().getRepository(ProductImage);
     const createProductImage = [];
 
     const files = req.files as Express.Multer.File[];
-    if (files.length > 0) {
+    if (files.length < 4) {
       for (let i = 0; i < files.length; i++) {
-        const imagePath = "../public/images/" + files[i].filename;
+        const imagePath = "../../public/images/" + files[i].filename;
         const productImage = new ProductImage();
         productImage.path = imagePath;
 
@@ -85,15 +85,15 @@ export async function createProduct(
     newProduct.price = price;
     newProduct.summary = summary;
     newProduct.images = createProductImage;
-    if (categoryCheck) {
-      newProduct.category = categoryId;
-    } else {
-      res.status(400).json({ msg: "category not found" });
-    }
-    newProduct.images = [];
-    if (offer) {
-      newProduct.offer = offer;
-    }
+    // if (categoryCheck) {
+    //   newProduct.category = categoryId;
+    // } else {
+    //   res.status(400).json({ msg: "category not found" });
+    // }
+    // newProduct.images = [];
+    // if (offer) {
+    //   newProduct.offer = offer;
+    // }
 
     // save data to repository from request body
     await productsRepository.save(newProduct);

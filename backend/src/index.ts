@@ -1,4 +1,5 @@
 import express = require("express");
+import multer = require("multer");
 import fs = require("fs");
 import path = require("path");
 import cookieParser = require("cookie-parser");
@@ -87,9 +88,13 @@ app.use(function (
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
+  if (err instanceof multer.MulterError) {
+    res.json({ msg: "only image file and maximum 4 images can be uploaded " });
+  } else {
+    res.status(err.status || 500);
 
-  res.send("Error");
+    res.send("Error");
+  }
 });
 
 const port = 4000;

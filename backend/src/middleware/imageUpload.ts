@@ -13,6 +13,21 @@ var storage = multer.diskStorage({
     );
   },
 });
+
+const fileFilter = (req: any, file: any, cb: any) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    // if validation failed then generate error
+    cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE", file), false);
+  }
+};
+
 export const imageUpload = multer({
   storage: storage,
-}).array("productImage", 4);
+  fileFilter,
+}).array("productImages", 4);

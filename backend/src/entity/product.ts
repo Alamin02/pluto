@@ -8,7 +8,7 @@ import {
   ManyToOne,
 } from "typeorm";
 
-import { Category, ProductImage, OrderedProduct,Offer} from "../entity";
+import { Category, ProductImage, OrderedProduct, Offer} from "../entity";
 
 @Entity("products")
 export class Product {

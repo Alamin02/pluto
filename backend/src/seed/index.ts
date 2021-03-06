@@ -1,3 +1,5 @@
 export { seedUsers } from "./users";
 export { seedAddresses } from "./addresses";
-export { seedBlog } from "./blogs";
+export { seedBlogs } from "./blogs";
+export { seedProducts } from "./products";
+

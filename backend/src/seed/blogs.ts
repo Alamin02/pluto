@@ -14,7 +14,7 @@ const blogList = [
   }
 ];
 
-export async function seedBlog() {
+export async function seedBlogs() {
   const blogRepository = getConnection().getRepository(Blog);
 
   for (const blog of blogList) {

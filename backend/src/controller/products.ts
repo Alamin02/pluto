@@ -1,4 +1,5 @@
 import express = require("express");
+import path = require("path");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
@@ -64,7 +65,8 @@ export async function createProduct(
     const files = req.files as Express.Multer.File[];
     if (files.length) {
       for (let i = 0; i < files.length; i++) {
-        const imagePath = "../../public/images/" + files[i].filename;
+        const imagePath =
+          path.join(process.cwd(), "public", "images") + files[i].filename;
         const productImage = new ProductImage();
         productImage.path = imagePath;
 

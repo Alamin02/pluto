@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Button, Upload, Cascader } from "antd";
+import { Modal, Form, Input, Upload, Cascader } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 const layout = {
@@ -7,12 +7,6 @@ const layout = {
     span: 6,
   },
   wrapperCol: {
-    span: 18,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 6,
     span: 18,
   },
 };
@@ -182,12 +176,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
                 </p>
               </Upload.Dragger>
             </Form.Item>
-          </Form.Item>
-
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              Save Product
-            </Button>
           </Form.Item>
         </Form>
       </Modal>

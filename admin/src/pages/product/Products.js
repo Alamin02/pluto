@@ -108,7 +108,7 @@ export default function Products() {
     })
       .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data.products);
+        // console.log(data.products);
         setProductData(data.products);
       });
   }, []);

@@ -138,6 +138,7 @@ export default function Products() {
 
         {/* table */}
         <Table
+          rowKey={(record) => record.id}
           size="middle"
           dataSource={productData}
           columns={columns}

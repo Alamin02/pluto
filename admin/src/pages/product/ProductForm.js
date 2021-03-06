@@ -1,4 +1,5 @@
-import { Modal, Form, Input, Button, Upload } from "antd";
+import React, { useState, useEffect } from "react";
+import { Modal, Form, Input, Upload, Cascader } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 const layout = {
@@ -9,14 +10,26 @@ const layout = {
     span: 18,
   },
 };
-const tailLayout = {
-  wrapperCol: {
-    offset: 6,
-    span: 18,
-  },
-};
 
 export default function ProductForm({ visible, onCreate, onCancel }) {
+  const [categoryOptions, setCategoryOptions] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:4000/api/v1/category", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(({ data }) => {
+        // console.log(data);
+        setCategoryOptions(data);
+      });
+  }, []);
+
   const [form] = Form.useForm();
 
   const normFile = (e) => {
@@ -36,6 +49,10 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  function onChangeCategory(value) {
+    console.log(value);
+  }
 
   return (
     <div>
@@ -116,7 +133,18 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
               },
             ]}
           >
-            <Input />
+            {/* <Input /> */}
+            <Cascader
+              fieldNames={{
+                label: "name",
+                value: "name",
+                children: "children",
+              }}
+              options={categoryOptions}
+              onChange={onChangeCategory}
+              placeholder="Please choose category"
+            />
+            ,
           </Form.Item>
 
           <Form.Item label="Offer" name="offer">
@@ -148,12 +176,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
                 </p>
               </Upload.Dragger>
             </Form.Item>
-          </Form.Item>
-
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              Save Product
-            </Button>
           </Form.Item>
         </Form>
       </Modal>

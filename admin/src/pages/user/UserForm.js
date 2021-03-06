@@ -1,6 +1,8 @@
 import React from "react";
 import { Modal, Form, Input } from "antd";
 
+import { agent } from "../../helpers/agent";
+
 export default function UserForm({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
@@ -16,6 +18,11 @@ export default function UserForm({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
+              agent
+                .createUser(values)
+                .then((res) => res.json())
+                .then(console.log);
+
               form.resetFields();
               onCreate(values);
             })

@@ -1,4 +1,5 @@
 import express = require("express");
+import path = require("path");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
@@ -17,7 +18,7 @@ export async function getAllProducts(
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ["id", "name", "price", "summary"],
-    relations: ["category", "offer"],
+    relations: ["category", "offer", "images"],
     take: perPage,
     skip: (page - 1) * perPage,
   });
@@ -45,13 +46,11 @@ export async function createProduct(
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
   const { name, price, summary, description, offerId, categoryId } = req.body;
 
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
-
     const categoryRepository = getConnection().getRepository(Category);
     const categoryCheck = await categoryRepository.findOne({
       id: categoryId,
@@ -60,17 +59,38 @@ export async function createProduct(
     const offersRepository = getConnection().getRepository(Offer);
     const offer = await offersRepository.findOne({ id: offerId });
 
+    const productImageRepository = getConnection().getRepository(ProductImage);
+
+    const createProductImage = [];
+    const files = req.files as Express.Multer.File[];
+    if (files.length) {
+      for (let i = 0; i < files.length; i++) {
+        const imagePath =
+          path.join(process.cwd(), "public", "images") + files[i].filename;
+        const productImage = new ProductImage();
+        productImage.path = imagePath;
+
+        const savedProductImage = await productImageRepository.save(
+          productImage
+        );
+        createProductImage.push(savedProductImage);
+      }
+    } else {
+      return res.json("Image not found");
+    }
+
     const newProduct = new Product();
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
+    newProduct.images = createProductImage;
     if (categoryCheck) {
       newProduct.category = categoryId;
     } else {
       res.status(400).json({ msg: "category not found" });
     }
-    newProduct.images = [];
+
     if (offer) {
       newProduct.offer = offer;
     }
@@ -151,22 +171,4 @@ export async function deleteProduct(
     return res.status(400).json({ error: "Product could not be deleted" });
   }
   res.json({ msg: "Product deleted" });
-}
-// @POST - /api/v1/productImage
-// Upload a image
-export async function uploadImage(req: express.Request, res: express.Response) {
-  const path = req.file && req.file.path;
-  if (path) {
-    let imagePath = "/myUploads/" + req.file.filename;
-    const productsRepository = getConnection().getRepository(ProductImage);
-
-    const newProductImage = new ProductImage();
-    newProductImage.path = imagePath;
-
-    res.json({ msg: "File successfully uploaded" });
-  } else {
-    res.json({
-      msg: "File not uploaded successfully",
-    });
-  }
 }

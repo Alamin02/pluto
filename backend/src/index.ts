@@ -1,10 +1,13 @@
 import express = require("express");
+import multer = require("multer");
+import fs = require("fs");
+import path = require("path");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
 import { createConnection } from "typeorm";
-const debug = require("debug")("app");
-
 import cors from "cors";
+
+const debug = require("debug")("app");
 
 import {
   userRouter,
@@ -14,7 +17,6 @@ import {
   orderRouter,
   addressRouter,
   categoryRouter,
-  productImageRouter,
 } from "./route";
 
 import {
@@ -31,8 +33,21 @@ import {
 
 const app = express();
 
+console.log(process.cwd());
+
+// if public folder not found then create public folder
+const dir = path.join(process.cwd(), "public", "images");
+
+if (!fs.existsSync(dir)) {
+  fs.mkdir(dir, { recursive: true }, (err: any) => {
+    if (err) {
+      return console.error(err);
+    }
+  });
+}
+app.use(express.static("../public"));
+
 // // set up public folder
-app.use(express.static("./public"));
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
@@ -47,7 +62,6 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
-app.use("/api/v1/productImages", productImageRouter);
 
 createConnection({
   type: "sqlite",
@@ -77,13 +91,16 @@ app.use(function (
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-
-  res.send("Error");
+  if (err instanceof multer.MulterError) {
+    res.status(400).json({
+      msg:
+        "key name must be productImages, only image file and maximum 4 images can be uploaded ",
+    });
+  } else {
+    res.status(err.status || 500);
+    res.send("Error");
+  }
 });
-
-// set up public folder
-app.use(express.static("./public"));
 
 const port = 4000;
 

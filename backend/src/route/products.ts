@@ -9,7 +9,6 @@ import {
   getProductController,
   updateProductController,
   deleteProductController,
-  uploadImageController,
 } from "../controller";
 
 import { authenticationMiddleware, imageUpload } from "../middleware";
@@ -20,7 +19,7 @@ router.get("/", getAllProductsController);
 // Create product
 router.post(
   "/",
-
+  imageUpload,
   // authenticationMiddleware,
 
   [
@@ -67,8 +66,5 @@ router.put(
 
 // Delete a product
 router.delete("/:productId", authenticationMiddleware, deleteProductController);
-
-// Upload a image
-router.post("/productImage", imageUpload, uploadImageController);
 
 export default router;

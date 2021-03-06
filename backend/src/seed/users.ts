@@ -64,6 +64,12 @@ const usersList = [
     phone: "12345",
     password: "123",
   },
+  {
+    name: "K",
+    email: "k@gmail.com",
+    phone: "12345",
+    password: "123",
+  },
 ];
 
 export async function seedUsers() {

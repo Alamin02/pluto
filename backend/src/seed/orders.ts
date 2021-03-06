@@ -8,7 +8,7 @@ const orderList = [
   },
 ];
 
-export async function seedOrder() {
+export async function seedOrders() {
   const orderRepository = getConnection().getRepository(Order);
 
   for (const order of orderList) {

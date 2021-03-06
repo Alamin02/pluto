@@ -2,9 +2,9 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 
 import Overview from "./Overview";
-import Products from "./Products";
+import Products from "./product/Products";
 import Offers from "./Offers";
-import Users from "./Users";
+import Users from "./user/Users";
 import Orders from "./Orders";
 import Catagories from "./Catagories";
 

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Button } from "antd";
+
 import {
   DoubleRightOutlined,
   DoubleLeftOutlined,
@@ -55,57 +56,52 @@ const sidebarInfo = [
   },
 ];
 
-export default class Dashboard extends React.Component {
-  state = {
-    collapsed: false,
-  };
+export default function Dashboard() {
+  const [collapsed, setCollapsed] = useState(false);
+  const [menuId, setMenuId] = useState(1);
 
-  toggleCollapsed = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  };
-
-  render() {
-    return (
-      <div className={styles.dashboard}>
-        {/* sidebar */}
-        <div className={styles.sidebarContainer}>
-          <div>
-            <Button
-              type="primary"
-              onClick={this.toggleCollapsed}
-              style={{ marginBottom: 16 }}
-            >
-              {React.createElement(
-                this.state.collapsed ? DoubleRightOutlined : DoubleLeftOutlined
-              )}
-            </Button>
-            <Menu
-              defaultSelectedKeys={["1"]}
-              mode="vertical"
-              theme="dark"
-              inlineCollapsed={this.state.collapsed}
-            >
-              {sidebarInfo.map((item) => (
-                <Menu.Item key={item.id} icon={item.icon}>
-                  <Link
-                    to={item.itemUrl}
-                    style={{ marginRight: "1rem", textTransform: "capitalize" }}
-                  >
-                    {item.itemName}
-                  </Link>
-                </Menu.Item>
-              ))}
-            </Menu>
-          </div>
-        </div>
-
-        {/* content */}
-        <div className={styles.contentContainer}>
-          <DashboardContent />
+  return (
+    <div className={styles.dashboard}>
+      {/* sidebar */}
+      <div className={styles.sidebarContainer}>
+        <div>
+          <Button
+            type="primary"
+            onClick={() => {
+              setCollapsed(!collapsed);
+            }}
+            style={{ marginBottom: 16 }}
+          >
+            {React.createElement(
+              collapsed ? DoubleRightOutlined : DoubleLeftOutlined
+            )}
+          </Button>
+          <Menu mode="vertical" theme="dark" inlineCollapsed={collapsed}>
+            {sidebarInfo.map((item) => (
+              <Menu.Item
+                key={item.id}
+                icon={item.icon}
+                onClick={() => {
+                  setMenuId(item.id);
+                  console.log(menuId);
+                }}
+              >
+                <Link
+                  to={item.itemUrl}
+                  style={{ marginRight: "1rem", textTransform: "capitalize" }}
+                >
+                  {item.itemName}
+                </Link>
+              </Menu.Item>
+            ))}
+          </Menu>
         </div>
       </div>
-    );
-  }
+
+      {/* content */}
+      <div className={styles.contentContainer}>
+        <DashboardContent />
+      </div>
+    </div>
+  );
 }

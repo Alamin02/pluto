@@ -1,5 +1,5 @@
 import express = require("express");
-import { getConnection, IsNull } from "typeorm";
+import { getConnection, IsNull, Connection, createConnection } from "typeorm";
 import { validationResult } from "express-validator";
 import { Category } from "../entity";
 
@@ -134,9 +134,19 @@ export async function deleteCategory(
   const categoryId = req.params.categoryId;
   const categoryRepository = getConnection().getRepository(Category);
   const categoryCheck = await categoryRepository.findOne({ id: categoryId });
+
   if (categoryCheck) {
-    await categoryRepository.delete(categoryId);
-    res.json({ msg: "category deleted" });
+    try {
+     
+
+      // await connection.query("PRAGMA foreign_keys=OFF");
+      // await connection.synchronize();
+      // await connection.query("PRAGMA foreign_keys=ON");
+      await categoryRepository.delete(categoryId);
+      res.json({ msg: "category deleted" });
+    } catch (e) {
+      res.json({ msg: e });
+    }
   } else {
     res.status(400).json({ msg: "Invalid CategoryId" });
   }

@@ -4,7 +4,6 @@ import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
 import { Product, Offer, Category, ProductImage } from "../entity";
-import { imageUpload } from "../middleware";
 
 // @GET - /api/v1/products
 // Get all products list

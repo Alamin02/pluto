@@ -59,8 +59,9 @@ export default function Offers() {
           columns={Columns}
           bordered
           sticky
-          scroll={{ y: 1330 }}
-          pagination={{ pageSize: 10 }}
+          // scroll={{ x: 1330 }}
+          // pagination={{ pageSize: 10 }}
+          pagination={false}
           title={() => (
             <Row justify="space-between">
               <Col>

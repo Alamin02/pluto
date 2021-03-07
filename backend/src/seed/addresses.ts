@@ -1,7 +1,7 @@
 import { getConnection } from "typeorm";
 import { Address } from "../entity";
 
-const addressesList = [
+export const addressesList = [
   {
     division: "Rangpur",
     district: "Rangpur",
@@ -31,36 +31,6 @@ const addressesList = [
     district: "Rangpur",
     city: "Rangpur Sadar",
     address: "House NO:41/B, Kotkipara, Rangpur",
-  },
-  {
-    division: "Rangpur",
-    district: "Rangpur",
-    city: "Rangpur Sadar",
-    address: "House NO:42/B, Jummapara, Rangpur",
-  },
-  {
-    division: "Rangpur",
-    district: "Rangpur",
-    city: "Rangpur Sadar",
-    address: "House NO:43/B, Checkpost, Rangpur",
-  },
-  {
-    division: "Rangpur",
-    district: "Rangpur",
-    city: "Rangpur Sadar",
-    address: "House NO:44/B, Lalbag, Rangpur",
-  },
-  {
-    division: "Rangpur",
-    district: "Rangpur",
-    city: "Rangpur Sadar",
-    address: "House NO:45/B, Gongachora, Rangpur",
-  },
-  {
-    division: "Rangpur",
-    district: "Rangpur",
-    city: "Rangpur Sadar",
-    address: "House NO:46/B, Dinajpur, Rangpur",
   },
 ];
 

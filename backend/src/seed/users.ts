@@ -1,6 +1,7 @@
 import { getConnection } from "typeorm";
-import { User } from "../entity";
+import { Address, User } from "../entity";
 import bcrypt = require("bcrypt");
+import { addressesList } from "./addresses";
 
 const saltRounds = 10;
 const usersList = [
@@ -34,46 +35,12 @@ const usersList = [
     phone: "12345",
     password: "123",
   },
-  {
-    name: "F",
-    email: "f@gmail.com",
-    phone: "12345",
-    password: "123",
-  },
-  {
-    name: "G",
-    email: "g@gmail.com",
-    phone: "12345",
-    password: "123",
-  },
-  {
-    name: "H",
-    email: "h@gmail.com",
-    phone: "12345",
-    password: "123",
-  },
-  {
-    name: "I",
-    email: "i@gmail.com",
-    phone: "12345",
-    password: "123",
-  },
-  {
-    name: "J",
-    email: "j@gmail.com",
-    phone: "12345",
-    password: "123",
-  },
-  {
-    name: "K",
-    email: "k@gmail.com",
-    phone: "12345",
-    password: "123",
-  },
 ];
 
 export async function seedUsers() {
   const userRepository = getConnection().getRepository(User);
+  const addressRepository = getConnection().getRepository(Address);
+
   for (const { name, email, phone, password } of usersList) {
     const newUser = new User();
 
@@ -81,7 +48,18 @@ export async function seedUsers() {
     newUser.email = email;
     newUser.phone = phone;
     newUser.password = await bcrypt.hash(password, saltRounds);
+    const createAddresses = [];
+    for (const address of addressesList) {
+      const newAddresses = new Address();
+      newAddresses.division = address.division;
+      newAddresses.district = address.district;
+      newAddresses.city = address.address;
+      newAddresses.address = address.address;
 
+      const saveNewAddresses = await addressRepository.save(newAddresses);
+      createAddresses.push(saveNewAddresses);
+    }
+    newUser.addresses = createAddresses;
     await userRepository.save(newUser);
   }
 }

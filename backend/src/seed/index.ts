@@ -5,3 +5,5 @@ export { seedProducts } from "./products";
 export { seedCatagories } from "./catagories";
 export { seedOffers } from "./offers";
 export { seedOrders } from "./orders";
+export { seedProductImages } from "./productImages";
+export { seedOrderedProducts } from "./orderedProducts";

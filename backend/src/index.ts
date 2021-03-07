@@ -1,12 +1,12 @@
 import express = require("express");
-import cookieParser = require("cookie-parser");
-import logger = require("morgan");
 import multer = require("multer");
 import fs = require("fs");
 import path = require("path");
+import cookieParser = require("cookie-parser");
+import logger = require("morgan");
+import { createConnection } from "typeorm";
 import cors from "cors";
 const debug = require("debug")("app");
-import { createConnection } from "typeorm";
 
 import {
   userRouter,
@@ -32,17 +32,21 @@ import {
 
 const app = express();
 
-// check public directory if not then create public and images directory
-const dir = "../public/images";
+console.log(process.cwd());
+
+// if public folder not found then create public folder
+const dir = path.join(process.cwd(), "public", "images");
+
 if (!fs.existsSync(dir)) {
-  fs.mkdir(path.join(__dirname, dir), { recursive: true }, (err: any) => {
+  fs.mkdir(dir, { recursive: true }, (err: any) => {
     if (err) {
       return console.error(err);
     }
   });
 }
-// set up public folder
 app.use(express.static("../public"));
+
+// // set up public folder
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
@@ -85,15 +89,14 @@ app.use(function (
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
+  // render the error page
   if (err instanceof multer.MulterError) {
-    res.json({
+    res.status(400).json({
       msg:
-        "key must be productImages, only image file and maximum 4 images can be uploaded ",
+        "key name must be productImages, only image file and maximum 4 images can be uploaded ",
     });
   } else {
-    // render the error page
     res.status(err.status || 500);
-
     res.send("Error");
   }
 });

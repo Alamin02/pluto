@@ -1,7 +1,7 @@
-import express = require('express');
-import { getConnection } from 'typeorm';
-import { validationResult } from 'express-validator';
-import { Order, OrderedProduct } from '../entity';
+import express = require("express");
+import { getConnection } from "typeorm";
+import { validationResult } from "express-validator";
+import { Order, OrderedProduct } from "../entity";
 
 // @POST - /api/v1/orders
 // Create a order
@@ -44,10 +44,10 @@ export async function createOrder(req: express.Request, res: express.Response) {
     const order = await orderRepository.save(newOrder);
     return res.json({ newOrder: order });
   } catch (err) {
-    res.json({ errors: 'Order could not be added' });
+    res.json({ errors: "Order could not be added" });
   }
 
-  res.json({ msg: 'Order created' });
+  res.json({ msg: "Order created" });
 }
 
 // @GET - /api/v1/order/
@@ -62,8 +62,8 @@ export async function getAllOrders(
   const perPage = parseInt(<string>req.query.perPage);
 
   const [orders, orderCount] = await orderRepository.findAndCount({
-    select: ['id', 'status', 'paymentMethod'],
-    relations: ['user', 'orderedProducts', 'orderedProducts.product'],
+    select: ["id", "status", "paymentMethod"],
+    relations: ["user", "orderedProducts", "orderedProducts.product"],
     take: page * perPage,
     skip: (page - 1) * perPage,
   });
@@ -89,13 +89,13 @@ export async function getSingleOrder(
   console.log(typeof id);
   const orderRepository = getConnection().getRepository(Order);
   const singleOrder = await orderRepository.findOne({
-    select: ['id', 'status', 'paymentMethod'],
-    relations: ['user', 'orderedProducts', 'orderedProducts.product'],
+    select: ["id", "status", "paymentMethod"],
+    relations: ["user", "orderedProducts", "orderedProducts.product"],
     where: [{ id: id }],
   });
 
   if (!singleOrder) {
-    return res.status(400).json({ msg: 'Order is not found' });
+    return res.status(400).json({ msg: "Order is not found" });
   }
   res.json({ data: singleOrder });
 }
@@ -138,9 +138,9 @@ export async function updateSingleOrder(
     const findOrderById: any = await orderRepository.findOne({ id });
     await orderRepository.update(findOrderById, newOrder);
   } catch (err) {
-    res.json({ errors: 'Order is not updated' });
+    res.json({ errors: "Order is not updated" });
   }
-  res.json({ msg: 'Order is now updated' });
+  res.json({ msg: "Order is now updated" });
 }
 
 // @DELETE - /api/v1/orders/:orderId
@@ -151,9 +151,9 @@ export async function deleteOrder(req: express.Request, res: express.Response) {
 
   try {
     if (await orderRepository.delete({ id })) {
-      return res.json({ msg: 'delete successfully' });
+      return res.json({ msg: "delete successfully" });
     }
   } catch (err) {
-    res.json({ errors: 'Order is not identified' });
+    res.json({ errors: "Order is not identified" });
   }
 }

@@ -108,7 +108,7 @@ export default function Products() {
     })
       .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data.products);
+        // console.log(data.products);
         setProductData(data.products);
       });
   }, []);
@@ -138,6 +138,7 @@ export default function Products() {
 
         {/* table */}
         <Table
+          rowKey={(record) => record.id}
           size="middle"
           dataSource={productData}
           columns={columns}

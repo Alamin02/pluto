@@ -117,6 +117,7 @@ export const Users = () => {
         />
 
         <Table
+          rowKey={(record) => record.id}
           dataSource={userData}
           size="middle"
           columns={columns}

@@ -115,5 +115,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+public
+
 db.sqlite
 public/

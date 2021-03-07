@@ -1,5 +1,5 @@
 import express = require("express");
-import multer from "multer";
+import path = require("path");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 
@@ -47,13 +47,11 @@ export async function createProduct(
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
   const { name, price, summary, description, offerId, categoryId } = req.body;
 
   try {
     // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
-
     const categoryRepository = getConnection().getRepository(Category);
     const categoryCheck = await categoryRepository.findOne({
       id: categoryId,
@@ -64,21 +62,22 @@ export async function createProduct(
 
     const productImageRepository = getConnection().getRepository(ProductImage);
 
-    const productImages = [];
+    const createProductImage = [];
     const files = req.files as Express.Multer.File[];
-
     if (files.length) {
       for (let i = 0; i < files.length; i++) {
-        const imagePath = "../public/images/" + files[i].filename;
-        const newProductImage = new ProductImage();
-        newProductImage.path = imagePath;
-        const imageSave = await productImageRepository.save(newProductImage);
-        productImages.push(imageSave);
+        const imagePath =
+          path.join(process.cwd(), "public", "images") + files[i].filename;
+        const productImage = new ProductImage();
+        productImage.path = imagePath;
+
+        const savedProductImage = await productImageRepository.save(
+          productImage
+        );
+        createProductImage.push(savedProductImage);
       }
     } else {
-      return res.json({
-        msg: "Product image not found  or image may not be uploaded",
-      });
+      return res.json("Image not found");
     }
 
     const newProduct = new Product();
@@ -86,7 +85,8 @@ export async function createProduct(
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
-    newProduct.images = productImages;
+    newProduct.images = createProductImage;
+
     if (categoryCheck) {
       newProduct.category = categoryId;
     } else {

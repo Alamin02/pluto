@@ -38,7 +38,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
     if (Array.isArray(e)) {
       return e;
     }
-
     return e && e.fileList;
   };
 
@@ -144,7 +143,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
               onChange={onChangeCategory}
               placeholder="Please choose category"
             />
-            ,
           </Form.Item>
 
           <Form.Item label="Offer" name="offer">

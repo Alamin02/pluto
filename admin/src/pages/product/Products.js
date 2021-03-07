@@ -22,73 +22,9 @@ function confirmDelete() {
   message.info("Clicked on Yes.");
 }
 
-const columns = [
-  {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-    render: (id) => <span>{id}</span>,
-  },
-  {
-    title: "Product Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Price",
-    dataIndex: "price",
-    key: "price",
-  },
-  {
-    title: "Offer",
-    dataIndex: "offer",
-    key: "offer",
-    render: (offer) => {
-      if (offer) {
-        return <Tag color="green">{offer.name}</Tag>;
-      }
-    },
-  },
-  {
-    title: "Rating",
-    dataIndex: "rating",
-    key: "rating",
-  },
-  {
-    title: "Category",
-    dataIndex: "category",
-    key: "category",
-  },
-  {
-    title: "Summary",
-    dataIndex: "summary",
-    key: "summary",
-  },
-  {
-    title: "Action",
-    key: "action",
-    fixed: "right",
-    render: (id, record) => (
-      <Space size="middle">
-        <Button icon={<EditOutlined />}>Edit</Button>
-        <Popconfirm
-          placement="top"
-          title={deleteMessage}
-          onConfirm={confirmDelete}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button danger icon={<DeleteOutlined />}>
-            Delete
-          </Button>
-        </Popconfirm>
-      </Space>
-    ),
-  },
-];
-
 export default function Products() {
   const [visible, setVisible] = useState(false);
+  const [id, setId] = useState(0);
 
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
@@ -96,6 +32,80 @@ export default function Products() {
   };
 
   const [productData, setProductData] = useState([]);
+
+  const columns = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+      render: (id) => <span>{id}</span>,
+    },
+    {
+      title: "Product Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Offer",
+      dataIndex: "offer",
+      key: "offer",
+      render: (offer) => {
+        if (offer) {
+          return <Tag color="green">{offer.name}</Tag>;
+        }
+      },
+    },
+    {
+      title: "Rating",
+      dataIndex: "rating",
+      key: "rating",
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+    },
+    {
+      title: "Summary",
+      dataIndex: "summary",
+      key: "summary",
+    },
+    {
+      title: "Action",
+      key: "action",
+      fixed: "right",
+      render: (id, record) => (
+        <Space size="middle">
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => {
+              setVisible(true);
+              setId(id);
+              console.log("id", id);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            placement="top"
+            title={deleteMessage}
+            onConfirm={confirmDelete}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger icon={<DeleteOutlined />}>
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -129,6 +139,7 @@ export default function Products() {
         </Button>
 
         <ProductForm
+          productId={id}
           visible={visible}
           onCreate={onCreate}
           onCancel={() => {

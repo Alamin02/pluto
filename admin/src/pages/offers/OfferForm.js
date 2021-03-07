@@ -36,12 +36,12 @@ export default function OfferForm({ visible, onCreate, onCancel }) {
         <Form
           form={form}
           layout="vertical"
-          name="form_in_modal"
-
+          name="offer form"
           initialValues={{
             modifier: "public",
           }}
         >
+          {/* offer name */}
           <Form.Item
             name="offer name"
             label="Offer Name&nbsp;:"
@@ -55,7 +55,7 @@ export default function OfferForm({ visible, onCreate, onCancel }) {
             <Input />
           </Form.Item>
 
-          {/* name */}
+          {/* discount */}
           <Form.Item
             name="discount"
             label="Discount&nbsp;:"
@@ -68,7 +68,7 @@ export default function OfferForm({ visible, onCreate, onCancel }) {
           >
             <Input />
           </Form.Item>
-
+          {/* description */}
           <Form.Item
             name="description"
             label="Description&nbsp;:"

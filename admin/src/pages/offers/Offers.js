@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Table, Space, Typography, Row, Col } from "antd";
-
+import { Table, Space, Button, Typography, Row, Col } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { Columns } from "./Columns";
+import OfferForm from "./OfferForm";
 const { Title } = Typography;
 
 export default function Offers() {
+  const [visible, setVisible] = useState(false);
+
+  const onCreate = (values) => {
+    console.log("Received values of form: ", values);
+    setVisible(false);
+  };
+
   const [offerData, setOfferData] = useState([]);
 
   useEffect(() => {
@@ -25,6 +33,24 @@ export default function Offers() {
   return (
     <div>
       <Space direction="vertical" size="middle">
+        <Button
+          type="primary"
+          style={{ textTransform: "capitalize" }}
+          icon={<PlusOutlined />}
+          onClick={() => {
+            setVisible(true);
+          }}
+        >
+          add offer
+        </Button>
+
+        <OfferForm
+          visible={visible}
+          onCreate={onCreate}
+          onCancel={() => {
+            setVisible(false);
+          }}
+        />
         {/* table */}
         <Table
           rowKey={(record) => record.id}

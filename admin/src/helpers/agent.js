@@ -11,4 +11,14 @@ export const agent = {
       body: JSON.stringify(userData),
     });
   },
+  createOffer: (offerData, token) => {
+    return fetch(`${baseUrl}/offers`, {
+      method: "post",
+      headers: {
+        Authentication: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(offerData),
+    });
+  },
 };

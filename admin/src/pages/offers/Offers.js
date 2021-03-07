@@ -1,71 +1,27 @@
-import React from "react";
-import {
-  Table,
-  Tag,
-  Space,
-  Button,
-  Popconfirm,
-  message,
-  Typography,
-  Row,
-  Col,
-} from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { Table, Space, Typography, Row, Col } from "antd";
 
+import { Columns } from "./Columns";
 const { Title } = Typography;
-const deleteMessage = "Sure to delete?";
-
-// delete button message
-function confirmDelete() {
-  message.info("Clicked on Yes.");
-}
-
-const columns = [
-  {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-    render: (id) => <span>{id}</span>,
-  },
-  {
-    title: "offer Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Discount",
-    dataIndex: "discount",
-    key: "discount",
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
-  {
-    title: "Action",
-    key: "action",
-    fixed: "right",
-    render: (id, record) => (
-      <Space size="middle">
-        <Button icon={<EditOutlined />}>Edit</Button>
-        <Popconfirm
-          placement="top"
-          title={deleteMessage}
-          onConfirm={confirmDelete}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button danger icon={<DeleteOutlined />}>
-            Delete
-          </Button>
-        </Popconfirm>
-      </Space>
-    ),
-  },
-];
 
 export default function Offers() {
+  const [offerData, setOfferData] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:4000/api/v1/offers", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setOfferData(data);
+      });
+  }, []);
+
   return (
     <div>
       <Space direction="vertical" size="middle">
@@ -73,8 +29,8 @@ export default function Offers() {
         <Table
           rowKey={(record) => record.id}
           size="middle"
-          // dataSource={dataSource}
-          columns={columns}
+          dataSource={offerData}
+          columns={Columns}
           bordered
           sticky
           scroll={{ y: 1330 }}

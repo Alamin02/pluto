@@ -5,17 +5,19 @@ export const agent = {
     return fetch(`${baseUrl}/users/register`, {
       method: "post",
       headers: {
-        Authentication: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
     });
   },
   createOffer: (offerData, token) => {
+    console.log({ token });
+
     return fetch(`${baseUrl}/offers`, {
       method: "post",
       headers: {
-        Authentication: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(offerData),

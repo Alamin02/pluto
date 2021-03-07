@@ -36,14 +36,13 @@ export default function OfferForm({ visible, onCreate, onCancel }) {
         <Form
           form={form}
           layout="vertical"
-          name="offer form"
           initialValues={{
             modifier: "public",
           }}
         >
           {/* offer name */}
           <Form.Item
-            name="offer name"
+            name="name"
             label="Offer Name&nbsp;:"
             rules={[
               {

@@ -102,7 +102,7 @@ export async function createProduct(
     // save data to repository from request body
     await productsRepository.save(newProduct);
   } catch (e) {
-    res.status(400).json({ error: "Product already exists in db" });
+    res.status(400).json({ error: e });
     return;
   }
   res.json({ msg: "Product created" });

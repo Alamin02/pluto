@@ -1,17 +1,63 @@
 import React, { useState, useEffect } from "react";
-import { Table, Space, Button, Typography, Row, Col } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { Columns } from "./Columns";
+import {
+  Table,
+  Space,
+  Button,
+  Typography,
+  Row,
+  Col,
+  Popconfirm,
+  message,
+} from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { agent } from "../../helpers/agent";
+// import { Columns } from "./Columns";
 import OfferForm from "./OfferForm";
+import EditOfferForm from "./EditOfferForm";
+
+const deleteMessage = "Sure to delete?";
+
+function confirmDelete() {
+  message.info("Clicked on Yes.");
+}
+
+function onDelete(offerId) {
+  // console.log("delte clicked");
+  const token = localStorage.getItem("token");
+  agent
+    .deleteOffer(token, offerId)
+    .then((res) => res.json())
+    .then(console.log);
+}
 const { Title } = Typography;
 export default function Offers() {
   const [visible, setVisible] = useState(false);
+  const [visibleEditOffer, setVisibleEditOffer] = useState(false);
 
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
     setVisible(false);
   };
+  const onEditOffer = () => {
+    // console.log("Received values of editForm: ", values);
+    setVisibleEditOffer(false);
+  };
+  let records = {
+    id: "",
+    name: "",
+    discount: 0,
+    description: "",
+  };
 
+  const onEdit = (record) => {
+    // records = record;
+    records.id = record.id;
+    records.name = record.name;
+    records.discount = record.discount;
+    records.description = record.description;
+    console.log(records);
+    setVisibleEditOffer(true);
+  };
   const [offerData, setOfferData] = useState([]);
 
   useEffect(() => {
@@ -28,6 +74,62 @@ export default function Offers() {
         setOfferData(data);
       });
   }, []);
+
+  const Columns = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+      render: (id) => <span>{id}</span>,
+    },
+    {
+      title: "Offer Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Discount",
+      dataIndex: "discount",
+      key: "discount",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Action",
+      key: "action",
+      fixed: "right",
+      render: (id, record) => (
+        <Space size="middle">
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => {
+              onEdit(record);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            placement="top"
+            title={deleteMessage}
+            onConfirm={confirmDelete}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => onDelete(record.id)}
+            >
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -50,7 +152,14 @@ export default function Offers() {
             setVisible(false);
           }}
         />
-
+        <EditOfferForm
+          visible={visibleEditOffer}
+          onCreate={onEditOffer}
+          editInitialData={records}
+          onCancel={() => {
+            setVisibleEditOffer(false);
+          }}
+        />
         {/* table */}
         <Table
           rowKey={(record) => record.id}

@@ -8,6 +8,7 @@ export default function EditOfferForm({
   onCreate,
   onCancel,
   offerId,
+  editInitialData,
 }) {
   const [form] = Form.useForm();
 
@@ -25,7 +26,7 @@ export default function EditOfferForm({
             .validateFields()
             .then((values) => {
               agent
-                .editOffer(values, token, offerId)
+                .editOffer(values, token, )
                 .then((res) => res.json())
                 .then(console.log);
 
@@ -40,9 +41,10 @@ export default function EditOfferForm({
         <Form
           form={form}
           layout="vertical"
-          initialValues={{
-            modifier: "public",
-          }}
+          // initialValues={{
+          //   modifier: "public",
+          // }}
+          initialValues={editInitialData}
         >
           {/* offer name */}
           <Form.Item
@@ -55,7 +57,7 @@ export default function EditOfferForm({
               },
             ]}
           >
-            <Input />
+            <Input  />
           </Form.Item>
 
           {/* discount */}

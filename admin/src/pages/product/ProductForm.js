@@ -73,13 +73,13 @@ export default function ProductForm({
           form
             .validateFields()
             .then((values) => {
-              agent.updateProduct({ values })
+              agent.updateProduct({ values });
               form.resetFields();
               onCreate(values);
-              console.log("product id", productId);
+              // console.log("product id", productId);
             })
             .catch((info) => {
-              console.log("Validate Failed:", info);
+              // console.log("Validate Failed:", info);
             });
         }}
       >

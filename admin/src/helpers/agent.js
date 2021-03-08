@@ -22,4 +22,16 @@ export const agent = {
       body: JSON.stringify(productData),
     });
   },
+
+  // category
+  createCategory: (categoryData, token) => {
+    return fetch(`${baseUrl}/category`, {
+      method: "post",
+      headers: {
+        Authentication: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(categoryData),
+    });
+  },
 };

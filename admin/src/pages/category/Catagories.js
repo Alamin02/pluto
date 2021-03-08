@@ -34,18 +34,6 @@ export default function Catagories() {
       dataIndex: "name",
       key: "name",
     },
-    // {
-    //   title: "Sub Category",
-    //   dataIndex: "children",
-    //   key: "children",
-    //   render: (children) => (
-    //     <>
-    //       {children.map((subCategory) => {
-    //         return { subCategory };
-    //       })}
-    //     </>
-    //   ),
-    // },
     // update, delete action
     {
       title: "Action",
@@ -54,7 +42,14 @@ export default function Catagories() {
       render: (id, record) => (
         <Space size="middle">
           {/* <Button icon={<EditOutlined />}>Edit&nbsp;{record.id}</Button> */}
-          <Button icon={<EditOutlined />}>Edit</Button>
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => {
+              setVisible(true);
+            }}
+          >
+            Edit
+          </Button>
           {/* pop up when clicked on delete button*/}
           <Popconfirm
             placement="top"

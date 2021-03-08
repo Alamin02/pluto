@@ -1,6 +1,5 @@
 import React from "react";
 import MessageForm from "../components/contact-us/MessageForm";
-import MainHeader from "../components/main-header/MainHeader";
 import GetInTouch from "../components/contact-us/GetInTouch";
 import HeaderSection from "../components/styled-components/HeaderSection";
 import appStyles from "../App.module.css";

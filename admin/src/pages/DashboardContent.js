@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import Overview from "./Overview";
 import Products from "./product/Products";
-import Offers from "./Offers";
+import Offers from "./offers/Offers";
 import Users from "./user/Users";
 import Orders from "./Orders";
 import Categories from "./category/Catagories";

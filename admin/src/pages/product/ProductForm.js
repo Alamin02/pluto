@@ -45,7 +45,6 @@ export default function ProductForm({
     if (Array.isArray(e)) {
       return e;
     }
-
     return e && e.fileList;
   };
 
@@ -155,7 +154,6 @@ export default function ProductForm({
               onChange={onChangeCategory}
               placeholder="Please choose category"
             />
-            ,
           </Form.Item>
 
           <Form.Item label="Offer" name="offer">

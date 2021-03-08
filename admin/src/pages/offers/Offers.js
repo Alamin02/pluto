@@ -4,7 +4,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Columns } from "./Columns";
 import OfferForm from "./OfferForm";
 const { Title } = Typography;
-
 export default function Offers() {
   const [visible, setVisible] = useState(false);
 
@@ -51,6 +50,7 @@ export default function Offers() {
             setVisible(false);
           }}
         />
+
         {/* table */}
         <Table
           rowKey={(record) => record.id}

@@ -12,8 +12,6 @@ export const agent = {
     });
   },
   createOffer: (offerData, token) => {
-    console.log({ token });
-
     return fetch(`${baseUrl}/offers`, {
       method: "post",
       headers: {
@@ -21,6 +19,26 @@ export const agent = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(offerData),
+    });
+  },
+  editOffer: (offerData, token, offerId) => {
+    return fetch(`${baseUrl}/offers/:${offerId}`, {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(offerData),
+    });
+  },
+  deleteOffer: (token, offerId) => {
+    return fetch(`${baseUrl}/offers/${offerId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify(offerData),
     });
   },
 };

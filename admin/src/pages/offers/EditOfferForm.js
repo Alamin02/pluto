@@ -3,14 +3,19 @@ import { Modal, Form, Input } from "antd";
 
 import { agent } from "../../helpers/agent";
 
-export default function OfferForm({ visible, onCreate, onCancel }) {
+export default function EditOfferForm({
+  visible,
+  onCreate,
+  onCancel,
+  offerId,
+}) {
   const [form] = Form.useForm();
 
   return (
     <div>
       <Modal
         visible={visible}
-        title="Add offer"
+        title="Edit offer"
         okText="Create"
         cancelText="Cancel"
         onCancel={onCancel}
@@ -20,7 +25,7 @@ export default function OfferForm({ visible, onCreate, onCancel }) {
             .validateFields()
             .then((values) => {
               agent
-                .createOffer(values, token)
+                .editOffer(values, token, offerId)
                 .then((res) => res.json())
                 .then(console.log);
 

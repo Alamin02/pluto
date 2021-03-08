@@ -61,6 +61,10 @@ export async function createProduct(
 
     const productImageRepository = getConnection().getRepository(ProductImage);
 
+    if (offerId) {
+      let offer = await offersRepository.findOne({ id: offerId });
+    }
+
     const createProductImage = [];
     const files = req.files as Express.Multer.File[];
     if (files.length) {

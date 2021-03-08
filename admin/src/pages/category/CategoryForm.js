@@ -67,11 +67,15 @@ export default function CategoryForm({ visible, onCreate, onCancel }) {
 
           <Form.Item name="parentId" label="Parent&nbsp;:">
             <Select defaultValue="null">
-              {categoryOptions.map((category) => (
-                <Option value={category.id} id={category.id}>
-                  {category.name}
-                </Option>
-              ))}
+              {categoryOptions === [] ? (
+                <Option>&nbsp;</Option>
+              ) : (
+                categoryOptions.map((category) => (
+                  <Option value={category.id} id={category.id}>
+                    {category.name}
+                  </Option>
+                ))
+              )}
             </Select>
           </Form.Item>
         </Form>

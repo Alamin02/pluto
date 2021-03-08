@@ -38,8 +38,8 @@ const sidebarInfo = [
   },
   {
     id: 4,
-    itemName: "catagories",
-    itemUrl: "/catagories",
+    itemName: "categories",
+    itemUrl: "/categories",
     icon: <TagOutlined />,
   },
   {
@@ -58,7 +58,7 @@ const sidebarInfo = [
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
-  const [menuId, setMenuId] = useState(1);
+  // const [menuId, setMenuId] = useState(1);
 
   return (
     <div className={styles.dashboard}>
@@ -82,8 +82,8 @@ export default function Dashboard() {
                 key={item.id}
                 icon={item.icon}
                 onClick={() => {
-                  setMenuId(item.id);
-                  console.log(menuId);
+                  // setMenuId(item.id);
+                  // console.log(menuId);
                 }}
               >
                 <Link

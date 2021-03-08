@@ -1,101 +1,56 @@
 import React, { useState, useEffect } from "react";
 import {
   Table,
-  Tag,
   Space,
   Button,
   Popconfirm,
   message,
-  Typography,
   Row,
   Col,
+  Typography,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import ProductForm from "./ProductForm";
+import CategoryForm from "./CategoryForm";
 
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
-
-// delete button message
 function confirmDelete() {
   message.info("Clicked on Yes.");
 }
 
-export default function Products() {
-  const [visible, setVisible] = useState(false);
-  const [id, setId] = useState(0);
-
-  const onCreate = (values) => {
-    console.log("Received values of form: ", values);
-    setVisible(false);
-  };
-
-  const [productData, setProductData] = useState([]);
-
+export default function Catagories() {
   const columns = [
     {
       title: "Id",
       dataIndex: "id",
       key: "id",
+      ellipsis: true,
+      // pass the userId as "id" to edit button
       render: (id) => <span>{id}</span>,
     },
     {
-      title: "Product Name",
+      title: "Category",
       dataIndex: "name",
       key: "name",
     },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Offer",
-      dataIndex: "offer",
-      key: "offer",
-      render: (offer) => {
-        if (offer) {
-          return <Tag color="green">{offer.name}</Tag>;
-        }
-      },
-    },
-    {
-      title: "Rating",
-      dataIndex: "rating",
-      key: "rating",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      render: (category) => {
-        if (category) {
-          return <Tag color="volcano">{category.name}</Tag>;
-        }
-      },
-    },
-    {
-      title: "Summary",
-      dataIndex: "summary",
-      key: "summary",
-    },
+    // update, delete action
     {
       title: "Action",
       key: "action",
       fixed: "right",
       render: (id, record) => (
         <Space size="middle">
+          {/* <Button icon={<EditOutlined />}>Edit&nbsp;{record.id}</Button> */}
           <Button
             icon={<EditOutlined />}
             onClick={() => {
               setVisible(true);
-              setId(id);
-              console.log("id", id);
             }}
           >
             Edit
           </Button>
+          {/* pop up when clicked on delete button*/}
           <Popconfirm
             placement="top"
             title={deleteMessage}
@@ -112,9 +67,19 @@ export default function Products() {
     },
   ];
 
+  const [visible, setVisible] = useState(false);
+
+  const onCreate = (values) => {
+    console.log("Received values of form: ", values);
+    setVisible(false);
+  };
+
+  const [categoryData, setCategoryData] = useState([]);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/v1/products", {
+
+    fetch("http://localhost:4000/api/v1/category", {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -123,14 +88,15 @@ export default function Products() {
     })
       .then((res) => res.json())
       .then(({ data }) => {
-        setProductData(data.products);
+        setCategoryData(data);
+        // console.log(data);
       });
   }, []);
 
   return (
     <div>
       <Space direction="vertical" size="middle">
-        {/* add product button */}
+        {/* add user button */}
         <Button
           type="primary"
           style={{ textTransform: "capitalize" }}
@@ -139,11 +105,10 @@ export default function Products() {
             setVisible(true);
           }}
         >
-          add product
+          add category
         </Button>
 
-        <ProductForm
-          productId={id}
+        <CategoryForm
           visible={visible}
           onCreate={onCreate}
           onCancel={() => {
@@ -151,15 +116,13 @@ export default function Products() {
           }}
         />
 
-        {/* table */}
         <Table
-          rowKey={(record) => record.id}
+          // rowKey={(record) => record.id}
+          dataSource={categoryData}
           size="middle"
-          dataSource={productData}
           columns={columns}
           bordered
           sticky
-          scroll={{ y: 1330 }}
           pagination={{ pageSize: 10 }}
           title={() => (
             <Row justify="space-between">
@@ -168,16 +131,10 @@ export default function Products() {
                   level={4}
                   style={{ marginBottom: 0, textTransform: "capitalize" }}
                 >
-                  All products info
+                  all categories info
                 </Title>
               </Col>
-              <Col></Col>
             </Row>
-          )}
-          footer={() => (
-            <div>
-              <p>Total products: XX</p>
-            </div>
           )}
         />
       </Space>

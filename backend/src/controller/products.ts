@@ -61,6 +61,10 @@ export async function createProduct(
 
     const productImageRepository = getConnection().getRepository(ProductImage);
 
+    if (offerId) {
+      let offer = await offersRepository.findOne({ id: offerId });
+    }
+
     const createProductImage = [];
     const files = req.files as Express.Multer.File[];
     if (files.length) {
@@ -98,7 +102,7 @@ export async function createProduct(
     // save data to repository from request body
     await productsRepository.save(newProduct);
   } catch (e) {
-    res.status(400).json({ error: "Product already exists in db" });
+    res.status(400).json({ error: e });
     return;
   }
   res.json({ msg: "Product created" });

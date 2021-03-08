@@ -69,6 +69,11 @@ export default function Products() {
       title: "Category",
       dataIndex: "category",
       key: "category",
+      render: (category) => {
+        if (category) {
+          return <Tag color="volcano">{category.name}</Tag>;
+        }
+      },
     },
     {
       title: "Summary",

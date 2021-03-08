@@ -7,8 +7,7 @@ export default function EditOfferForm({
   visible,
   onCreate,
   onCancel,
-  offerId,
-  editInitialData,
+  existingRecord,
 }) {
   const [form] = Form.useForm();
 
@@ -17,7 +16,7 @@ export default function EditOfferForm({
       <Modal
         visible={visible}
         title="Edit offer"
-        okText="Create"
+        okText="Save"
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
@@ -26,7 +25,7 @@ export default function EditOfferForm({
             .validateFields()
             .then((values) => {
               agent
-                .editOffer(values, token, )
+                .editOffer(values, token, existingRecord.id)
                 .then((res) => res.json())
                 .then(console.log);
 
@@ -38,14 +37,7 @@ export default function EditOfferForm({
             });
         }}
       >
-        <Form
-          form={form}
-          layout="vertical"
-          // initialValues={{
-          //   modifier: "public",
-          // }}
-          initialValues={editInitialData}
-        >
+        <Form form={form} layout="vertical" initialValues={existingRecord}>
           {/* offer name */}
           <Form.Item
             name="name"
@@ -57,7 +49,7 @@ export default function EditOfferForm({
               },
             ]}
           >
-            <Input  />
+            <Input />
           </Form.Item>
 
           {/* discount */}

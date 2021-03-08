@@ -22,7 +22,7 @@ export const agent = {
     });
   },
   editOffer: (offerData, token, offerId) => {
-    return fetch(`${baseUrl}/offers/:${offerId}`, {
+    return fetch(`${baseUrl}/offers/${offerId}`, {
       method: "put",
       headers: {
         Authorization: `Bearer ${token}`,

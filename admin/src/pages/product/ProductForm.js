@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Upload, Cascader } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
+import { agent } from "../../helpers/agent";
+
 const layout = {
   labelCol: {
     span: 6,
@@ -11,7 +13,12 @@ const layout = {
   },
 };
 
-export default function ProductForm({ visible, onCreate, onCancel }) {
+export default function ProductForm({
+  productId,
+  visible,
+  onCreate,
+  onCancel,
+}) {
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   useEffect(() => {
@@ -38,7 +45,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
     if (Array.isArray(e)) {
       return e;
     }
-
     return e && e.fileList;
   };
 
@@ -66,11 +72,13 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
+              agent.updateProduct({ values });
               form.resetFields();
               onCreate(values);
+              // console.log("product id", productId);
             })
             .catch((info) => {
-              console.log("Validate Failed:", info);
+              // console.log("Validate Failed:", info);
             });
         }}
       >
@@ -78,9 +86,11 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
           {...layout}
           name="basic"
           // form loads initial values from here
-          initialValues={{
-            productName: "Shirt",
-          }}
+          initialValues={
+            {
+              // productName: "Shirt",
+            }
+          }
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -125,7 +135,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
 
           <Form.Item
             label="Category"
-            name="category"
             rules={[
               {
                 required: true,
@@ -135,6 +144,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
           >
             {/* <Input /> */}
             <Cascader
+              name="category"
               fieldNames={{
                 label: "name",
                 value: "name",
@@ -144,7 +154,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
               onChange={onChangeCategory}
               placeholder="Please choose category"
             />
-            ,
           </Form.Item>
 
           <Form.Item label="Offer" name="offer">

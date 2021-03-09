@@ -29,8 +29,10 @@ export async function createCategory(
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
+
+  const categoryRepository = getConnection().getRepository(Category);
+
   if (!parentId) {
-    const categoryRepository = getConnection().getRepository(Category);
     const checkCategory = await categoryRepository.findOne({ name });
     if (!checkCategory) {
       const newCategory = new Category();
@@ -40,6 +42,42 @@ export async function createCategory(
     } else {
       res.status(400).json({ msg: "Category already exists" });
     }
+  } else {
+    const checkDuplicate = await categoryRepository.find({
+      where: {
+        name,
+        parent: {
+          id: parentId,
+        },
+      },
+    });
+    const checkParent = await categoryRepository.find({ id: parentId });
+    if (!checkDuplicate.length) {
+      const newCategory = new Category();
+      newCategory.name = name;
+
+      if (checkParent.length) {
+        newCategory.parent = parentId;
+        const data = await categoryRepository.save(newCategory);
+        res.json({ data: data });
+      } else {
+        res.status(400).json({ msg: "invalid parent id or parent not found" });
+      }
+    } else {
+      res.status(400).json({ msg: "sub category already exists in parent" });
+    }
+  }
+}
+// @POST /v1/api/category/
+export async function createSubCategory(
+  req: express.Request,
+  res: express.Response
+) {
+  const { name, parentId } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
 }
 // @PUT /v1/api/category/:categoryId

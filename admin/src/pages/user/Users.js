@@ -10,51 +10,65 @@ import {
   Typography,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import UserForm from "./UserForm";
+
+import { agent } from "../../helpers/agent";
+import { columns } from "./userTableColumns";
+import CreateUserModal from "./CreateUserModal";
+import EditUserModal from "./EditUserModal";
 
 const { Title } = Typography;
-const deleteMessage = "Sure to delete?";
-function confirmDelete() {
-  message.info("Clicked on Yes.");
-}
-const columns = [
-  {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-    ellipsis: true,
-    // pass the userId as "id" to edit button
-    render: (id) => <span>{id}</span>,
-  },
-  {
-    title: "User Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "Phone",
-    dataIndex: "phone",
-    key: "phone",
-  },
-  // update, delete action
-  {
+
+const Users = () => {
+  const [visibleCreateModal, setVisibleCreateModal] = useState(false);
+  const [visibleEditModal, setVisibleEditModal] = useState(false);
+  const [userData, setUserData] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const token = localStorage.getItem("token");
+
+  function onCreate() {
+    setVisibleCreateModal(false);
+  }
+
+  function onEdit(record) {
+    setVisibleEditModal(true);
+    setSelectedUser(record);
+  }
+
+  function handleDelete(userId) {
+    agent
+      .deleteUser(token, userId)
+      .then((res) => res.json())
+      .then(() => message.info("Successfully deleted"));
+  }
+
+  useEffect(() => {
+    agent
+      .getUsers()
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setUserData(data);
+      });
+  }, []);
+
+  const actionColumn = {
     title: "Action",
     key: "action",
     fixed: "right",
     render: (id, record) => (
       <Space size="middle">
-        {/* <Button icon={<EditOutlined />}>Edit&nbsp;{record.id}</Button> */}
-        <Button icon={<EditOutlined />}>Edit</Button>
-        {/* pop up when clicked on delete button*/}
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => {
+            onEdit(record);
+          }}
+        >
+          Edit
+        </Button>
         <Popconfirm
           placement="top"
-          title={deleteMessage}
-          onConfirm={confirmDelete}
+          title="Sure to delete?"
+          onConfirm={() => handleDelete(record.id)}
           okText="Yes"
           cancelText="No"
         >
@@ -64,55 +78,36 @@ const columns = [
         </Popconfirm>
       </Space>
     ),
-  },
-];
-
-export const Users = () => {
-  const [visible, setVisible] = useState(false);
-
-  const onCreate = (values) => {
-    console.log("Received values of form: ", values);
-    setVisible(false);
   };
-
-  const [userData, setUserData] = useState([]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    fetch("http://localhost:4000/api/v1/users", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setUserData(data);
-      });
-  }, []);
 
   return (
     <div>
       <Space direction="vertical" size="middle">
-        {/* add user button */}
         <Button
           type="primary"
           style={{ textTransform: "capitalize" }}
           icon={<PlusOutlined />}
           onClick={() => {
-            setVisible(true);
+            setVisibleCreateModal(true);
           }}
         >
           add user
         </Button>
 
-        <UserForm
-          visible={visible}
+        <CreateUserModal
+          visible={visibleCreateModal}
           onCreate={onCreate}
           onCancel={() => {
-            setVisible(false);
+            setVisibleCreateModal(false);
+          }}
+        />
+
+        <EditUserModal
+          visible={visibleEditModal}
+          onCreate={onCreate}
+          currentUser={selectedUser}
+          onCancel={() => {
+            setVisibleEditModal(false);
           }}
         />
 
@@ -120,7 +115,7 @@ export const Users = () => {
           rowKey={(record) => record.id}
           dataSource={userData}
           size="middle"
-          columns={columns}
+          columns={[...columns, actionColumn]}
           bordered
           sticky
           pagination={{ pageSize: 10 }}

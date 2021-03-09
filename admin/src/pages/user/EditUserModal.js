@@ -3,7 +3,12 @@ import { Modal, Form, Input } from "antd";
 
 import { agent } from "../../helpers/agent";
 
-export default function UserForm({ visible, onCreate, onCancel }) {
+export default function EditCategoryModal({
+  visible,
+  onCreate,
+  onCancel,
+  currentUser,
+}) {
   const [form] = Form.useForm();
 
   return (
@@ -15,13 +20,14 @@ export default function UserForm({ visible, onCreate, onCancel }) {
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
+          const token = localStorage.getItem("token");
+
           form
             .validateFields()
             .then((values) => {
               agent
-                .createUser(values)
-                .then((res) => res.json())
-                .then(console.log);
+                .editUser(values, token, currentUser.id)
+                .then((res) => res.json());
 
               form.resetFields();
               onCreate(values);
@@ -35,9 +41,7 @@ export default function UserForm({ visible, onCreate, onCancel }) {
           form={form}
           layout="vertical"
           name="form_in_modal"
-          initialValues={{
-            modifier: "public",
-          }}
+          initialValues={currentUser}
         >
           {/* email */}
           <Form.Item
@@ -79,20 +83,6 @@ export default function UserForm({ visible, onCreate, onCancel }) {
             ]}
           >
             <Input />
-          </Form.Item>
-
-          {/* password */}
-          <Form.Item
-            name="password"
-            label="Password&nbsp;:"
-            rules={[
-              {
-                required: true,
-                message: "Please enter password!",
-              },
-            ]}
-          >
-            <Input.Password />
           </Form.Item>
         </Form>
       </Modal>

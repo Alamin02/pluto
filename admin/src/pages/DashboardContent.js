@@ -7,7 +7,7 @@ import Offers from "./offers/Offers";
 import Users from "./user/Users";
 import Orders from "./Orders";
 import Categories from "./category/Catagories";
-import Blogs from "./Blogs";
+import Blogs from "./blogs/Blogs";
 
 export default function DashboardContent() {
   return (

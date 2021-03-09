@@ -23,9 +23,7 @@ export {
 export {
   category as categoryController,
   createCategory as createCategoryController,
-  createSubCategory as createSubCategoryController,
   updateCategory as updateCategoryController,
-  updateSubCategory as updateSubCategoryController,
   deleteCategory as deleteCategoryController,
 } from "./category";
 

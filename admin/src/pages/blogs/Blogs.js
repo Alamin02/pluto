@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Table,
-  Tag,
   Space,
   Button,
   Popconfirm,
@@ -10,8 +9,9 @@ import {
   Row,
   Col,
 } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
+import CreateBlogModal from "./CreateBlogModal";
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
 
@@ -21,6 +21,7 @@ function confirmDelete() {
 }
 
 export default function Products() {
+  const [visible, setVisible] = useState(false);
   const [BlogData, setBlogData] = useState([]);
 
   const columns = [
@@ -70,14 +71,34 @@ export default function Products() {
 
   useEffect(() => {
     agent.getBlogs().then((data) => {
-      console.log(data);
+      // console.log(data);
       setBlogData(data);
     });
   }, []);
-
+  const onCreate = (values) => {
+    console.log(values);
+    setVisible(false);
+  };
   return (
     <div>
       <Space direction="vertical" size="middle">
+        <Button
+          type="primary"
+          style={{ textTransform: "capitalize" }}
+          icon={<PlusOutlined />}
+          onClick={() => {
+            setVisible(true);
+          }}
+        >
+          Add Blog
+        </Button>
+        <CreateBlogModal
+          visible={visible}
+          onCreate={onCreate}
+          onCancel={() => {
+            setVisible(false);
+          }}
+        />
         {/* table */}
         <Table
           rowKey={(record) => record.id}

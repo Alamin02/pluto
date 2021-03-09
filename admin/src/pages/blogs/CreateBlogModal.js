@@ -50,7 +50,7 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="enter blog title" />
           </Form.Item>
 
           {/* discount */}
@@ -64,7 +64,7 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="enter author name" />
           </Form.Item>
           {/* description */}
           <Form.Item
@@ -77,7 +77,7 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
               },
             ]}
           >
-            <Input.TextArea />
+            <Input.TextArea placeholder="enter description" />
           </Form.Item>
         </Form>
       </Modal>

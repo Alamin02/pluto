@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Upload, Cascader } from "antd";
+import { Modal, Form, Input, Upload, Cascader, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 import { agent } from "../../helpers/agent";
@@ -59,6 +59,36 @@ export default function ProductForm({
   function onChangeCategory(value) {
     console.log(value);
   }
+
+
+  const handleUpload = async (info) => {
+    const files = info.fileList;
+
+    const imageData = new FormData();
+    imageData.append('file', files[0])
+    imageData.append('upload_preset', 'plutoImages')
+    const res = await fetch(' https://api.cloudinary.com/v1_1/rifat32/image/upload', {
+      method: 'POST',
+      body: imageData,
+      config: {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    })
+    console.log(res)
+
+    const { status } = info.file;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  }
+
 
   return (
     <div>
@@ -173,7 +203,12 @@ export default function ProductForm({
                 },
               ]}
             >
-              <Upload.Dragger name="files" action="/upload.do">
+              <Upload.Dragger name="files"
+                onChange={handleUpload}
+                action='https://api.cloudinary.com/v1_1/rifat32/image/upload'
+                accept='image/*'
+                multiple
+              >
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />
                 </p>

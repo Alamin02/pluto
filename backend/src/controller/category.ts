@@ -23,7 +23,7 @@ export async function createCategory(
   req: express.Request,
   res: express.Response
 ) {
-  const { name } = req.body;
+  const { name, parentId } = req.body;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -31,14 +31,41 @@ export async function createCategory(
   }
 
   const categoryRepository = getConnection().getRepository(Category);
-  const checkCategory = await categoryRepository.findOne({ name });
-  if (!checkCategory) {
-    const newCategory = new Category();
-    newCategory.name = name;
-    const data = await categoryRepository.save(newCategory);
-    res.json({ data: data });
+
+  if (!parentId) {
+    const checkCategory = await categoryRepository.findOne({ name });
+    if (!checkCategory) {
+      const newCategory = new Category();
+      newCategory.name = name;
+      const data = await categoryRepository.save(newCategory);
+      res.json({ data: data });
+    } else {
+      res.status(400).json({ msg: "Category already exists" });
+    }
   } else {
-    res.status(400).json({ msg: "Category already exists" });
+    const checkDuplicate = await categoryRepository.find({
+      where: {
+        name,
+        parent: {
+          id: parentId,
+        },
+      },
+    });
+    const checkParent = await categoryRepository.find({ id: parentId });
+    if (!checkDuplicate.length) {
+      const newCategory = new Category();
+      newCategory.name = name;
+
+      if (checkParent.length) {
+        newCategory.parent = parentId;
+        const data = await categoryRepository.save(newCategory);
+        res.json({ data: data });
+      } else {
+        res.status(400).json({ msg: "invalid parent id or parent not found" });
+      }
+    } else {
+      res.status(400).json({ msg: "sub category already exists in parent" });
+    }
   }
 }
 // @POST /v1/api/category/
@@ -51,31 +78,6 @@ export async function createSubCategory(
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
-  }
-
-  const categoryRepository = getConnection().getRepository(Category);
-  const checkDuplicate = await categoryRepository.find({
-    where: {
-      name,
-      parent: {
-        id: parentId,
-      },
-    },
-  });
-  const checkParent = await categoryRepository.find({ id: parentId });
-  if (!checkDuplicate.length) {
-    const newCategory = new Category();
-    newCategory.name = name;
-
-    if (checkParent.length) {
-      newCategory.parent = parentId;
-      const data = await categoryRepository.save(newCategory);
-      res.json({ data: data });
-    } else {
-      res.status(400).json({ msg: "invalid parent id or parent not found" });
-    }
-  } else {
-    res.status(400).json({ msg: "sub category already exists in parent" });
   }
 }
 

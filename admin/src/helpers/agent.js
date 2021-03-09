@@ -11,6 +11,30 @@ export const agent = {
       body: JSON.stringify(userData),
     });
   },
+
+  updateProduct: (productId, productData, token) => {
+    return fetch(`${baseUrl}/users/products/${productId}`, {
+      method: "get",
+      headers: {
+        Authentication: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productData),
+    });
+  },
+
+  // category
+  createCategory: (categoryData, token) => {
+    return fetch(`${baseUrl}/category`, {
+      method: "post",
+      headers: {
+        Authentication: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(categoryData),
+    });
+  },
+
   createOffer: (offerData, token) => {
     return fetch(`${baseUrl}/offers`, {
       method: "post",
@@ -21,6 +45,7 @@ export const agent = {
       body: JSON.stringify(offerData),
     });
   },
+
   editOffer: (offerData, token, offerId) => {
     return fetch(`${baseUrl}/offers/${offerId}`, {
       method: "put",
@@ -31,6 +56,7 @@ export const agent = {
       body: JSON.stringify(offerData),
     });
   },
+
   deleteOffer: (token, offerId) => {
     return fetch(`${baseUrl}/offers/${offerId}`, {
       method: "delete",

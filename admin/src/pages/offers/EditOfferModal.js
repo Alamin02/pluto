@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, Form, Input } from "antd";
 
 import { agent } from "../../helpers/agent";
@@ -10,6 +10,10 @@ export default function EditOfferForm({
   existingRecord,
 }) {
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.resetFields();
+  }, [existingRecord]);
 
   return (
     <div>
@@ -37,7 +41,12 @@ export default function EditOfferForm({
             });
         }}
       >
-        <Form form={form} layout="vertical" initialValues={existingRecord}>
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={existingRecord}
+          preserve={false}
+        >
           {/* offer name */}
           <Form.Item
             name="name"

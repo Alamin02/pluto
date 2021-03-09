@@ -2,11 +2,11 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 
 import Overview from "./Overview";
-import Products from "./Products";
-import Offers from "./Offers";
-import Users from "./Users";
+import Products from "./product/Products";
+import Offers from "./offers/Offers";
+import Users from "./user/Users";
 import Orders from "./Orders";
-import Catagories from "./Catagories";
+import Categories from "./category/Catagories";
 
 export default function DashboardContent() {
   return (
@@ -19,7 +19,7 @@ export default function DashboardContent() {
         <Route path="/offers" component={Offers} exact />
         <Route path="/users" component={Users} exact />
         <Route path="/orders" component={Orders} exact />
-        <Route path="/catagories" component={Catagories} exact />
+        <Route path="/Categories" component={Categories} exact />
       </Switch>
     </div>
   );

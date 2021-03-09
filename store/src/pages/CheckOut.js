@@ -19,14 +19,6 @@ const DescriptionCollapse = ({ title, k, register, form }) => {
         <span>{register}</span>
         <span>{form}</span>
         <br></br>
-        {/* <div style={{ marginLeft: "300px" }}>
-     <Button type="default" htmlType="submit">
-       <h3>Continue</h3>
-     </Button>
-     <Button type="link" htmlType="submit">
-       <h3>Forget your Password?</h3>
-     </Button>
-   </div> */}
       </Panel>
     </Collapse>
   );

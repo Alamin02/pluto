@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Card } from "antd";
+import { Form, Input, Button, Checkbox, Card, message } from "antd";
 
 export const Login = () => {
   const onFinish = (values) => {
@@ -11,9 +11,13 @@ export const Login = () => {
       body: JSON.stringify(values),
     })
       .then((res) => res.json())
-      .then((data) => {
-        localStorage.setItem("token", data.token);
-        window.location.reload();
+      .then(({ token }) => {
+        if (token) {
+          localStorage.setItem("token", token);
+          window.location.reload();
+        } else {
+          message.error("Could not login, check credentials");
+        }
       });
   };
 

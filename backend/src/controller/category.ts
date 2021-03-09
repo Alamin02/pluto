@@ -68,18 +68,7 @@ export async function createCategory(
     }
   }
 }
-// @POST /v1/api/category/
-export async function createSubCategory(
-  req: express.Request,
-  res: express.Response
-) {
-  const { name, parentId } = req.body;
 
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-}
 // @PUT /v1/api/category/:categoryId
 export async function updateCategory(
   req: express.Request,

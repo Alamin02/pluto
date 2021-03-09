@@ -64,7 +64,15 @@ export const agent = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify(offerData),
     });
+  },
+  getBlogs: () => {
+    return fetch(`${baseUrl}/blogs`, {
+      method: "get",
+    })
+      .then((res) => res.json())
+      .then(({ data }) => {
+        return data.blogs;
+      });
   },
 };

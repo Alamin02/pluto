@@ -11,7 +11,7 @@ import {
   Col,
 } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
+import { agent } from "../../helpers/agent";
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
 
@@ -69,18 +69,10 @@ export default function Products() {
   ];
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/v1/blogs", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setBlogData(data.blogs);
-      });
+    agent.getBlogs().then((data) => {
+      console.log(data);
+      setBlogData(data);
+    });
   }, []);
 
   return (

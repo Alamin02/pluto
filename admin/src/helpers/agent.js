@@ -85,4 +85,23 @@ export const agent = {
       body: JSON.stringify(BlogData),
     });
   },
+  editBlog: (blogData, token, blogId) => {
+    return fetch(`${baseUrl}/blogs/${blogId}`, {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(blogData),
+    });
+  },
+  deleteBlog: (token, blogId) => {
+    return fetch(`${baseUrl}/blogs/${blogId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

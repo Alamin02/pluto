@@ -12,73 +12,74 @@ import {
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
 import CreateBlogModal from "./CreateBlogModal";
+import EditBlogModal from "./EditBlogModal";
+import { Columns } from "./BlogTableColumns";
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
-
-// delete button message
-function confirmDelete() {
-  message.info("Clicked on Yes.");
-}
 
 export default function Products() {
   const [visible, setVisible] = useState(false);
   const [BlogData, setBlogData] = useState([]);
+  const [blogToEditVisible, setBlogToEditVisible] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
-  const columns = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      render: (id) => <span>{id}</span>,
-    },
-    {
-      title: "Author",
-      dataIndex: "author",
-      key: "author",
-    },
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-    },
-    {
-      title: "Action",
-      key: "action",
-      fixed: "right",
-      render: (id, record) => (
-        <Space size="middle">
-          <Button icon={<EditOutlined />}>Edit</Button>
-          <Popconfirm
-            placement="top"
-            title={deleteMessage}
-            onConfirm={confirmDelete}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button danger icon={<DeleteOutlined />}>
-              Delete
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ];
-
-  useEffect(() => {
-    agent.getBlogs().then((data) => {
-      // console.log(data);
-      setBlogData(data);
-    });
-  }, []);
   const onCreate = (values) => {
     console.log(values);
     setVisible(false);
   };
+  const closeModal = () => {
+    setBlogToEditVisible(false);
+  };
+
+  // get all blogs
+  useEffect(() => {
+    agent.getBlogs().then((data) => {
+      setBlogData(data);
+    });
+  }, []);
+
+  // edit blog
+  const handleEdit = (record) => {
+    setSelectedBlog(record);
+    setBlogToEditVisible(true);
+  };
+  // delete blog
+  function handleDelete(blogId) {
+    const token = localStorage.getItem("token");
+    agent
+      .deleteBlog(token, blogId)
+      .then((res) => res.json())
+      .then(() => message.info("Successfully deleted"));
+  }
+  const actionColumn = {
+    title: "Action",
+    key: "action",
+    fixed: "right",
+    render: (id, record) => (
+      <Space size="middle">
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => {
+            handleEdit(record);
+          }}
+        >
+          Edit
+        </Button>
+        <Popconfirm
+          placement="top"
+          title={deleteMessage}
+          onConfirm={() => handleDelete(record.id)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button danger icon={<DeleteOutlined />}>
+            Delete
+          </Button>
+        </Popconfirm>
+      </Space>
+    ),
+  };
+
   return (
     <div>
       <Space direction="vertical" size="middle">
@@ -99,12 +100,21 @@ export default function Products() {
             setVisible(false);
           }}
         />
+
+        <EditBlogModal
+          visible={blogToEditVisible}
+          onCreate={closeModal}
+          existingRecord={selectedBlog}
+          onCancel={() => {
+            setBlogToEditVisible(false);
+          }}
+        />
         {/* table */}
         <Table
           rowKey={(record) => record.id}
           size="middle"
           dataSource={BlogData}
-          columns={columns}
+          columns={[...Columns, actionColumn]}
           bordered
           sticky
           pagination={false}

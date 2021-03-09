@@ -207,7 +207,7 @@ export default function ProductForm({
                 onChange={handleUpload}
                 action='https://api.cloudinary.com/v1_1/rifat32/image/upload'
                 accept='image/*'
-                multiple
+
               >
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />

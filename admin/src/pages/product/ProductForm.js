@@ -60,35 +60,36 @@ export default function ProductForm({
     console.log(value);
   }
 
-
   const handleUpload = async (info) => {
     const files = info.fileList;
 
-    const imageData = new FormData();
-    imageData.append('file', files[0])
-    imageData.append('upload_preset', 'plutoImages')
-    const res = await fetch(' https://api.cloudinary.com/v1_1/rifat32/image/upload', {
-      method: 'POST',
-      body: imageData,
-      config: {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    })
-    console.log(res)
+    // const imageData = new FormData();
+    // imageData.append("file", files[0]);
+    // imageData.append("upload_preset", "plutoImages");
+    // const res = await fetch(
+    //   "https://api.cloudinary.com/v1_1/rifat32/image/upload",
+    //   {
+    //     method: "POST",
+    //     body: imageData,
+    //     config: {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     },
+    //   }
+    // );
+    // console.log(res);
 
     const { status } = info.file;
-    if (status !== 'uploading') {
+    if (status !== "uploading") {
       console.log(info.file, info.fileList);
     }
-    if (status === 'done') {
+    if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
+    } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
-  }
-
+  };
 
   return (
     <div>
@@ -99,9 +100,13 @@ export default function ProductForm({
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
+          console.log(form.getFieldValue("description"));
+
           form
             .validateFields()
             .then((values) => {
+              console.log(values);
+
               agent.updateProduct({ values });
               form.resetFields();
               onCreate(values);
@@ -114,6 +119,7 @@ export default function ProductForm({
       >
         <Form
           {...layout}
+          form={form}
           name="basic"
           // form loads initial values from here
           initialValues={
@@ -192,7 +198,7 @@ export default function ProductForm({
 
           <Form.Item label="Dragger">
             <Form.Item
-              name="dragger"
+              name="productImages"
               valuePropName="fileList"
               getValueFromEvent={normFile}
               noStyle
@@ -203,11 +209,13 @@ export default function ProductForm({
                 },
               ]}
             >
-              <Upload.Dragger name="files"
+              <Upload.Dragger
+                name="files"
                 onChange={handleUpload}
-                action='https://api.cloudinary.com/v1_1/rifat32/image/upload'
-                accept='image/*'
-
+                beforeUpload={() => {
+                  return false;
+                }}
+                accept="image/*"
               >
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />

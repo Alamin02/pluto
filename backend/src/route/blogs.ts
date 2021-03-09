@@ -12,7 +12,7 @@ import { authenticationMiddleware } from "../middleware";
 const router = express.Router();
 
 // Get all blogs list
-router.get("/", authenticationMiddleware, getAllBlogsController);
+router.get("/", getAllBlogsController);
 
 // Create a blog
 router.post(

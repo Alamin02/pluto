@@ -5,39 +5,43 @@ import { agent } from "../../helpers/agent";
 
 const { Option } = Select;
 
-export default function CategoryForm({ visible, onCreate, onCancel }) {
+export default function EditCategoryModal({
+  visible,
+  onCreate,
+  onCancel,
+  currentCategory,
+}) {
+  const [form] = Form.useForm();
+
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/v1/category", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    agent
+      .getCategories()
       .then((res) => res.json())
       .then(({ data }) => {
         setCategoryOptions(data);
       });
   }, []);
 
-  const [form] = Form.useForm();
-
   return (
     <div>
       <Modal
         visible={visible}
-        title="Add Category"
-        okText="Create"
+        title="Update Category"
+        okText="Save"
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
+          const token = localStorage.getItem("token");
+
           form
             .validateFields()
             .then((values) => {
-              agent.createCategory(values).then((res) => res.json());
+              agent
+                .editCategory(values, token, currentCategory.id)
+                .then((res) => res.json());
+
               form.resetFields();
               onCreate(values);
             })
@@ -50,7 +54,7 @@ export default function CategoryForm({ visible, onCreate, onCancel }) {
           form={form}
           layout="vertical"
           name="form_in_modal"
-          // initialValues={{}}
+          initialValues={currentCategory}
         >
           <Form.Item
             name="name"
@@ -58,7 +62,7 @@ export default function CategoryForm({ visible, onCreate, onCancel }) {
             rules={[
               {
                 required: true,
-                message: "Please enter category/ sub category!",
+                message: "Please enter category name!",
               },
             ]}
           >

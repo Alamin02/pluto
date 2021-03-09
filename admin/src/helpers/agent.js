@@ -24,6 +24,15 @@ export const agent = {
   },
 
   // category
+  getCategories: () => {
+    return fetch(`${baseUrl}/category`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
   createCategory: (categoryData, token) => {
     return fetch(`${baseUrl}/category`, {
       method: "post",
@@ -35,6 +44,28 @@ export const agent = {
     });
   },
 
+  editCategory: (categoryData, token, categoryId) => {
+    return fetch(`${baseUrl}/category/${categoryId}`, {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(categoryData),
+    });
+  },
+
+  deleteCategory: (token, categoryId) => {
+    return fetch(`${baseUrl}/category/${categoryId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  //offer
   createOffer: (offerData, token) => {
     return fetch(`${baseUrl}/offers`, {
       method: "post",

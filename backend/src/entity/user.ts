@@ -16,6 +16,9 @@ export class User {
   @Column("varchar")
   phone!: string;
 
+  // @Column("varchar")
+  // type!: string;
+
   @Column("varchar")
   password!: string;
 

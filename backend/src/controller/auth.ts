@@ -58,13 +58,13 @@ export async function userRegistration(
 
   const { name, email, password, phone } = req.body;
   const hash = await bcrypt.hash(password, saltRounds);
-  
+
   // If there is a user
   const userRepository = getConnection().getRepository(User);
   const previousEntry = await userRepository.findOne({ email });
   if (previousEntry) {
     res.json({ msg: "User already exits" });
-  };  
+  }
 
   // Create a new user
   try {
@@ -94,6 +94,52 @@ export async function users(req: express.Request, res: express.Response) {
   });
 
   res.json({ data: users });
+}
+
+// @PUT /v1/api/users/:userId
+// update an user
+export async function updateUser(req: express.Request, res: express.Response) {
+  const userId = req.params.userId;
+  const { name, email, phone } = req.body;
+
+  const userRepository = getConnection().getRepository(User);
+  const userToUpdate = await userRepository.findOne({ id: userId });
+  if (userToUpdate) {
+    try {
+      const newUser = new User();
+      newUser.name = name;
+      newUser.email = email;
+      newUser.phone = phone;
+      await userRepository.update(userId, newUser);
+      res.status(200).json({ data: "User info updated" });
+    } catch (e) {
+      res.status(400).json({ msg: e });
+    }
+  } else {
+    res.status(400).json({ data: "User not found or invalid id" });
+  }
+}
+
+// @DELETE /v1/ap/users/:userId
+// delete an user
+export async function deleteUser(req: express.Request, res: express.Response) {
+  const userId = req.params.userId;
+
+  const userRepository = getConnection().getRepository(User);
+  const userToDelete = await userRepository.findOne({ id: userId });
+
+  if (userToDelete) {
+    try {
+      await userRepository.delete(userId);
+      res.json({ data: "User deleted" });
+    } catch (e) {
+      res.status(400).json({ msg: e });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ data: "User could not be deleted or invalid user id" });
+  }
 }
 
 export default router;

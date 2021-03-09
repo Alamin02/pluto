@@ -11,116 +11,111 @@ import {
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import CategoryForm from "./CategoryForm";
+import { agent } from "../../helpers/agent";
+import { columns } from "./categoryTableColumns";
+import CreateCategoryModal from "./CreateCategoryModal";
+import EditCategoryModal from "./EditCategoryModal";
 
 const { Title } = Typography;
-const deleteMessage = "Sure to delete?";
-function confirmDelete() {
-  message.info("Clicked on Yes.");
-}
 
 export default function Catagories() {
-  const columns = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      ellipsis: true,
-      // pass the userId as "id" to edit button
-      render: (id) => <span>{id}</span>,
-    },
-    {
-      title: "Category",
-      dataIndex: "name",
-      key: "name",
-    },
-    // update, delete action
-    {
-      title: "Action",
-      key: "action",
-      fixed: "right",
-      render: (id, record) => (
-        <Space size="middle">
-          {/* <Button icon={<EditOutlined />}>Edit&nbsp;{record.id}</Button> */}
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => {
-              setVisible(true);
-            }}
-          >
-            Edit
-          </Button>
-          {/* pop up when clicked on delete button*/}
-          <Popconfirm
-            placement="top"
-            title={deleteMessage}
-            onConfirm={confirmDelete}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button danger icon={<DeleteOutlined />}>
-              Delete
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ];
-
-  const [visible, setVisible] = useState(false);
-
-  const onCreate = (values) => {
-    console.log("Received values of form: ", values);
-    setVisible(false);
-  };
-
+  const [visibleCreateModal, setVisibleCreateModal] = useState(false);
+  const [visibleEditModal, setVisibleEditModal] = useState(false);
   const [categoryData, setCategoryData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const token = localStorage.getItem("token");
+
+  function onCreate() {
+    setVisibleCreateModal(false);
+  }
+
+  function onEdit(record) {
+    setVisibleEditModal(true);
+    setSelectedCategory(record);
+  }
+
+  function handleDelete(categoryId) {
+    agent
+      .deleteCategory(token, categoryId)
+      .then((res) => res.json())
+      .then(() => message.info("Successfully deleted"));
+  }
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    fetch("http://localhost:4000/api/v1/category", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    agent
+      .getCategories()
       .then((res) => res.json())
       .then(({ data }) => {
         setCategoryData(data);
-        // console.log(data);
       });
   }, []);
+
+  const actionColumn = {
+    title: "Action",
+    key: "action",
+    fixed: "right",
+    render: (id, record) => (
+      <Space size="middle">
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => {
+            onEdit(record);
+          }}
+        >
+          Edit
+        </Button>
+        <Popconfirm
+          placement="top"
+          title="Sure to delete?"
+          onConfirm={() => handleDelete(record.id)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button danger icon={<DeleteOutlined />}>
+            Delete
+          </Button>
+        </Popconfirm>
+      </Space>
+    ),
+  };
 
   return (
     <div>
       <Space direction="vertical" size="middle">
-        {/* add user button */}
         <Button
           type="primary"
           style={{ textTransform: "capitalize" }}
           icon={<PlusOutlined />}
           onClick={() => {
-            setVisible(true);
+            setVisibleCreateModal(true);
           }}
         >
           add category
         </Button>
 
-        <CategoryForm
-          visible={visible}
+        <CreateCategoryModal
+          visible={visibleCreateModal}
           onCreate={onCreate}
           onCancel={() => {
-            setVisible(false);
+            setVisibleCreateModal(false);
+          }}
+        />
+
+        <EditCategoryModal
+          visible={visibleEditModal}
+          onCreate={onCreate}
+          currentCategory={selectedCategory}
+          onCancel={() => {
+            setVisibleEditModal(false);
           }}
         />
 
         <Table
-          // rowKey={(record) => record.id}
+          rowKey={(record) => record.id}
           dataSource={categoryData}
           size="middle"
-          columns={columns}
+          columns={[...columns, actionColumn]}
           bordered
           sticky
           pagination={{ pageSize: 10 }}

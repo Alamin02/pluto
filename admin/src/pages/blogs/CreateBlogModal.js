@@ -1,17 +1,10 @@
 import React from "react";
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
 export default function CreateBlogModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
 
   return (
     <div>
@@ -29,7 +22,7 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
               agent
                 .createBlog(values, token)
                 .then((res) => res.json())
-                .then(console.log);
+                .then(() => message.info("Blog created"));
 
               form.resetFields();
               onCreate(values);
@@ -45,8 +38,6 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
           initialValues={{
             modifier: "public",
           }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
         >
           {/* blog  title */}
           <Form.Item

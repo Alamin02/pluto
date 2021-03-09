@@ -17,7 +17,7 @@ import { Columns } from "./BlogTableColumns";
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
 
-export default function Products() {
+export default function Blogs() {
   const [visible, setVisible] = useState(false);
   const [BlogData, setBlogData] = useState([]);
   const [blogToEditVisible, setBlogToEditVisible] = useState(false);

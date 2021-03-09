@@ -3,7 +3,7 @@ import { Modal, Form, Input } from "antd";
 
 import { agent } from "../../helpers/agent";
 
-export default function OfferForm({ visible, onCreate, onCancel }) {
+export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
   return (

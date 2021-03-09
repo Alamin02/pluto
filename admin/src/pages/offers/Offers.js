@@ -13,39 +13,17 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
 import CreateOfferModal from "./CreateOfferModal";
 import EditOfferModal from "./EditOfferModal";
-
 import { columns } from "./offerTableColumns";
 
 const deleteMessage = "Sure to delete?";
 
 const { Title } = Typography;
+
 export default function Offers() {
+  const [offerData, setOfferData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [visibleEditOffer, setVisibleEditOffer] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
-
-  const onCreate = (values) => {
-    setVisible(false);
-  };
-
-  function handleDelete(offerId) {
-    const token = localStorage.getItem("token");
-    agent
-      .deleteOffer(token, offerId)
-      .then((res) => res.json())
-      .then(() => message.info("Successfully deleted"));
-  }
-
-  const onEditOffer = () => {
-    setVisibleEditOffer(false);
-  };
-
-  const onEdit = (record) => {
-    setSelectedOffer(record);
-    setVisibleEditOffer(true);
-  };
-
-  const [offerData, setOfferData] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -61,6 +39,30 @@ export default function Offers() {
         setOfferData(data);
       });
   }, []);
+
+  // close createOfferModal when offer created
+  const onCreate = (values) => {
+    setVisible(false);
+  };
+  // close editOfferModal after save
+  const onEditOffer = () => {
+    setVisibleEditOffer(false);
+  };
+
+  // edit offer
+  const onEdit = (record) => {
+    setSelectedOffer(record);
+    setVisibleEditOffer(true);
+  };
+
+  // delete offer
+  function handleDelete(offerId) {
+    const token = localStorage.getItem("token");
+    agent
+      .deleteOffer(token, offerId)
+      .then((res) => res.json())
+      .then(() => message.info("Successfully deleted"));
+  }
 
   const actionColumn = {
     title: "Action",

@@ -1,9 +1,7 @@
 import React from "react";
 import { Modal, Form, Input } from "antd";
-
 import { agent } from "../../helpers/agent";
-
-export default function EditOfferForm({
+export default function EditOfferModal({
   visible,
   onCreate,
   onCancel,

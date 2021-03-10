@@ -26,8 +26,12 @@ const Users = () => {
 
   const token = localStorage.getItem("token");
 
-  function onCreate() {
+  function onCreateUser() {
     setVisibleCreateModal(false);
+  }
+
+  function onEditUser() {
+    setVisibleEditModal(false);
   }
 
   function onEdit(record) {
@@ -39,7 +43,7 @@ const Users = () => {
     agent
       .deleteUser(token, userId)
       .then((res) => res.json())
-      .then(() => message.info("Successfully deleted"));
+      .then(() => message.info("User deleted successfully"));
   }
 
   useEffect(() => {
@@ -54,7 +58,6 @@ const Users = () => {
   const actionColumn = {
     title: "Action",
     key: "action",
-    fixed: "right",
     render: (id, record) => (
       <Space size="middle">
         <Button
@@ -96,7 +99,7 @@ const Users = () => {
 
         <CreateUserModal
           visible={visibleCreateModal}
-          onCreate={onCreate}
+          onCreate={onCreateUser}
           onCancel={() => {
             setVisibleCreateModal(false);
           }}
@@ -104,7 +107,7 @@ const Users = () => {
 
         <EditUserModal
           visible={visibleEditModal}
-          onCreate={onCreate}
+          onCreate={onEditUser}
           currentUser={selectedUser}
           onCancel={() => {
             setVisibleEditModal(false);

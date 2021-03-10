@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
@@ -23,7 +23,7 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
               agent
                 .createUser(values, token)
                 .then((res) => res.json())
-                .then(console.log);
+                .then(() => message.success("User added successfully"));
 
               form.resetFields();
               onCreate(values);

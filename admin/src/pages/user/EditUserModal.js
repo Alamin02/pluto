@@ -1,5 +1,5 @@
-import React from "react";
-import { Modal, Form, Input } from "antd";
+import React, { useEffect } from "react";
+import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
@@ -11,12 +11,16 @@ export default function EditCategoryModal({
 }) {
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    form.resetFields();
+  }, [currentUser]);
+
   return (
     <div>
       <Modal
         visible={visible}
-        title="Add User"
-        okText="Create"
+        title="Edit User"
+        okText="Save"
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
@@ -27,7 +31,8 @@ export default function EditCategoryModal({
             .then((values) => {
               agent
                 .editUser(values, token, currentUser.id)
-                .then((res) => res.json());
+                .then((res) => res.json())
+                .then(() => message.success("User updated successfully"));
 
               form.resetFields();
               onCreate(values);

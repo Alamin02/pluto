@@ -32,8 +32,15 @@ export default function EditCategoryModal({
               agent
                 .editUser(values, token, currentUser.id)
                 .then((res) => res.json())
-                .then(() => message.success("User updated successfully"));
-
+                .then((data) => {
+                  if (!data.errors) {
+                    message.success("User updated successfully");
+                  } else {
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
               form.resetFields();
               onCreate(values);
             })

@@ -38,7 +38,15 @@ router.post(
 router.get("/", usersController);
 
 // @PUT - /api/v1/users/:userId
-router.put("/:userId", authenticationMiddleware, updateUserController);
+router.put(
+  "/:userId",
+  [
+    body("name").not().isEmpty().withMessage("Name must not be empty"),
+    body("email").isEmail().withMessage("Invalid Email address"),
+  ],
+  authenticationMiddleware,
+  updateUserController
+);
 
 // @DELETE - /api/v1/users/:userId
 router.delete("/:userId", authenticationMiddleware, deleteUserController);

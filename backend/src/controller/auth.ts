@@ -27,7 +27,7 @@ export async function userLogin(req: express.Request, res: express.Response) {
   if (!previousEntry) {
     return res
       .status(400)
-      .json({ errors: [{ msg: "Email or password doesnot match" }] });
+      .json({ errors: [{ msg: "Email or password does not match" }] });
   }
 
   // Verifying the password
@@ -35,7 +35,7 @@ export async function userLogin(req: express.Request, res: express.Response) {
   if (!isPasswordMatch) {
     return res
       .status(400)
-      .json({ errors: [{ msg: "Email or password doesnot match" }] });
+      .json({ errors: [{ msg: "Email or password does not match" }] });
   }
 
   // Generating a token
@@ -53,7 +53,9 @@ export async function userRegistration(
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({
+      errors: [{ msg: "Frontend validation error" }],
+    });
   }
 
   const { name, email, password, phone } = req.body;
@@ -63,7 +65,9 @@ export async function userRegistration(
   const userRepository = getConnection().getRepository(User);
   const previousEntry = await userRepository.findOne({ email });
   if (previousEntry) {
-    res.json({ msg: "User already exits" });
+    res.json({
+      errors: [{ msg: "User already exists" }],
+    });
   }
 
   // Create a new user
@@ -78,11 +82,11 @@ export async function userRegistration(
 
     await userRepository.save(newUser);
   } catch (e) {
-    res.status(400).json({ error: "Something went wrong" });
+    res.status(400).json({ errors: [{ msg: "User could not be created" }] });
     return;
   }
 
-  res.json({ msg: "Create new user!" });
+  res.json({ success: [{ msg: "New user has been created!" }] });
 }
 
 // @GET - /api/v1/users/
@@ -111,12 +115,16 @@ export async function updateUser(req: express.Request, res: express.Response) {
       newUser.email = email;
       newUser.phone = phone;
       await userRepository.update(userId, newUser);
-      res.status(200).json({ data: "User info updated" });
+      res.status(200).json({ success: [{ msg: "User info updated" }] });
     } catch (e) {
-      res.status(400).json({ msg: e });
+      res
+        .status(400)
+        .json({ errors: [{ msg: "User info could not be updated" }] });
     }
   } else {
-    res.status(400).json({ data: "User not found or invalid id" });
+    res.status(400).json({
+      errors: [{ msg: "User not found or invalid url parameter(userId)" }],
+    });
   }
 }
 
@@ -133,12 +141,14 @@ export async function deleteUser(req: express.Request, res: express.Response) {
       await userRepository.delete(userId);
       res.json({ data: "User deleted" });
     } catch (e) {
-      res.status(400).json({ msg: e });
+      res.status(400).json({ errors: [{ msg: "User could not be deleted" }] });
     }
   } else {
-    res
-      .status(400)
-      .json({ data: "User could not be deleted or invalid user id" });
+    res.status(400).json({
+      errors: [
+        { msg: "User could not be deleted or invalid url parameter(userId)" },
+      ],
+    });
   }
 }
 

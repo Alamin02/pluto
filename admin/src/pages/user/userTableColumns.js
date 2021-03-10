@@ -7,6 +7,11 @@ export const columns = [
     render: (id) => <span>{id}</span>,
   },
   {
+    title: "Role",
+    dataIndex: "role",
+    key: "role",
+  },
+  {
     title: "User Name",
     dataIndex: "name",
     key: "name",

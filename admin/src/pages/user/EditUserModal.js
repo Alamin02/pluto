@@ -55,6 +55,11 @@ export default function EditCategoryModal({
           name="form_in_modal"
           initialValues={currentUser}
         >
+          {/* role */}
+          <Form.Item name="role" label="Role&nbsp;:">
+            <Input />
+          </Form.Item>
+
           {/* email */}
           <Form.Item
             name="email"

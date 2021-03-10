@@ -45,6 +45,11 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
         }}
       >
         <Form form={form} layout="vertical" name="form_in_modal">
+          {/* role */}
+          <Form.Item name="role" label="Role&nbsp;:">
+            <Input />
+          </Form.Item>
+
           {/* email */}
           <Form.Item
             name="email"

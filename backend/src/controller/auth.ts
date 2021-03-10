@@ -58,7 +58,7 @@ export async function userRegistration(
     });
   }
 
-  const { name, email, password, phone } = req.body;
+  const { name, email, password, phone, role } = req.body;
   const hash = await bcrypt.hash(password, saltRounds);
 
   // If there is a user
@@ -78,6 +78,7 @@ export async function userRegistration(
     newUser.name = name;
     newUser.email = email;
     newUser.phone = phone;
+    newUser.role = role;
     newUser.password = hash;
 
     await userRepository.save(newUser);
@@ -94,7 +95,7 @@ export async function userRegistration(
 export async function users(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const users = await userRepository.find({
-    select: ["id", "name", "email", "phone"],
+    select: ["id", "name", "email", "phone", "role"],
   });
 
   res.json({ data: users });
@@ -104,7 +105,7 @@ export async function users(req: express.Request, res: express.Response) {
 // update an user
 export async function updateUser(req: express.Request, res: express.Response) {
   const userId = req.params.userId;
-  const { name, email, phone } = req.body;
+  const { name, email, phone, role } = req.body;
 
   const userRepository = getConnection().getRepository(User);
   const userToUpdate = await userRepository.findOne({ id: userId });
@@ -114,6 +115,7 @@ export async function updateUser(req: express.Request, res: express.Response) {
       newUser.name = name;
       newUser.email = email;
       newUser.phone = phone;
+      newUser.role = role;
       await userRepository.update(userId, newUser);
       res.status(200).json({ success: [{ msg: "User info updated" }] });
     } catch (e) {

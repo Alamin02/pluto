@@ -36,8 +36,18 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
               agent
                 .createCategory(values, token)
                 .then((res) => res.json())
-                .then(() => message.success("Category added successfully"));
+                .then((data) => {
+                  if (!data.errors) {
+                    message.success("Category added successfully");
 
+                    form.resetFields();
+                    onCreate(values);
+                  } else {
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
               form.resetFields();
               onCreate(values);
             })

@@ -32,7 +32,18 @@ export default function EditCategoryModal({
               agent
                 .editCategory(values, token, currentCategory.id)
                 .then((res) => res.json())
-                .then(() => message.success("Category updated successfully"));
+                .then((data) => {
+                  if (!data.errors) {
+                    message.success("Category updated successfully");
+
+                    form.resetFields();
+                    onCreate(values);
+                  } else {
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
 
               form.resetFields();
               onCreate(values);

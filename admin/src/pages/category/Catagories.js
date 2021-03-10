@@ -26,8 +26,12 @@ export default function Catagories() {
 
   const token = localStorage.getItem("token");
 
-  function onCreate() {
+  function onCreateCategory() {
     setVisibleCreateModal(false);
+  }
+
+  function onEditCategory() {
+    setVisibleEditModal(false);
   }
 
   function onEdit(record) {
@@ -39,7 +43,7 @@ export default function Catagories() {
     agent
       .deleteCategory(token, categoryId)
       .then((res) => res.json())
-      .then(() => message.info("Successfully deleted"));
+      .then(() => message.info("Category deleted successfully"));
   }
 
   useEffect(() => {
@@ -54,7 +58,6 @@ export default function Catagories() {
   const actionColumn = {
     title: "Action",
     key: "action",
-    fixed: "right",
     render: (id, record) => (
       <Space size="middle">
         <Button
@@ -96,7 +99,7 @@ export default function Catagories() {
 
         <CreateCategoryModal
           visible={visibleCreateModal}
-          onCreate={onCreate}
+          onCreate={onCreateCategory}
           onCancel={() => {
             setVisibleCreateModal(false);
           }}
@@ -104,7 +107,7 @@ export default function Catagories() {
 
         <EditCategoryModal
           visible={visibleEditModal}
-          onCreate={onCreate}
+          onCreate={onEditCategory}
           currentCategory={selectedCategory}
           onCancel={() => {
             setVisibleEditModal(false);

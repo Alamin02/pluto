@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import { Modal, Form, Input, Select, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
@@ -33,7 +33,10 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
-              agent.createCategory(values, token).then((res) => res.json());
+              agent
+                .createCategory(values, token)
+                .then((res) => res.json())
+                .then(() => message.success("Category added successfully"));
 
               form.resetFields();
               onCreate(values);

@@ -61,7 +61,7 @@ export default function Offers() {
     agent
       .deleteOffer(token, offerId)
       .then((res) => res.json())
-      .then(() => message.message("Successfully deleted"));
+      .then(() => message.success("Successfully deleted"));
   }
 
   const actionColumn = {

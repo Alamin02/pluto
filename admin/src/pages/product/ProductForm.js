@@ -100,27 +100,31 @@ export default function ProductForm({
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
-          console.log(form.getFieldValue("description"));
+          // console.log(form.getFieldValue("description"));
+          const token = localStorage.getItem("token");
 
           form
             .validateFields()
             .then((values) => {
-              console.log(values);
+              agent
+                .createProduct(values, token)
+                .then((res) => res.json())
+                .then(console.log);
 
-              agent.updateProduct({ values });
               form.resetFields();
               onCreate(values);
-              // console.log("product id", productId);
             })
+
+
             .catch((info) => {
-              // console.log("Validate Failed:", info);
+              console.log("Validate Failed:", info);
             });
         }}
       >
         <Form
           {...layout}
           form={form}
-          name="basic"
+
           // form loads initial values from here
           initialValues={
             {
@@ -132,7 +136,7 @@ export default function ProductForm({
         >
           <Form.Item
             label="Product Name"
-            name="productName"
+            name="name"
             rules={[
               {
                 required: true,
@@ -155,7 +159,18 @@ export default function ProductForm({
           >
             <Input />
           </Form.Item>
-
+          <Form.Item
+            label="Summary"
+            name="summary"
+            rules={[
+              {
+                required: true,
+                message: "Please input product sumamry",
+              },
+            ]}
+          >
+            <Input.TextArea />
+          </Form.Item>
           <Form.Item
             label="Description"
             name="description"

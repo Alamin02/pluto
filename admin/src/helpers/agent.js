@@ -22,7 +22,7 @@ export const agent = {
     });
   },
 
-  editUser: (userId, token, userData) => {
+  editUser: (userData, token, userId) => {
     return fetch(`${baseUrl}/users/${userId}`, {
       method: "put",
       headers: {
@@ -69,7 +69,7 @@ export const agent = {
     return fetch(`${baseUrl}/category`, {
       method: "post",
       headers: {
-        Authentication: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(categoryData),

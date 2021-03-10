@@ -24,9 +24,8 @@ export default function Blogs() {
   const [selectedBlog, setSelectedBlog] = useState(null);
 
   const onCreate = (values) => {
-    // console.log(values);
     setVisible(false);
-    // window.location.reload();
+    window.location.reload();
   };
   // close EditBlogModal
   const closeModal = () => {

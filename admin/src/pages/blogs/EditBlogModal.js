@@ -9,6 +9,7 @@ export default function EditBlogModal({
   onCancel,
   existingRecord,
 }) {
+  // reset form when click one row edit button to another row edit button
   const [form] = Form.useForm();
   useEffect(() => {
     form.resetFields();
@@ -33,7 +34,6 @@ export default function EditBlogModal({
                 .then((data) => {
                   if (!data.errors) {
                     form.resetFields();
-                    console.log("createBlog", data);
                     onCreate(data);
                     message.success(data.msg);
                   } else {

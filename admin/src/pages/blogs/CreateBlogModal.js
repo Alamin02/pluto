@@ -25,7 +25,6 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
                 .then((data) => {
                   if (!data.errors) {
                     form.resetFields();
-                    console.log("createBlog", data);
                     onCreate(data);
                     message.success(data.msg);
                   } else {

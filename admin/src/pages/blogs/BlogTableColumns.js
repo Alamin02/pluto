@@ -6,15 +6,16 @@ export const Columns = [
     render: (id) => <span>{id}</span>,
   },
   {
-    title: "Author",
-    dataIndex: "author",
-    key: "author",
-  },
-  {
     title: "Title",
     dataIndex: "title",
     key: "title",
   },
+  {
+    title: "Author",
+    dataIndex: "author",
+    key: "author",
+  },
+
   {
     title: "Description",
     dataIndex: "description",

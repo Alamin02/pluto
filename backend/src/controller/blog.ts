@@ -90,22 +90,20 @@ export async function updateSingleBlog(
 
   const { title, author, description } = req.body;
   const blogRepository = getConnection().getRepository(Blog);
-  const duplicateCheck = await blogRepository.findOne({ title });
 
-  if (!duplicateCheck) {
-    try {
-      const newBlog = new Blog();
-      newBlog.title = title;
-      newBlog.author = author;
-      newBlog.description = description;
+  try {
+    const newBlog = new Blog();
+    newBlog.title = title;
+    newBlog.author = author;
+    newBlog.description = description;
 
-      await blogRepository.update({ id: req.params.blogId }, newBlog);
-    } catch (err) {
-      res.json({ errors: [{ msg: "Blog is not be  updated" }] });
-    }
-  } else {
-    res.json({ errors: [{ msg: "Blog already exists" }] });
+    await blogRepository.update({ id: req.params.blogId }, newBlog);
+  } catch (err) {
+    res.json({
+      errors: [{ msg: "Title must be unique, or Blog can not be  updated" }],
+    });
   }
+
   res.json({ msg: "Blog is now updated" });
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
@@ -10,6 +10,9 @@ export default function EditBlogModal({
   existingRecord,
 }) {
   const [form] = Form.useForm();
+  useEffect(() => {
+    form.resetFields();
+  }, [existingRecord]);
 
   return (
     <div>
@@ -27,10 +30,18 @@ export default function EditBlogModal({
               agent
                 .editBlog(values, token, existingRecord.id)
                 .then((res) => res.json())
-                .then(() => message.info("blog updated"));
-
-              form.resetFields();
-              onCreate(values);
+                .then((data) => {
+                  if (!data.errors) {
+                    form.resetFields();
+                    console.log("createBlog", data);
+                    onCreate(data);
+                    message.success(data.msg);
+                  } else {
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

@@ -17,15 +17,20 @@ export async function createBlog(req: express.Request, res: express.Response) {
   try {
     // Save to database
     const blogRepository = getConnection().getRepository(Blog);
-    const newBlog = new Blog();
+    const duplicateCheck = await blogRepository.findOne({ title });
 
-    newBlog.title = title;
-    newBlog.author = author;
-    newBlog.description = description;
+    if (!duplicateCheck) {
+      const newBlog = new Blog();
+      newBlog.title = title;
+      newBlog.author = author;
+      newBlog.description = description;
 
-    await blogRepository.save(newBlog);
+      await blogRepository.save(newBlog);
+    } else {
+      res.json({ errors: [{ msg: "Blog already exists" }] });
+    }
   } catch (err) {
-    res.json({ errors: "Blog could not be added" });
+    res.json({ errors: err });
     return;
   }
   res.json({ msg: "Blog created" });
@@ -77,17 +82,29 @@ export async function updateSingleBlog(
   req: express.Request,
   res: express.Response
 ) {
-  try {
-    const { title, author, description } = req.body;
-    const blogRepository = getConnection().getRepository(Blog);
-    const newBlog = new Blog();
-    newBlog.title = title;
-    newBlog.author = author;
-    newBlog.description = description;
+  // Validation result
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-    await blogRepository.update({ id: req.params.blogId }, newBlog);
-  } catch (err) {
-    res.json({ errors: "Blog is not updated" });
+  const { title, author, description } = req.body;
+  const blogRepository = getConnection().getRepository(Blog);
+  const duplicateCheck = await blogRepository.findOne({ title });
+
+  if (!duplicateCheck) {
+    try {
+      const newBlog = new Blog();
+      newBlog.title = title;
+      newBlog.author = author;
+      newBlog.description = description;
+
+      await blogRepository.update({ id: req.params.blogId }, newBlog);
+    } catch (err) {
+      res.json({ errors: [{ msg: "Blog is not be  updated" }] });
+    }
+  } else {
+    res.json({ errors: [{ msg: "Blog already exists" }] });
   }
   res.json({ msg: "Blog is now updated" });
 }

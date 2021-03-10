@@ -22,10 +22,18 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
               agent
                 .createBlog(values, token)
                 .then((res) => res.json())
-                .then(() => message.info("Blog created"));
-
-              form.resetFields();
-              onCreate(values);
+                .then((data) => {
+                  if (!data.errors) {
+                    form.resetFields();
+                    console.log("createBlog", data);
+                    onCreate(data);
+                    message.success(data.msg);
+                  } else {
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

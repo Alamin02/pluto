@@ -39,7 +39,7 @@ export async function userLogin(req: express.Request, res: express.Response) {
   }
 
   // Generating a token
-  const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
+  const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
 
   res.json({ token });
 }
@@ -58,13 +58,13 @@ export async function userRegistration(
 
   const { name, email, password, phone } = req.body;
   const hash = await bcrypt.hash(password, saltRounds);
-  
+
   // If there is a user
   const userRepository = getConnection().getRepository(User);
   const previousEntry = await userRepository.findOne({ email });
   if (previousEntry) {
     res.json({ msg: "User already exits" });
-  };  
+  }
 
   // Create a new user
   try {

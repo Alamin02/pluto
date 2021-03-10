@@ -24,11 +24,14 @@ export default function Blogs() {
   const [selectedBlog, setSelectedBlog] = useState(null);
 
   const onCreate = (values) => {
-    console.log(values);
+    // console.log(values);
     setVisible(false);
+    // window.location.reload();
   };
+  // close EditBlogModal
   const closeModal = () => {
     setBlogToEditVisible(false);
+    // window.location.reload();
   };
 
   // get all blogs
@@ -49,7 +52,9 @@ export default function Blogs() {
     agent
       .deleteBlog(token, blogId)
       .then((res) => res.json())
-      .then(() => message.info("Successfully deleted"));
+      .then(() => message.success("Successfully deleted"));
+
+    // window.location.reload();
   }
   const actionColumn = {
     title: "Action",

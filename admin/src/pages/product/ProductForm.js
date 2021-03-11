@@ -116,10 +116,7 @@ export default function ProductForm({
               formData.append("price", values.price);
               formData.append("summary", values.summary);
               formData.append("description", values.description);
-              formData.append(
-                "categoryId",
-                "666e4407-b70c-4cba-a59b-856104f2a35e"
-              );
+              formData.append("categoryId", values.categoryId[1]);
 
               productImages.forEach((productImage) => {
                 formData.append("productImages", productImage);

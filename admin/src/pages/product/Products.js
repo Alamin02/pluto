@@ -11,8 +11,9 @@ import {
   Col,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-
+import { Columns } from "./ProductTableColumn"
 import ProductForm from "./ProductForm";
+import EditProductModal from "./EditProductModal";
 
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
@@ -25,6 +26,8 @@ function confirmDelete() {
 export default function Products() {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState(0);
+  const [visibleEditproduct, setvisibleEditproduct] = useState(false);
+  const [selectedproduct, setselectedproduct] = useState(null);
 
   const fetchProducts = () => {
     const token = localStorage.getItem("token");
@@ -38,6 +41,7 @@ export default function Products() {
       .then((res) => res.json())
       .then(({ data }) => {
         setProductData(data.products);
+        console.log(data.products);
       });
   };
 
@@ -46,91 +50,53 @@ export default function Products() {
     setVisible(false);
   };
 
+  const onEditProduct = () => {
+    setvisibleEditproduct(false);
+  };
+
+  const onEdit = (record) => {
+    setselectedproduct(record);
+    setvisibleEditproduct(true);
+    console.log(record)
+  };
+
   const [productData, setProductData] = useState([]);
 
-  const columns = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      render: (id) => <span>{id}</span>,
-    },
-    {
-      title: "Product Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Offer",
-      dataIndex: "offer",
-      key: "offer",
-      render: (offer) => {
-        if (offer) {
-          return <Tag color="green">{offer.name}</Tag>;
-        }
-      },
-    },
-    {
-      title: "Rating",
-      dataIndex: "rating",
-      key: "rating",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      render: (category) => {
-        if (category) {
-          return <Tag color="volcano">{category.name}</Tag>;
-        }
-      },
-    },
-    {
-      title: "Summary",
-      dataIndex: "summary",
-      key: "summary",
-    },
-    {
-      title: "Action",
-      key: "action",
-      fixed: "right",
-      render: (id, record) => (
-        <Space size="middle">
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => {
-              setVisible(true);
-              setId(id);
-              console.log("id", id);
-            }}
-          >
-            Edit
-          </Button>
-          <Popconfirm
-            placement="top"
-            title={deleteMessage}
-            onConfirm={confirmDelete}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button danger icon={<DeleteOutlined />}>
-              Delete
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ];
 
   useEffect(() => {
     fetchProducts();
   }, []);
-
+  const actionColumn = {
+    title: "Action",
+    key: "action",
+    fixed: "right",
+    render: (id, record) => (
+      <Space size="middle">
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => {
+            // setVisible(true);
+            // setId(id);
+            // console.log("ide", id);
+            onEdit(record);
+          }}
+        >
+          Edit
+        </Button>
+        <Popconfirm
+          placement="top"
+          title={deleteMessage}
+          onConfirm={confirmDelete}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button danger icon={<DeleteOutlined />}>
+            Delete
+          </Button>
+        </Popconfirm>
+      </Space>
+    ),
+  }
   return (
     <div>
       <Space direction="vertical" size="middle">
@@ -155,12 +121,21 @@ export default function Products() {
           }}
         />
 
+        {/* edit product */}
+        <EditProductModal
+          visible={visibleEditproduct}
+          onCreate={onEditProduct}
+          existingRecord={selectedproduct}
+          onCancel={() => {
+            setvisibleEditproduct(false);
+          }}
+        />
         {/* table */}
         <Table
           rowKey={(record) => record.id}
           size="middle"
           dataSource={productData}
-          columns={columns}
+          columns={[...Columns, actionColumn]}
           bordered
           sticky
           scroll={{ y: 1330 }}

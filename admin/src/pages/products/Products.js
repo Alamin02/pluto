@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Table,
-  Tag,
   Space,
   Button,
   Popconfirm,
@@ -11,8 +10,8 @@ import {
   Col,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Columns } from "./ProductTableColumn"
-import ProductForm from "./ProductForm";
+import { Columns } from "./productTableColumn"
+import CreateProductModel from "./CreateProductModal";
 import EditProductModal from "./EditProductModal";
 
 const { Title } = Typography;
@@ -112,7 +111,7 @@ export default function Products() {
           add product
         </Button>
 
-        <ProductForm
+        <CreateProductModel
           productId={id}
           visible={visible}
           onCreate={onCreate}

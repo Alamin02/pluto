@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
-import { Modal, Form, Input } from "antd";
-
+import { Modal, Form, Input, message } from "antd";
 import { agent } from "../../helpers/agent";
-
-export default function EditOfferForm({
+export default function EditOfferModal({
   visible,
   onCreate,
   onCancel,
@@ -31,10 +29,18 @@ export default function EditOfferForm({
               agent
                 .editOffer(values, token, existingRecord.id)
                 .then((res) => res.json())
-                .then(console.log);
-
-              form.resetFields();
-              onCreate(values);
+                .then((data) => {
+                  if (!data.errors) {
+                    form.resetFields();
+                    onCreate(data);
+                    message.success(data.msg);
+                  } else {
+                    console.log(data.errors);
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

@@ -39,7 +39,7 @@ export async function userLogin(req: express.Request, res: express.Response) {
   }
 
   // Generating a token
-  const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
+  const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
 
   res.json({ token });
 }

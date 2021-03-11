@@ -3,14 +3,14 @@ import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
-export default function CreateOfferModal({ visible, onCreate, onCancel }) {
+export default function CreateBlogModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
   return (
     <div>
       <Modal
         visible={visible}
-        title="Add offer"
+        title="Add blog"
         okText="Create"
         cancelText="Cancel"
         onCancel={onCancel}
@@ -20,7 +20,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
             .validateFields()
             .then((values) => {
               agent
-                .createOffer(values, token)
+                .createBlog(values, token)
                 .then((res) => res.json())
                 .then((data) => {
                   if (!data.errors) {
@@ -35,7 +35,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
                 });
             })
             .catch((info) => {
-              console.log("Validate Failed");
+              console.log("Validate Failed:", info);
             });
         }}
       >
@@ -46,32 +46,32 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
             modifier: "public",
           }}
         >
-          {/* offer name */}
+          {/* blog  title */}
           <Form.Item
-            name="name"
-            label="Offer Name&nbsp;:"
+            name="title"
+            label="Blog title&nbsp;:"
             rules={[
               {
                 required: true,
-                message: "Please enter offer name!",
+                message: "Please enter blog title!",
               },
             ]}
           >
-            <Input />
+            <Input placeholder="enter blog title" />
           </Form.Item>
 
           {/* discount */}
           <Form.Item
-            name="discount"
-            label="Discount&nbsp;:"
+            name="author"
+            label="Author&nbsp;:"
             rules={[
               {
                 required: true,
-                message: "Please enter discount!",
+                message: "Please enter author name!",
               },
             ]}
           >
-            <Input />
+            <Input placeholder="enter author name" />
           </Form.Item>
           {/* description */}
           <Form.Item
@@ -84,7 +84,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
               },
             ]}
           >
-            <Input.TextArea />
+            <Input.TextArea placeholder="enter description" />
           </Form.Item>
         </Form>
       </Modal>

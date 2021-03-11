@@ -9,11 +9,14 @@ import {
   updateSubCategoryController,
   deleteCategoryController,
 } from "../controller";
+import { authenticationMiddleware } from "../middleware";
 router.get("/", categoryController);
 
 router.post(
   "/",
+  authenticationMiddleware,
   [body("name").not().isEmpty().withMessage("name must not be empty")],
+
   createCategoryController
 );
 router.post(
@@ -24,9 +27,13 @@ router.post(
   ],
   createSubCategoryController
 );
-router.put("/:categoryId", updateCategoryController);
+router.put("/:categoryId", authenticationMiddleware, updateCategoryController);
 router.put("/sub/:subCategoryId", updateSubCategoryController);
 
-router.delete("/:categoryId", deleteCategoryController);
+router.delete(
+  "/:categoryId",
+  authenticationMiddleware,
+  deleteCategoryController
+);
 
 export default router;

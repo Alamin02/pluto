@@ -1,69 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Space,
   Button,
+  Popconfirm,
+  message,
   Typography,
   Row,
   Col,
-  Popconfirm,
-  message,
 } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
-import CreateOfferModal from "./CreateOfferModal";
-import EditOfferModal from "./EditOfferModal";
-import { columns } from "./offerTableColumns";
-
+import CreateBlogModal from "./CreateBlogModal";
+import EditBlogModal from "./EditBlogModal";
+import { Columns } from "./BlogTableColumns";
+const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
 
-const { Title } = Typography;
-
-export default function Offers() {
-  const [offerData, setOfferData] = useState([]);
+export default function Blogs() {
   const [visible, setVisible] = useState(false);
-  const [visibleEditOffer, setVisibleEditOffer] = useState(false);
-  const [selectedOffer, setSelectedOffer] = useState(null);
+  const [BlogData, setBlogData] = useState([]);
+  const [blogToEditVisible, setBlogToEditVisible] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/v1/offers", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setOfferData(data);
-      });
-  }, []);
-
-  // close createOfferModal when offer created
   const onCreate = (values) => {
     setVisible(false);
+    window.location.reload();
   };
-  // close editOfferModal after save
-  const onEditOffer = () => {
-    setVisibleEditOffer(false);
-  };
-
-  // edit offer
-  const onEdit = (record) => {
-    setSelectedOffer(record);
-    setVisibleEditOffer(true);
+  // close EditBlogModal
+  const closeModal = () => {
+    setBlogToEditVisible(false);
+    // window.location.reload();
   };
 
-  // delete offer
-  function handleDelete(offerId) {
+  // get all blogs
+  useEffect(() => {
+    agent.getBlogs().then((data) => {
+      setBlogData(data);
+    });
+  }, []);
+
+  // edit blog
+  const handleEdit = (record) => {
+    setSelectedBlog(record);
+    setBlogToEditVisible(true);
+  };
+  // delete blog
+  function handleDelete(blogId) {
     const token = localStorage.getItem("token");
     agent
-      .deleteOffer(token, offerId)
+      .deleteBlog(token, blogId)
       .then((res) => res.json())
       .then(() => message.success("Successfully deleted"));
-  }
 
+    // window.location.reload();
+  }
   const actionColumn = {
     title: "Action",
     key: "action",
@@ -73,7 +64,7 @@ export default function Offers() {
         <Button
           icon={<EditOutlined />}
           onClick={() => {
-            onEdit(record);
+            handleEdit(record);
           }}
         >
           Edit
@@ -104,10 +95,9 @@ export default function Offers() {
             setVisible(true);
           }}
         >
-          Add offer
+          Add Blog
         </Button>
-
-        <CreateOfferModal
+        <CreateBlogModal
           visible={visible}
           onCreate={onCreate}
           onCancel={() => {
@@ -115,20 +105,20 @@ export default function Offers() {
           }}
         />
 
-        <EditOfferModal
-          visible={visibleEditOffer}
-          onCreate={onEditOffer}
-          existingRecord={selectedOffer}
+        <EditBlogModal
+          visible={blogToEditVisible}
+          onCreate={closeModal}
+          existingRecord={selectedBlog}
           onCancel={() => {
-            setVisibleEditOffer(false);
+            setBlogToEditVisible(false);
           }}
         />
         {/* table */}
         <Table
           rowKey={(record) => record.id}
           size="middle"
-          dataSource={offerData}
-          columns={[...columns, actionColumn]}
+          dataSource={BlogData}
+          columns={[...Columns, actionColumn]}
           bordered
           sticky
           pagination={false}
@@ -139,7 +129,7 @@ export default function Offers() {
                   level={4}
                   style={{ marginBottom: 0, textTransform: "capitalize" }}
                 >
-                  All offers info
+                  All Blogs
                 </Title>
               </Col>
               <Col></Col>

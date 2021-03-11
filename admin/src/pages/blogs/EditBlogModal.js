@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
-export default function CreateOfferModal({ visible, onCreate, onCancel }) {
+export default function EditBlogModal({
+  visible,
+  onCreate,
+  onCancel,
+  existingRecord,
+}) {
+  // reset form when click one row edit button to another row edit button
   const [form] = Form.useForm();
+  useEffect(() => {
+    form.resetFields();
+  }, [existingRecord]);
 
   return (
     <div>
       <Modal
         visible={visible}
-        title="Add offer"
-        okText="Create"
+        title="Edit blog"
+        okText="Save"
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
@@ -20,7 +29,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
             .validateFields()
             .then((values) => {
               agent
-                .createOffer(values, token)
+                .editBlog(values, token, existingRecord.id)
                 .then((res) => res.json())
                 .then((data) => {
                   if (!data.errors) {
@@ -35,39 +44,33 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
                 });
             })
             .catch((info) => {
-              console.log("Validate Failed");
+              console.log("Validate Failed:", info);
             });
         }}
       >
-        <Form
-          form={form}
-          layout="vertical"
-          initialValues={{
-            modifier: "public",
-          }}
-        >
-          {/* offer name */}
+        <Form form={form} layout="vertical" initialValues={existingRecord}>
+          {/* blog title */}
           <Form.Item
-            name="name"
-            label="Offer Name&nbsp;:"
+            name="title"
+            label="Blog Title&nbsp;:"
             rules={[
               {
                 required: true,
-                message: "Please enter offer name!",
+                message: "Please enter blog title!",
               },
             ]}
           >
             <Input />
           </Form.Item>
 
-          {/* discount */}
+          {/* author */}
           <Form.Item
-            name="discount"
-            label="Discount&nbsp;:"
+            name="author"
+            label="Author&nbsp;:"
             rules={[
               {
                 required: true,
-                message: "Please enter discount!",
+                message: "Please enter author name!",
               },
             ]}
           >

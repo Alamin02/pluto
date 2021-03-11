@@ -26,11 +26,22 @@ export default function Catagories() {
 
   const token = localStorage.getItem("token");
 
+  function fetchCategories() {
+    agent
+      .getCategories()
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setCategoryData(data);
+      });
+  }
+
   function onCreateCategory() {
+    fetchCategories();
     setVisibleCreateModal(false);
   }
 
   function onEditCategory() {
+    fetchCategories();
     setVisibleEditModal(false);
   }
 
@@ -43,16 +54,12 @@ export default function Catagories() {
     agent
       .deleteCategory(token, categoryId)
       .then((res) => res.json())
+      .then(() => fetchCategories())
       .then(() => message.info("Category deleted successfully"));
   }
 
   useEffect(() => {
-    agent
-      .getCategories()
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setCategoryData(data);
-      });
+    fetchCategories();
   }, []);
 
   const actionColumn = {

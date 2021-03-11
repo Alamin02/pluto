@@ -26,11 +26,22 @@ const Users = () => {
 
   const token = localStorage.getItem("token");
 
+  function fetchUsers() {
+    agent
+      .getUsers()
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setUserData(data);
+      });
+  }
+
   function onCreateUser() {
+    fetchUsers();
     setVisibleCreateModal(false);
   }
 
   function onEditUser() {
+    fetchUsers();
     setVisibleEditModal(false);
   }
 
@@ -43,16 +54,12 @@ const Users = () => {
     agent
       .deleteUser(token, userId)
       .then((res) => res.json())
+      .then(() => fetchUsers())
       .then(() => message.info("User deleted successfully"));
   }
 
   useEffect(() => {
-    agent
-      .getUsers()
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setUserData(data);
-      });
+    fetchUsers();
   }, []);
 
   const actionColumn = {

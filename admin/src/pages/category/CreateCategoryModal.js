@@ -10,13 +10,17 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
 
   const [categoryOptions, setCategoryOptions] = useState([]);
 
-  useEffect(() => {
+  function fetchCategories() {
     agent
       .getCategories()
       .then((res) => res.json())
       .then(({ data }) => {
         setCategoryOptions(data);
       });
+  }
+
+  useEffect(() => {
+    fetchCategories();
   }, []);
 
   return (

@@ -20,6 +20,7 @@ export default function ProductForm({
   onCancel,
 }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [productImages, setproductImages] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -57,7 +58,7 @@ export default function ProductForm({
   };
 
   function onChangeCategory(value) {
-    console.log(value);
+    form.setFieldsValue("categoryId", value[0]);
   }
 
   const handleUpload = async (info) => {
@@ -106,15 +107,34 @@ export default function ProductForm({
           form
             .validateFields()
             .then((values) => {
+              console.log(values);
+
+              const formData = new FormData();
+
+              formData.append("name", values.name);
+              formData.append("offer", values.offer);
+              formData.append("price", values.price);
+              formData.append("summary", values.summary);
+              formData.append("description", values.description);
+              formData.append(
+                "categoryId",
+                "666e4407-b70c-4cba-a59b-856104f2a35e"
+              );
+
+              productImages.forEach((productImage) => {
+                formData.append("productImages", productImage);
+              });
+
+              console.log([...formData.values()]);
+
               agent
-                .createProduct(values, token)
+                .createProduct(formData, token)
                 .then((res) => res.json())
-                .then(console.log);
-
-              form.resetFields();
-              onCreate(values);
+                .then(() => {
+                  form.resetFields();
+                  onCreate(values);
+                });
             })
-
 
             .catch((info) => {
               console.log("Validate Failed:", info);
@@ -124,7 +144,6 @@ export default function ProductForm({
         <Form
           {...layout}
           form={form}
-
           // form loads initial values from here
           initialValues={
             {
@@ -192,13 +211,14 @@ export default function ProductForm({
                 message: "Please input product category",
               },
             ]}
+            name="categoryId"
           >
             {/* <Input /> */}
             <Cascader
               name="category"
               fieldNames={{
                 label: "name",
-                value: "name",
+                value: "id",
                 children: "children",
               }}
               options={categoryOptions}
@@ -227,7 +247,8 @@ export default function ProductForm({
               <Upload.Dragger
                 name="files"
                 onChange={handleUpload}
-                beforeUpload={() => {
+                beforeUpload={(file, fileList) => {
+                  setproductImages(fileList);
                   return false;
                 }}
                 accept="image/*"

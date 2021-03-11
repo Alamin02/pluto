@@ -26,8 +26,23 @@ export default function Products() {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState(0);
 
+  const fetchProducts = () => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:4000/api/v1/products", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setProductData(data.products);
+      });
+  };
+
   const onCreate = (values) => {
-    console.log("Received values of form: ", values);
+    fetchProducts();
     setVisible(false);
   };
 
@@ -113,18 +128,7 @@ export default function Products() {
   ];
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/v1/products", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setProductData(data.products);
-      });
+    fetchProducts();
   }, []);
 
   return (

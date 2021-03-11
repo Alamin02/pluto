@@ -57,12 +57,12 @@ export async function createProduct(
     });
 
     const offersRepository = getConnection().getRepository(Offer);
-    const offer = await offersRepository.findOne({ id: offerId });
+    // const offer = await offersRepository.findOne({ id: offerId });
 
     const productImageRepository = getConnection().getRepository(ProductImage);
-
+    let offer;
     if (offerId) {
-      let offer = await offersRepository.findOne({ id: offerId });
+      offer = await offersRepository.findOne({ id: offerId });
     }
 
     const createProductImage = [];

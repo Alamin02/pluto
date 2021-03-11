@@ -36,13 +36,13 @@ export async function createOffer(req: express.Request, res: express.Response) {
       newOffer.discount = discount;
       newOffer.description = description;
 
-      const offerCreated = await offersRepository.save(newOffer);
-      res.status(200).json({ data: offerCreated });
+      await offersRepository.save(newOffer);
+      res.status(200).json({ msg: "offer created" });
     } catch (e) {
-      res.status(400).json({ msg: e });
+      res.status(400).json({ errors: [{ msg: e }] });
     }
   } else {
-    res.status(400).json({ data: "offer already exist" });
+    res.status(400).json({ errors: [{ msg: "offer already exist" }] });
   }
 }
 
@@ -54,6 +54,7 @@ export async function updateOffer(req: express.Request, res: express.Response) {
 
   const offersRepository = getConnection().getRepository(Offer);
   const offerToUpdate = await offersRepository.findOne({ id: offerId });
+
   if (offerToUpdate) {
     try {
       const newOffer = new Offer();
@@ -61,12 +62,19 @@ export async function updateOffer(req: express.Request, res: express.Response) {
       newOffer.discount = discount;
       newOffer.description = description;
       await offersRepository.update(offerId, newOffer);
-      res.status(200).json({ data: "offer updated" });
+      res.status(200).json({ msg: "offer updated" });
     } catch (e) {
-      res.status(400).json({ msg: e });
+      res.status(400).json({ errors: [{ msg: "offer name must be unique" }] });
     }
   } else {
-    res.status(400).json({ data: "offer to update not found or invalid id" });
+    res.status(400).json({
+      errors: [
+        {
+          msg:
+            "offer name must be unique or offer to update not found or invalid id",
+        },
+      ],
+    });
   }
 }
 // @DELETE /v1/api/offers/:offerId
@@ -78,11 +86,13 @@ export async function deleteOffer(req: express.Request, res: express.Response) {
   if (offerToUpdate) {
     try {
       await offersRepository.delete(offerId);
-      res.json({ data: "offer deleted" });
+      res.json({ msg: "offer deleted" });
     } catch (e) {
       res.status(400).json({ msg: e });
     }
   } else {
-    res.status(400).json({ data: "offer to delete not found or invalid id" });
+    res
+      .status(400)
+      .json({ errors: [{ msg: "offer to delete not found or invalid id" }] });
   }
 }

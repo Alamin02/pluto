@@ -10,7 +10,7 @@ import {
   PercentageOutlined,
   ShoppingCartOutlined,
   SkinOutlined,
-  TagOutlined,
+  TagOutlined,MessageOutlined
 } from "@ant-design/icons";
 
 import styles from "./Dashboard.module.css";
@@ -54,6 +54,12 @@ const sidebarInfo = [
     itemUrl: "/orders",
     icon: <ShoppingCartOutlined />,
   },
+  {
+    id:7,
+    itemName:"Blogs",
+    itemUrl:"/blogs",
+    icon:<MessageOutlined />
+  }
 ];
 
 export default function Dashboard() {

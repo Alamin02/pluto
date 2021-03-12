@@ -87,6 +87,16 @@ export const agent = {
       },
     });
   },
+
+  getOffers: () => {
+    return fetch(`${baseUrl}/offers`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
   getBlogs: () => {
     return fetch(`${baseUrl}/blogs`, {
       method: "get",

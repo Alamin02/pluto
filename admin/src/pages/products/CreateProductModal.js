@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Upload, Cascader, message } from "antd";
+import { Modal, Form, Input, Upload, Cascader, message, Select } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 import { agent } from "../../helpers/agent";
+
+const { Option } = Select;
 
 const layout = {
   labelCol: {
@@ -21,6 +23,7 @@ export default function ProductForm({
 }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
+  const [offerOptions, setOfferOptions] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -35,6 +38,13 @@ export default function ProductForm({
       .then(({ data }) => {
         // console.log(data);
         setCategoryOptions(data);
+      });
+
+    agent
+      .getOffers()
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setOfferOptions(data);
       });
   }, []);
 
@@ -112,7 +122,7 @@ export default function ProductForm({
               const formData = new FormData();
 
               formData.append("name", values.name);
-              formData.append("offer", values.offer);
+              formData.append("offerId", values.offer);
               formData.append("price", values.price);
               formData.append("summary", values.summary);
               formData.append("description", values.description);
@@ -230,8 +240,15 @@ export default function ProductForm({
             />
           </Form.Item>
 
-          <Form.Item label="Offer" name="offer">
-            <Input />
+          <Form.Item name="offer" label="New offer&nbsp;:">
+            <Select defaultValue="null">
+              {offerOptions &&
+                offerOptions.map((offer) => (
+                  <Option value={offer.id} id={offer.id}>
+                    {offer.name}
+                  </Option>
+                ))}
+            </Select>
           </Form.Item>
 
           <Form.Item label="Dragger">

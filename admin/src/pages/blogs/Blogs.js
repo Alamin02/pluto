@@ -22,22 +22,25 @@ export default function Blogs() {
   const [BlogData, setBlogData] = useState([]);
   const [blogToEditVisible, setBlogToEditVisible] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
-
+  const fetchBlogs = () => {
+    agent.getBlogs().then((data) => {
+      setBlogData(data);
+    });
+  };
   const onCreate = (values) => {
     setVisible(false);
-    window.location.reload();
+    fetchBlogs();
   };
   // close EditBlogModal
-  const closeModal = () => {
+  const closeEditModal = () => {
     setBlogToEditVisible(false);
+    fetchBlogs();
     // window.location.reload();
   };
 
   // get all blogs
   useEffect(() => {
-    agent.getBlogs().then((data) => {
-      setBlogData(data);
-    });
+    fetchBlogs();
   }, []);
 
   // edit blog
@@ -53,7 +56,7 @@ export default function Blogs() {
       .then((res) => res.json())
       .then(() => message.success("Successfully deleted"));
 
-    // window.location.reload();
+    fetchBlogs();
   }
   const actionColumn = {
     title: "Action",
@@ -107,7 +110,7 @@ export default function Blogs() {
 
         <EditBlogModal
           visible={blogToEditVisible}
-          onCreate={closeModal}
+          onCreate={closeEditModal}
           existingRecord={selectedBlog}
           onCancel={() => {
             setBlogToEditVisible(false);

@@ -20,7 +20,7 @@ export default function ProductForm({
   onCancel,
 }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [productImages, setproductImages] = useState([]);
+  const [productImages, setProductImages] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -251,7 +251,7 @@ export default function ProductForm({
                 name="files"
                 onChange={handleUpload}
                 beforeUpload={(file, fileList) => {
-                  setproductImages(fileList);
+                  setProductImages(fileList);
                   return false;
                 }}
                 accept="image/*"

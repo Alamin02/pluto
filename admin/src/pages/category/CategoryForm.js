@@ -34,10 +34,11 @@ export default function CategoryForm({ visible, onCreate, onCancel }) {
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
+          const token = localStorage.getItem("token");
           form
             .validateFields()
             .then((values) => {
-              agent.createCategory(values).then((res) => res.json());
+              agent.createCategory(values, token).then((res) => res.json());
               form.resetFields();
               onCreate(values);
             })
@@ -50,7 +51,7 @@ export default function CategoryForm({ visible, onCreate, onCancel }) {
           form={form}
           layout="vertical"
           name="form_in_modal"
-          // initialValues={{}}
+        // initialValues={{}}
         >
           <Form.Item
             name="name"

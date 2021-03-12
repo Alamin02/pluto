@@ -10,23 +10,20 @@ import {
   Col,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Columns } from "./productTableColumn"
-import CreateProductModel from "./CreateProductModal";
+import { columns } from "./productTableColumn"
+import CreateProductModal from "./CreateProductModal";
 import EditProductModal from "./EditProductModal";
+import { agent } from "../../helpers/agent";
 
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
 
-// delete button message
-function confirmDelete() {
-  message.info("Clicked on Yes.");
-}
 
 export default function Products() {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState(0);
-  const [visibleEditproduct, setvisibleEditproduct] = useState(false);
-  const [selectedproduct, setselectedproduct] = useState(null);
+  const [visibleEditProduct, setvisibleEditProduct] = useState(false);
+  const [selectedProduct, setselectedProduct] = useState(null);
 
   const fetchProducts = () => {
     const token = localStorage.getItem("token");
@@ -50,14 +47,26 @@ export default function Products() {
   };
 
   const onEditProduct = () => {
-    setvisibleEditproduct(false);
+    setvisibleEditProduct(false);
   };
 
   const onEdit = (record) => {
-    setselectedproduct(record);
-    setvisibleEditproduct(true);
+    setselectedProduct(record);
+    setvisibleEditProduct(true);
     console.log(record)
   };
+
+  // delete button message
+  function confirmDelete(productId) {
+    console.log(productId)
+    const token = localStorage.getItem("token");
+    agent
+      .deleteProduct(productId, token)
+      .then((res) => res.json())
+      .then(() => message.success("Successfully deleted"));
+    // message.info("Clicked on Yes.");
+    fetchProducts();
+  }
 
   const [productData, setProductData] = useState([]);
 
@@ -85,7 +94,7 @@ export default function Products() {
         <Popconfirm
           placement="top"
           title={deleteMessage}
-          onConfirm={confirmDelete}
+          onConfirm={() => confirmDelete(record.id)}
           okText="Yes"
           cancelText="No"
         >
@@ -111,7 +120,7 @@ export default function Products() {
           add product
         </Button>
 
-        <CreateProductModel
+        <CreateProductModal
           productId={id}
           visible={visible}
           onCreate={onCreate}
@@ -122,11 +131,11 @@ export default function Products() {
 
         {/* edit product */}
         <EditProductModal
-          visible={visibleEditproduct}
+          visible={visibleEditProduct}
           onCreate={onEditProduct}
-          existingRecord={selectedproduct}
+          existingRecord={selectedProduct}
           onCancel={() => {
-            setvisibleEditproduct(false);
+            setvisibleEditProduct(false);
           }}
         />
         {/* table */}
@@ -134,7 +143,7 @@ export default function Products() {
           rowKey={(record) => record.id}
           size="middle"
           dataSource={productData}
-          columns={[...Columns, actionColumn]}
+          columns={[...columns, actionColumn]}
           bordered
           sticky
           scroll={{ y: 1330 }}

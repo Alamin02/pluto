@@ -1,5 +1,5 @@
 import { Tag } from "antd"
-export const Columns = [
+export const columns = [
   {
     title: "Id",
     dataIndex: "id",

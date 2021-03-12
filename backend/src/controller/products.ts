@@ -168,11 +168,26 @@ export async function deleteProduct(
 ) {
   const id = req.params.productId;
   const productRepository = getConnection().getRepository(Product);
+  const productToUpdate = await productRepository.findOne({ id: id });
+  console.log(productToUpdate);
 
-  try {
-    await productRepository.delete(id);
-  } catch (e) {
-    return res.status(400).json({ error: "Product could not be deleted" });
+  if (productToUpdate) {
+    try {
+      await productRepository.delete({ id });
+      res.json({ msg: "Product deleted" });
+    } catch (e) {
+      res.status(400).json({ msg: e });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ errors: [{ msg: "Product to delete not found or invalid id" }] });
   }
-  res.json({ msg: "Product deleted" });
 }
+
+// try {
+//   await productRepository.delete(id);
+// } catch (e) {
+//   return res.status(400).json({ error: "Product could not be deleted" });
+// }
+// res.json({ msg: "Product deleted" });

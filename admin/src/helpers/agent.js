@@ -12,23 +12,35 @@ export const agent = {
     });
   },
 
-  editProduct: (productId, productData, token) => {
-    return fetch(`${baseUrl}/products/${productId}`, {
-      method: "get",
+  // create product
+  createProduct: (productData, token) => {
+    return fetch(`${baseUrl}/products`, {
+      method: "post",
       headers: {
-        Authentication: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: productData,
     });
   },
 
-  createProduct: (productData, token) => {
-    return fetch(`${baseUrl}/products`, {
-      method: "post",
+  // edit product
+  editProduct: (productId, productData, token) => {
+    return fetch(`${baseUrl}/products/${productId}`, {
+      method: "put",
       headers: {
-        Authentication: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: productData,
+    });
+  },
+
+  // delete product
+  deleteProduct: (productId, token) => {
+    return fetch(`${baseUrl}/products/${productId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   },
 
@@ -37,7 +49,7 @@ export const agent = {
     return fetch(`${baseUrl}/category`, {
       method: "post",
       headers: {
-        Authentication: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(categoryData),

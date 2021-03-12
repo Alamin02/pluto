@@ -34,7 +34,19 @@ export const agent = {
       body: JSON.stringify(categoryData),
     });
   },
-
+  getOffers: (token) => {
+    return fetch("http://localhost:4000/api/v1/offers", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(({ data }) => {
+        return data;
+      });
+  },
   createOffer: (offerData, token) => {
     return fetch(`${baseUrl}/offers`, {
       method: "post",

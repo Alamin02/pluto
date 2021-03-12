@@ -24,35 +24,32 @@ export default function Offers() {
   const [visible, setVisible] = useState(false);
   const [visibleEditOffer, setVisibleEditOffer] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
-
-  useEffect(() => {
+  const fetchOffers = () => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/v1/offers", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setOfferData(data);
-      });
+    agent.getOffers(token).then((data) => {
+      setOfferData(data);
+    });
+  };
+  useEffect(() => {
+    fetchOffers();
   }, []);
 
   // close createOfferModal when offer created
   const onCreate = (values) => {
     setVisible(false);
+    fetchOffers();
   };
   // close editOfferModal after save
   const onEditOffer = () => {
     setVisibleEditOffer(false);
+    fetchOffers();
   };
 
   // edit offer
   const onEdit = (record) => {
     setSelectedOffer(record);
     setVisibleEditOffer(true);
+    fetchOffers();
   };
 
   // delete offer
@@ -62,6 +59,7 @@ export default function Offers() {
       .deleteOffer(token, offerId)
       .then((res) => res.json())
       .then(() => message.success("Successfully deleted"));
+    fetchOffers();
   }
 
   const actionColumn = {

@@ -35,18 +35,18 @@ export default function Offers() {
   }, []);
 
   // close createOfferModal when offer created
-  const onCreate = (values) => {
+  const handleCreateOfferModal = (values) => {
     setVisible(false);
     fetchOffers();
   };
   // close editOfferModal after save
-  const onEditOffer = () => {
+  const handleEditOfferModal = () => {
     setVisibleEditOffer(false);
     fetchOffers();
   };
 
   // edit offer
-  const onEdit = (record) => {
+  const handleEdit = (record) => {
     setSelectedOffer(record);
     setVisibleEditOffer(true);
     fetchOffers();
@@ -71,7 +71,7 @@ export default function Offers() {
         <Button
           icon={<EditOutlined />}
           onClick={() => {
-            onEdit(record);
+            handleEdit(record);
           }}
         >
           Edit
@@ -107,7 +107,7 @@ export default function Offers() {
 
         <CreateOfferModal
           visible={visible}
-          onCreate={onCreate}
+          onCreate={handleCreateOfferModal}
           onCancel={() => {
             setVisible(false);
           }}
@@ -115,7 +115,7 @@ export default function Offers() {
 
         <EditOfferModal
           visible={visibleEditOffer}
-          onCreate={onEditOffer}
+          onCreate={handleEditOfferModal}
           existingRecord={selectedOffer}
           onCancel={() => {
             setVisibleEditOffer(false);

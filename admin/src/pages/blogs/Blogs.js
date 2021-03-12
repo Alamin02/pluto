@@ -27,12 +27,15 @@ export default function Blogs() {
       setBlogData(data);
     });
   };
-  const onCreate = (values) => {
+
+  // close createBlogModal
+  const handleCreateBlogModal = (values) => {
     setVisible(false);
     fetchBlogs();
   };
+
   // close EditBlogModal
-  const closeEditModal = () => {
+  const handleEditBlogModal = () => {
     setBlogToEditVisible(false);
     fetchBlogs();
     // window.location.reload();
@@ -102,7 +105,7 @@ export default function Blogs() {
         </Button>
         <CreateBlogModal
           visible={visible}
-          onCreate={onCreate}
+          onCreate={handleCreateBlogModal}
           onCancel={() => {
             setVisible(false);
           }}
@@ -110,7 +113,7 @@ export default function Blogs() {
 
         <EditBlogModal
           visible={blogToEditVisible}
-          onCreate={closeEditModal}
+          onCreate={handleEditBlogModal}
           existingRecord={selectedBlog}
           onCancel={() => {
             setBlogToEditVisible(false);

@@ -57,9 +57,8 @@ export default function Blogs() {
     agent
       .deleteBlog(token, blogId)
       .then((res) => res.json())
+      .then(() => fetchBlogs())
       .then(() => message.success("Successfully deleted"));
-
-    fetchBlogs();
   }
   const actionColumn = {
     title: "Action",

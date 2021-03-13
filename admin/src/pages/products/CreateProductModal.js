@@ -69,25 +69,6 @@ export default function ProductForm({
   }
 
   const handleUpload = async (info) => {
-    const files = info.fileList;
-
-    // const imageData = new FormData();
-    // imageData.append("file", files[0]);
-    // imageData.append("upload_preset", "plutoImages");
-    // const res = await fetch(
-    //   "https://api.cloudinary.com/v1_1/rifat32/image/upload",
-    //   {
-    //     method: "POST",
-    //     body: imageData,
-    //     config: {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     },
-    //   }
-    // );
-    // console.log(res);
-
     const { status } = info.file;
     if (status !== "uploading") {
       console.log(info.file, info.fileList);
@@ -114,8 +95,6 @@ export default function ProductForm({
           form
             .validateFields()
             .then((values) => {
-              console.log(values);
-
               const formData = new FormData();
 
               formData.append("name", values.name);

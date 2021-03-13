@@ -210,4 +210,14 @@ export const agent = {
       },
     });
   },
+
+  createProduct: (productData, token) => {
+    return fetch(`${baseUrl}/products`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: productData,
+    });
+  },
 };

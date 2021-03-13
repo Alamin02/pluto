@@ -1,8 +1,10 @@
 import multer = require("multer");
-const path = require("path");
+import path from "path";
+const cloudinary = require("cloudinary").v2;
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 //multer setup for uploading product image
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(process.cwd(), "public", "images"));
   },
@@ -11,6 +13,22 @@ var storage = multer.diskStorage({
       null,
       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
+  },
+});
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+const cloudinaryStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "product-images",
+    // format: async (req, file) => "png", // supports promises as well
+    public_id: (req, file) =>
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname),
   },
 });
 
@@ -28,6 +46,6 @@ const fileFilter = (req: any, file: any, cb: any) => {
 };
 
 export const imageUpload = multer({
-  storage: storage,
+  storage: cloudinaryStorage,
   fileFilter,
 }).array("productImages", 4);

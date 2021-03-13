@@ -66,6 +66,7 @@ export async function createProduct(
 
     const createProductImage = [];
     const files = req.files as Express.Multer.File[];
+
     if (files.length) {
       for (let i = 0; i < files.length; i++) {
         const imagePath =

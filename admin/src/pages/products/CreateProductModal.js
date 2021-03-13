@@ -40,12 +40,9 @@ export default function ProductForm({
         setCategoryOptions(data);
       });
 
-    agent
-      .getOffers()
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setOfferOptions(data);
-      });
+    agent.getOffers().then(({ data }) => {
+      setOfferOptions(data);
+    });
   }, []);
 
   const [form] = Form.useForm();

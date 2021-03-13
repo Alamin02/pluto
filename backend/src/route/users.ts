@@ -51,4 +51,8 @@ router.put(
 // @DELETE - /api/v1/users/:userId
 router.delete("/:userId", authenticationMiddleware, deleteUserController);
 
+router.get("/me", authenticationMiddleware, (req, res) => {
+  res.json({ data: res.locals.user });
+});
+
 export default router;

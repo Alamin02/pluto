@@ -98,7 +98,8 @@ app.use(function (
     });
   } else {
     res.status(err.status || 500);
-    res.send("Error");
+
+    res.json({ errors: [{ msg: "Someting went wrong" }] });
   }
 });
 

@@ -95,12 +95,12 @@ export const agent = {
       body: JSON.stringify(categoryData),
     });
   },
-  getOffers: (token) => {
-    return fetch("http://localhost:4000/api/v1/offers", {
+
+  getOffers: () => {
+    return fetch(`${baseUrl}/offers`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
@@ -163,15 +163,6 @@ export const agent = {
     });
   },
 
-  getOffers: () => {
-    return fetch(`${baseUrl}/offers`, {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  },
-
   getBlogs: () => {
     return fetch(`${baseUrl}/blogs`, {
       method: "get",
@@ -204,6 +195,15 @@ export const agent = {
   deleteBlog: (token, blogId) => {
     return fetch(`${baseUrl}/blogs/${blogId}`, {
       method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  getMe: (token) => {
+    return fetch(`${baseUrl}/users/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

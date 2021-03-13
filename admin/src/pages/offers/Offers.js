@@ -25,8 +25,7 @@ export default function Offers() {
   const [visibleEditOffer, setVisibleEditOffer] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const fetchOffers = () => {
-    const token = localStorage.getItem("token");
-    agent.getOffers(token).then((data) => {
+    agent.getOffers().then((data) => {
       setOfferData(data);
     });
   };

@@ -40,7 +40,7 @@ export async function createCategory(
       const data = await categoryRepository.save(newCategory);
       res.json({ data: data });
     } else {
-      res.status(400).json({ msg: "Category already exists" });
+      res.status(400).json({ errors: [{ msg: "Category already exists" }] });
     }
   } else {
     const checkDuplicate = await categoryRepository.find({
@@ -61,10 +61,14 @@ export async function createCategory(
         const data = await categoryRepository.save(newCategory);
         res.json({ data: data });
       } else {
-        res.status(400).json({ msg: "invalid parent id or parent not found" });
+        res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid parentId or parent not found" }] });
       }
     } else {
-      res.status(400).json({ msg: "sub category already exists in parent" });
+      res
+        .status(400)
+        .json({ errors: [{ msg: "Sub category already exists in parent" }] });
     }
   }
 }
@@ -96,9 +100,9 @@ export async function updateCategory(
     const newCategory = new Category();
     newCategory.name = name;
     await categoryRepository.update(categoryId, newCategory);
-    res.json({ msg: "Category updated" });
+    res.json({ success: [{ msg: "Category updated" }] });
   } else {
-    res.status(400).json({ msg: "Invalid categoryId" });
+    res.status(400).json({ errors: [{ msg: "Invalid categoryId" }] });
   }
 }
 // @PUT /v1/api/category/:categoryId
@@ -138,8 +142,8 @@ export async function deleteCategory(
   const categoryCheck = await categoryRepository.findOne({ id: categoryId });
   if (categoryCheck) {
     await categoryRepository.delete(categoryId);
-    res.json({ msg: "category deleted" });
+    res.json({ success: [{ msg: "category deleted" }] });
   } else {
-    res.status(400).json({ msg: "Invalid CategoryId" });
+    res.status(400).json({ errors: [{ msg: "Invalid categoryId" }] });
   }
 }

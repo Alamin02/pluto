@@ -1,9 +1,9 @@
 import React from "react";
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
-export default function UserForm({ visible, onCreate, onCancel }) {
+export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
   return (
@@ -15,13 +15,26 @@ export default function UserForm({ visible, onCreate, onCancel }) {
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
+          const token = localStorage.getItem("token");
+
           form
             .validateFields()
             .then((values) => {
               agent
-                .createUser(values)
+                .createUser(values, token)
                 .then((res) => res.json())
-                .then(console.log);
+                .then((data) => {
+                  if (!data.errors) {
+                    message.success("New user added successfully");
+
+                    form.resetFields();
+                    onCreate(values);
+                  } else {
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
 
               form.resetFields();
               onCreate(values);
@@ -31,14 +44,12 @@ export default function UserForm({ visible, onCreate, onCancel }) {
             });
         }}
       >
-        <Form
-          form={form}
-          layout="vertical"
-          name="form_in_modal"
-          initialValues={{
-            modifier: "public",
-          }}
-        >
+        <Form form={form} layout="vertical" name="form_in_modal">
+          {/* role */}
+          <Form.Item name="role" label="Role&nbsp;:">
+            <Input />
+          </Form.Item>
+
           {/* email */}
           <Form.Item
             name="email"

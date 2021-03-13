@@ -2,6 +2,8 @@ export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
   users as usersController,
+  updateUser as updateUserController,
+  deleteUser as deleteUserController,
 } from "./auth";
 
 export {

@@ -14,9 +14,7 @@ router.get("/", categoryController);
 
 router.post(
   "/",
-  authenticationMiddleware,
-  [body("name").not().isEmpty().withMessage("name must not be empty")],
-
+  [body("name").not().isEmpty().withMessage("Category name must not be empty")],
   createCategoryController
 );
 router.post(
@@ -27,7 +25,12 @@ router.post(
   ],
   createSubCategoryController
 );
-router.put("/:categoryId", authenticationMiddleware, updateCategoryController);
+router.put(
+  "/:categoryId",
+  [body("name").not().isEmpty().withMessage("Category name must not be empty")],
+  updateCategoryController
+);
+
 router.put("/sub/:subCategoryId", updateSubCategoryController);
 
 router.delete(

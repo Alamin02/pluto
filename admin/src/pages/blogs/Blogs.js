@@ -22,22 +22,28 @@ export default function Blogs() {
   const [BlogData, setBlogData] = useState([]);
   const [blogToEditVisible, setBlogToEditVisible] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
-
-  const onCreate = (values) => {
-    setVisible(false);
-    window.location.reload();
+  const fetchBlogs = () => {
+    agent.getBlogs().then((data) => {
+      setBlogData(data);
+    });
   };
+
+  // close createBlogModal
+  const handleCreateBlogModal = (values) => {
+    setVisible(false);
+    fetchBlogs();
+  };
+
   // close EditBlogModal
-  const closeModal = () => {
+  const handleEditBlogModal = () => {
     setBlogToEditVisible(false);
+    fetchBlogs();
     // window.location.reload();
   };
 
   // get all blogs
   useEffect(() => {
-    agent.getBlogs().then((data) => {
-      setBlogData(data);
-    });
+    fetchBlogs();
   }, []);
 
   // edit blog
@@ -51,9 +57,8 @@ export default function Blogs() {
     agent
       .deleteBlog(token, blogId)
       .then((res) => res.json())
+      .then(() => fetchBlogs())
       .then(() => message.success("Successfully deleted"));
-
-    // window.location.reload();
   }
   const actionColumn = {
     title: "Action",
@@ -99,7 +104,7 @@ export default function Blogs() {
         </Button>
         <CreateBlogModal
           visible={visible}
-          onCreate={onCreate}
+          onCreate={handleCreateBlogModal}
           onCancel={() => {
             setVisible(false);
           }}
@@ -107,7 +112,7 @@ export default function Blogs() {
 
         <EditBlogModal
           visible={blogToEditVisible}
-          onCreate={closeModal}
+          onCreate={handleEditBlogModal}
           existingRecord={selectedBlog}
           onCancel={() => {
             setBlogToEditVisible(false);

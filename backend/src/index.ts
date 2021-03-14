@@ -1,7 +1,5 @@
 import express = require("express");
 import multer = require("multer");
-import fs = require("fs");
-import path = require("path");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
 import { createConnection } from "typeorm";
@@ -33,21 +31,6 @@ import {
 
 const app = express();
 
-console.log(process.cwd());
-
-// if public folder not found then create public folder
-const dir = path.join(process.cwd(), "public", "images");
-
-if (!fs.existsSync(dir)) {
-  fs.mkdir(dir, { recursive: true }, (err: any) => {
-    if (err) {
-      return console.error(err);
-    }
-  });
-}
-app.use(express.static("../public"));
-
-// // set up public folder
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
@@ -98,7 +81,8 @@ app.use(function (
     });
   } else {
     res.status(err.status || 500);
-    res.send("Error");
+
+    res.json({ errors: [{ msg: "Someting went wrong" }] });
   }
 });
 

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Upload, Cascader } from "antd";
+import { Modal, Form, Input, Upload, Cascader, message, Select } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 import { agent } from "../../helpers/agent";
+
+const { Option } = Select;
 
 const layout = {
   labelCol: {
@@ -20,6 +22,8 @@ export default function ProductForm({
   onCancel,
 }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [productImages, setProductImages] = useState([]);
+  const [offerOptions, setOfferOptions] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -35,6 +39,10 @@ export default function ProductForm({
         // console.log(data);
         setCategoryOptions(data);
       });
+
+    agent.getOffers().then(({ data }) => {
+      setOfferOptions(data);
+    });
   }, []);
 
   const [form] = Form.useForm();
@@ -57,8 +65,20 @@ export default function ProductForm({
   };
 
   function onChangeCategory(value) {
-    console.log(value);
+    form.setFieldsValue("categoryId", value[0]);
   }
+
+  const handleUpload = async (info) => {
+    const { status } = info.file;
+    if (status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    if (status === "done") {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
 
   return (
     <div>
@@ -69,22 +89,50 @@ export default function ProductForm({
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
+          // console.log(form.getFieldValue("description"));
+          const token = localStorage.getItem("token");
+
           form
             .validateFields()
             .then((values) => {
-              agent.updateProduct({ values });
-              form.resetFields();
-              onCreate(values);
-              // console.log("product id", productId);
+              const formData = new FormData();
+
+              formData.append("name", values.name);
+              formData.append("offerId", values.offer);
+              formData.append("price", values.price);
+              formData.append("summary", values.summary);
+              formData.append("description", values.description);
+
+              let categoryArray = values.categoryId;
+              if (categoryArray.length === 2) {
+                formData.append("categoryId", values.categoryId[1]);
+              } else {
+                formData.append("categoryId", values.categoryId[0]);
+              }
+
+              productImages.forEach((productImage) => {
+                formData.append("productImages", productImage);
+              });
+
+              console.log([...formData.values()]);
+
+              agent
+                .createProduct(formData, token)
+                .then((res) => res.json())
+                .then(() => {
+                  form.resetFields();
+                  onCreate(values);
+                });
             })
+
             .catch((info) => {
-              // console.log("Validate Failed:", info);
+              console.log("Validate Failed:", info);
             });
         }}
       >
         <Form
           {...layout}
-          name="basic"
+          form={form}
           // form loads initial values from here
           initialValues={
             {
@@ -96,7 +144,7 @@ export default function ProductForm({
         >
           <Form.Item
             label="Product Name"
-            name="productName"
+            name="name"
             rules={[
               {
                 required: true,
@@ -119,7 +167,18 @@ export default function ProductForm({
           >
             <Input />
           </Form.Item>
-
+          <Form.Item
+            label="Summary"
+            name="summary"
+            rules={[
+              {
+                required: true,
+                message: "Please input product sumamry",
+              },
+            ]}
+          >
+            <Input.TextArea />
+          </Form.Item>
           <Form.Item
             label="Description"
             name="description"
@@ -141,13 +200,14 @@ export default function ProductForm({
                 message: "Please input product category",
               },
             ]}
+            name="categoryId"
           >
             {/* <Input /> */}
             <Cascader
               name="category"
               fieldNames={{
                 label: "name",
-                value: "name",
+                value: "id",
                 children: "children",
               }}
               options={categoryOptions}
@@ -156,13 +216,20 @@ export default function ProductForm({
             />
           </Form.Item>
 
-          <Form.Item label="Offer" name="offer">
-            <Input />
+          <Form.Item name="offer" label="New offer&nbsp;:">
+            <Select defaultValue="null">
+              {offerOptions &&
+                offerOptions.map((offer) => (
+                  <Option value={offer.id} id={offer.id}>
+                    {offer.name}
+                  </Option>
+                ))}
+            </Select>
           </Form.Item>
 
           <Form.Item label="Dragger">
             <Form.Item
-              name="dragger"
+              name="productImages"
               valuePropName="fileList"
               getValueFromEvent={normFile}
               noStyle
@@ -173,7 +240,15 @@ export default function ProductForm({
                 },
               ]}
             >
-              <Upload.Dragger name="files" action="/upload.do">
+              <Upload.Dragger
+                name="files"
+                onChange={handleUpload}
+                beforeUpload={(file, fileList) => {
+                  setProductImages(fileList);
+                  return false;
+                }}
+                accept="image/*"
+              >
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />
                 </p>

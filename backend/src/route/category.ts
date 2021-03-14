@@ -9,6 +9,7 @@ import {
   updateSubCategoryController,
   deleteCategoryController,
 } from "../controller";
+import { authenticationMiddleware } from "../middleware";
 router.get("/", categoryController);
 
 router.post(
@@ -32,6 +33,10 @@ router.put(
 
 router.put("/sub/:subCategoryId", updateSubCategoryController);
 
-router.delete("/:categoryId", deleteCategoryController);
+router.delete(
+  "/:categoryId",
+  authenticationMiddleware,
+  deleteCategoryController
+);
 
 export default router;

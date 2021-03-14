@@ -2,8 +2,6 @@ import React from "react";
 import { Button } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 
-let adminMail = "admin@mail.com";
-
 // styling start
 const navbar = {
   display: "flex",
@@ -42,7 +40,7 @@ const logout = {
 };
 // styling end
 
-export default function Navbar() {
+export default function Navbar({ email }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.reload();
@@ -61,7 +59,7 @@ export default function Navbar() {
         </div>
         <div>
           <Button type="link" icon={<UserOutlined />}>
-            <span style={adminUserName}>{adminMail}</span>
+            <span style={adminUserName}>{email}</span>
           </Button>
           <Button
             style={logout}

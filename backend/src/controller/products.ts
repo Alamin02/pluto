@@ -17,7 +17,7 @@ export async function getAllProducts(
   const perPage: number = parseInt(<string>req.query.perPage) || 10;
 
   const [products, productCount] = await productRepository.findAndCount({
-    select: ["id", "name", "price", "summary"],
+    select: ["id", "name", "description", "price", "summary"],
     relations: ["category", "offer", "images"],
     take: perPage,
     skip: (page - 1) * perPage,
@@ -66,6 +66,7 @@ export async function createProduct(
 
     const createProductImage = [];
     const files = req.files as Express.Multer.File[];
+
     if (files.length) {
       for (let i = 0; i < files.length; i++) {
         const imagePath =
@@ -169,15 +170,19 @@ export async function deleteProduct(
 ) {
   const id = req.params.productId;
   const productRepository = getConnection().getRepository(Product);
-  const productCheck = await productRepository.findOne({ id });
-  if (productCheck) {
+  const productToUpdate = await productRepository.findOne({ id: id });
+  console.log(productToUpdate);
+
+  if (productToUpdate) {
     try {
-      await productRepository.delete(id);
+      await productRepository.delete({ id });
+      res.json({ msg: "Product deleted" });
     } catch (e) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Product could not be deleted" }] });
+      res.status(400).json({ msg: e });
     }
-    res.json({ msg: "Product deleted" });
+  } else {
+    res
+      .status(400)
+      .json({ errors: [{ msg: "Product to delete not found or invalid id" }] });
   }
 }

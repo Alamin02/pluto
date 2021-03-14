@@ -48,10 +48,30 @@ export const agent = {
     return fetch(`${baseUrl}/users/products/${productId}`, {
       method: "get",
       headers: {
-        Authentication: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(productData),
+      body: productData,
+    });
+  },
+
+  // edit product
+  editProduct: (productId, productData, token) => {
+    return fetch(`${baseUrl}/products/${productId}`, {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: productData,
+    });
+  },
+
+  // delete product
+  deleteProduct: (productId, token) => {
+    return fetch(`${baseUrl}/products/${productId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   },
 
@@ -75,12 +95,12 @@ export const agent = {
       body: JSON.stringify(categoryData),
     });
   },
-  getOffers: (token) => {
-    return fetch("http://localhost:4000/api/v1/offers", {
+
+  getOffers: () => {
+    return fetch(`${baseUrl}/offers`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
@@ -88,7 +108,7 @@ export const agent = {
         return data;
       });
   },
- 
+
   editCategory: (categoryData, token, categoryId) => {
     return fetch(`${baseUrl}/category/${categoryId}`, {
       method: "put",
@@ -142,6 +162,7 @@ export const agent = {
       },
     });
   },
+
   getBlogs: () => {
     return fetch(`${baseUrl}/blogs`, {
       method: "get",
@@ -178,6 +199,25 @@ export const agent = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+    });
+  },
+
+  getMe: (token) => {
+    return fetch(`${baseUrl}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  createProduct: (productData, token) => {
+    return fetch(`${baseUrl}/products`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: productData,
     });
   },
 };

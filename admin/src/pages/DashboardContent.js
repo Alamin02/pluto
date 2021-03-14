@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 
 import Overview from "./Overview";
-import Products from "./product/Products";
+import Products from "./products/Products";
 import Offers from "./offers/Offers";
 import Users from "./users/Users";
 import Orders from "./Orders";

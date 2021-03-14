@@ -54,7 +54,7 @@ export async function userRegistration(
 
   if (!errors.isEmpty()) {
     return res.status(400).json({
-      errors: [{ msg: "Frontend validation error" }],
+      errors: errors.array(),
     });
   }
 
@@ -78,11 +78,13 @@ export async function userRegistration(
     newUser.name = name;
     newUser.email = email;
     newUser.phone = phone;
-    newUser.role = role;
+    newUser.role = "user";
     newUser.password = hash;
 
     await userRepository.save(newUser);
   } catch (e) {
+    console.error(e);
+
     res.status(400).json({ errors: [{ msg: "User could not be created" }] });
     return;
   }

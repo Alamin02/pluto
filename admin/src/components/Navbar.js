@@ -33,13 +33,6 @@ const adminUserName = {
   fontSize: "1rem",
 };
 
-const logout = {
-  backgroundColor: "#F1F5F9",
-  marginRight: "1rem",
-  textTransform: "capitalize",
-};
-// styling end
-
 export default function Navbar({ email }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -62,10 +55,10 @@ export default function Navbar({ email }) {
             <span style={adminUserName}>{email}</span>
           </Button>
           <Button
-            style={logout}
-            size="large"
             icon={<LogoutOutlined />}
             onClick={handleLogout}
+            type="primary"
+            danger
           >
             logout
           </Button>

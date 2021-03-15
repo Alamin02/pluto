@@ -18,6 +18,12 @@ export default function EditProductModal({
 
   useEffect(() => {
     form.resetFields();
+    if (existingRecord) {
+      agent.
+        getSingleCategory(existingRecord.category.id)
+        .then((res) => res.json())
+        .then(({ data }) => setCategoryOptions(data));
+    }
   }, [existingRecord]);
 
   return (

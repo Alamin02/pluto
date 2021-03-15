@@ -83,9 +83,6 @@ export default function Products() {
         <Button
           icon={<EditOutlined />}
           onClick={() => {
-            // setVisible(true);
-            // setId(id);
-            // console.log("ide", id);
             onEdit(record);
           }}
         >

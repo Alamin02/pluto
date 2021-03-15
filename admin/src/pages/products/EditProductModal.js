@@ -14,13 +14,14 @@ export default function EditProductModal({
   const [form] = Form.useForm();
   const [categoryOptions, setCategoryOptions] = useState([]);
 
-  function onChangeCategory(value) {
-    form.setFieldsValue("categoryId", value[0]);
-  }
+  // function onChangeCategory(value) {
+  //   form.setFieldsValue("categoryId", value[0]);
+  // }
 
   useEffect(() => {
     form.resetFields();
     if (existingRecord) {
+<<<<<<< HEAD
       agent
         .getCategories(existingRecord.category.id)
         .then((res) => res.json())
@@ -44,6 +45,21 @@ export default function EditProductModal({
             setCategoryOptions(processedData.flat());
           }
         });
+=======
+      const numberOfImages = existingRecord.images.length;
+      console.log(numberOfImages)
+      agent.
+        getSingleCategory(existingRecord.category.id)
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+
+      for (let i = 0; i < numberOfImages; i++) {
+        agent.
+          getProductImage(existingRecord.images[i].id)
+          .then((res) => res.json())
+          .then((data) => console.log(data));
+      }
+>>>>>>> 070e4aa4e8164babd37b28b54e54716988824d07
     }
   }, [existingRecord]);
 

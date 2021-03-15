@@ -235,3 +235,13 @@ export const agent = {
     });
   },
 };
+
+// get product image
+getProductImage: (imageId) => {
+  return fetch(`${baseUrl}/products/images/${imageId}`, {
+    method: "get",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}

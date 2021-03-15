@@ -113,8 +113,6 @@ export default function ProductForm({
                 formData.append("productImages", productImage);
               });
 
-              console.log([...formData.values()]);
-
               agent
                 .createProduct(formData, token)
                 .then((res) => res.json())

@@ -25,7 +25,6 @@ export default function EditProductModal({
         .getCategories(existingRecord.category.id)
         .then((res) => res.json())
         .then(({ data }) => {
-          console.log(data)
           if (data) {
             const processedData = data
               .filter((entry) => entry.children !== null)
@@ -143,13 +142,15 @@ export default function EditProductModal({
             ]}
             name="categoryId"
           >
-            <Select defaultValue={existingRecord.category.id}>
-              {categoryOptions.map((category) => (
-                <Option value={category.id} key={category.id}>
-                  {category.name}
-                </Option>
-              ))}
-            </Select>
+            {existingRecord && (
+              <Select defaultValue={existingRecord.category.id}>
+                {categoryOptions.map((category) => (
+                  <Option value={category.id} key={category.id}>
+                    {category.name}
+                  </Option>
+                ))}
+              </Select>
+            )}
           </Form.Item>
 
           <Form.Item label="Offer" name="offer">

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import Login from "./pages/Login";
+import Login from "./pages/auth/Login";
 import Navbar from "./components/Navbar";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 import { agent } from "./helpers/agent";
 

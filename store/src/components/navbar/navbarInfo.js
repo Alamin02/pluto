@@ -20,6 +20,8 @@ const navbarMenus = {
   contactUrl: "/contact",
 
   loginUrl: "",
+
+  cart: "cart",
   cartUrl: "/cart",
 };
 

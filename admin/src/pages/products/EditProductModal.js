@@ -10,7 +10,7 @@ export default function EditProductModal({
   existingRecord,
 }) {
   const [form] = Form.useForm();
-  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState(null);
 
   function onChangeCategory(value) {
     form.setFieldsValue("categoryId", value[0]);
@@ -22,7 +22,7 @@ export default function EditProductModal({
       agent.
         getSingleCategory(existingRecord.category.id)
         .then((res) => res.json())
-        .then(({ data }) => setCategoryOptions(data));
+        .then(console.log);
     }
   }, [existingRecord]);
 
@@ -43,7 +43,7 @@ export default function EditProductModal({
               agent
                 .editProduct(values, token, existingRecord.id)
                 .then((res) => res.json())
-                .then(console.log);
+              // .then(console.log);
 
               form.resetFields();
               onCreate(values);

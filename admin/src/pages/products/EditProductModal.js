@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Cascader } from "antd";
+import { Modal, Form, Input, Select } from "antd";
 
 import { agent } from "../../helpers/agent";
+
+const { Option } = Select;
 
 export default function EditProductModal({
   visible,
@@ -10,7 +12,7 @@ export default function EditProductModal({
   existingRecord,
 }) {
   const [form] = Form.useForm();
-  const [categoryOptions, setCategoryOptions] = useState(null);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   // function onChangeCategory(value) {
   //   form.setFieldsValue("categoryId", value[0]);
@@ -19,19 +21,29 @@ export default function EditProductModal({
   useEffect(() => {
     form.resetFields();
     if (existingRecord) {
-      const numberOfImages = existingRecord.images.length;
-      console.log(numberOfImages)
-      agent.
-        getSingleCategory(existingRecord.category.id)
+      agent
+        .getCategories(existingRecord.category.id)
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then(({ data }) => {
+          if (data) {
+            const processedData = data
+              .filter((entry) => entry.children !== null)
+              .map((entry) => {
+                const childrenList = [];
 
-      for (let i = 0; i < numberOfImages; i++) {
-        agent.
-          getProductImage(existingRecord.images[i].id)
-          .then((res) => res.json())
-          .then((data) => console.log(data));
-      }
+                for (const child of entry.children) {
+                  childrenList.push({
+                    id: child.id,
+                    name: `${entry.name} / ${child.name}`,
+                  });
+                }
+
+                return childrenList;
+              });
+
+            setCategoryOptions(processedData.flat());
+          }
+        });
     }
   }, [existingRecord]);
 
@@ -51,8 +63,7 @@ export default function EditProductModal({
             .then((values) => {
               agent
                 .editProduct(values, token, existingRecord.id)
-                .then((res) => res.json())
-              // .then(console.log);
+                .then((res) => res.json());
 
               form.resetFields();
               onCreate(values);
@@ -131,19 +142,13 @@ export default function EditProductModal({
             ]}
             name="categoryId"
           >
-            {/* <Input /> */}
-            <Cascader
-              name="category"
-              fieldNames={{
-                label: "name",
-                value: "id",
-                children: "children",
-              }}
-              defaultValue={['zhejiang', 'hangzhou', 'xihu']}
-              options={categoryOptions}
-              // onChange={onChangeCategory}
-              placeholder="Please choose category"
-            />
+            <Select defaultValue={existingRecord.category.id}>
+              {categoryOptions.map((category) => (
+                <Option value={category.id} key={category.id}>
+                  {category.name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Form.Item label="Offer" name="offer">

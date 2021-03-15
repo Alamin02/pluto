@@ -96,20 +96,6 @@ export const agent = {
     });
   },
 
-  // get single category
-  getSingleCategory: (categoryId) => {
-    return fetch(`${baseUrl}/category/${categoryId}`, {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    // .then((res) => res.json())
-    // .then(({ data }) => {
-    //   return data;
-    // });
-  },
-
   getOffers: () => {
     return fetch(`${baseUrl}/offers`, {
       method: "get",
@@ -236,12 +222,3 @@ export const agent = {
   },
 };
 
-// get product image
-getProductImage: (imageId) => {
-  return fetch(`${baseUrl}/products/images/${imageId}`, {
-    method: "get",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-}

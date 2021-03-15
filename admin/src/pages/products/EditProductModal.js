@@ -25,6 +25,7 @@ export default function EditProductModal({
         .getCategories(existingRecord.category.id)
         .then((res) => res.json())
         .then(({ data }) => {
+          console.log(data)
           if (data) {
             const processedData = data
               .filter((entry) => entry.children !== null)

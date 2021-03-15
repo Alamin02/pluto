@@ -29,6 +29,7 @@ export {
   updateCategory as updateCategoryController,
   updateSubCategory as updateSubCategoryController,
   deleteCategory as deleteCategoryController,
+  getSingleCategory as getSingleCategoryController,
 } from "./category";
 
 export {

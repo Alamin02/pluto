@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import { Modal, Form, Input, Select, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
@@ -10,13 +10,17 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
 
   const [categoryOptions, setCategoryOptions] = useState([]);
 
-  useEffect(() => {
+  function fetchCategories() {
     agent
       .getCategories()
       .then((res) => res.json())
       .then(({ data }) => {
         setCategoryOptions(data);
       });
+  }
+
+  useEffect(() => {
+    fetchCategories();
   }, []);
 
   return (
@@ -33,8 +37,21 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
-              agent.createCategory(values, token).then((res) => res.json());
+              agent
+                .createCategory(values, token)
+                .then((res) => res.json())
+                .then((data) => {
+                  if (!data.errors) {
+                    message.success("Category added successfully");
 
+                    form.resetFields();
+                    onCreate(values);
+                  } else {
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
               form.resetFields();
               onCreate(values);
             })

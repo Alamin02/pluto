@@ -10,7 +10,8 @@ import {
   PercentageOutlined,
   ShoppingCartOutlined,
   SkinOutlined,
-  TagOutlined,MessageOutlined
+  TagOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
 
 import styles from "./Dashboard.module.css";
@@ -55,11 +56,11 @@ const sidebarInfo = [
     icon: <ShoppingCartOutlined />,
   },
   {
-    id:7,
-    itemName:"Blogs",
-    itemUrl:"/blogs",
-    icon:<MessageOutlined />
-  }
+    id: 7,
+    itemName: "Blogs",
+    itemUrl: "/blogs",
+    icon: <MessageOutlined />,
+  },
 ];
 
 export default function Dashboard() {
@@ -76,7 +77,6 @@ export default function Dashboard() {
             onClick={() => {
               setCollapsed(!collapsed);
             }}
-            style={{ marginBottom: 16 }}
           >
             {React.createElement(
               collapsed ? DoubleRightOutlined : DoubleLeftOutlined
@@ -84,14 +84,7 @@ export default function Dashboard() {
           </Button>
           <Menu mode="vertical" theme="dark" inlineCollapsed={collapsed}>
             {sidebarInfo.map((item) => (
-              <Menu.Item
-                key={item.id}
-                icon={item.icon}
-                onClick={() => {
-                  // setMenuId(item.id);
-                  // console.log(menuId);
-                }}
-              >
+              <Menu.Item key={item.id} icon={item.icon}>
                 <Link
                   to={item.itemUrl}
                   style={{ marginRight: "1rem", textTransform: "capitalize" }}

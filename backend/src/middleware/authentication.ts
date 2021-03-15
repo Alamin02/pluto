@@ -4,7 +4,7 @@ import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
 const debug = require("debug")("app");
 import { User } from "../entity";
-require('dotenv').config()
+require("dotenv").config();
 
 const secret = process.env.JWT_SECRET || "";
 
@@ -18,19 +18,24 @@ export const authenticationMiddleware = (
   const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
-    return res.sendStatus(401);
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   jwt.verify(token, secret, async (err: any, user: any) => {
     debug(err);
-    if (err) return res.sendStatus(403);
+    if (err) return res.status(401).json({ error: "Unauthorized" });
 
     const userRepository = getConnection().getRepository(User);
-    const userRecord = await userRepository.findOne({ email: user.email });
+    const userRecord = await userRepository.findOne(
+      { email: user.email },
+      { select: ["name", "email", "role"] }
+    );
 
     if (!userRecord) {
-      return res.sendStatus(403);
+      return res.status(401).json({ error: "Unauthorized" });
     }
+
+    res.locals.user = userRecord;
 
     next();
   });

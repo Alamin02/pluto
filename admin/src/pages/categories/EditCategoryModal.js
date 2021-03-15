@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import React, { useEffect } from "react";
+import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
-
-const { Option } = Select;
 
 export default function EditCategoryModal({
   visible,
@@ -13,22 +11,15 @@ export default function EditCategoryModal({
 }) {
   const [form] = Form.useForm();
 
-  const [categoryOptions, setCategoryOptions] = useState([]);
-
   useEffect(() => {
-    agent
-      .getCategories()
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setCategoryOptions(data);
-      });
-  }, []);
+    form.resetFields();
+  }, [currentCategory]);
 
   return (
     <div>
       <Modal
         visible={visible}
-        title="Update Category"
+        title="Edit Category"
         okText="Save"
         cancelText="Cancel"
         onCancel={onCancel}
@@ -40,7 +31,19 @@ export default function EditCategoryModal({
             .then((values) => {
               agent
                 .editCategory(values, token, currentCategory.id)
-                .then((res) => res.json());
+                .then((res) => res.json())
+                .then((data) => {
+                  if (!data.errors) {
+                    message.success("Category updated successfully");
+
+                    form.resetFields();
+                    onCreate(values);
+                  } else {
+                    for (let error of data.errors) {
+                      message.error(error.msg);
+                    }
+                  }
+                });
 
               form.resetFields();
               onCreate(values);
@@ -67,17 +70,6 @@ export default function EditCategoryModal({
             ]}
           >
             <Input />
-          </Form.Item>
-
-          <Form.Item name="parentId" label="Parent&nbsp;:">
-            <Select defaultValue="null">
-              {categoryOptions &&
-                categoryOptions.map((category) => (
-                  <Option value={category.id} id={category.id}>
-                    {category.name}
-                  </Option>
-                ))}
-            </Select>
           </Form.Item>
         </Form>
       </Modal>

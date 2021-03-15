@@ -17,7 +17,7 @@ export async function getAllProducts(
   const perPage: number = parseInt(<string>req.query.perPage) || 10;
 
   const [products, productCount] = await productRepository.findAndCount({
-    select: ["id", "name", "price", "summary"],
+    select: ["id", "name", "description", "price", "summary"],
     relations: ["category", "offer", "images"],
     take: perPage,
     skip: (page - 1) * perPage,
@@ -57,16 +57,16 @@ export async function createProduct(
     });
 
     const offersRepository = getConnection().getRepository(Offer);
-    const offer = await offersRepository.findOne({ id: offerId });
 
     const productImageRepository = getConnection().getRepository(ProductImage);
-
+    let offer;
     if (offerId) {
-      let offer = await offersRepository.findOne({ id: offerId });
+      offer = await offersRepository.findOne({ id: offerId });
     }
 
     const createProductImage = [];
     const files = req.files as Express.Multer.File[];
+
     if (files.length) {
       for (let i = 0; i < files.length; i++) {
         const imagePath =
@@ -80,7 +80,7 @@ export async function createProduct(
         createProductImage.push(savedProductImage);
       }
     } else {
-      return res.json("Image not found");
+      return res.json({ errors: [{ msg: "Image not found" }] });
     }
 
     const newProduct = new Product();
@@ -92,7 +92,7 @@ export async function createProduct(
     if (categoryCheck) {
       newProduct.category = categoryId;
     } else {
-      res.status(400).json({ msg: "category not found" });
+      res.status(400).json({ errors: [{ msg: "category not found" }] });
     }
 
     if (offer) {
@@ -102,7 +102,7 @@ export async function createProduct(
     // save data to repository from request body
     await productsRepository.save(newProduct);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({ errors: [{ msg: e }] });
     return;
   }
   res.json({ msg: "Product created" });
@@ -117,7 +117,7 @@ export async function getProduct(req: express.Request, res: express.Response) {
   const findProductById = await productRepository.findOne({ id });
 
   if (!findProductById) {
-    return res.status(400).json({ error: "Product not found" });
+    return res.status(400).json({ errors: [{ msg: "Product not found" }] });
   }
 
   res.json({ msg: "product found", data: findProductById });
@@ -154,7 +154,9 @@ export async function updateProduct(
 
     await productsRepository.save(findProductById);
   } catch (e) {
-    return res.status(400).json({ error: "Product could not be updated" });
+    return res
+      .status(400)
+      .json({ errors: [{ msg: "Product could not be updated" }] });
   }
 
   res.json({ msg: "Product updated" });
@@ -168,11 +170,19 @@ export async function deleteProduct(
 ) {
   const id = req.params.productId;
   const productRepository = getConnection().getRepository(Product);
+  const productToUpdate = await productRepository.findOne({ id: id });
+  console.log(productToUpdate);
 
-  try {
-    await productRepository.delete(id);
-  } catch (e) {
-    return res.status(400).json({ error: "Product could not be deleted" });
+  if (productToUpdate) {
+    try {
+      await productRepository.delete({ id });
+      res.json({ msg: "Product deleted" });
+    } catch (e) {
+      res.status(400).json({ msg: e });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ errors: [{ msg: "Product to delete not found or invalid id" }] });
   }
-  res.json({ msg: "Product deleted" });
 }

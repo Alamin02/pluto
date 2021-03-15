@@ -1,13 +1,13 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 
-import Overview from "./Overview";
-import Products from "./product/Products";
-import Offers from "./offers/Offers";
-import Users from "./user/Users";
-import Orders from "./Orders";
-import Categories from "./category/Catagories";
-import Blogs from "./blogs/Blogs";
+import Overview from "../overview/Overview";
+import Products from "../products/Products";
+import Offers from "../offers/Offers";
+import Users from "../users/Users";
+import Orders from "../orders/Orders";
+import Categories from "../categories/Catagories";
+import Blogs from "../blogs/Blogs";
 
 export default function DashboardContent() {
   return (

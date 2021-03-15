@@ -1,6 +1,7 @@
 const baseUrl = "http://localhost:4000/api/v1";
 
 export const agent = {
+  // user
   createUser: (userData, token) => {
     return fetch(`${baseUrl}/users/register`, {
       method: "post",
@@ -12,14 +13,65 @@ export const agent = {
     });
   },
 
+  getUsers: () => {
+    return fetch(`${baseUrl}/users`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  editUser: (userData, token, userId) => {
+    return fetch(`${baseUrl}/users/${userId}`, {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+  },
+
+  deleteUser: (token, userId) => {
+    return fetch(`${baseUrl}/users/${userId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  // product
   updateProduct: (productId, productData, token) => {
     return fetch(`${baseUrl}/users/products/${productId}`, {
       method: "get",
       headers: {
-        Authentication: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(productData),
+      body: productData,
+    });
+  },
+
+  // edit product
+  editProduct: (productId, productData, token) => {
+    return fetch(`${baseUrl}/products/${productId}`, {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: productData,
+    });
+  },
+
+  // delete product
+  deleteProduct: (productId, token) => {
+    return fetch(`${baseUrl}/products/${productId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   },
 
@@ -37,11 +89,24 @@ export const agent = {
     return fetch(`${baseUrl}/category`, {
       method: "post",
       headers: {
-        Authentication: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(categoryData),
     });
+  },
+
+  getOffers: () => {
+    return fetch(`${baseUrl}/offers`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(({ data }) => {
+        return data;
+      });
   },
 
   editCategory: (categoryData, token, categoryId) => {
@@ -97,6 +162,7 @@ export const agent = {
       },
     });
   },
+
   getBlogs: () => {
     return fetch(`${baseUrl}/blogs`, {
       method: "get",
@@ -133,6 +199,25 @@ export const agent = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+    });
+  },
+
+  getMe: (token) => {
+    return fetch(`${baseUrl}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  createProduct: (productData, token) => {
+    return fetch(`${baseUrl}/products`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: productData,
     });
   },
 };

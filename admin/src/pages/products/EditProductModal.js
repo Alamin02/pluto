@@ -12,17 +12,26 @@ export default function EditProductModal({
   const [form] = Form.useForm();
   const [categoryOptions, setCategoryOptions] = useState(null);
 
-  function onChangeCategory(value) {
-    form.setFieldsValue("categoryId", value[0]);
-  }
+  // function onChangeCategory(value) {
+  //   form.setFieldsValue("categoryId", value[0]);
+  // }
 
   useEffect(() => {
     form.resetFields();
     if (existingRecord) {
+      const numberOfImages = existingRecord.images.length;
+      console.log(numberOfImages)
       agent.
         getSingleCategory(existingRecord.category.id)
         .then((res) => res.json())
-        .then(console.log);
+        .then((data) => console.log(data));
+
+      for (let i = 0; i < numberOfImages; i++) {
+        agent.
+          getProductImage(existingRecord.images[i].id)
+          .then((res) => res.json())
+          .then((data) => console.log(data));
+      }
     }
   }, [existingRecord]);
 
@@ -130,8 +139,9 @@ export default function EditProductModal({
                 value: "id",
                 children: "children",
               }}
+              defaultValue={['zhejiang', 'hangzhou', 'xihu']}
               options={categoryOptions}
-              onChange={onChangeCategory}
+              // onChange={onChangeCategory}
               placeholder="Please choose category"
             />
           </Form.Item>

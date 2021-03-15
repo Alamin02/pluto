@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Spin } from "antd";
 
 import Login from "./pages/auth/Login";
 import Navbar from "./components/Navbar";
@@ -32,7 +33,19 @@ function App() {
   }
 
   if (!user) {
-    return <div>Logging in...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Spin size="large" />
+      </div>
+    );
   }
 
   return (

@@ -39,7 +39,7 @@ export default function ProductForm({
         setCategoryOptions(data);
       });
 
-    agent.getOffers().then(({ data }) => {
+    agent.getOffers().then((data) => {
       setOfferOptions(data);
     });
   }, []);

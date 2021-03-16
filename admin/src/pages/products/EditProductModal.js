@@ -1,9 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import { Modal, Form, Input, Select, Image } from "antd";
 
 import { agent } from "../../helpers/agent";
 
 const { Option } = Select;
+
+const imageStyle = {
+  display: "inline-block",
+  position: "relative"
+}
+
+const titleStyle = {
+  display: "inline-block",
+  position: "absolute",
+  top: "40%",
+  width: "100%",
+  marginLeft: "70px"
+}
+
 
 export default function EditProductModal({
   visible,
@@ -13,10 +27,7 @@ export default function EditProductModal({
 }) {
   const [form] = Form.useForm();
   const [categoryOptions, setCategoryOptions] = useState([]);
-
-  // function onChangeCategory(value) {
-  //   form.setFieldsValue("categoryId", value[0]);
-  // }
+  const [fetchImage, setFetchImage] = useState([]);
 
   useEffect(() => {
     form.resetFields();
@@ -44,7 +55,16 @@ export default function EditProductModal({
             setCategoryOptions(processedData.flat());
           }
         });
+
+      agent
+        .getProductImage(existingRecord.images[0].id)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          setFetchImage([data])
+        })
+
     }
+
   }, [existingRecord]);
 
   return (
@@ -155,6 +175,22 @@ export default function EditProductModal({
 
           <Form.Item label="Offer" name="offer">
             <Input />
+          </Form.Item>
+          <Form.Item label="Product Images" name="images">
+            {existingRecord && fetchImage.map((image) => (
+              <div key={image.id} style={imageStyle}>
+                <Image
+                  width={100}
+                  src={image.path}
+                />
+                <div style={titleStyle}>
+                  <p>{image.originalname}</p>
+                </div>
+              </div>
+
+
+            ))}
+
           </Form.Item>
         </Form>
       </Modal>

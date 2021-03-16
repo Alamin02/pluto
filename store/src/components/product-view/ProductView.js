@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Row, Col, Space } from "antd";
+
+import { Image } from 'antd';
+import image1_large from "../../assets/images/watch-1-large.jpg";
 import image1 from "../../assets/images/watch-1-small.jpg";
 import image2 from "../../assets/images/watch-2-small.jpg";
 import image3 from "../../assets/images/watch-3-small.jpg";
@@ -47,28 +50,31 @@ function ProductView({ product }) {
     <div className={styles.container}>
       <Row justify="center">
         <Col sm={18} md={12} lg={12}>
-          <div className={styles.imageWrapper}>
-            <div className={styles.imgStyled}>
-              <img alt="example" src={imgSrc} />
+
+          <div style={{ padding: "20px" }}>
+            <div className={styles.imageWrapper}>
+              <div className={styles.imgStyled}>
+                <Image src={imgSrc} alt="example" />
+              </div>
+              <Row gutter={[6, 6]} style={{ marginTop: "2px" }}>
+                <ProductImage
+                  imageLink={image1}
+                  onClick={() => setImgSrc(image1)}
+                />
+                <ProductImage
+                  imageLink={image2}
+                  onClick={() => setImgSrc(image2)}
+                />
+                <ProductImage
+                  imageLink={image3}
+                  onClick={() => setImgSrc(image3)}
+                />
+                <ProductImage
+                  imageLink={image4}
+                  onClick={() => setImgSrc(image4)}
+                />
+              </Row>
             </div>
-            <Row gutter={[6, 6]} style={{ marginTop: "2px" }}>
-              <ProductImage
-                imageLink={image1}
-                onClick={() => setImgSrc(image1)}
-              />
-              <ProductImage
-                imageLink={image2}
-                onClick={() => setImgSrc(image2)}
-              />
-              <ProductImage
-                imageLink={image3}
-                onClick={() => setImgSrc(image3)}
-              />
-              <ProductImage
-                imageLink={image4}
-                onClick={() => setImgSrc(image4)}
-              />
-            </Row>
           </div>
         </Col>
         <Col sm={18} md={12} lg={12}>

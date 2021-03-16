@@ -20,11 +20,15 @@ function ProductList() {
               return (
                 <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={item.id}>
                   <Link to={`/products/${item.id}`}>
-                    <Badge.Ribbon color="red" text={item.offer}>
+                    {/* <Badge.Ribbon color="red" text={item.offer}> */}
+                    <Badge.Ribbon color="red" text={item.offer + ` % off`}>
                       <CardItem
                         title={item.productName}
                         src={item.imageUrl}
-                        price={item.price}
+                        price={Math.floor(
+                          item.price - (item.price * item.offer) / 100
+                        )}
+                        discount={item.price}
                       />
                     </Badge.Ribbon>
                   </Link>

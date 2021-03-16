@@ -220,5 +220,15 @@ export const agent = {
       body: productData,
     });
   },
+
+  getProductImage: (imageId) => {
+    return fetch(`${baseUrl}/images/${imageId}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
 };
 

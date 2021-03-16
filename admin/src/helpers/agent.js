@@ -220,4 +220,14 @@ export const agent = {
       body: productData,
     });
   },
+
+  // order
+  getOrders: () => {
+    return fetch(`${baseUrl}/orders`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

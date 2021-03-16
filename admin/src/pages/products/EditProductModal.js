@@ -18,7 +18,6 @@ const titleStyle = {
   marginLeft: "70px"
 }
 
-
 export default function EditProductModal({
   visible,
   onCreate,
@@ -69,7 +68,6 @@ export default function EditProductModal({
           setOfferOptions(data);
         });
     }
-
   }, [existingRecord]);
 
   return (
@@ -104,7 +102,8 @@ export default function EditProductModal({
           initialValues={existingRecord}
           preserve={false}
         >
-          {/* offer name */}
+
+          {/* product name */}
           <Form.Item
             name="name"
             label="Product Name&nbsp;:"
@@ -118,6 +117,7 @@ export default function EditProductModal({
             <Input />
           </Form.Item>
 
+          {/* price */}
           <Form.Item
             name="price"
             label="Price&nbsp;:"
@@ -131,6 +131,7 @@ export default function EditProductModal({
             <Input />
           </Form.Item>
 
+          {/* summary */}
           <Form.Item
             name="summary"
             label="Summary&nbsp;:"
@@ -157,6 +158,8 @@ export default function EditProductModal({
           >
             <Input.TextArea />
           </Form.Item>
+
+          {/* category */}
           <Form.Item
             label="Category"
             rules={[
@@ -178,14 +181,9 @@ export default function EditProductModal({
             )}
           </Form.Item>
 
+          {/* offer */}
           <Form.Item
             label="Offer"
-            rules={[
-              {
-                required: true,
-                message: "Please input product offer",
-              },
-            ]}
             name="offerId"
           >
             {existingRecord && (
@@ -197,8 +195,9 @@ export default function EditProductModal({
                 ))}
               </Select>
             )}
-
           </Form.Item>
+
+          {/* image */}
           <Form.Item label="Product Images" name="images">
             {existingRecord && fetchImage.map((image) => (
               <div key={image.id} style={imageStyle}>
@@ -210,10 +209,7 @@ export default function EditProductModal({
                   <p>{image.originalname}</p>
                 </div>
               </div>
-
-
             ))}
-
           </Form.Item>
         </Form>
       </Modal>

@@ -28,6 +28,7 @@ export default function EditProductModal({
   const [form] = Form.useForm();
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [fetchImage, setFetchImage] = useState([]);
+  const [offerOptions, setOfferOptions] = useState([]);
 
   useEffect(() => {
     form.resetFields();
@@ -61,8 +62,12 @@ export default function EditProductModal({
         .then((res) => res.json())
         .then(({ data }) => {
           setFetchImage([data])
-        })
+        });
 
+      agent
+        .getOffers().then((data) => {
+          setOfferOptions(data);
+        });
     }
 
   }, [existingRecord]);
@@ -173,8 +178,26 @@ export default function EditProductModal({
             )}
           </Form.Item>
 
-          <Form.Item label="Offer" name="offer">
-            <Input />
+          <Form.Item
+            label="Offer"
+            rules={[
+              {
+                required: true,
+                message: "Please input product offer",
+              },
+            ]}
+            name="offerId"
+          >
+            {existingRecord && (
+              <Select defaultValue={existingRecord.offer.id}>
+                {offerOptions.map((offer) => (
+                  <Option value={offer.id} key={offer.id}>
+                    {offer.name}
+                  </Option>
+                ))}
+              </Select>
+            )}
+
           </Form.Item>
           <Form.Item label="Product Images" name="images">
             {existingRecord && fetchImage.map((image) => (

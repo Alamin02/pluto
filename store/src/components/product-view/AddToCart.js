@@ -1,11 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Radio, InputNumber } from "antd";
+import { Radio, InputNumber, Button } from "antd";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import openNotification from "../notification/openNotification";
 
 import styles from "./ProductView.module.css";
-import BlackButton from "../styled-components/ButtonBlack";
+import { Link } from "react-router-dom";
 
 export default function AddToCart({ product }) {
   const dispatch = useDispatch();
@@ -48,9 +48,19 @@ export default function AddToCart({ product }) {
       </Radio.Group>
       <br />
       {isProductOnCart ? (
-        <BlackButton buttonText="Visit Cart" />
+        <Link to="/cart">
+          <Button type="primary" style={{ textTransform: "uppercase" }}>
+            Visit Cart
+          </Button>
+        </Link>
       ) : (
-        <BlackButton buttonText="Add to Cart" onClick={handleAddToCart} />
+        <Button
+          type="primary"
+          style={{ textTransform: "uppercase" }}
+          onClick={handleAddToCart}
+        >
+          Add to Cart
+        </Button>
       )}
     </div>
   );

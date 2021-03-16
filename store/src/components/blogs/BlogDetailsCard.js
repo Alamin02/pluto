@@ -1,8 +1,9 @@
 import React from "react";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
-import ButtonBlack from "../styled-components/ButtonBlack";
 import styles from "../blogs/BlogDetails.module.css";
+
 const BlogDetailsCard = ({ blog }) => (
   <>
     <h1 className={styles.h1Styled}>{blog.title}</h1>
@@ -28,7 +29,13 @@ const BlogDetailsCard = ({ blog }) => (
     </div>
     <p className={styles.descriptionText}>{blog.description}</p>
     <Link to="/blogs">
-      <ButtonBlack buttonText="Back " onClick={() => onclick} />
+      <Button
+        type="primary"
+        style={{ textTransform: "uppercase" }}
+        onClick={() => onclick}
+      >
+        Back
+      </Button>
     </Link>
   </>
 );

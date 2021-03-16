@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { Grid } from "antd";
+import { Grid, Button } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
 import styles from "./Error404.module.css";
 import ShockedMan from "./404.gif";
-import ButtonBlack from "../styled-components/ButtonBlack";
 
 const { useBreakpoint } = Grid;
 const buttonBlackStyle = {
@@ -20,10 +19,14 @@ function Error404() {
 
   return (
     <div className={styles.container}>
-      <img src={ShockedMan} alt="ShockedMan" className={classNames(
-        { [styles.gifStyle]: screens },
-        { [styles.gifStyleXs]: screens.xs },
-      )} />
+      <img
+        src={ShockedMan}
+        alt="ShockedMan"
+        className={classNames(
+          { [styles.gifStyle]: screens },
+          { [styles.gifStyleXs]: screens.xs }
+        )}
+      />
       <p
         className={classNames(
           { [styles.fourOFourStyle]: screens },
@@ -39,15 +42,13 @@ function Error404() {
       </div>
       <br />
       <Link to="/">
-        <ButtonBlack
-          style={buttonBlackStyle}
-          buttonText={
-            <span>
-              <HomeOutlined style={iconStyle} />
-              Go back to home page
-            </span>
-          }
-        ></ButtonBlack>
+        <Button
+          icon={<HomeOutlined />}
+          type="primary"
+          style={{ textTransform: "uppercase" }}
+        >
+          Go back to home page
+        </Button>
       </Link>
       <div className={styles.emptySpace}></div>
     </div>

@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, Image } from "antd";
-import { CloseCircleOutlined } from '@ant-design/icons'
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
 
 const { Option } = Select;
 
 const imageStyle = {
   display: "inline-block",
-  position: "relative"
-}
+  position: "relative",
+};
 
 const titleStyle = {
   display: "inline-block",
   position: "absolute",
   top: "40%",
   width: "100%",
-  marginLeft: "70px"
-}
+  marginLeft: "70px",
+};
 
 export default function EditProductModal({
   visible,
   onCreate,
   onCancel,
   existingRecord,
+  refetch,
 }) {
   const [form] = Form.useForm();
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [fetchImage, setFetchImage] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
   const [warning, setWarning] = useState("");
 
@@ -35,9 +35,9 @@ export default function EditProductModal({
       .deleteimage(existingRecord.images[0].id)
       .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data)
+        refetch();
       });
-  }
+  };
 
   useEffect(() => {
     form.resetFields();
@@ -65,20 +65,10 @@ export default function EditProductModal({
             setCategoryOptions(processedData.flat());
           }
         });
-      if (existingRecord.images[0]) {
-        agent
-          .getProductImage(existingRecord.images[0].id)
-          .then((res) => res.json())
-          .then(({ data }) => {
-            setFetchImage([data])
-          });
-      } else {
-        setWarning('no product image available');
-      }
-      agent
-        .getOffers().then((data) => {
-          setOfferOptions(data);
-        });
+
+      agent.getOffers().then((data) => {
+        setOfferOptions(data);
+      });
     }
   }, [existingRecord]);
 
@@ -114,7 +104,6 @@ export default function EditProductModal({
           initialValues={existingRecord}
           preserve={false}
         >
-
           {/* product name */}
           <Form.Item
             name="name"
@@ -194,12 +183,11 @@ export default function EditProductModal({
           </Form.Item>
 
           {/* offer */}
-          <Form.Item
-            label="Offer"
-            name="offerId"
-          >
+          <Form.Item label="Offer" name="offerId">
             {existingRecord && (
-              <Select defaultValue={existingRecord.offer.id}>
+              <Select
+                defaultValue={existingRecord.offer && existingRecord.offer.id}
+              >
                 {offerOptions.map((offer) => (
                   <Option value={offer.id} key={offer.id}>
                     {offer.name}
@@ -211,18 +199,30 @@ export default function EditProductModal({
 
           {/* image */}
           <Form.Item label="Product Images" name="images">
-            {(existingRecord) ? (fetchImage.map((image) => (
-              <div key={image.id} style={imageStyle}>
-                <Image
-                  width={100}
-                  src={image.path}
-                />
-                <div style={titleStyle}>
-                  <p>{image.originalname}</p>
+            {existingRecord ? (
+              existingRecord.images &&
+              existingRecord.images.map((image) => (
+                <div key={image.id} style={imageStyle}>
+                  <Image width={100} src={image.path} />
+                  <div style={titleStyle}>
+                    <p>{image.originalname}</p>
+                  </div>
+                  <CloseCircleOutlined
+                    onClick={deleteImage}
+                    style={{
+                      cursor: "pointer",
+                      position: "absolute",
+                      marginLeft: "300px",
+                      top: "40%",
+                      fontSize: "25px",
+                      color: "red",
+                    }}
+                  />
                 </div>
-                <CloseCircleOutlined onClick={deleteImage} style={{ cursor: "pointer", position: "absolute", marginLeft: "300px", top: "40%", fontSize: "25px", color: "red" }} />
-              </div>
-            ))) : (<p>{warning}</p>)}
+              ))
+            ) : (
+              <p>{warning}</p>
+            )}
           </Form.Item>
         </Form>
       </Modal>

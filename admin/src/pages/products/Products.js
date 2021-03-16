@@ -10,14 +10,13 @@ import {
   Col,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { columns } from "./productTableColumn"
+import { columns } from "./productTableColumn";
 import CreateProductModal from "./CreateProductModal";
 import EditProductModal from "./EditProductModal";
 import { agent } from "../../helpers/agent";
 
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
-
 
 export default function Products() {
   const [visible, setVisible] = useState(false);
@@ -37,7 +36,10 @@ export default function Products() {
       .then((res) => res.json())
       .then(({ data }) => {
         setProductData(data.products);
-        console.log(data.products);
+        if (selectedProduct)
+          setselectedProduct(
+            data.products.find((product) => product.id === selectedProduct.id)
+          );
       });
   };
 
@@ -53,12 +55,12 @@ export default function Products() {
   const onEdit = (record) => {
     setselectedProduct(record);
     setvisibleEditProduct(true);
-    console.log(record)
+    console.log(record);
   };
 
   // delete button message
   function confirmDelete(productId) {
-    console.log(productId)
+    console.log(productId);
     const token = localStorage.getItem("token");
     agent
       .deleteProduct(productId, token)
@@ -69,7 +71,6 @@ export default function Products() {
   }
 
   const [productData, setProductData] = useState([]);
-
 
   useEffect(() => {
     fetchProducts();
@@ -101,7 +102,7 @@ export default function Products() {
         </Popconfirm>
       </Space>
     ),
-  }
+  };
   return (
     <div>
       <Space direction="vertical" size="middle">
@@ -134,6 +135,7 @@ export default function Products() {
           onCancel={() => {
             setvisibleEditProduct(false);
           }}
+          refetch={fetchProducts}
         />
         {/* table */}
         <Table

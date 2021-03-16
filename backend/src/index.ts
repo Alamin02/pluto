@@ -2,8 +2,8 @@ import express = require("express");
 import multer = require("multer");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
-import { createConnection } from "typeorm";
 import cors from "cors";
+import { connectDatabase } from "./utils/connect-db";
 
 const debug = require("debug")("app");
 
@@ -17,18 +17,6 @@ import {
   categoryRouter,
   productImageRouter,
 } from "./route";
-
-import {
-  User,
-  Product,
-  Blog,
-  ProductImage,
-  Offer,
-  Order,
-  OrderedProduct,
-  Category,
-  Address,
-} from "./entity";
 
 const app = express();
 
@@ -48,22 +36,7 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
 app.use("/api/v1/images", productImageRouter);
 
-createConnection({
-  type: "sqlite",
-  database: "./db.sqlite",
-  entities: [
-    User,
-    Product,
-    Blog,
-    ProductImage,
-    Offer,
-    Category,
-    Order,
-    OrderedProduct,
-    Address,
-  ],
-  synchronize: true,
-});
+connectDatabase();
 
 app.use(function (
   err: any,

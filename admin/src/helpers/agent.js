@@ -230,5 +230,14 @@ export const agent = {
     });
   },
 
+  deleteimage: (imageId) => {
+    return fetch(`${baseUrl}/images/${imageId}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
 };
 

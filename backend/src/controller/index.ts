@@ -60,4 +60,5 @@ export {
 export {
   getAllProductsImages as getAllProductsImagesController,
   getSingleImage as getSingleImageController,
+  deleteProductImage as deleteProductImageController,
 } from "./productImage";

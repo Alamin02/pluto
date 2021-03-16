@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, Image } from "antd";
-
+import { CloseCircleOutlined } from '@ant-design/icons'
 import { agent } from "../../helpers/agent";
 
 const { Option } = Select;
@@ -28,6 +28,16 @@ export default function EditProductModal({
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [fetchImage, setFetchImage] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
+  const [warning, setWarning] = useState("");
+
+  const deleteImage = (e) => {
+    agent
+      .deleteimage(existingRecord.images[0].id)
+      .then((res) => res.json())
+      .then(({ data }) => {
+        console.log(data)
+      });
+  }
 
   useEffect(() => {
     form.resetFields();
@@ -55,14 +65,16 @@ export default function EditProductModal({
             setCategoryOptions(processedData.flat());
           }
         });
-
-      agent
-        .getProductImage(existingRecord.images[0].id)
-        .then((res) => res.json())
-        .then(({ data }) => {
-          setFetchImage([data])
-        });
-
+      if (existingRecord.images[0]) {
+        agent
+          .getProductImage(existingRecord.images[0].id)
+          .then((res) => res.json())
+          .then(({ data }) => {
+            setFetchImage([data])
+          });
+      } else {
+        setWarning('no product image available');
+      }
       agent
         .getOffers().then((data) => {
           setOfferOptions(data);
@@ -199,7 +211,7 @@ export default function EditProductModal({
 
           {/* image */}
           <Form.Item label="Product Images" name="images">
-            {existingRecord && fetchImage.map((image) => (
+            {(existingRecord) ? (fetchImage.map((image) => (
               <div key={image.id} style={imageStyle}>
                 <Image
                   width={100}
@@ -208,8 +220,9 @@ export default function EditProductModal({
                 <div style={titleStyle}>
                   <p>{image.originalname}</p>
                 </div>
+                <CloseCircleOutlined onClick={deleteImage} style={{ cursor: "pointer", position: "absolute", marginLeft: "300px", top: "40%", fontSize: "25px", color: "red" }} />
               </div>
-            ))}
+            ))) : (<p>{warning}</p>)}
           </Form.Item>
         </Form>
       </Modal>

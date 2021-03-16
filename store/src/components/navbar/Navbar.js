@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Menu, Grid } from "antd";
+import { Badge } from 'antd';
 import {
   PhoneOutlined,
   ShoppingOutlined,
@@ -24,6 +26,7 @@ const downOutlinedStyle = {
 
 function Navbar() {
   const screens = useBreakpoint();
+  const productList = useSelector((state) => state.cart.products);
 
   return (
     <div className={styles.navBackgroundColor}>
@@ -98,6 +101,14 @@ function Navbar() {
           <Menu.Item>
             <Link to={navbarMenus.contactUrl} style={menuStyle}>
               {navbarMenus.contact}
+            </Link>
+          </Menu.Item>
+
+          <Menu.Item>
+            <Link to={navbarMenus.cartUrl} style={menuStyle}>
+              <Badge size="small" count={!!productList.length ? (productList.length) : 0}>
+                {navbarMenus.cart}
+              </Badge>
             </Link>
           </Menu.Item>
         </Menu>

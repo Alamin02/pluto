@@ -46,7 +46,7 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
-app.use("/api/v1/products/images", productImageRouter);
+app.use("/api/v1/images", productImageRouter);
 
 createConnection({
   type: "sqlite",

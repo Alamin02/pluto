@@ -29,5 +29,5 @@ export async function getSingleImage(
     return res.status(400).json({ errors: [{ msg: "Image not found" }] });
   }
 
-  res.json({ msg: "category found", data: findImageById });
+  res.json({ msg: "Image found", data: findImageById });
 }

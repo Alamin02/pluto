@@ -1,3 +1,5 @@
+import { getAllProductsImages, getSingleImage } from "./productImage";
+
 export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
@@ -29,6 +31,7 @@ export {
   updateCategory as updateCategoryController,
   updateSubCategory as updateSubCategoryController,
   deleteCategory as deleteCategoryController,
+  getSingleCategory as getSingleCategoryController,
 } from "./category";
 
 export {
@@ -53,3 +56,9 @@ export {
   updateAddress as updateAddressController,
   deleteAddress as deleteAddressController,
 } from "./addresses";
+
+export {
+  getAllProductsImages as getAllProductsImagesController,
+  getSingleImage as getSingleImageController,
+  deleteProductImage as deleteProductImageController,
+} from "./productImage";

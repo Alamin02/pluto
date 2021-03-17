@@ -147,3 +147,21 @@ export async function deleteCategory(
     res.status(400).json({ errors: [{ msg: "Invalid categoryId" }] });
   }
 }
+
+// Get a particular category
+export async function getSingleCategory(
+  req: express.Request,
+  res: express.Response
+) {
+  const id = req.params.categoryId;
+
+  const categoryRepository = getConnection().getRepository(Category);
+
+  const findCategoryById = await categoryRepository.findOne({ id });
+
+  if (!findCategoryById) {
+    return res.status(400).json({ errors: [{ msg: "Category not found" }] });
+  }
+
+  res.json({ msg: "category found", data: findCategoryById.name });
+}

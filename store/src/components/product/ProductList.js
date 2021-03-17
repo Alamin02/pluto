@@ -42,7 +42,7 @@ function ProductList() {
                     >
                       <CardItem
                         title={product.name}
-                        src={product.images.path}
+                        src={product.images[0].path}
                         price={Math.floor(
                           product.price -
                             (product.price * product.offer.discount) / 100

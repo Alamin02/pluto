@@ -15,6 +15,7 @@
   "scripts": {
     "start:frontend": "yarn workspace @pluto/store start",
     "start:backend": "yarn workspace @pluto/backend start",
-    "start:admin": "yarn workspace @pluto/admin start"
+    "start:admin": "yarn workspace @pluto/admin start",
+    "create:admin": "yarn workspace @pluto/backend create-admin"
   }
 }

@@ -2,8 +2,8 @@ import express = require("express");
 import multer = require("multer");
 import cookieParser = require("cookie-parser");
 import logger = require("morgan");
-import { createConnection } from "typeorm";
 import cors from "cors";
+import { connectDatabase } from "./utils/connect-db";
 
 const debug = require("debug")("app");
 
@@ -15,19 +15,8 @@ import {
   orderRouter,
   addressRouter,
   categoryRouter,
+  productImageRouter,
 } from "./route";
-
-import {
-  User,
-  Product,
-  Blog,
-  ProductImage,
-  Offer,
-  Order,
-  OrderedProduct,
-  Category,
-  Address,
-} from "./entity";
 
 const app = express();
 
@@ -45,23 +34,9 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
+app.use("/api/v1/images", productImageRouter);
 
-createConnection({
-  type: "sqlite",
-  database: "./db.sqlite",
-  entities: [
-    User,
-    Product,
-    Blog,
-    ProductImage,
-    Offer,
-    Category,
-    Order,
-    OrderedProduct,
-    Address,
-  ],
-  synchronize: true,
-});
+connectDatabase();
 
 app.use(function (
   err: any,
@@ -77,12 +52,13 @@ app.use(function (
   if (err instanceof multer.MulterError) {
     res.status(400).json({
       msg:
-        "key name must be productImages, only image file and maximum 4 images can be uploaded ",
+        " For creating Product key name must be productImages and For creating Blog key name must be blogImage, and, only image file and maximum 4 images can be uploaded ",
     });
   } else {
     res.status(err.status || 500);
 
     res.json({ errors: [{ msg: "Someting went wrong" }] });
+    res.json({ msg: err });
   }
 });
 

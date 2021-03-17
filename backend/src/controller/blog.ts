@@ -1,4 +1,5 @@
 import express = require("express");
+import path = require("path");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 import { Blog } from "../entity";
@@ -14,25 +15,33 @@ export async function createBlog(req: express.Request, res: express.Response) {
 
   const { title, author, description } = req.body;
 
-  try {
-    // Save to database
-    const blogRepository = getConnection().getRepository(Blog);
-    const duplicateCheck = await blogRepository.findOne({ title });
+  // Save to database
+  const blogRepository = getConnection().getRepository(Blog);
+  const duplicateCheck = await blogRepository.findOne({ title });
 
-    if (!duplicateCheck) {
+  if (!duplicateCheck) {
+    try {
+      let imagePath;
+      if (req.file) {
+        imagePath = req.file.path;
+      } else {
+        imagePath = "";
+      }
+
       const newBlog = new Blog();
       newBlog.title = title;
       newBlog.author = author;
       newBlog.description = description;
+      newBlog.path = imagePath;
 
       await blogRepository.save(newBlog);
-    } else {
-      res.json({ errors: [{ msg: "Blog already exists" }] });
+    } catch (err) {
+      res.json({ errors: err });
     }
-  } catch (err) {
-    res.json({ errors: err });
-    return;
+  } else {
+    res.json({ errors: [{ msg: "Blog already exists" }] });
   }
+
   res.json({ msg: "Blog created" });
 }
 
@@ -45,7 +54,7 @@ export async function getAllBlogs(req: express.Request, res: express.Response) {
   const perPage = parseInt(<string>req.query.perPage);
 
   const [blogs, blogCount] = await blogRepository.findAndCount({
-    select: ["id", "title", "author", "description"],
+    select: ["id", "title", "author", "description", "path"],
     take: page * perPage,
     skip: (page - 1) * perPage,
   });

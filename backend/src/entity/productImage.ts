@@ -8,6 +8,9 @@ export class ProductImage {
   id!: string;
 
   @Column("varchar")
+  originalname!: string;
+
+  @Column("varchar")
   path!: string;
 
   @ManyToOne(() => Product, (product) => product.images, {

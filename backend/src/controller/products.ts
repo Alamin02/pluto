@@ -69,10 +69,9 @@ export async function createProduct(
 
     if (files.length) {
       for (let i = 0; i < files.length; i++) {
-        const imagePath =
-          path.join(process.cwd(), "public", "images") + files[i].filename;
         const productImage = new ProductImage();
-        productImage.path = imagePath;
+        productImage.path = files[i].path;
+        productImage.originalname = files[i].originalname;
 
         const savedProductImage = await productImageRepository.save(
           productImage

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Badge } from "antd";
+import { Row, Col, Badge, Button } from "antd";
 import styles from "./ProductList.module.css";
 import appStyles from "../../App.module.css";
 import CardItem from "./ProductCard";
 import HeaderSection from "../styled-components/HeaderSection";
-import ButtonBlack from "../styled-components/ButtonBlack";
 import { agent } from "../../helpers/agent";
 
 function ProductList() {
@@ -69,7 +68,9 @@ function ProductList() {
         </Row>
         <div className={styles.buttonStyle}>
           <Link to="/products/list">
-            <ButtonBlack buttonText="View all products" />
+            <Button type="primary" style={{ textTransform: "uppercase" }}>
+              View all products
+            </Button>
           </Link>
         </div>
       </div>

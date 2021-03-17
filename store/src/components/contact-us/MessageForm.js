@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Typography } from "antd";
+import { Typography, Button } from "antd";
 import { Row, Col, Grid } from "antd";
 import { Input } from "antd";
 import styles from "./MessageForm.module.css";
-import ButtonBlack from "../styled-components/ButtonBlack";
 import classNames from "classnames";
 
 const { useBreakpoint } = Grid;
@@ -83,7 +82,10 @@ function MessageForm() {
           </div>
           <div className={styles.buttonStyle}>
             <Link to="#">
-              <ButtonBlack buttonText="Submit" className={styles.buttonStyle} />
+              <Button type="primary" style={{ textTransform: "uppercase" }}>
+                Submit
+              </Button>
+              {/* <ButtonBlack buttonText="Submit" className={styles.buttonStyle} /> */}
             </Link>
           </div>
         </Col>

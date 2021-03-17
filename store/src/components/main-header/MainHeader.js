@@ -1,19 +1,31 @@
 import React from "react";
-import { Typography } from "antd";
+import { Typography, Grid } from "antd";
 import "antd/dist/antd.css";
 import styles from "./MainHeader.module.css";
+import classNames from "classnames";
 
 const { Title } = Typography;
+const { useBreakpoint } = Grid;
 
-const myTitle = {
-  color: "#fff",
-  textTransform: "uppercase",
-};
 const MainHeader = ({ name, sub }) => {
+  const screens = useBreakpoint();
   return (
     <div className={styles.productDetails}>
-      <Title style={myTitle}>{name}</Title>
-      <Title level={5} style={myTitle}>
+      <Title
+        className={classNames(
+          { [styles.myTitle]: screens },
+          { [styles.myTitleXs]: screens.xs }
+        )}
+      >
+        {name}
+      </Title>
+      <Title
+        level={5}
+        className={classNames(
+          { [styles.myTitle]: screens },
+          { [styles.subTitleXs]: screens.xs }
+        )}
+      >
         {sub}
       </Title>
     </div>

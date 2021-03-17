@@ -15,12 +15,12 @@ export async function createBlog(req: express.Request, res: express.Response) {
 
   const { title, author, description } = req.body;
 
-  try {
-    // Save to database
-    const blogRepository = getConnection().getRepository(Blog);
-    const duplicateCheck = await blogRepository.findOne({ title });
+  // Save to database
+  const blogRepository = getConnection().getRepository(Blog);
+  const duplicateCheck = await blogRepository.findOne({ title });
 
-    if (!duplicateCheck) {
+  if (!duplicateCheck) {
+    try {
       const imagePath = req.file.path;
       const newBlog = new Blog();
       newBlog.title = title;
@@ -29,13 +29,13 @@ export async function createBlog(req: express.Request, res: express.Response) {
       newBlog.path = imagePath;
 
       await blogRepository.save(newBlog);
-    } else {
-      res.json({ errors: [{ msg: "Blog already exists" }] });
+    } catch (err) {
+      res.json({ errors: err });
     }
-  } catch (err) {
-    res.json({ errors: err });
-    return;
+  } else {
+    res.json({ errors: [{ msg: "Blog already exists" }] });
   }
+
   res.json({ msg: "Blog created" });
 }
 

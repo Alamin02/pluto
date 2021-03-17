@@ -26,13 +26,8 @@ export default function Products() {
 
   const fetchProducts = () => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/v1/products", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    agent
+      .getProducts(token)
       .then((res) => res.json())
       .then(({ data }) => {
         setProductData(data.products);

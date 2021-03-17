@@ -19,7 +19,7 @@ router.get("/", getAllProductsController);
 // Create product
 router.post(
   "/",
-  imageUpload,
+  imageUpload.array("productImages", 4),
   // authenticationMiddleware,
 
   [

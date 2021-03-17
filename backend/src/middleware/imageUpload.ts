@@ -16,7 +16,8 @@ const cloudinaryStorage = new CloudinaryStorage({
     folder: "product-images",
     // format: async (req, file) => "png", // supports promises as well
     public_id: (req: express.Request, file: any) =>
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname),
+      // file.fieldname + "-" + Date.now() + path.extname(file.originalname),
+      file.fieldname + "-" + Date.now(),
   },
 });
 
@@ -36,4 +37,4 @@ const fileFilter = (req: any, file: any, cb: any) => {
 export const imageUpload = multer({
   storage: cloudinaryStorage,
   fileFilter,
-}).array("productImages", 4);
+});

@@ -19,10 +19,9 @@ export async function createBlog(req: express.Request, res: express.Response) {
     // Save to database
     const blogRepository = getConnection().getRepository(Blog);
     const duplicateCheck = await blogRepository.findOne({ title });
-    const files = req.files as Express.Multer.File[];
-    console.log(files);
+
     if (!duplicateCheck) {
-      const imagePath = files[0].path;
+      const imagePath = req.file.path;
       const newBlog = new Blog();
       newBlog.title = title;
       newBlog.author = author;

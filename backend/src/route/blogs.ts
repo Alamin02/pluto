@@ -17,7 +17,7 @@ router.get("/", getAllBlogsController);
 // Create a blog
 router.post(
   "/",
-  imageUpload,
+  imageUpload.single("blogImage"),
   authenticationMiddleware,
   [
     body("title").not().isEmpty().withMessage("Blog title must not be empty"),

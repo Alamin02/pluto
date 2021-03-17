@@ -231,6 +231,16 @@ export const agent = {
     });
   },
 
+  // order
+  getOrders: () => {
+    return fetch(`${baseUrl}/orders`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
   getProductImage: (imageId) => {
     return fetch(`${baseUrl}/images/${imageId}`, {
       method: "get",

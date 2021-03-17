@@ -1,16 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity('blogs')
+@Entity("blogs")
 export class Blog {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column({ type: 'varchar', unique: true })
+  @Column({ type: "varchar", unique: true })
   title!: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: "varchar" })
   author!: string;
 
-  @Column('text')
+  @Column("text")
   description!: String;
+
+  @Column("varchar")
+  path!: string;
 }

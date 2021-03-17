@@ -1,7 +1,8 @@
 import React from "react";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
 import styles from "./Blogs.module.css";
-import ButtonBlack from "../styled-components/ButtonBlack";
+
 const BlogCard = ({
   imageSrc,
   description,
@@ -23,7 +24,13 @@ const BlogCard = ({
           </p>
           <p className={styles.textClip}>{description}</p>
           <Link to={`/blogs/${id}`}>
-            <ButtonBlack buttonText="Read More" onClick={() => onclick} />
+            <Button
+              type="primary"
+              style={{ textTransform: "uppercase" }}
+              onClick={() => onclick}
+            >
+              Read More
+            </Button>
           </Link>
         </div>
       </div>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Row, Col, Space } from "antd";
+import { Row, Col, Space, Button } from "antd";
 
-import { Image } from 'antd';
+import { Image } from "antd";
 import image1_large from "../../assets/images/watch-1-large.jpg";
 import image1 from "../../assets/images/watch-1-small.jpg";
 import image2 from "../../assets/images/watch-2-small.jpg";
@@ -13,7 +13,6 @@ import RatingAndDescription from "./RatingAndDescription";
 import PriceAndSummary from "./PriceAndSummary";
 import Category from "./Category";
 import AddToCart from "./AddToCart";
-import ButtonBlack from "../styled-components/ButtonBlack";
 
 const summaryText = `But I must explain to you how all this mistaken idea of ouncing and
 aising pain was born and I will give you a complete count of ut I must
@@ -50,7 +49,6 @@ function ProductView({ product }) {
     <div className={styles.container}>
       <Row justify="center">
         <Col sm={18} md={12} lg={12}>
-
           <div style={{ padding: "20px" }}>
             <div className={styles.imageWrapper}>
               <div className={styles.imgStyled}>
@@ -92,7 +90,9 @@ function ProductView({ product }) {
                 descriptionText={descriptionText}
               />
               <Category />
-              <ButtonBlack buttonText="Share this" />
+              <Button type="primary" style={{ textTransform: "uppercase" }}>
+                Share this
+              </Button>
             </Space>
           </div>
         </Col>

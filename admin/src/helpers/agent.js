@@ -188,9 +188,8 @@ export const agent = {
       method: "post",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(BlogData),
+      body: BlogData,
     });
   },
   editBlog: (blogData, token, blogId) => {
@@ -229,6 +228,16 @@ export const agent = {
         Authorization: `Bearer ${token}`,
       },
       body: productData,
+    });
+  },
+
+  // order
+  getOrders: () => {
+    return fetch(`${baseUrl}/orders`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   },
 

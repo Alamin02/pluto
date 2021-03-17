@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
 import CartItem from "../components/cart/CartItem";
-import ButtonBlack from "../components/styled-components/ButtonBlack";
 import HeaderSection from "../components/styled-components/HeaderSection";
 import styles from "./Cart.module.css";
 import appStyles from "../App.module.css";
@@ -41,10 +41,9 @@ function Cart() {
           <div>&nbsp;</div>
           <div>
             <Link to="checkOut">
-              <ButtonBlack
-                buttonText="Checkout"
-                className={styles.checkoutButton}
-              />
+              <Button type="primary" style={{ textTransform: "uppercase" }}>
+                Checkout
+              </Button>
             </Link>
           </div>
         </div>

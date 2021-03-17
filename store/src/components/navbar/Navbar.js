@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Menu, Grid } from "antd";
-import { Badge } from 'antd';
+import { Badge } from "antd";
 import {
   PhoneOutlined,
   ShoppingOutlined,
@@ -58,11 +58,7 @@ function Navbar() {
         <hr className={styles.navHr} />
 
         {/* bottom navbar */}
-        <Menu
-          mode="horizontal"
-          className={styles.navbarBottom}
-          style={{ backgroundColor: "#FAFAFA" }}
-        >
+        <Menu mode="horizontal" className={styles.navbarBottom}>
           <Menu.Item>
             <Link to={navbarMenus.homeUrl} style={menuStyle}>
               {navbarMenus.home}
@@ -106,7 +102,10 @@ function Navbar() {
 
           <Menu.Item>
             <Link to={navbarMenus.cartUrl} style={menuStyle}>
-              <Badge size="small" count={!!productList.length ? (productList.length) : 0}>
+              <Badge
+                size="small"
+                count={!!productList.length ? productList.length : 0}
+              >
                 {navbarMenus.cart}
               </Badge>
             </Link>

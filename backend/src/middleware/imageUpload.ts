@@ -3,7 +3,7 @@ import path from "path";
 const cloudinary = require("cloudinary").v2;
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import express = require("express");
-
+require("dotenv").config();
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -16,7 +16,8 @@ const cloudinaryStorage = new CloudinaryStorage({
     folder: "product-images",
     // format: async (req, file) => "png", // supports promises as well
     public_id: (req: express.Request, file: any) =>
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname),
+      // file.fieldname + "-" + Date.now() + path.extname(file.originalname),
+      file.fieldname + "-" + Date.now(),
   },
 });
 
@@ -36,4 +37,4 @@ const fileFilter = (req: any, file: any, cb: any) => {
 export const imageUpload = multer({
   storage: cloudinaryStorage,
   fileFilter,
-}).array("productImages", 4);
+});

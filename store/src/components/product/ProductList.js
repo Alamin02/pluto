@@ -1,34 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Badge } from "antd";
+import { Row, Col, Badge, Button } from "antd";
 import styles from "./ProductList.module.css";
 import appStyles from "../../App.module.css";
-import sampleProductData from "../../assets/data/sampleProductData";
 import CardItem from "./ProductCard";
 import HeaderSection from "../styled-components/HeaderSection";
-import ButtonBlack from "../styled-components/ButtonBlack";
-import ProductDetails from "../../pages/ProductDetails";
+import { agent } from "../../helpers/agent";
 
 function ProductList() {
+  const [productsData, setProductsData] = useState([]);
+
+  function fetchProducts() {
+    agent
+      .getProducts()
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setProductsData(data.products);
+        console.log(data.products);
+      });
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <div className={appStyles.containerMain}>
       <div className={styles.container}>
         <HeaderSection headerText="popular products" />
         <Row gutter={[16, 16]}>
-          {sampleProductData.map((item) => {
-            if (item.offer) {
+          {productsData.map((product) => {
+            if (product.offer) {
               return (
-                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={item.id}>
-                  <Link to={`/products/${item.id}`}>
-                    {/* <Badge.Ribbon color="red" text={item.offer}> */}
-                    <Badge.Ribbon color="red" text={item.offer + ` % off`}>
+                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
+                  <Link to={`/products/${product.id}`}>
+                    <Badge.Ribbon
+                      color="red"
+                      text={product.offer.discount + ` % off`}
+                    >
                       <CardItem
-                        title={item.productName}
-                        src={item.imageUrl}
+                        title={product.name}
+                        src={product.images[0].path}
                         price={Math.floor(
-                          item.price - (item.price * item.offer) / 100
+                          product.price -
+                            (product.price * product.offer.discount) / 100
                         )}
-                        discount={item.price}
+                        discount={product.price}
                       />
                     </Badge.Ribbon>
                   </Link>
@@ -36,12 +53,12 @@ function ProductList() {
               );
             } else {
               return (
-                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={item.id}>
-                  <Link to={`/products/${item.id}`}>
+                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
+                  <Link to={`/products/${product.id}`}>
                     <CardItem
-                      title={item.productName}
-                      src={item.imageUrl}
-                      price={item.price}
+                      title={product.name}
+                      src={product.images.length && product.images[0].path}
+                      price={product.price}
                     />
                   </Link>
                 </Col>
@@ -51,7 +68,9 @@ function ProductList() {
         </Row>
         <div className={styles.buttonStyle}>
           <Link to="/products/list">
-            <ButtonBlack buttonText="View all products" />
+            <Button type="primary" style={{ textTransform: "uppercase" }}>
+              View all products
+            </Button>
           </Link>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import express = require("express");
+import path = require("path");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 import { Blog } from "../entity";
@@ -18,12 +19,15 @@ export async function createBlog(req: express.Request, res: express.Response) {
     // Save to database
     const blogRepository = getConnection().getRepository(Blog);
     const duplicateCheck = await blogRepository.findOne({ title });
-
+    const files = req.files as Express.Multer.File[];
+    console.log(files);
     if (!duplicateCheck) {
+      const imagePath = files[0].path;
       const newBlog = new Blog();
       newBlog.title = title;
       newBlog.author = author;
       newBlog.description = description;
+      newBlog.path = imagePath;
 
       await blogRepository.save(newBlog);
     } else {
@@ -45,7 +49,7 @@ export async function getAllBlogs(req: express.Request, res: express.Response) {
   const perPage = parseInt(<string>req.query.perPage);
 
   const [blogs, blogCount] = await blogRepository.findAndCount({
-    select: ["id", "title", "author", "description"],
+    select: ["id", "title", "author", "description", "path"],
     take: page * perPage,
     skip: (page - 1) * perPage,
   });

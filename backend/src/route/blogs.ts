@@ -7,7 +7,7 @@ import {
   updateSingleBlogController,
   deleteBlogController,
 } from "../controller";
-import { authenticationMiddleware } from "../middleware";
+import { authenticationMiddleware, imageUpload } from "../middleware";
 
 const router = express.Router();
 
@@ -17,6 +17,7 @@ router.get("/", getAllBlogsController);
 // Create a blog
 router.post(
   "/",
+  imageUpload,
   authenticationMiddleware,
   [
     body("title").not().isEmpty().withMessage("Blog title must not be empty"),

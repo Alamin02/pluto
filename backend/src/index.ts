@@ -83,6 +83,7 @@ app.use(function (
     res.status(err.status || 500);
 
     res.json({ errors: [{ msg: "Someting went wrong" }] });
+    res.json({ msg: err });
   }
 });
 

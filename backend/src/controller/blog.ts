@@ -21,7 +21,13 @@ export async function createBlog(req: express.Request, res: express.Response) {
 
   if (!duplicateCheck) {
     try {
-      const imagePath = req.file.path;
+      let imagePath;
+      if (req.file) {
+        imagePath = req.file.path;
+      } else {
+        imagePath = "";
+      }
+
       const newBlog = new Blog();
       newBlog.title = title;
       newBlog.author = author;

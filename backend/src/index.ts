@@ -77,7 +77,7 @@ app.use(function (
   if (err instanceof multer.MulterError) {
     res.status(400).json({
       msg:
-        "key name must be productImages, only image file and maximum 4 images can be uploaded ",
+        " For creating Product key name must be productImages and For creating Blog key name must be blogImage, and, only image file and maximum 4 images can be uploaded ",
     });
   } else {
     res.status(err.status || 500);

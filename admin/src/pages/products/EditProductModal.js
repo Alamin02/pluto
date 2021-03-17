@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, Image } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Select, Image, Upload, Button } from "antd";
+import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
 
 const { Option } = Select;
@@ -14,8 +14,9 @@ const titleStyle = {
   display: "inline-block",
   position: "absolute",
   top: "40%",
-  width: "100%",
-  marginLeft: "70px",
+  width: "300px",
+  margin: "0px 20px"
+
 };
 
 export default function EditProductModal({
@@ -28,7 +29,6 @@ export default function EditProductModal({
   const [form] = Form.useForm();
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
-  const [warning, setWarning] = useState("");
 
   const deleteImage = (e) => {
     agent
@@ -199,7 +199,7 @@ export default function EditProductModal({
 
           {/* image */}
           <Form.Item label="Product Images" name="images">
-            {existingRecord ? (
+            {existingRecord &&
               existingRecord.images &&
               existingRecord.images.map((image) => (
                 <div key={image.id} style={imageStyle}>
@@ -212,7 +212,7 @@ export default function EditProductModal({
                     style={{
                       cursor: "pointer",
                       position: "absolute",
-                      marginLeft: "300px",
+                      marginLeft: "325px",
                       top: "40%",
                       fontSize: "25px",
                       color: "red",
@@ -220,9 +220,11 @@ export default function EditProductModal({
                   />
                 </div>
               ))
-            ) : (
-              <p>{warning}</p>
-            )}
+            }<br />
+            <Upload>
+              <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
+            </Upload>
+
           </Form.Item>
         </Form>
       </Modal>

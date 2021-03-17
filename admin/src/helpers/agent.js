@@ -43,7 +43,18 @@ export const agent = {
     });
   },
 
-  // product
+  // get all products
+  getProducts: (token) => {
+    return fetch("http://localhost:4000/api/v1/products", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  },
+
+  // update product
   updateProduct: (productId, productData, token) => {
     return fetch(`${baseUrl}/users/products/${productId}`, {
       method: "get",
@@ -220,4 +231,23 @@ export const agent = {
       body: productData,
     });
   },
+
+  getProductImage: (imageId) => {
+    return fetch(`${baseUrl}/images/${imageId}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  deleteimage: (imageId) => {
+    return fetch(`${baseUrl}/images/${imageId}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 };
+

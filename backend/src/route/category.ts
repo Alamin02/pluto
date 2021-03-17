@@ -8,6 +8,7 @@ import {
   updateCategoryController,
   updateSubCategoryController,
   deleteCategoryController,
+  getSingleCategoryController,
 } from "../controller";
 import { authenticationMiddleware } from "../middleware";
 router.get("/", categoryController);
@@ -38,5 +39,7 @@ router.delete(
   authenticationMiddleware,
   deleteCategoryController
 );
+
+router.get("/:categoryId", getSingleCategoryController);
 
 export default router;

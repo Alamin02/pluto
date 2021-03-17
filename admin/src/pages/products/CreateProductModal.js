@@ -36,11 +36,10 @@ export default function ProductForm({
     })
       .then((res) => res.json())
       .then(({ data }) => {
-        // console.log(data);
         setCategoryOptions(data);
       });
 
-    agent.getOffers().then(({ data }) => {
+    agent.getOffers().then((data) => {
       setOfferOptions(data);
     });
   }, []);
@@ -89,7 +88,6 @@ export default function ProductForm({
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
-          // console.log(form.getFieldValue("description"));
           const token = localStorage.getItem("token");
 
           form
@@ -104,6 +102,7 @@ export default function ProductForm({
               formData.append("description", values.description);
 
               let categoryArray = values.categoryId;
+
               if (categoryArray.length === 2) {
                 formData.append("categoryId", values.categoryId[1]);
               } else {
@@ -113,8 +112,6 @@ export default function ProductForm({
               productImages.forEach((productImage) => {
                 formData.append("productImages", productImage);
               });
-
-              console.log([...formData.values()]);
 
               agent
                 .createProduct(formData, token)

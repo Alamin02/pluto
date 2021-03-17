@@ -6,7 +6,6 @@ import appStyles from "../../App.module.css";
 import CardItem from "./ProductCard";
 import HeaderSection from "../styled-components/HeaderSection";
 import ButtonBlack from "../styled-components/ButtonBlack";
-import ProductDetails from "../../pages/ProductDetails";
 import { agent } from "../../helpers/agent";
 
 function ProductList() {
@@ -59,7 +58,7 @@ function ProductList() {
                   <Link to={`/products/${product.id}`}>
                     <CardItem
                       title={product.name}
-                      src={product.images.path}
+                      src={product.images.length && product.images[0].path}
                       price={product.price}
                     />
                   </Link>

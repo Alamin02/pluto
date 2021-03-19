@@ -51,7 +51,18 @@ export const agent = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
+  },
+
+  // create product
+  createProduct: (productData, token) => {
+    return fetch(`${baseUrl}/products`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: productData,
+    });
   },
 
   // update product
@@ -192,14 +203,13 @@ export const agent = {
       body: BlogData,
     });
   },
-  editBlog: (blogData, token, blogId) => {
+  editBlog: (BlogData, token, blogId) => {
     return fetch(`${baseUrl}/blogs/${blogId}`, {
       method: "put",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(blogData),
+      body: BlogData,
     });
   },
   deleteBlog: (token, blogId) => {
@@ -218,16 +228,6 @@ export const agent = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-    });
-  },
-
-  createProduct: (productData, token) => {
-    return fetch(`${baseUrl}/products`, {
-      method: "post",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: productData,
     });
   },
 
@@ -257,6 +257,5 @@ export const agent = {
         "Content-Type": "application/json",
       },
     });
-  }
+  },
 };
-

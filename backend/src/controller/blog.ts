@@ -12,7 +12,6 @@ export async function createBlog(req: express.Request, res: express.Response) {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
   const { title, author, description } = req.body;
 
   // Save to database
@@ -99,12 +98,18 @@ export async function updateSingleBlog(
 
   const { title, author, description } = req.body;
   const blogRepository = getConnection().getRepository(Blog);
-
   try {
+    let imagePath;
+    if (req.file) {
+      imagePath = req.file.path;
+    } else {
+      imagePath = "";
+    }
     const newBlog = new Blog();
     newBlog.title = title;
     newBlog.author = author;
     newBlog.description = description;
+    newBlog.path = imagePath;
 
     await blogRepository.update({ id: req.params.blogId }, newBlog);
   } catch (err) {

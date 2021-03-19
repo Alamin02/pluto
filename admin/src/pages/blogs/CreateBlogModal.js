@@ -116,7 +116,7 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
           >
             <Input.TextArea placeholder="enter description" />
           </Form.Item>
-          <Form.Item label="Dragger">
+          <Form.Item label="blogImage">
             <Form.Item
               name="blogImage"
               valuePropName="fileList"
@@ -125,7 +125,7 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
               rules={[
                 {
                   required: true,
-                  message: "Please input product photo",
+                  message: "Please input blogImage",
                 },
               ]}
             >

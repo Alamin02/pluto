@@ -36,6 +36,7 @@ router.get("/:blogId", getSingleBlogController);
 // Update blog
 router.put(
   "/:blogId",
+  imageUpload.single("blogImage"),
   authenticationMiddleware,
   [
     body("title").not().isEmpty().withMessage("Blog title must not be empty"),

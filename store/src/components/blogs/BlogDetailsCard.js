@@ -25,7 +25,8 @@ const BlogDetailsCard = ({ blog }) => (
       </ul>
     </div>
     <div className={styles.imageContainer}>
-      <img className={styles.imageStyled} src={blog.imageSrc} alt="demo" />
+      <img className={styles.imageStyled} src={blog.path} alt="demo" />
+      {/* <img className={styles.imageStyled} src={blog.imageSrc} alt="demo" /> */}
     </div>
     <p className={styles.descriptionText}>{blog.description}</p>
     <Link to="/blogs">

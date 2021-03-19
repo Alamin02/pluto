@@ -10,4 +10,12 @@ export const agent = {
       },
     });
   },
+  getBlogs: () => {
+    return fetch(`${baseUrl}/blogs`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

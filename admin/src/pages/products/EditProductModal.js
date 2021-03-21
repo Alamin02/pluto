@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, Image, Upload, Button } from "antd";
+import { Modal, Form, Input, Select, Image, Upload, Button, message } from "antd";
 import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
 
@@ -29,6 +29,7 @@ export default function EditProductModal({
   const [form] = Form.useForm();
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
+  const [productImages, setProductImages] = useState([]);
 
   const deleteImage = (e) => {
     agent
@@ -37,6 +38,15 @@ export default function EditProductModal({
       .then(({ data }) => {
         refetch();
       });
+  };
+
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
   };
 
   useEffect(() => {
@@ -72,6 +82,27 @@ export default function EditProductModal({
     }
   }, [existingRecord]);
 
+  const handleUpload = async (info) => {
+    const { status } = info.file;
+    if (status !== "uploading") {
+      console.log(info.fileList);
+      const formData = new FormData();
+      productImages.forEach((productImage) => {
+        formData.append("productImages", productImage);
+      });
+      agent
+        .createProductImage(formData, existingRecord.id)
+        .then((res) => console.log(res))
+        .then(console.log)
+    }
+    if (status === "done") {
+      message.success(`${info.file.name} file uploaded successfully.`);
+
+    } else if (status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -86,8 +117,28 @@ export default function EditProductModal({
           form
             .validateFields()
             .then((values) => {
+              console.log(values)
+              const formData = new FormData();
+
+              formData.append("name", values.name);
+              formData.append("offerId", values.offer);
+              formData.append("price", values.price);
+              formData.append("summary", values.summary);
+              formData.append("description", values.description);
+
+              let categoryArray = values.categoryId;
+
+              if (categoryArray.length === 2) {
+                formData.append("categoryId", values.categoryId[1]);
+              } else {
+                formData.append("categoryId", values.categoryId[0]);
+              }
+
+              productImages.forEach((productImage) => {
+                formData.append("productImages", productImage);
+              });
               agent
-                .editProduct(values, token, existingRecord.id)
+                .editProduct(existingRecord.id, values, token)
                 .then((res) => res.json());
 
               form.resetFields();
@@ -198,7 +249,13 @@ export default function EditProductModal({
           </Form.Item>
 
           {/* image */}
-          <Form.Item label="Product Images" name="images">
+          <Form.Item
+            label="Product Images"
+            name="productImages"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+            noStyle
+          >
             {existingRecord &&
               existingRecord.images &&
               existingRecord.images.map((image) => (
@@ -221,7 +278,16 @@ export default function EditProductModal({
                 </div>
               ))
             }<br />
-            <Upload>
+            <Upload
+              name="files"
+              onChange={handleUpload}
+              beforeUpload={(file, fileList) => {
+                setProductImages(fileList);
+                return false;
+              }}
+              accept="image/*"
+              multiple={true}
+            >
               <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
             </Upload>
 

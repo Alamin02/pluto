@@ -245,6 +245,7 @@ export default function ProductForm({
                   return false;
                 }}
                 accept="image/*"
+                multiple={true}
               >
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />

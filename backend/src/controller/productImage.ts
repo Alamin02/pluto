@@ -1,6 +1,5 @@
 import express = require("express");
 import { getConnection } from "typeorm";
-import { validationResult } from "express-validator";
 import { ProductImage, Product } from "../entity";
 
 // @POST //v1/api/images/:productId
@@ -9,28 +8,29 @@ export async function createProductImage(
   req: express.Request,
   res: express.Response
 ) {
-  const id = req.params.productId;
+  const id = req.body.productId;
   const productsRepository = getConnection().getRepository(Product);
-  const findProductById: any = await productsRepository.findOne({ id });
+  const product = await productsRepository.findOne({ id });
   const productImageRepository = getConnection().getRepository(ProductImage);
 
   const createProductImage = [];
   const files = req.files as Express.Multer.File[];
   console.log(files);
 
-  if (files.length) {
+  if (files.length && product) {
     for (let i = 0; i < files.length; i++) {
       const productImage = new ProductImage();
       productImage.path = files[i].path;
       productImage.originalname = files[i].originalname;
+      productImage.product = product;
 
       const savedProductImage = await productImageRepository.save(productImage);
       createProductImage.push(savedProductImage);
-      // findProductById.images.push(savedProductImage);
     }
-    console.log(findProductById);
+
+    res.json({ msg: "Image added" });
   } else {
-    return res.json({ errors: [{ msg: "Image not found" }] });
+    return res.status(400).json({ errors: [{ msg: "Image not found" }] });
   }
 }
 

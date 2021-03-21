@@ -51,7 +51,7 @@ export const agent = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
   },
 
   // update product
@@ -241,10 +241,10 @@ export const agent = {
     });
   },
 
-  createProductImage: (data, productId) => {
-    return fetch(`${baseUrl}/images/${productId}`, {
+  createProductImage: (data) => {
+    return fetch(`${baseUrl}/images/`, {
       method: "post",
-      body: data
+      body: data,
     });
   },
 
@@ -264,6 +264,5 @@ export const agent = {
         "Content-Type": "application/json",
       },
     });
-  }
+  },
 };
-

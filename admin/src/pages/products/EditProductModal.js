@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, Image, Upload, Button, message } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Image,
+  Upload,
+  Button,
+  message,
+} from "antd";
 import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
 
@@ -15,8 +24,7 @@ const titleStyle = {
   position: "absolute",
   top: "40%",
   width: "300px",
-  margin: "0px 20px"
-
+  margin: "0px 20px",
 };
 
 export default function EditProductModal({
@@ -90,14 +98,16 @@ export default function EditProductModal({
       productImages.forEach((productImage) => {
         formData.append("productImages", productImage);
       });
+
+      formData.append("productId", existingRecord.id);
+
       agent
-        .createProductImage(formData, existingRecord.id)
+        .createProductImage(formData)
         .then((res) => console.log(res))
-        .then(console.log)
+        .then(console.log);
     }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
-
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
@@ -117,7 +127,7 @@ export default function EditProductModal({
           form
             .validateFields()
             .then((values) => {
-              console.log(values)
+              console.log(values);
               const formData = new FormData();
 
               formData.append("name", values.name);
@@ -276,8 +286,8 @@ export default function EditProductModal({
                     }}
                   />
                 </div>
-              ))
-            }<br />
+              ))}
+            <br />
             <Upload
               name="files"
               onChange={handleUpload}
@@ -290,7 +300,6 @@ export default function EditProductModal({
             >
               <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
             </Upload>
-
           </Form.Item>
         </Form>
       </Modal>

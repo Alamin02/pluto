@@ -12,7 +12,7 @@ const router = express.Router();
 
 // Get all product images list
 router.post(
-  "/productId",
+  "/",
   imageUpload.array("productImages", 4),
   createProductImageController
 );

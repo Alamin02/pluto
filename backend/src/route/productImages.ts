@@ -4,10 +4,18 @@ import {
   getAllProductsImagesController,
   getSingleImageController,
   deleteProductImageController,
+  createProductImageController,
 } from "../controller";
-import { authenticationMiddleware } from "../middleware";
+import { authenticationMiddleware, imageUpload } from "../middleware";
 
 const router = express.Router();
+
+// Get all product images list
+router.post(
+  "/productId",
+  imageUpload.array("productImages", 4),
+  createProductImageController
+);
 
 // Get all product images list
 router.get("/", getAllProductsImagesController);

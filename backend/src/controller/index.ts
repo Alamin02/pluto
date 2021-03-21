@@ -61,4 +61,5 @@ export {
   getAllProductsImages as getAllProductsImagesController,
   getSingleImage as getSingleImageController,
   deleteProductImage as deleteProductImageController,
+  createProductImage as createProductImageController,
 } from "./productImage";

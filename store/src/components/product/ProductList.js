@@ -12,7 +12,7 @@ function ProductList() {
 
   function fetchProducts() {
     agent
-      .getProducts()
+      .getProducts("?perPage=8")
       .then((res) => res.json())
       .then(({ data }) => {
         setProductsData(data.products);

@@ -15,8 +15,10 @@ const ProductsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   function fetchProducts() {
+    let queryString = `?page=${currentPage}`;
+
     agent
-      .getProducts()
+      .getProducts(queryString)
       .then((res) => res.json())
       .then(({ data }) => {
         setProductsData(data.products);
@@ -32,7 +34,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div>

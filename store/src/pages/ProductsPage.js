@@ -17,6 +17,11 @@ import image6 from "../assets/images/casual.jpg";
 import image7 from "../assets/images/denim-tshirt.jpg";
 import image8 from "../assets/images/full-black.jpg";
 
+const rowStyle = {
+    maxWidth: '1200px',
+    margin: '20px auto',
+    padding: '0px 10px'
+}
 
 const item = [
     {
@@ -76,9 +81,9 @@ const ProductsPage = () => {
             <MainHeader name='popular list' sub='home - shop - products' />
             <ProductMenu />
             <ProductOption />
-            <Row gutter={[16, 16]} style={{ maxWidth: '1200px', margin: '20px auto' }}>
+            <Row gutter={[16, 16]} style={rowStyle}>
                 {item.map((item) => (
-                    <Col span={6} key={item.id}>
+                    <Col span={6} key={item.id} xs={24} sm={12} md={8} xl={6}>
                         <CardItem
                             title={item.title}
                             src={item.image}

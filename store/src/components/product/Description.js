@@ -2,7 +2,8 @@ import React from 'react';
 const descriptionStyle = {
     display: 'inline-block',
     fontSize: '20px',
-    marginRight: '6px'
+    marginRight: '6px',
+    marginLeft: '5px'
 }
 const Description = ({ name }) => {
     return (

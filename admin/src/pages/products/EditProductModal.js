@@ -27,6 +27,15 @@ const titleStyle = {
   margin: "0px 20px",
 };
 
+const deleteButtonStyle = {
+  cursor: "pointer",
+  position: "absolute",
+  marginLeft: "325px",
+  top: "40%",
+  fontSize: "25px",
+  color: "red",
+}
+
 export default function EditProductModal({
   visible,
   onCreate,
@@ -124,6 +133,10 @@ export default function EditProductModal({
         onCancel={onCancel}
         onOk={() => {
           const token = localStorage.getItem("token");
+          agent
+            .getSingleProducts(token, existingRecord.id)
+            .then(res => res.json())
+            .then(console.log)
           form
             .validateFields()
             .then((values) => {
@@ -269,22 +282,17 @@ export default function EditProductModal({
             {existingRecord &&
               existingRecord.images &&
               existingRecord.images.map((image) => (
-                <div key={image.id} style={imageStyle}>
-                  <Image width={100} src={image.path} />
-                  <div style={titleStyle}>
-                    <p>{image.originalname}</p>
+                <div key={image.id}>
+                  <div style={imageStyle}>
+                    <Image width={100} height={136} src={image.path} />
+                    <div style={titleStyle}>
+                      <p>{image.originalname}</p>
+                    </div>
+                    <CloseCircleOutlined
+                      onClick={deleteImage}
+                      style={deleteButtonStyle}
+                    />
                   </div>
-                  <CloseCircleOutlined
-                    onClick={deleteImage}
-                    style={{
-                      cursor: "pointer",
-                      position: "absolute",
-                      marginLeft: "325px",
-                      top: "40%",
-                      fontSize: "25px",
-                      color: "red",
-                    }}
-                  />
                 </div>
               ))}
             <br />

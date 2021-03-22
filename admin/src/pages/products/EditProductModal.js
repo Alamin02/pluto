@@ -133,10 +133,6 @@ export default function EditProductModal({
         onCancel={onCancel}
         onOk={() => {
           const token = localStorage.getItem("token");
-          agent
-            .getSingleProducts(token, existingRecord.id)
-            .then(res => res.json())
-            .then(console.log)
           form
             .validateFields()
             .then((values) => {

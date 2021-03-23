@@ -5,6 +5,7 @@ import {
   getAllBlogsController,
   getSingleBlogController,
   updateSingleBlogController,
+  deleleBlogImageController,
   deleteBlogController,
 } from "../controller";
 import { authenticationMiddleware, imageUpload } from "../middleware";
@@ -49,6 +50,7 @@ router.put(
   updateSingleBlogController
 );
 
+router.delete("/blogImage/:blogId", deleleBlogImageController);
 // Delete blog
 router.delete("/:blogId", authenticationMiddleware, deleteBlogController);
 

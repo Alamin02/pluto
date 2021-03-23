@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Row, Col } from "antd";
 import { useParams } from "react-router-dom";
 import sampleBlogList from "../components/blogs/sampleBlogList";
 import BlogDetailsCard from "../components/blogs/BlogDetailsCard";
@@ -32,7 +33,11 @@ export default function BlogDetails() {
 
   return (
     <div className={appStyles.containerMain}>
-      <BlogDetailsCard blog={blog} />
+      <Row justify="center">
+        <Col sm={24} md={24} lg={18}>
+          <BlogDetailsCard blog={blog} />
+        </Col>
+      </Row>
     </div>
   );
 }

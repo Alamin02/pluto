@@ -249,6 +249,14 @@ export const agent = {
       },
     });
   },
+  deleteBlogImage: (blogId) => {
+    return fetch(`${baseUrl}/blogs/blogImage/${blogId}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 
   deleteimage: (imageId) => {
     return fetch(`${baseUrl}/images/${imageId}`, {

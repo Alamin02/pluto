@@ -102,14 +102,17 @@ export async function updateSingleBlog(
     let imagePath;
     if (req.file) {
       imagePath = req.file.path;
-    } else {
-      imagePath = "";
     }
+    //  else {
+    //   imagePath = "";
+    // }
     const newBlog = new Blog();
     newBlog.title = title;
     newBlog.author = author;
     newBlog.description = description;
-    newBlog.path = imagePath;
+    if (imagePath) {
+      newBlog.path = imagePath;
+    }
 
     await blogRepository.update({ id: req.params.blogId }, newBlog);
   } catch (err) {

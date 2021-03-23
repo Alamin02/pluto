@@ -41,12 +41,13 @@ export default function EditBlogModal({
   const [warning, setWarning] = useState("");
 
   const deleteImage = (e) => {
-    // agent
-    //   .deleteimage(existingRecord.id)
-    //   .then((res) => res.json())
-    //   .then(({ data }) => {
-    //     refetch();
-    //   });
+    agent
+      .deleteBlogImage(existingRecord.id)
+      .then((res) => res.json())
+      .then(({ msg }) => {
+        console.log(msg);
+        refetch();
+      });
   };
   const handleUpload = async (info) => {
     const { status } = info.file;
@@ -171,12 +172,12 @@ export default function EditBlogModal({
               valuePropName="fileList"
               getValueFromEvent={normFile}
               noStyle
-              rules={[
-                {
-                  required: true,
-                  message: "Please input blogImage",
-                },
-              ]}
+              // rules={[
+              //   {
+              //     required: true,
+              //     message: "Please input blogImage",
+              //   },
+              // ]}
             >
               <Upload.Dragger
                 name="files"

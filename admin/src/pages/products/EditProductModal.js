@@ -48,9 +48,9 @@ export default function EditProductModal({
   const [offerOptions, setOfferOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
 
-  const deleteImage = (e) => {
+  const deleteImage = (productId) => {
     agent
-      .deleteimage(existingRecord.images[0].id)
+      .deleteimage(productId)
       .then((res) => res.json())
       .then(({ data }) => {
         refetch();
@@ -285,7 +285,7 @@ export default function EditProductModal({
                       <p>{image.originalname}</p>
                     </div>
                     <CloseCircleOutlined
-                      onClick={deleteImage}
+                      onClick={() => deleteImage(image.id)}
                       style={deleteButtonStyle}
                     />
                   </div>

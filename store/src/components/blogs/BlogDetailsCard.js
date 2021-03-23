@@ -16,11 +16,13 @@ const BlogDetailsCard = ({ blog }) => (
         </li>
         <li>
           <b>
-            <CalendarOutlined /> {blog.date}
+            <CalendarOutlined /> {new Date().toDateString()}
+            {/* <CalendarOutlined /> {blog.date} */}
           </b>
         </li>
         <li>
-          <b>Category: {blog.category}</b>
+          {/* <b>Category: {blog.category}</b> */}
+          <b>Category: {"Web design"}</b>
         </li>
       </ul>
     </div>

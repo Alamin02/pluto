@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import { useParams } from "react-router-dom";
-import sampleBlogList from "../components/blogs/sampleBlogList";
+// import sampleBlogList from "../components/blogs/sampleBlogList";
 import BlogDetailsCard from "../components/blogs/BlogDetailsCard";
 import Error404 from "../components/error-404/Error404";
 import appStyles from "../App.module.css";

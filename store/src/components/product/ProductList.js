@@ -67,7 +67,13 @@ function ProductList() {
           })}
         </Row>
         <div className={styles.buttonStyle}>
-          <Link to="/products/list">
+          <Link
+            to={{
+              pathname: "/products/list",
+              search: "?page=1",
+              state: { fromDashboard: true },
+            }}
+          >
             <Button type="primary" style={{ textTransform: "uppercase" }}>
               View all products
             </Button>

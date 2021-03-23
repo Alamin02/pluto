@@ -4,15 +4,22 @@ import { Row, Col, Badge, Pagination } from "antd";
 import { agent } from "../helpers/agent";
 import appStyles from "../App.module.css";
 
+import * as qs from "query-string";
+
 import MainHeader from "../components/main-header/MainHeader";
 import ProductMenu from "../components/product/ProductMenu";
 import ProductOption from "../components/product/option/ProductOption";
 import CardItem from "../components/product/ProductCard";
 
+// const queryString = require('query-string');
+
 const ProductsPage = () => {
   const [productsData, setProductsData] = useState([]);
   const [totalProductsInfo, setTotalProductsInfo] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const parsed = qs.parse(window.location.search);
+  console.log("parsed", parsed.page);
 
   function fetchProducts() {
     let queryString = `?page=${currentPage}`;
@@ -84,7 +91,6 @@ const ProductsPage = () => {
 
         <Pagination
           style={{ display: "flex", justifyContent: "center", margin: "50px" }}
-          showSizeChanger
           showQuickJumper
           defaultCurrent={1}
           current={currentPage}

@@ -136,26 +136,7 @@ export default function EditProductModal({
           form
             .validateFields()
             .then((values) => {
-              console.log(values);
-              const formData = new FormData();
-
-              formData.append("name", values.name);
-              formData.append("offerId", values.offer);
-              formData.append("price", values.price);
-              formData.append("summary", values.summary);
-              formData.append("description", values.description);
-
-              let categoryArray = values.categoryId;
-
-              if (categoryArray.length === 2) {
-                formData.append("categoryId", values.categoryId[1]);
-              } else {
-                formData.append("categoryId", values.categoryId[0]);
-              }
-
-              productImages.forEach((productImage) => {
-                formData.append("productImages", productImage);
-              });
+              console.log("values :" + values);
               agent
                 .editProduct(existingRecord.id, values, token)
                 .then((res) => res.json());

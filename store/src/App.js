@@ -14,6 +14,7 @@ import Footer from "./components/footer/Footer";
 import Error404 from "./components/error-404/Error404";
 import BlogDetails from "./pages/BlogDetails";
 
+import Registration from "./pages/registration/Registration";
 import Login from "./pages/login/Login";
 
 import Offers from "./pages/Offers";
@@ -38,6 +39,7 @@ function App() {
         <Route path="/offers" component={Offers} />
         <Route path="/contact" component={ContactUs} />
         <Route path="/login" component={Login} exact/>
+        <Route path="/registration" component={Registration} exact/>
         <Route path="/forgetPassword" component={ForgetPasswordPage} exact />
         <Route path="/resetPassword" component={ResetPasswordPage} exact />
         <Route component={Error404} />

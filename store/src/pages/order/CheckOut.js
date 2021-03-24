@@ -1,11 +1,13 @@
 import React from "react";
 import { Col, Row, Collapse } from "antd";
-import CheckOutForm from "../components/check-out/CheckOutForm";
-import CheckOutRegister from "../components/check-out/CheckOutRegister";
-import CheckOutCollapsible from "../components/check-out/CheckOutCollapsible";
-import styles from "../components/check-out/CheckOut.module.css";
-import HeaderSection from "../components/styled-components/HeaderSection";
-import appStyles from "../App.module.css";
+
+import CheckOutForm from "../../components/check-out/CheckOutForm";
+import CheckOutRegister from "../../components/check-out/CheckOutRegister";
+import CheckOutCollapsible from "../../components/check-out/CheckOutCollapsible";
+import styles from "../../components/check-out/CheckOut.module.css";
+import HeaderSection from "../../components/styled-components/HeaderSection";
+import MainContainer from "../../components/layout/MainContainer";
+
 const { Panel } = Collapse;
 
 const DescriptionCollapse = ({ title, k, register, form }) => {
@@ -26,7 +28,7 @@ const DescriptionCollapse = ({ title, k, register, form }) => {
 const title = <h4 style={{ fontWeight: "600" }}>01.CHECK OUT METHOD</h4>;
 export default function CheckOut() {
   return (
-    <div className={appStyles.containerMain}>
+    <MainContainer>
       <div className={styles.container}>
         <HeaderSection headerText="check out" />
         <Row justify="center">
@@ -43,6 +45,6 @@ export default function CheckOut() {
           </Col>
         </Row>
       </div>
-    </div>
+    </MainContainer>
   );
 }

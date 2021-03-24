@@ -16,7 +16,6 @@ function ContactUs() {
   return (
     <div className={appStyles.containerMain}>
       <div style={container}>
-        {/* <MainHeader name="Get In Touch" sub="" /> */}
         <HeaderSection headerText="get in touch" />
         <div style={getInTouchContainer}>
           <GetInTouch />

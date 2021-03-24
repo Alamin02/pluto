@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import MainHeader from "../components/main-header/MainHeader";
-import ProductView from "../components/product-view/ProductView";
 
-import productList from "../assets/data/sampleProductData";
-import Error404 from "../components/error-404/Error404";
-import HeaderSection from "../components/styled-components/HeaderSection";
-import { agent } from "../helpers/agent";
-import appStyles from "../App.module.css";
-
-const container = {
-  marginTop: "20px",
-};
+import ProductView from "../../components/product-view/ProductView";
+import Error404 from "../../components/error-404/Error404";
+import HeaderSection from "../../components/styled-components/HeaderSection";
+import { agent } from "../../helpers/agent";
+import MainContainer from "../../components/layout/MainContainer";
 
 const ProductDetails = () => {
   const [productsData, setProductsData] = useState([]);
@@ -36,13 +30,13 @@ const ProductDetails = () => {
   if (!product) return <Error404 />;
 
   return (
-    <div className={appStyles.containerMain}>
-      <div style={container}>
+    <MainContainer>
+      <div style={{ marginTop: "20px" }}>
         {/* <MainHeader name="product details" sub="home ⋅ shop ⋅ products" /> */}
         <HeaderSection headerText="product details" />
         <ProductView product={product} />
       </div>
-    </div>
+    </MainContainer>
   );
 };
 

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Badge, Button } from "antd";
+
 import styles from "./ProductList.module.css";
-import appStyles from "../../App.module.css";
+import MainContainer from "../layout/MainContainer";
 import CardItem from "./ProductCard";
 import HeaderSection from "../styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
@@ -25,7 +26,7 @@ function ProductList() {
   }, []);
 
   return (
-    <div className={appStyles.containerMain}>
+    <MainContainer>
       <div className={styles.container}>
         <HeaderSection headerText="popular products" />
         <Row gutter={[16, 16]}>
@@ -67,14 +68,14 @@ function ProductList() {
           })}
         </Row>
         <div className={styles.buttonStyle}>
-          <Link to="/products/list">
+          <Link to="/products">
             <Button type="primary" style={{ textTransform: "uppercase" }}>
               View all products
             </Button>
           </Link>
         </div>
       </div>
-    </div>
+    </MainContainer>
   );
 }
 

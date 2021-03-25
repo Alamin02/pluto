@@ -116,7 +116,7 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
           >
             <Input.TextArea placeholder="enter description" />
           </Form.Item>
-          <Form.Item label="blogImage">
+          <Form.Item label="BlogImage">
             <Form.Item
               name="blogImage"
               valuePropName="fileList"

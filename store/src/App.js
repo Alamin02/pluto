@@ -13,8 +13,10 @@ import BlogPage from "./pages/BlogPage";
 import Footer from "./components/footer/Footer";
 import Error404 from "./components/error-404/Error404";
 import BlogDetails from "./pages/BlogDetails";
-import RegistrationPage from "./pages/Registration";
-import LoginPage from "./pages/Login";
+
+import Registration from "./pages/registration/Registration";
+import Login from "./pages/login/Login";
+
 import Offers from "./pages/Offers";
 import ContactUs from "./pages/ContactUs";
 import ForgetPasswordPage from "./pages/ForgetPassword";
@@ -34,11 +36,10 @@ function App() {
         <Route path="/checkOut" component={CheckOut} exact />
         <Route path="/blogs" component={BlogPage} exact />
         <Route path="/blogs/:id" component={BlogDetails} exact />
-        <Route path="/registration" component={RegistrationPage} exact />
-        <Route path="/login" component={LoginPage} />
         <Route path="/offers" component={Offers} />
         <Route path="/contact" component={ContactUs} />
-        <Route path="/login" component={LoginPage} exact/>
+        <Route path="/login" component={Login} exact/>
+        <Route path="/registration" component={Registration} exact/>
         <Route path="/forgetPassword" component={ForgetPasswordPage} exact />
         <Route path="/resetPassword" component={ResetPasswordPage} exact />
         <Route component={Error404} />

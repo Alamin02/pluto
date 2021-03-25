@@ -5,8 +5,13 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import Error404 from "./components/error-404/Error404";
-
 import Home from "./pages/Home";
+import BlogDetails from "./pages/BlogDetails";
+
+import Registration from "./pages/registration/Registration";
+import Login from "./pages/login/Login";
+
+import Offers from "./pages/Offers";
 import ContactUs from "./pages/ContactUs";
 
 import ForgetPasswordPage from "./pages/auth/ForgetPassword";
@@ -34,7 +39,6 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/" component={Home} exact />
-
         <Route path="/registration" component={RegistrationPage} exact />
         <Route path="/login" component={LoginPage} />
         <Route path="/forgetPassword" component={ForgetPasswordPage} exact />

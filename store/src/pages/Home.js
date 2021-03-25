@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { Button } from "antd";
 
 import MainContainer from "../components/layout/MainContainer";
 import Slider from "../components/slider/Slider";
@@ -12,6 +14,19 @@ export default function Home() {
       <MainContainer>
         <FeaturedProducts />
         <ProductList />
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <Link
+            to={{
+              pathname: "/products",
+              search: "?page=1",
+              state: { fromDashboard: true },
+            }}
+          >
+            <Button type="primary" style={{ textTransform: "uppercase" }}>
+              View all products
+            </Button>
+          </Link>
+        </div>
       </MainContainer>
     </div>
   );

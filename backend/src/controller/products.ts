@@ -113,7 +113,12 @@ export async function getProduct(req: express.Request, res: express.Response) {
   const id = req.params.productId;
 
   const productRepository = getConnection().getRepository(Product);
-  const findProductById = await productRepository.findOne({ id });
+  const findProductById = await productRepository.findOne(
+    {
+      id,
+    },
+    { relations: ["images"] }
+  );
 
   if (!findProductById) {
     return res.status(400).json({ errors: [{ msg: "Product not found" }] });

@@ -4,11 +4,10 @@ import { UploadOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
 import styles from "./UpdateUserProfile.module.css";
-import appStyles from "../App.module.css";
-
-import userInfo from "../components/user-profile/userInfo";
-import shippingAddressList from "../components/user-profile/shippingAddressList";
-import HeaderSection from "../components/styled-components/HeaderSection";
+import MainContainer from "../../components/layout/MainContainer";
+import userInfo from "../../components/user-profile/userInfo";
+import shippingAddressList from "../../components/user-profile/shippingAddressList";
+import HeaderSection from "../../components/styled-components/HeaderSection";
 
 const { Option } = Select;
 const { useBreakpoint } = Grid;
@@ -36,9 +35,8 @@ function UpdateUserProfile() {
   };
 
   return (
-    <div className={appStyles.containerMain}>
+    <MainContainer>
       <div className={styles.container}>
-        {/* <h1 className={styles.mainHeading}>Update my account</h1> */}
         <HeaderSection headerText="update my profile" />
 
         <Form
@@ -206,7 +204,7 @@ function UpdateUserProfile() {
           </Form.Item>
         </Form>
       </div>
-    </div>
+    </MainContainer>
   );
 }
 

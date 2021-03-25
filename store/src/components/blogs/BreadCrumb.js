@@ -1,6 +1,6 @@
 import React from "react";
 import { Pagination } from "antd";
-import styles from "./Blogs.module.css";
+import styles from "./BlogList.module.css";
 
 export default function BreadCrumb() {
   return (

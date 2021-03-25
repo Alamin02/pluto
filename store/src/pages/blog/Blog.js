@@ -2,11 +2,11 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 import sampleBlogList from "../../components/blogs/sampleBlogList";
-import BlogDetailsCard from "../../components/blogs/BlogDetailsCard";
+import BlogDetails from "../../components/blogs/BlogDetails";
 import Error404 from "../../components/error-404/Error404";
 import MainContainer from "../../components/layout/MainContainer";
 
-export default function BlogDetails() {
+export default function Blog() {
   const { id } = useParams();
 
   const blog = sampleBlogList.find((blog) => blog.id === id);
@@ -15,7 +15,7 @@ export default function BlogDetails() {
 
   return (
     <MainContainer>
-      <BlogDetailsCard blog={blog} />
+      <BlogDetails blog={blog} />
     </MainContainer>
   );
 }

@@ -1,7 +1,7 @@
 import ForgetPasswordForm from "../../components/forget-password/ForgetPasswordForm";
 
-const ForgetPasswordPage = () => {
+const ForgetPassword = () => {
   return <ForgetPasswordForm />;
 };
 
-export default ForgetPasswordPage;
+export default ForgetPassword;

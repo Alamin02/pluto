@@ -1,10 +1,10 @@
 import classNames from "classnames";
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button } from "antd";
 
-import styles from './ForgetPassword.module.css';
+import styles from "./ForgetPasswordForm.module.css";
 import Heading from "../heading/Heading";
 
-const ForgetPassword = () => {
+const ForgetPasswordForm = () => {
   return (
     <>
       <div className={classNames(styles.bgColor, styles.block)}>
@@ -12,7 +12,6 @@ const ForgetPassword = () => {
           <Heading
             headingStyle={styles.titleHolder}
             headingTitle="Recover Password"
-            
           />
           <Form
             name="forget-password"
@@ -36,8 +35,8 @@ const ForgetPassword = () => {
                 },
               ]}
             >
-            <Input />
-          </Form.Item>            
+              <Input />
+            </Form.Item>
             {/* Button Block */}
             <Form.Item className={styles.antColRtl}>
               <Button
@@ -55,4 +54,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgetPasswordForm;

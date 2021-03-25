@@ -1,17 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Badge } from "antd";
-import ProductCard from "../components/product/ProductCard";
-import HeaderSection from "../components/styled-components/HeaderSection";
-import ProductList from "../assets/data/sampleProductData";
-import styles from "./Offers.module.css";
-import appStyles from "../App.module.css";
+
+import ProductCard from "../../components/product/ProductCard";
+import HeaderSection from "../../components/styled-components/HeaderSection";
+import ProductList from "../../assets/data/sampleProductData";
+import MainContainer from "../../components/layout/MainContainer";
 
 function Offers() {
   return (
-    <div className={appStyles.containerMain}>
-      {/* <MainHeader name="Latest Offer" sub="home-shop-offer" /> */}
-      <div className={styles.container}>
+    <MainContainer>
+      <div style={{ marginTop: "1rem" }}>
         <HeaderSection headerText="latest offers" />
         <Row gutter={[16, 16]}>
           {ProductList.map((product) => {
@@ -38,7 +37,7 @@ function Offers() {
           })}
         </Row>
       </div>
-    </div>
+    </MainContainer>
   );
 }
 

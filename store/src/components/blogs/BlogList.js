@@ -1,10 +1,10 @@
 import React from "react";
 import { Row, Col } from "antd";
-import styles from "./Blogs.module.css";
+import styles from "./BlogList.module.css";
 import BlogCard from "./BlogCard";
 import sampleBlogList from "./sampleBlogList";
 
-export default function Blogs() {
+export default function BlogList() {
   return (
     <div className={styles.container}>
       <Row gutter={[32, 32]}>

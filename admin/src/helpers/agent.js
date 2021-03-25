@@ -194,22 +194,22 @@ export const agent = {
         return data.blogs;
       });
   },
-  createBlog: (BlogData, token) => {
+  createBlog: (blogData, token) => {
     return fetch(`${baseUrl}/blogs`, {
       method: "post",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      body: BlogData,
+      body: blogData,
     });
   },
-  editBlog: (BlogData, token, blogId) => {
+  editBlog: (blogData, token, blogId) => {
     return fetch(`${baseUrl}/blogs/${blogId}`, {
       method: "put",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      body: BlogData,
+      body: blogData,
     });
   },
   deleteBlog: (token, blogId) => {

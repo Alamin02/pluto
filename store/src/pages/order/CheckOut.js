@@ -10,14 +10,14 @@ import MainContainer from "../../components/layout/MainContainer";
 
 const { Panel } = Collapse;
 
-const DescriptionCollapse = ({ title, k, register, form }) => {
+const DescriptionCollapse = ({ title, key, register, form }) => {
   return (
     <Collapse
       expandIconPosition="right"
       bordered={true}
       defaultActiveKey={["a"]}
     >
-      <Panel header={title} key={k} showArrow={false}>
+      <Panel header={title} key={key} showArrow={false}>
         <span>{register}</span>
         <span>{form}</span>
         <br></br>
@@ -25,6 +25,7 @@ const DescriptionCollapse = ({ title, k, register, form }) => {
     </Collapse>
   );
 };
+
 const title = <h4 style={{ fontWeight: "600" }}>01.CHECK OUT METHOD</h4>;
 export default function CheckOut() {
   return (
@@ -35,7 +36,7 @@ export default function CheckOut() {
           <Col xs={24} sm={24} md={22} lg={18}>
             <div style={{ padding: "20px" }}>
               <DescriptionCollapse
-                k="a"
+                key="a"
                 title={title}
                 register={<CheckOutRegister />}
                 form={<CheckOutForm />}

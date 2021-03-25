@@ -1,7 +1,0 @@
-@import "~antd/dist/antd.css";
-
-.containerFluid {
-  margin: 100px auto;
-  max-width: 1200px;
-  padding: 0 15px;
-}

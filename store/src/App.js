@@ -20,8 +20,8 @@ import Offers from "./pages/offer/Offers";
 import Cart from "./pages/order/Cart";
 import CheckOut from "./pages/order/CheckOut";
 
-import ProductDetails from "./pages/product/ProductDetails";
-import ProductsPage from "./pages/product/ProductsPage";
+import ProductDetails from "./pages/product/Product";
+import ProductsPage from "./pages/product/Products";
 
 import UpdateUserProfile from "./pages/user/UpdateUserProfile";
 import UserProfile from "./pages/user/UserProfile";

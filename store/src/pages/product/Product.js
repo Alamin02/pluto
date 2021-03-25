@@ -8,26 +8,29 @@ import { agent } from "../../helpers/agent";
 import MainContainer from "../../components/layout/MainContainer";
 
 const ProductDetails = () => {
-  const [productsData, setProductsData] = useState([]);
+  const [product, setProduct] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { id } = useParams();
 
   function fetchProducts() {
     agent
-      .getProducts()
+      .getProduct(id)
       .then((res) => res.json())
       .then(({ data }) => {
-        setProductsData(data.products);
+        console.log(data);
+        setProduct(data);
+        setIsLoading(false);
       });
   }
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [id]);
 
-  const { id } = useParams();
-
-  const product = productsData.find((product) => product.id === parseInt(id));
-
-  if (!product) return <Error404 />;
+  if (isLoading) {
+    return <p>Loading...</p>; // Have to replace with loading component
+  }
 
   return (
     <MainContainer>

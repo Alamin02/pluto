@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-import styles from "./Login.module.css";
+import styles from "./LoginForm.module.css";
 import Heading from "../heading/Heading";
 
 const Login = () => {

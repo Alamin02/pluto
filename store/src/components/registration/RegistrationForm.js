@@ -4,12 +4,10 @@ import {
   Form,
   Input,
   Select,
-  Row,
-  Col,
   Checkbox,
   Button,
   Typography,
-  Divider
+  Divider,
 } from "antd";
 import {
   FacebookFilled,
@@ -17,7 +15,7 @@ import {
   TwitterSquareFilled,
 } from "@ant-design/icons";
 
-import styles from "./Registration.module.css";
+import styles from "./RegistrationForm.module.css";
 import Heading from "../heading/Heading";
 
 const { Link } = Typography;
@@ -41,6 +39,7 @@ const formItemLayout = {
     },
   },
 };
+
 const tailFormItemLayout = {
   wrapperCol: {
     xs: {
@@ -53,11 +52,13 @@ const tailFormItemLayout = {
     },
   },
 };
-const Registration = () => {
+
+const RegistrationForm = () => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
+
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -69,6 +70,7 @@ const Registration = () => {
       </Select>
     </Form.Item>
   );
+
   return (
     <>
       <div className={classNames(styles.bgColor, styles.block)}>
@@ -82,7 +84,7 @@ const Registration = () => {
             form={form}
             className={styles.containerFluid}
             name="register"
-            labelAlign="left" 
+            labelAlign="left"
             onFinish={onFinish}
             initialValues={{
               prefix: "88",
@@ -178,7 +180,7 @@ const Registration = () => {
             >
               <Input.Password />
             </Form.Item>
-            
+
             {/* Agreement */}
             <Form.Item
               name="agreement"
@@ -214,7 +216,7 @@ const Registration = () => {
             </Link>
             <Link to="#">
               <TwitterSquareFilled style={{ color: "#1da1f2" }} />
-            </Link>                        
+            </Link>
           </div>
         </div>
       </div>
@@ -222,4 +224,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default RegistrationForm;

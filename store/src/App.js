@@ -6,13 +6,6 @@ import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import Error404 from "./components/error-404/Error404";
 import Home from "./pages/Home";
-import BlogDetails from "./pages/BlogDetails";
-
-import Registration from "./pages/registration/Registration";
-import Login from "./pages/login/Login";
-
-import Offers from "./pages/Offers";
-import ContactUs from "./pages/ContactUs";
 
 import ForgetPasswordPage from "./pages/auth/ForgetPassword";
 import LoginPage from "./pages/auth/Login";
@@ -57,8 +50,6 @@ function App() {
 
         <Route path="/profile" component={UserProfile} exact />
         <Route path="/profile/edit" component={UpdateUserProfile} exact />
-
-        <Route path="/contact" component={ContactUs} />
 
         <Route component={Error404} />
       </Switch>

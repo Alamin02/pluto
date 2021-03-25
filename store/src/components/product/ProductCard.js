@@ -1,7 +1,6 @@
-import { Grid, Card } from "antd";
+import { Card } from "antd";
 
 const { Meta } = Card;
-const { useBreakpoint } = Grid;
 
 const cardStyle = {
   height: 250,

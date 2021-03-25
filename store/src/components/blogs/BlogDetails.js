@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
 import styles from "../blogs/BlogDetails.module.css";
 
-const BlogDetailsCard = ({ blog }) => (
+const BlogDetails = ({ blog }) => (
   <>
     <h1 className={styles.h1Styled}>{blog.title}</h1>
     <div>
@@ -42,4 +42,5 @@ const BlogDetailsCard = ({ blog }) => (
     </Link>
   </>
 );
-export default BlogDetailsCard;
+
+export default BlogDetails;

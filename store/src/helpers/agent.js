@@ -10,6 +10,16 @@ export const agent = {
       },
     });
   },
+
+  getProduct: (productId) => {
+    return fetch(`${baseUrl}/products/${productId}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
   getBlogs: () => {
     return fetch(`${baseUrl}/blogs`, {
       method: "get",

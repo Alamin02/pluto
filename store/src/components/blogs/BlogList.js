@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col } from "antd";
-import styles from "./Blogs.module.css";
+import styles from "./BlogList.module.css";
 import BlogCard from "./BlogCard";
 // import sampleBlogList from "./sampleBlogList";
 import { agent } from "../../helpers/agent";
 
-export default function Blogs() {
+export default function BlogList() {
   const [blogData, setBlogData] = useState([]);
 
   const fetchBlogs = () => {
@@ -21,7 +21,6 @@ export default function Blogs() {
   useEffect(() => {
     fetchBlogs();
   }, []);
-
   return (
     <div className={styles.container}>
       <Row gutter={[32, 32]}>

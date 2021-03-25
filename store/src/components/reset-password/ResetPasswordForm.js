@@ -1,11 +1,11 @@
 import classNames from "classnames";
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 
-import styles from './ResetPassword.module.css';
+import styles from "./ResetPasswordForm.module.css";
 import Heading from "../heading/Heading";
 
-const ResetPassword = () => {
+const ResetPasswordForm = () => {
   return (
     <>
       <div className={classNames(styles.bgColor, styles.block)}>
@@ -13,7 +13,6 @@ const ResetPassword = () => {
           <Heading
             headingStyle={styles.titleHolder}
             headingTitle="Reset your Password"
-            
           />
           <Form
             name="reset-password"
@@ -39,8 +38,8 @@ const ResetPassword = () => {
                 placeholder="Password"
               />
             </Form.Item>
-              {/* New Password */}
-              <Form.Item
+            {/* New Password */}
+            <Form.Item
               name="password"
               label="New Password"
               rules={[
@@ -55,9 +54,9 @@ const ResetPassword = () => {
                 type="password"
                 placeholder="Password"
               />
-            </Form.Item>    
-              {/* Confirm Password */}
-              <Form.Item
+            </Form.Item>
+            {/* Confirm Password */}
+            <Form.Item
               name="password"
               label="Confirm Password"
               rules={[
@@ -72,7 +71,7 @@ const ResetPassword = () => {
                 type="password"
                 placeholder="Password"
               />
-            </Form.Item>       
+            </Form.Item>
             {/* Button Block */}
             <Form.Item className={styles.antColRtl}>
               <Button
@@ -90,4 +89,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordForm;

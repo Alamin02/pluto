@@ -1,91 +1,122 @@
-import { Row, Col, Typography } from "antd";
+import { Link } from "react-router-dom";
+import { Grid } from "antd";
 import classNames from "classnames";
+import styles from "./FeaturedProducts.module.css";
 
-import styles from "./Featured.module.css";
-import FeaturedImage from "./FeaturedImage";
-import FeaturedOverlay from "./FeaturedOverlay";
+import MainContainer from "../layout/MainContainer";
 import HeaderSection from "../styled-components/HeaderSection";
+import featuredProductsInfo from "./featuredProductsInfo";
 
-import watchImage from "../../assets/images/watch.jpg";
-import glassImage from "../../assets/images/glass.jpg";
-import bagpackImage from "../../assets/images/bagpack.jpg";
+const { useBreakpoint } = Grid;
 
-const { Link } = Typography;
+export default function FeaturedProducts() {
+  const screens = useBreakpoint();
 
-const FeaturedProducts = () => {
   return (
-    <>
-      <div className={classNames(styles.bgColor, styles.block)}>
-        <div className={styles.containerFluid}>
-          <HeaderSection headerText="featured products" />
-          <Row>
-            <Col span={16}>
-              {/* Image of Watch */}
-              <Row>
-                <div className={classNames(styles.container, styles.image)}>
-                  <Link>
-                    <FeaturedImage
-                      blur={styles.blur}
-                      source={watchImage}
-                      style={{
-                        objectFit: "cover",
-                        marginBottom: "10px",
-                        height: "395px",
-                        width: "780px",
-                      }}
-                    />
-                  </Link>
-                  <FeaturedOverlay overlayStyle={styles.overlay} name="Watch" />
-                </div>
-              </Row>
-              {/* Image of Glass */}
-              <Row>
-                <div className={classNames(styles.container, styles.image)}>
-                  <Link>
-                    <FeaturedImage
-                      blur={styles.blur}
-                      source={glassImage}
-                      style={{
-                        objectFit: "cover",
-                        height: "395px",
-                        width: "780px",
-                      }}
-                    />
-                  </Link>
-                  <FeaturedOverlay
-                    overlayStyle={styles.overlayGlass}
-                    name="Glass"
-                  />
-                </div>
-              </Row>
-            </Col>
-            <Col span={8}>
-              {/* Image of Bagpack */}
+    <MainContainer>
+      <HeaderSection headerText="featured products" />
+      {/* flexbox start */}
+      <section
+        className={classNames(
+          { [styles.flexContainer]: screens },
+          { [styles.flexContainerXs]: screens.xs }
+        )}
+      >
+        {/* 1st flexbox container */}
+        <section
+          className={classNames(
+            { [styles.firstFlexBoxContainer]: screens },
+            { [styles.firstFlexBoxContainerXs]: screens.xs }
+          )}
+        >
+          {/* top image of 1st flexbox container */}
+          <div className={styles.firstFlexBoxTopImageContainer}>
+            <Link to={featuredProductsInfo.image1Url}>
+              <img
+                className={classNames(
+                  { [styles.firstFlexBoxImage]: screens },
+                  { [styles.firstFlexBoxImageXs]: screens.xs }
+                )}
+                src={featuredProductsInfo.image1Src}
+                alt={featuredProductsInfo.image1Title}
+              />
               <div
-                className={classNames(styles.container, styles.bagpackImage)}
+                className={classNames(
+                  { [styles.imageTitle]: screens },
+                  { [styles.imageTitleXs]: screens.xs }
+                )}
               >
-                <Link>
-                  <FeaturedImage
-                    blur={styles.blur}
-                    source={bagpackImage}
-                    style={{
-                      margin: "0 0 0 15px",
-                      objectFit: "cover",
-                      height: "805px",
-                    }}
-                  />
-                </Link>
-                <FeaturedOverlay
-                  overlayStyle={styles.overlayBagpack}
-                  name="Bagpack"
-                />
+                {featuredProductsInfo.image1Title}
               </div>
-            </Col>
-          </Row>
-        </div>
-      </div>
-    </>
-  );
-};
+            </Link>
+          </div>
 
-export default FeaturedProducts;
+          {/* bottom image of 1st flexbox container */}
+          <div
+            className={classNames(
+              { [styles.firstFlexBoxBottomImageContainer]: screens },
+              { [styles.firstFlexBoxBottomImageContainerXs]: screens.xs }
+            )}
+          >
+            <Link to={featuredProductsInfo.image2Url}>
+              <img
+                className={classNames(
+                  { [styles.firstFlexBoxImage]: screens },
+                  { [styles.firstFlexBoxImageXs]: screens.xs }
+                )}
+                src={featuredProductsInfo.image2Src}
+                alt={featuredProductsInfo.image2Title}
+              />
+              <div
+                className={classNames(
+                  { [styles.imageTitle]: screens },
+                  { [styles.imageTitleXs]: screens.xs }
+                )}
+              >
+                {featuredProductsInfo.image2Title}
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* 2nd flexbox container */}
+        <section
+          className={classNames(
+            { [styles.secondFlexBoxContainer]: screens },
+            { [styles.secondFlexBoxContainerXs]: screens.xs }
+          )}
+        >
+          {/* horizontal 3rd image */}
+          <Link to={featuredProductsInfo.image3Url}>
+            <img
+              className={classNames(
+                { [styles.secondFlexBoxImageH]: screens },
+                { [styles.secondFlexBoxImageHXs]: screens.xs }
+              )}
+              src={featuredProductsInfo.image3HSrc}
+              alt={featuredProductsInfo.image3Title}
+            />
+            {/* vertical 3rd image */}
+            <img
+              className={classNames(
+                { [styles.secondFlexBoxImageV]: screens },
+                { [styles.secondFlexBoxImageVXs]: screens.xs }
+              )}
+              src={featuredProductsInfo.image3VSrc}
+              alt={featuredProductsInfo.image3Title}
+            />
+            <div
+              className={classNames(
+                { [styles.imageTitle]: screens },
+                { [styles.imageTitleXs]: screens.xs }
+              )}
+            >
+              {featuredProductsInfo.image3Title}
+            </div>
+          </Link>
+        </section>
+      </section>
+      {/* flexbox end */}
+    </MainContainer>
+  );
+}

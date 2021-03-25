@@ -4,10 +4,9 @@ import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
 import styles from "./UserProfile.module.css";
-
-import userInfo from "../components/user-profile/userInfo";
-import HeaderSection from "../components/styled-components/HeaderSection";
-import appStyles from "../App.module.css";
+import MainContainer from "../../components/layout/MainContainer";
+import userInfo from "../../components/user-profile/userInfo";
+import HeaderSection from "../../components/styled-components/HeaderSection";
 
 const { useBreakpoint } = Grid;
 
@@ -15,9 +14,8 @@ function UserProfile() {
   const screens = useBreakpoint();
 
   return (
-    <div className={appStyles.containerMain}>
+    <MainContainer>
       <div className={styles.container}>
-        {/* <h1 className={styles.mainHeading}>Manage my account</h1> */}
         <HeaderSection headerText="manage my account" />
 
         <section className={styles.eachSection} key={userInfo.key}>
@@ -77,7 +75,7 @@ function UserProfile() {
           </Link>
         </section>
       </div>
-    </div>
+    </MainContainer>
   );
 }
 

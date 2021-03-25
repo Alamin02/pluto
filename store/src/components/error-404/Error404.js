@@ -7,12 +7,6 @@ import styles from "./Error404.module.css";
 import ShockedMan from "./404.gif";
 
 const { useBreakpoint } = Grid;
-const buttonBlackStyle = {
-  marginTop: "1rem",
-};
-const iconStyle = {
-  marginRight: "0.6rem",
-};
 
 function Error404() {
   const screens = useBreakpoint();

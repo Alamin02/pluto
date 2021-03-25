@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./ProductView.module.css";
 
 export default function PriceAndSummary(props) {
   const { summaryText, productName, ProductPrice } = props;

@@ -21,7 +21,7 @@ export async function createBlog(req: express.Request, res: express.Response) {
   const permission = ac.can(res.locals.user.role).createAny("blog");
 
   if (!permission.granted)
-    return res.status(403).json({ data: "not authorized" });
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
 
   // Validation result
   const errors = validationResult(req);

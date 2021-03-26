@@ -12,7 +12,6 @@ export async function createBlog(req: express.Request, res: express.Response) {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
   const { title, author, description } = req.body;
 
   // Save to database
@@ -99,12 +98,21 @@ export async function updateSingleBlog(
 
   const { title, author, description } = req.body;
   const blogRepository = getConnection().getRepository(Blog);
-
   try {
+    let imagePath;
+    if (req.file) {
+      imagePath = req.file.path;
+    }
+    //  else {
+    //   imagePath = "";
+    // }
     const newBlog = new Blog();
     newBlog.title = title;
     newBlog.author = author;
     newBlog.description = description;
+    if (imagePath) {
+      newBlog.path = imagePath;
+    }
 
     await blogRepository.update({ id: req.params.blogId }, newBlog);
   } catch (err) {
@@ -116,6 +124,25 @@ export async function updateSingleBlog(
   res.json({ msg: "Blog is now updated" });
 }
 
+// @DELETE - /api/v1/blogs/blogImage/:blogId
+//delete blog image
+export async function deleleBlogImage(
+  req: express.Request,
+  res: express.Response
+) {
+  const id = req.params.blogId;
+  const blogRepository = getConnection().getRepository(Blog);
+  try {
+    const findBlogById = await blogRepository.findOne({ id });
+    if (findBlogById && findBlogById.path) {
+      findBlogById.path = "";
+      blogRepository.save(findBlogById);
+    }
+    res.json({ msg: "blogImage deleted" });
+  } catch (err) {
+    res.json({ errors: [{ msg: "blog have no image" }] });
+  }
+}
 // @DELETE - /api/v1/blogs/:blogId
 // delete blog
 export async function deleteBlog(req: express.Request, res: express.Response) {
@@ -126,6 +153,6 @@ export async function deleteBlog(req: express.Request, res: express.Response) {
       return res.json({ msg: "delete successfully" });
     }
   } catch (err) {
-    res.json({ errors: "blog is not identified" });
+    res.json({ errors: [{ msg: "blog is not identified" }] });
   }
 }

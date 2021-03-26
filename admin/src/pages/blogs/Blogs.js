@@ -117,6 +117,7 @@ export default function Blogs() {
           onCancel={() => {
             setBlogToEditVisible(false);
           }}
+          refetch={fetchBlogs}
         />
         {/* table */}
         <Table

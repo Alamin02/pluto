@@ -5,6 +5,7 @@ import {
   getAllBlogsController,
   getSingleBlogController,
   updateSingleBlogController,
+  deleleBlogImageController,
   deleteBlogController,
 } from "../controller";
 import { authenticationMiddleware, imageUpload } from "../middleware";
@@ -36,6 +37,7 @@ router.get("/:blogId", getSingleBlogController);
 // Update blog
 router.put(
   "/:blogId",
+  imageUpload.single("blogImage"),
   authenticationMiddleware,
   [
     body("title").not().isEmpty().withMessage("Blog title must not be empty"),
@@ -48,6 +50,7 @@ router.put(
   updateSingleBlogController
 );
 
+router.delete("/blogImage/:blogId", deleleBlogImageController);
 // Delete blog
 router.delete("/:blogId", authenticationMiddleware, deleteBlogController);
 

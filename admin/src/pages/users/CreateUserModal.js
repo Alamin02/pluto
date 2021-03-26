@@ -47,7 +47,7 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
         <Form form={form} layout="vertical" name="form_in_modal">
           {/* role */}
           <Form.Item name="role" label="Role&nbsp;:">
-            <Select defaultValue="user">
+            <Select defaultValue="choose a role...">
               <Option value="user">user</Option>
               <Option value="admin">admin</Option>
             </Select>

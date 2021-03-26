@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
-
 import CartItem from "../../components/cart/CartItem";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import styles from "./Cart.module.css";
@@ -24,18 +23,21 @@ function Cart() {
           <CartItem
             key={item.id}
             id={item.id}
-            productName={item.productName}
+            productName={item.name}
             price={item.price}
-            imageUrl={item.imageUrl}
+            imageUrl={item.images[0].path}
             onRemove={handleRemoveProduct}
             description={item.description}
           />
         ))}
         <div className={styles.bottomSection}>
           <div>&nbsp;</div>
+
           <div>
-            <p className={styles.totalPriceSection}>Total Price: XXXX BDT</p>
+            <p className={styles.totalPriceSection}>Total Price: 00 BDT</p>
           </div>
+
+
         </div>
 
         <div className={styles.bottomSection}>

@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Button, Grid } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-
 import styles from "./CartItem.module.css";
 import QuantityCounter from "./QuantityCounter";
 
@@ -10,11 +9,7 @@ const { useBreakpoint } = Grid;
 
 function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
   const screens = useBreakpoint();
-  const [count, setCount] = useState(1);
-
-  const handleCount = (value) => {
-    if (value > 0) setCount(value);
-  };
+  const productCount = useSelector((state) => state.update.count);
 
   return (
     <section>
@@ -77,7 +72,7 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
               { [styles.priceOnSmallScreenXs]: screens.xs }
             )}
           >
-            ৳&nbsp;{price * count}
+            ৳&nbsp;{price * productCount}
           </div>
           <div className={styles.description}>{description}</div>
           <div
@@ -86,7 +81,7 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
               { [styles.counterStyleXs]: screens.xs }
             )}
           >
-            <QuantityCounter value={count} onChange={handleCount} />
+            <QuantityCounter value={productCount} />
           </div>
         </div>
 
@@ -96,7 +91,7 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
             { [styles.priceOnBigScreenXs]: screens.xs }
           )}
         >
-          ৳&nbsp;{price * count}
+          ৳&nbsp;{price * productCount}
         </div>
       </div>
       <hr className={styles.cartHr} />

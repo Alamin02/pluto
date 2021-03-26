@@ -1,14 +1,23 @@
 import React from "react";
-
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./QuantityCounter.module.css";
 
-function QuantityCounter({ value, onChange }) {
+function QuantityCounter({ value }) {
+  const dispatch = useDispatch();
+  const productCount = useSelector((state) => state.update.count);
+
+  const handleAddProduct = () => {
+    dispatch({ type: "Add" });
+  };
+  const handleRemoveProduct = (id) => {
+    dispatch({ type: "Remove" });
+  };
   return (
     <div className={styles.counterRootDiv}>
       <div className={styles.iconStyle}>
         <button
           className={styles.buttonStyle}
-          onClick={() => onChange(value - 1)}
+          onClick={handleRemoveProduct}
         >
           <span className={styles.iconStyle}> - </span>
         </button>
@@ -17,7 +26,7 @@ function QuantityCounter({ value, onChange }) {
       <div>
         <button
           className={styles.buttonStyle}
-          onClick={() => onChange(value + 1)}
+          onClick={handleAddProduct}
         >
           <span className={styles.iconStyle}> + </span>
         </button>

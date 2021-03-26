@@ -1,12 +1,10 @@
 import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
-// import { AccessControl } from "accesscontrol";
+
 import accessControl from "../utils/access-control";
 
 import { Blog } from "../entity";
-
-// const ac = new AccessControl();
 
 // @POST - /api/v1/blogs
 // Create a Blog

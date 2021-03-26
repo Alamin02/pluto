@@ -8,4 +8,13 @@ ac.grant("admin")
   .deleteAny("blog")
   .updateAny("blog")
   .createAny("blog");
+
+ac.grant("user").readAny("products");
+
+ac.grant("admin")
+  .readAny("products")
+  .deleteAny("products")
+  .updateAny("products")
+  .createAny("products");
+
 export default ac;

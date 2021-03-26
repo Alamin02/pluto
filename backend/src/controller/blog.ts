@@ -1,12 +1,28 @@
 import express = require("express");
-import path = require("path");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
+import { AccessControl } from "accesscontrol";
+
 import { Blog } from "../entity";
+
+const ac = new AccessControl();
+
+ac.grant("user").readAny("blog");
+
+ac.grant("admin")
+  .readAny("blog")
+  .deleteAny("blog")
+  .updateAny("blog")
+  .createAny("blog");
 
 // @POST - /api/v1/blogs
 // Create a Blog
 export async function createBlog(req: express.Request, res: express.Response) {
+  const permission = ac.can(res.locals.user.role).createAny("blog");
+
+  if (!permission.granted)
+    return res.status(403).json({ data: "not authorized" });
+
   // Validation result
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

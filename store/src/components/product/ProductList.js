@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Badge, Button } from "antd";
+import { Row, Col, Badge } from "antd";
 
-import styles from "./ProductList.module.css";
 import MainContainer from "../layout/MainContainer";
 import CardItem from "./ProductCard";
 import HeaderSection from "../styled-components/HeaderSection";
@@ -13,7 +12,7 @@ function ProductList() {
 
   function fetchProducts() {
     agent
-      .getProducts()
+      .getProducts("?perPage=8")
       .then((res) => res.json())
       .then(({ data }) => {
         setProductsData(data.products);
@@ -27,7 +26,7 @@ function ProductList() {
 
   return (
     <MainContainer>
-      <div className={styles.container}>
+      <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
         <HeaderSection headerText="popular products" />
         <Row gutter={[16, 16]}>
           {productsData.map((product) => {
@@ -67,13 +66,6 @@ function ProductList() {
             }
           })}
         </Row>
-        <div className={styles.buttonStyle}>
-          <Link to="/products">
-            <Button type="primary" style={{ textTransform: "uppercase" }}>
-              View all products
-            </Button>
-          </Link>
-        </div>
       </div>
     </MainContainer>
   );

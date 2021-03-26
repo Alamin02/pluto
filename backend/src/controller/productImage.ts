@@ -49,10 +49,8 @@ export async function deleteProductImage(
       res.status(400).json({ msg: e });
     }
   } else {
-    res
-      .status(400)
-      .json({
-        errors: [{ msg: "Product image to delete not found or invalid id" }],
-      });
+    res.status(400).json({
+      errors: [{ msg: "Product image to delete not found or invalid id" }],
+    });
   }
 }

@@ -14,7 +14,7 @@ export async function getAllProducts(
   const productRepository = getConnection().getRepository(Product);
 
   const page: number = parseInt(<string>req.query.page) || 1;
-  const perPage: number = parseInt(<string>req.query.perPage) || 10;
+  const perPage: number = parseInt(<string>req.query.perPage) || 12;
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ["id", "name", "description", "price", "summary"],

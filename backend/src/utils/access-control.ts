@@ -9,12 +9,12 @@ ac.grant("admin")
   .updateAny("blog")
   .createAny("blog");
 
-ac.grant("user").readAny("products");
+ac.grant("user").readAny("product");
 
 ac.grant("admin")
-  .readAny("products")
-  .deleteAny("products")
-  .updateAny("products")
-  .createAny("products");
+  .readAny("product")
+  .deleteAny("product")
+  .updateAny("product")
+  .createAny("product");
 
 export default ac;

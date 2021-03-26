@@ -1,24 +1,17 @@
 import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
-import { AccessControl } from "accesscontrol";
+// import { AccessControl } from "accesscontrol";
+import accessControl from "../utils/access-control";
 
 import { Blog } from "../entity";
 
-const ac = new AccessControl();
-
-ac.grant("user").readAny("blog");
-
-ac.grant("admin")
-  .readAny("blog")
-  .deleteAny("blog")
-  .updateAny("blog")
-  .createAny("blog");
+// const ac = new AccessControl();
 
 // @POST - /api/v1/blogs
 // Create a Blog
 export async function createBlog(req: express.Request, res: express.Response) {
-  const permission = ac.can(res.locals.user.role).createAny("blog");
+  const permission = accessControl.can(res.locals.user.role).createAny("blog");
 
   if (!permission.granted)
     return res.status(403).json({ errors: [{ msg: "not authorized" }] });
@@ -106,6 +99,11 @@ export async function updateSingleBlog(
   req: express.Request,
   res: express.Response
 ) {
+  const permission = accessControl.can(res.locals.user.role).updateAny("blog");
+
+  if (!permission.granted)
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+
   // Validation result
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -148,6 +146,7 @@ export async function deleleBlogImage(
 ) {
   const id = req.params.blogId;
   const blogRepository = getConnection().getRepository(Blog);
+
   try {
     const findBlogById = await blogRepository.findOne({ id });
     if (findBlogById && findBlogById.path) {
@@ -165,6 +164,13 @@ export async function deleteBlog(req: express.Request, res: express.Response) {
   const id = req.params.blogId;
   const blogRepository = getConnection().getRepository(Blog);
   try {
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .deleteAny("blog");
+
+    if (!permission.granted)
+      return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+
     if (await blogRepository.delete({ id })) {
       return res.json({ msg: "delete successfully" });
     }

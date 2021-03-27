@@ -54,8 +54,16 @@ export default function Catagories() {
     agent
       .deleteCategory(token, categoryId)
       .then((res) => res.json())
-      .then(() => fetchCategories())
-      .then(() => message.info("Category deleted successfully"));
+      .then((res) => {
+        if (res.errors) {
+          for (let error of res.errors) {
+            message.error(error.msg);
+          }
+        } else {
+          message.info("Category deleted successfully");
+        }
+      })
+      .then(() => fetchCategories());
   }
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Row, Col, Badge, Pagination } from "antd";
+import { Row, Col, Badge, Pagination, Input } from "antd";
 import qs from "query-string";
 
 import { agent } from "../../helpers/agent";
@@ -17,6 +17,7 @@ export default function Products() {
   const [productsData, setProductsData] = useState([]);
   const [totalProductsInfo, setTotalProductsInfo] = useState("");
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
+  // const [currentPageSize, setCurrentPageSize] = useState(10);
 
   function fetchProducts() {
     let queryString = `?page=${currentPage}`;
@@ -30,9 +31,9 @@ export default function Products() {
       });
   }
 
-  function onChange(page) {
+  function onChange(page, pageSize) {
     setCurrentPage(page);
-
+    // setCurrentPageSize(pageSize);
     history.push({ search: `?page=${page}` });
   }
 
@@ -85,18 +86,26 @@ export default function Products() {
             }
           })}
         </Row>
-
         <Pagination
           style={{ display: "flex", justifyContent: "center", margin: "50px" }}
-          showSizeChanger
           showQuickJumper
           defaultCurrent={1}
+          showSizeChanger={false}
+          // pageSizeOptions={
+          //   [
+          //     totalProductsInfo.perPage * 2,
+          //     totalProductsInfo.perPage * 3,
+          //     totalProductsInfo.perPage * 4,
+          //   ] || [10]
+          // }
           current={currentPage}
           onChange={onChange}
-          defaultPageSize={totalProductsInfo.perPage}
+          defaultPageSize={totalProductsInfo.perPage || 10}
+          pageSize={totalProductsInfo.perPage || 10}
+          // pageSize={currentPageSize || 10}
           total={totalProductsInfo.productCount}
           showTotal={(total, range) =>
-            `${range[0]}-${range[1]} of ${total} Products`
+            `${range[0]} to ${range[1]} of ${total} Products`
           }
         />
       </MainContainer>

@@ -44,9 +44,6 @@ export default function EditCategoryModal({
                     }
                   }
                 });
-
-              form.resetFields();
-              onCreate(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

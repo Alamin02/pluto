@@ -4,6 +4,7 @@ const ac = new AccessControl();
 ac.grant("user").readAny("blog");
 ac.grant("user").readAny("product");
 ac.grant("user").readAny("category");
+ac.grant("user").readAny("offer");
 
 ac.grant("admin")
   .readAny("blog")
@@ -22,5 +23,11 @@ ac.grant("admin")
   .createAny("category")
   .updateAny("category")
   .deleteAny("category");
+
+ac.grant("admin")
+  .readAny("offer")
+  .createAny("offer")
+  .updateAny("offer")
+  .deleteAny("offer");
 
 export default ac;

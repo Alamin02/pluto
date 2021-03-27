@@ -1,6 +1,7 @@
 import express = require("express");
 import { getConnection, IsNull } from "typeorm";
 import { validationResult } from "express-validator";
+import accessControl from "../utils/access-control";
 import { Category } from "../entity";
 
 // @GET /v1/api/category/
@@ -23,6 +24,14 @@ export async function createCategory(
   req: express.Request,
   res: express.Response
 ) {
+  const permission = accessControl
+    .can(res.locals.user.role)
+    .createAny("category");
+
+  if (!permission.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -77,6 +86,14 @@ export async function updateCategory(
   req: express.Request,
   res: express.Response
 ) {
+  const permission = accessControl
+    .can(res.locals.user.role)
+    .updateAny("category");
+
+  if (!permission.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   const categoryId = req.params.categoryId;
   const { name, parentId } = req.body;
 
@@ -115,6 +132,14 @@ export async function deleteCategory(
   req: express.Request,
   res: express.Response
 ) {
+  const permission = accessControl
+    .can(res.locals.user.role)
+    .deleteAny("category");
+
+  if (!permission.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   const categoryId = req.params.categoryId;
   const categoryRepository = getConnection().getRepository(Category);
   const categoryCheck = await categoryRepository.findOne({ id: categoryId });

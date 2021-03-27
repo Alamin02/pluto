@@ -13,12 +13,14 @@ router.get("/", categoryController);
 
 router.post(
   "/",
+  authenticationMiddleware,
   [body("name").not().isEmpty().withMessage("Category name must not be empty")],
   createCategoryController
 );
 
 router.put(
   "/:categoryId",
+  authenticationMiddleware,
   [body("name").not().isEmpty().withMessage("Category name must not be empty")],
   updateCategoryController
 );

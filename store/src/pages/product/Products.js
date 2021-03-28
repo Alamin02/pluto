@@ -23,9 +23,6 @@ export default function Products() {
   const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 12);
   const [search, setSearch] = useState("");
 
-  const perPage2 = perPage * 2;
-  const perPage3 = perPage * 3;
-
   function fetchProducts() {
     const queryString = qs.stringify({
       page: currentPage,
@@ -131,7 +128,6 @@ export default function Products() {
           showQuickJumper
           defaultCurrent={1}
           showSizeChanger={false}
-          pageSizeOptions={[perPage2, perPage3] || 10}
           current={currentPage}
           onChange={onChange}
           defaultPageSize={totalProductsInfo.perPage || 10}

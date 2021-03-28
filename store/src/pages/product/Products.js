@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Row, Col, Badge, Pagination, Input } from "antd";
+import { Row, Col, Badge, Pagination } from "antd";
 import qs from "query-string";
 
 import { agent } from "../../helpers/agent";
 import MainHeader from "../../components/main-header/MainHeader";
 import ProductMenu from "../../components/product/ProductMenu";
-import ProductOption from "../../components/product/option/ProductOption";
 import CardItem from "../../components/product/ProductCard";
 import MainContainer from "../../components/layout/MainContainer";
+import SearchBar from "../../components/product/SearchBar";
+import SortMenu from "../../components/product/SortProductsMenu";
 
 export default function Products() {
   let history = useHistory();
   let query = qs.parse(window.location.search);
+  console.log(query);
 
   const [productsData, setProductsData] = useState([]);
   const [totalProductsInfo, setTotalProductsInfo] = useState("");
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
-  // const [currentPageSize, setCurrentPageSize] = useState(10);
+  const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 12);
+
+  const perPage2 = perPage * 2;
+  const perPage3 = perPage * 3;
 
   function fetchProducts() {
-    let queryString = `?page=${currentPage}`;
+    let queryString = `?page=${currentPage}?perPage=${perPage}`;
 
     agent
       .getProducts(queryString)
@@ -33,20 +38,40 @@ export default function Products() {
 
   function onChange(page, pageSize) {
     setCurrentPage(page);
-    // setCurrentPageSize(pageSize);
-    history.push({ search: `?page=${page}` });
+    setPerPage(pageSize);
+
+    history.push({
+      search: `?page=${page}`,
+    });
   }
 
   useEffect(() => {
     fetchProducts();
-  }, [currentPage]);
+  }, [currentPage, perPage]);
 
   return (
     <div>
       <MainHeader name="popular list" sub="home - shop - products" />
       <MainContainer>
         <ProductMenu />
-        <ProductOption />
+        <br />
+        <Row gutter={[16, 16]}>
+          <Col span={12}>
+            <span style={{ marginRight: "10px" }}>Sort By</span>
+            <SortMenu />
+          </Col>
+          <Col span={12}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <SearchBar productsData={productsData || []} />
+            </div>
+          </Col>
+        </Row>
+        <br />
         <br />
         <Row gutter={[16, 16]}>
           {productsData.map((product) => {
@@ -91,18 +116,11 @@ export default function Products() {
           showQuickJumper
           defaultCurrent={1}
           showSizeChanger={false}
-          // pageSizeOptions={
-          //   [
-          //     totalProductsInfo.perPage * 2,
-          //     totalProductsInfo.perPage * 3,
-          //     totalProductsInfo.perPage * 4,
-          //   ] || [10]
-          // }
+          pageSizeOptions={[perPage2, perPage3] || 10}
           current={currentPage}
           onChange={onChange}
           defaultPageSize={totalProductsInfo.perPage || 10}
-          pageSize={totalProductsInfo.perPage || 10}
-          // pageSize={currentPageSize || 10}
+          pageSize={perPage || 10}
           total={totalProductsInfo.productCount}
           showTotal={(total, range) =>
             `${range[0]} to ${range[1]} of ${total} Products`

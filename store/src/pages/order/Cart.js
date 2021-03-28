@@ -12,15 +12,13 @@ function Cart() {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.cart.products);
 
-  const productCount = useSelector((state) => state.update.count);
-
   useEffect(() => {
     let price = 0;
     productList.forEach((product) => {
-      price += product.price * productCount;
+      price += product.price * product.quantity;
     });
     setTotalPrice(price);
-  }, [productList, productCount, totalPrice, setTotalPrice]);
+  }, [productList, totalPrice, setTotalPrice]);
 
   const handleRemoveProduct = (id) => {
     dispatch({ type: "cart/removeProduct", payload: { id } });

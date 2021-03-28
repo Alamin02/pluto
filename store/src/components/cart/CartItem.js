@@ -8,10 +8,16 @@ import QuantityCounter from "./QuantityCounter";
 
 const { useBreakpoint } = Grid;
 
-function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
+function CartItem({
+  id,
+  productName,
+  price,
+  imageUrl,
+  onRemove,
+  description,
+  quantity,
+}) {
   const screens = useBreakpoint();
-  const productList = useSelector((state) => state.cart.products);
-  const productCount = useSelector((state) => state.update.count);
 
   return (
     <section>
@@ -77,7 +83,7 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
               { [styles.priceOnSmallScreenXs]: screens.xs }
             )}
           >
-            ৳&nbsp;{price * productCount}
+            ৳&nbsp;{price * quantity}
           </div>
           <div className={styles.description}>{description}</div>
           <div
@@ -86,7 +92,7 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
               { [styles.counterStyleXs]: screens.xs }
             )}
           >
-            <QuantityCounter value={productCount} />
+            <QuantityCounter value={quantity} productId={id} />
           </div>
         </div>
 
@@ -96,7 +102,7 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
             { [styles.priceOnBigScreenXs]: screens.xs }
           )}
         >
-          ৳&nbsp;{price * productCount}
+          ৳&nbsp;{price * quantity}
         </div>
       </div>
       <hr className={styles.cartHr} />

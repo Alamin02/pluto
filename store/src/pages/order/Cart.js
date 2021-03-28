@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
@@ -7,8 +8,19 @@ import styles from "./Cart.module.css";
 import MainContainer from "../../components/layout/MainContainer";
 
 function Cart() {
+  const [totalPrice, setTotalPrice] = useState(0)
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.cart.products);
+  const productCount = useSelector((state) => state.update.count);
+
+  useEffect(() => {
+    let price = 0;
+    productList.forEach(product => {
+      price += product.price * productCount;
+    })
+    setTotalPrice(price)
+
+  }, [productList, productCount, totalPrice, setTotalPrice])
 
   const handleRemoveProduct = (id) => {
     dispatch({ type: "cart/removeProduct", payload: { id } });
@@ -32,12 +44,9 @@ function Cart() {
         ))}
         <div className={styles.bottomSection}>
           <div>&nbsp;</div>
-
           <div>
-            <p className={styles.totalPriceSection}>Total Price: 00 BDT</p>
+            <p className={styles.totalPriceSection}>Total Price: {totalPrice} BDT</p>
           </div>
-
-
         </div>
 
         <div className={styles.bottomSection}>

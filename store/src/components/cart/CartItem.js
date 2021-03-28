@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { Button, Grid } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
@@ -9,6 +10,7 @@ const { useBreakpoint } = Grid;
 
 function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
   const screens = useBreakpoint();
+  const productList = useSelector((state) => state.cart.products);
   const productCount = useSelector((state) => state.update.count);
 
   return (
@@ -57,15 +59,18 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
             { [styles.productInfoXs]: screens.xs }
           )}
         >
-          <h1
-            className={classNames(
-              { [styles.title]: screens },
-              { [styles.titleMd]: screens.md },
-              { [styles.titleXl]: screens.xl }
-            )}
-          >
-            {productName}
-          </h1>
+          <Link to={`/products/${id}`}>
+            <h1
+              className={classNames(
+                { [styles.title]: screens },
+                { [styles.titleMd]: screens.md },
+                { [styles.titleXl]: screens.xl }
+              )}
+            >
+              {productName}
+            </h1>
+          </Link>
+
           <div
             className={classNames(
               { [styles.priceOnSmallScreen]: screens },

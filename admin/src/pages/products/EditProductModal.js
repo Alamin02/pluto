@@ -87,7 +87,7 @@ export default function EditProductModal({
             .validateFields()
             .then((values) => {
               agent
-                .editProduct(values, token, existingRecord.id)
+                .editProduct(existingRecord.id, values, token)
                 .then((res) => res.json());
 
               form.resetFields();

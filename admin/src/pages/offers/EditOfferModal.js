@@ -35,7 +35,6 @@ export default function EditOfferModal({
                     onCreate(data);
                     message.success(data.msg);
                   } else {
-                    console.log(data.errors);
                     for (let error of data.errors) {
                       message.error(error.msg);
                     }

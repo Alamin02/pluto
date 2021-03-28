@@ -1,7 +1,7 @@
 import express = require("express");
-import path = require("path");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
+import accessControl from "../utils/access-control";
 
 import { Product, Offer, Category, ProductImage } from "../entity";
 
@@ -40,6 +40,14 @@ export async function createProduct(
   req: express.Request,
   res: express.Response
 ) {
+  const permission = accessControl
+    .can(res.locals.user.role)
+    .createAny("product");
+
+  if (!permission.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   // error validation
   const errors = validationResult(req);
 
@@ -133,6 +141,14 @@ export async function updateProduct(
   req: express.Request,
   res: express.Response
 ) {
+  const permission = accessControl
+    .can(res.locals.user.role)
+    .updateAny("product");
+
+  if (!permission.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   const id = req.params.productId;
   const { name, price, summary, description, offerId } = req.body;
   const productsRepository = getConnection().getRepository(Product);
@@ -172,10 +188,17 @@ export async function deleteProduct(
   req: express.Request,
   res: express.Response
 ) {
+  const permission = accessControl
+    .can(res.locals.user.role)
+    .deleteAny("product");
+
+  if (!permission.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   const id = req.params.productId;
   const productRepository = getConnection().getRepository(Product);
   const productToUpdate = await productRepository.findOne({ id: id });
-  console.log(productToUpdate);
 
   if (productToUpdate) {
     try {

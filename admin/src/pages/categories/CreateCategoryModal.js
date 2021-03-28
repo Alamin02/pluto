@@ -52,8 +52,6 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
                     }
                   }
                 });
-              form.resetFields();
-              onCreate(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

@@ -1,6 +1,7 @@
 import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
+import accessControl from "../utils/access-control";
 import { Offer } from "../entity";
 
 // @GET /v1/api/offers
@@ -18,6 +19,11 @@ export async function getAllOffers(
 // @POST /v1/api/offers
 // create offer
 export async function createOffer(req: express.Request, res: express.Response) {
+  const permission = accessControl.can(res.locals.user.role).createAny("offer");
+  if (!permission.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -55,6 +61,11 @@ export async function updateOffer(req: express.Request, res: express.Response) {
   const offersRepository = getConnection().getRepository(Offer);
   const offerToUpdate = await offersRepository.findOne({ id: offerId });
 
+  const permisson = accessControl.can(res.locals.user.role).updateAny("offer");
+  if (!permisson.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   if (offerToUpdate) {
     try {
       const newOffer = new Offer();
@@ -80,6 +91,11 @@ export async function updateOffer(req: express.Request, res: express.Response) {
 // @DELETE /v1/api/offers/:offerId
 // delete a offer
 export async function deleteOffer(req: express.Request, res: express.Response) {
+  const permisson = accessControl.can(res.locals.user.role).deleteAny("offer");
+  if (!permisson.granted) {
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  }
+
   const offerId = req.params.offerId;
   const offersRepository = getConnection().getRepository(Offer);
   const offerToUpdate = await offersRepository.findOne({ id: offerId });

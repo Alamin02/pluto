@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Row, Col, Badge, Pagination } from "antd";
+import { Row, Col, Badge, Pagination, Input } from "antd";
 import qs from "query-string";
 
 import { agent } from "../../helpers/agent";
@@ -11,21 +11,27 @@ import MainContainer from "../../components/layout/MainContainer";
 import SearchBar from "../../components/product/SearchBar";
 import SortMenu from "../../components/product/SortProductsMenu";
 
+const { Search } = Input;
+
 export default function Products() {
-  let history = useHistory();
-  let query = qs.parse(window.location.search);
-  console.log(query);
+  const history = useHistory();
+  const query = qs.parse(window.location.search);
 
   const [productsData, setProductsData] = useState([]);
   const [totalProductsInfo, setTotalProductsInfo] = useState("");
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
   const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 12);
+  const [search, setSearch] = useState("");
 
   const perPage2 = perPage * 2;
   const perPage3 = perPage * 3;
 
   function fetchProducts() {
-    let queryString = `?page=${currentPage}?perPage=${perPage}`;
+    const queryString = qs.stringify({
+      page: currentPage,
+      perPage,
+      search,
+    });
 
     agent
       .getProducts(queryString)
@@ -45,9 +51,14 @@ export default function Products() {
     });
   }
 
+  function onSearch(value) {
+    console.log(value);
+    setSearch(value);
+  }
+
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, perPage]);
+  }, [currentPage, perPage, search]);
 
   return (
     <div>
@@ -67,7 +78,11 @@ export default function Products() {
                 justifyContent: "flex-end",
               }}
             >
-              <SearchBar productsData={productsData || []} />
+              <Search
+                placeholder="input search text"
+                onSearch={onSearch}
+                enterButton
+              />
             </div>
           </Col>
         </Row>

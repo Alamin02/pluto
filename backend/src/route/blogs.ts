@@ -50,8 +50,9 @@ router.put(
   updateSingleBlogController
 );
 
-router.delete("/blogImage/:blogId", deleleBlogImageController);
 // Delete blog
 router.delete("/:blogId", authenticationMiddleware, deleteBlogController);
+
+router.delete("/blogImage/:blogId", deleleBlogImageController);
 
 export default router;

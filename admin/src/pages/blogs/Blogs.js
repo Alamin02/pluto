@@ -57,8 +57,16 @@ export default function Blogs() {
     agent
       .deleteBlog(token, blogId)
       .then((res) => res.json())
-      .then(() => fetchBlogs())
-      .then(() => message.success("Successfully deleted"));
+      .then((res) => {
+        if (res.errors) {
+          for (let error of res.errors) {
+            message.error(error.msg);
+          }
+        } else {
+          message.success("Successfully deleted");
+        }
+      })
+      .then(() => fetchBlogs());
   }
   const actionColumn = {
     title: "Action",
@@ -117,6 +125,7 @@ export default function Blogs() {
           onCancel={() => {
             setBlogToEditVisible(false);
           }}
+          refetch={fetchBlogs}
         />
         {/* table */}
         <Table

@@ -20,7 +20,7 @@ router.get("/", getAllProductsController);
 router.post(
   "/",
   imageUpload.array("productImages", 4),
-  // authenticationMiddleware,
+  authenticationMiddleware,
 
   [
     body("name").not().isEmpty().withMessage("Product name can not be empty"),

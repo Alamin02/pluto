@@ -54,6 +54,28 @@ export const agent = {
     });
   },
 
+  // create product
+  createProduct: (productData, token) => {
+    return fetch(`${baseUrl}/products`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: productData,
+    });
+  },
+
+  // update product
+  updateProduct: (productId, productData, token) => {
+    return fetch(`${baseUrl}/users/products/${productId}`, {
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: productData,
+    });
+  },
+
   // edit product
   editProduct: (productId, productData, token) => {
     return fetch(`${baseUrl}/products/${productId}`, {
@@ -172,13 +194,13 @@ export const agent = {
         return data.blogs;
       });
   },
-  createBlog: (BlogData, token) => {
+  createBlog: (blogData, token) => {
     return fetch(`${baseUrl}/blogs`, {
       method: "post",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      body: BlogData,
+      body: blogData,
     });
   },
   editBlog: (blogData, token, blogId) => {
@@ -186,9 +208,8 @@ export const agent = {
       method: "put",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(blogData),
+      body: blogData,
     });
   },
   deleteBlog: (token, blogId) => {
@@ -207,16 +228,6 @@ export const agent = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-    });
-  },
-
-  createProduct: (productData, token) => {
-    return fetch(`${baseUrl}/products`, {
-      method: "post",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: productData,
     });
   },
 
@@ -240,6 +251,14 @@ export const agent = {
   getProductImage: (imageId) => {
     return fetch(`${baseUrl}/images/${imageId}`, {
       method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+  deleteBlogImage: (blogId) => {
+    return fetch(`${baseUrl}/blogs/blogImage/${blogId}`, {
+      method: "delete",
       headers: {
         "Content-Type": "application/json",
       },

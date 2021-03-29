@@ -60,9 +60,16 @@ export default function Products() {
     agent
       .deleteProduct(productId, token)
       .then((res) => res.json())
-      .then(() => message.success("Successfully deleted"));
-    // message.info("Clicked on Yes.");
-    fetchProducts();
+      .then((res) => {
+        if (res.errors) {
+          for (let error of res.errors) {
+            message.error(error.msg);
+          }
+        } else {
+          message.success("Successfully deleted");
+        }
+      })
+      .then(() => fetchProducts());
   }
 
   const [productData, setProductData] = useState([]);

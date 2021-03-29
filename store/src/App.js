@@ -20,8 +20,8 @@ import Offers from "./pages/offer/Offers";
 import Cart from "./pages/order/Cart";
 import CheckOut from "./pages/order/CheckOut";
 
-import ProductDetails from "./pages/product/Product";
-import ProductsPage from "./pages/product/Products";
+import Product from "./pages/product/Product";
+import Products from "./pages/product/Products";
 
 import UpdateUserProfile from "./pages/user/UpdateUserProfile";
 import UserProfile from "./pages/user/UserProfile";
@@ -45,8 +45,8 @@ function App() {
         <Route path="/cart" component={Cart} exact />
         <Route path="/checkOut" component={CheckOut} exact />
 
-        <Route path="/products" component={ProductsPage} exact />
-        <Route path="/products/:id" component={ProductDetails} exact />
+        <Route path="/products" component={Products} exact />
+        <Route path="/products/:id" component={Product} exact />
 
         <Route path="/profile" component={UserProfile} exact />
         <Route path="/profile/edit" component={UpdateUserProfile} exact />

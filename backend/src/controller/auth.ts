@@ -78,7 +78,7 @@ export async function userRegistration(
     newUser.name = name;
     newUser.email = email;
     newUser.phone = phone;
-    newUser.role = "user";
+    newUser.role = role;
     newUser.password = hash;
 
     await userRepository.save(newUser);

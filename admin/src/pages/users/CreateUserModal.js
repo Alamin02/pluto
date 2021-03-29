@@ -1,8 +1,8 @@
 import React from "react";
-import { Modal, Form, Input, message } from "antd";
+import { Modal, Form, Input, message, Select } from "antd";
 
 import { agent } from "../../helpers/agent";
-
+const { Option } = Select;
 export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
@@ -47,7 +47,10 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
         <Form form={form} layout="vertical" name="form_in_modal">
           {/* role */}
           <Form.Item name="role" label="Role&nbsp;:">
-            <Input />
+            <Select defaultValue="choose a role...">
+              <Option value="user">user</Option>
+              <Option value="admin">admin</Option>
+            </Select>
           </Form.Item>
 
           {/* email */}

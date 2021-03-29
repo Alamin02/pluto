@@ -1,18 +1,24 @@
 import express = require("express");
-import path = require("path");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
+
+import accessControl from "../utils/access-control";
+
 import { Blog } from "../entity";
 
 // @POST - /api/v1/blogs
 // Create a Blog
 export async function createBlog(req: express.Request, res: express.Response) {
+  const permission = accessControl.can(res.locals.user.role).createAny("blog");
+
+  if (!permission.granted)
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+
   // Validation result
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
   const { title, author, description } = req.body;
 
   // Save to database
@@ -91,6 +97,11 @@ export async function updateSingleBlog(
   req: express.Request,
   res: express.Response
 ) {
+  const permission = accessControl.can(res.locals.user.role).updateAny("blog");
+
+  if (!permission.granted)
+    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+
   // Validation result
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -99,12 +110,21 @@ export async function updateSingleBlog(
 
   const { title, author, description } = req.body;
   const blogRepository = getConnection().getRepository(Blog);
-
   try {
+    let imagePath;
+    if (req.file) {
+      imagePath = req.file.path;
+    }
+    //  else {
+    //   imagePath = "";
+    // }
     const newBlog = new Blog();
     newBlog.title = title;
     newBlog.author = author;
     newBlog.description = description;
+    if (imagePath) {
+      newBlog.path = imagePath;
+    }
 
     await blogRepository.update({ id: req.params.blogId }, newBlog);
   } catch (err) {
@@ -116,16 +136,43 @@ export async function updateSingleBlog(
   res.json({ msg: "Blog is now updated" });
 }
 
+// @DELETE - /api/v1/blogs/blogImage/:blogId
+//delete blog image
+export async function deleleBlogImage(
+  req: express.Request,
+  res: express.Response
+) {
+  const id = req.params.blogId;
+  const blogRepository = getConnection().getRepository(Blog);
+
+  try {
+    const findBlogById = await blogRepository.findOne({ id });
+    if (findBlogById && findBlogById.path) {
+      findBlogById.path = "";
+      blogRepository.save(findBlogById);
+    }
+    res.json({ msg: "blogImage deleted" });
+  } catch (err) {
+    res.json({ errors: [{ msg: "blog have no image" }] });
+  }
+}
 // @DELETE - /api/v1/blogs/:blogId
 // delete blog
 export async function deleteBlog(req: express.Request, res: express.Response) {
   const id = req.params.blogId;
   const blogRepository = getConnection().getRepository(Blog);
   try {
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .deleteAny("blog");
+
+    if (!permission.granted)
+      return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+
     if (await blogRepository.delete({ id })) {
       return res.json({ msg: "delete successfully" });
     }
   } catch (err) {
-    res.json({ errors: "blog is not identified" });
+    res.json({ errors: [{ msg: "blog is not identified" }] });
   }
 }

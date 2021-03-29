@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import ProductView from "../../components/product-view/ProductView";
-import Error404 from "../../components/error-404/Error404";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
 import MainContainer from "../../components/layout/MainContainer";
@@ -13,7 +12,7 @@ const ProductDetails = () => {
 
   const { id } = useParams();
 
-  function fetchProducts() {
+  function fetchProduct() {
     agent
       .getProduct(id)
       .then((res) => res.json())
@@ -25,7 +24,7 @@ const ProductDetails = () => {
   }
 
   useEffect(() => {
-    fetchProducts();
+    fetchProduct();
   }, [id]);
 
   if (isLoading) {

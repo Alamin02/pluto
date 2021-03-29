@@ -21,15 +21,14 @@ export {
   getAllBlogs as getAllBlogsController,
   getSingleBlog as getSingleBlogController,
   updateSingleBlog as updateSingleBlogController,
+  deleleBlogImage as deleleBlogImageController,
   deleteBlog as deleteBlogController,
 } from "./blog";
 
 export {
   category as categoryController,
   createCategory as createCategoryController,
-  createSubCategory as createSubCategoryController,
   updateCategory as updateCategoryController,
-  updateSubCategory as updateSubCategoryController,
   deleteCategory as deleteCategoryController,
   getSingleCategory as getSingleCategoryController,
 } from "./category";

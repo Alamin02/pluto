@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Row, Col, Badge, Pagination, Input } from "antd";
+import { Row, Col, Badge, Pagination, Input, Select } from "antd";
 import qs from "query-string";
 
 import { agent } from "../../helpers/agent";
@@ -8,10 +8,9 @@ import MainHeader from "../../components/main-header/MainHeader";
 import ProductMenu from "../../components/product/ProductMenu";
 import CardItem from "../../components/product/ProductCard";
 import MainContainer from "../../components/layout/MainContainer";
-import SearchBar from "../../components/product/SearchBar";
-import SortMenu from "../../components/product/SortProductsMenu";
 
 const { Search } = Input;
+const { Option } = Select;
 
 export default function Products() {
   const history = useHistory();
@@ -22,12 +21,14 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
   const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 12);
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("name");
 
   function fetchProducts() {
     const queryString = qs.stringify({
       page: currentPage,
       perPage,
       search,
+      sort,
     });
 
     agent
@@ -49,13 +50,25 @@ export default function Products() {
   }
 
   function onSearch(value) {
-    console.log(value);
     setSearch(value);
+    setCurrentPage(1);
+    history.push({
+      search: `?page=1`,
+    });
+  }
+
+  function onSort(value) {
+    console.log(`Sort by > ${value}`);
+    setSort(value);
+    setCurrentPage(1);
+    history.push({
+      search: `?page=1`,
+    });
   }
 
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, perPage, search]);
+  }, [currentPage, perPage, search, sort]);
 
   return (
     <div>
@@ -65,8 +78,16 @@ export default function Products() {
         <br />
         <Row gutter={[16, 16]}>
           <Col span={12}>
-            <span style={{ marginRight: "10px" }}>Sort By</span>
-            <SortMenu />
+            {/* sort menu */}
+            <span style={{ marginRight: "10px" }}>Sort By:</span>
+            <Select
+              defaultValue="name"
+              style={{ width: 200 }}
+              onChange={onSort}
+            >
+              <Option value="name">Name</Option>po
+              <Option value="price">Price</Option>
+            </Select>
           </Col>
           <Col span={12}>
             <div
@@ -75,16 +96,21 @@ export default function Products() {
                 justifyContent: "flex-end",
               }}
             >
+              {/* search bar */}
               <Search
-                placeholder="input search text"
+                placeholder="Search products"
                 onSearch={onSearch}
                 enterButton
+                allowClear="true"
+                style={{ width: "300px" }}
               />
             </div>
           </Col>
         </Row>
         <br />
         <br />
+
+        {/* all products list */}
         <Row gutter={[16, 16]}>
           {productsData.map((product) => {
             if (product.offer) {

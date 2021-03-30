@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Menu, Grid } from "antd";
 import { Badge } from "antd";
+import { agent } from "../../helpers/agent";
 import {
   PhoneOutlined,
   ShoppingOutlined,
@@ -11,7 +13,7 @@ import classNames from "classnames";
 
 import styles from "./Navbar.module.css";
 import appStyles from "../../App.module.css";
-import { navbarMenus, shopSubmenus } from "./navbarInfo";
+import { navbarMenus } from "./navbarInfo";
 
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
@@ -25,8 +27,23 @@ const downOutlinedStyle = {
 };
 
 function Navbar() {
+  const [productsCategory, setProductsCategory] = useState([]);
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);
+
+  function fetchProductsCategory() {
+    agent
+      .getCategories()
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setProductsCategory(data);
+        console.log(data);
+      });
+  }
+
+  useEffect(() => {
+    fetchProductsCategory();
+  }, []);
 
   return (
     <div className={styles.navBackgroundColor}>
@@ -74,12 +91,22 @@ function Navbar() {
             }
             style={menuStyle}
           >
-            {shopSubmenus.map((shopSubmenu) => (
-              <Menu.Item key={shopSubmenu.id} style={menuStyle}>
-                <Link to={shopSubmenu.shopSubmenuUrl}></Link>
-                {shopSubmenu.submenu}
-              </Menu.Item>
-            ))}
+            {productsCategory.map((category) => {
+              if (category.children) {
+                return (
+                  <SubMenu key={category.id} title={category.name} style={menuStyle}>
+                    {category.children.map((subCategory) => {
+                      return (<Menu.Item key={subCategory.id}>{subCategory.name}</Menu.Item>)
+                    }
+                    )}
+                  </SubMenu>
+                )
+              } else {
+                return (
+                  <Menu.Item key={category.id} style={menuStyle}>{category.name}</Menu.Item>
+                )
+              }
+            })}
           </SubMenu>
 
           <Menu.Item>

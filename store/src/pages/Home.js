@@ -5,7 +5,7 @@ import { Button } from "antd";
 import MainContainer from "../components/layout/MainContainer";
 import Slider from "../components/slider/Slider";
 import FeaturedProducts from "../components/featured-products/FeaturedProducts";
-import ProductList from "../components/product/ProductList";
+import PopularProducts from "../components/product/PopularProducts";
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
       <Slider />
       <MainContainer>
         <FeaturedProducts />
-        <ProductList />
+        <PopularProducts />
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <Link
             to={{

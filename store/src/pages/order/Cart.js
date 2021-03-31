@@ -1,15 +1,24 @@
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
-
 import CartItem from "../../components/cart/CartItem";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import styles from "./Cart.module.css";
 import MainContainer from "../../components/layout/MainContainer";
 
 function Cart() {
+  const [totalPrice, setTotalPrice] = useState(0);
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.cart.products);
+
+  useEffect(() => {
+    let price = 0;
+    productList.forEach((product) => {
+      price += product.price * product.quantity;
+    });
+    setTotalPrice(price);
+  }, [productList, totalPrice, setTotalPrice]);
 
   const handleRemoveProduct = (id) => {
     dispatch({ type: "cart/removeProduct", payload: { id } });
@@ -24,17 +33,20 @@ function Cart() {
           <CartItem
             key={item.id}
             id={item.id}
-            productName={item.productName}
+            productName={item.name}
             price={item.price}
-            imageUrl={item.imageUrl}
+            imageUrl={item.images[0].path}
             onRemove={handleRemoveProduct}
             description={item.description}
+            quantity={item.quantity}
           />
         ))}
         <div className={styles.bottomSection}>
           <div>&nbsp;</div>
           <div>
-            <p className={styles.totalPriceSection}>Total Price: XXXX BDT</p>
+            <p className={styles.totalPriceSection}>
+              Total Price: {totalPrice} BDT
+            </p>
           </div>
         </div>
 

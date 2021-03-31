@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 .productNav {
   display: flex;
   justify-content: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
   margin: 70px 0px;
 }
@@ -20,4 +20,18 @@
   padding: 15px 20px;
   margin: 0 10px;
   color: #999999;
+}
+
+/* responsive */
+@media only screen and (max-width: 586px) {
+  .menu li a {
+    padding: 15px 5px;
+    margin: 0 10px;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 435px) {
+  .menu li a {
+    padding: 15px 0px;
+    font-size: 10px;
+  }
 }

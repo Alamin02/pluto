@@ -241,6 +241,13 @@ export const agent = {
     });
   },
 
+  createProductImage: (data) => {
+    return fetch(`${baseUrl}/images/`, {
+      method: "post",
+      body: data,
+    });
+  },
+
   getProductImage: (imageId) => {
     return fetch(`${baseUrl}/images/${imageId}`, {
       method: "get",

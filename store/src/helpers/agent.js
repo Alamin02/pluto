@@ -28,4 +28,13 @@ export const agent = {
       },
     });
   },
+
+  getCategories: () => {
+    return fetch(`${baseUrl}/category`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

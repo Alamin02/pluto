@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, Image } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Image,
+  Upload,
+  Button,
+  message,
+} from "antd";
+import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
 
 const { Option } = Select;
@@ -14,9 +23,18 @@ const titleStyle = {
   display: "inline-block",
   position: "absolute",
   top: "40%",
-  width: "100%",
-  marginLeft: "70px",
+  width: "300px",
+  margin: "0px 20px",
 };
+
+const deleteButtonStyle = {
+  cursor: "pointer",
+  position: "absolute",
+  marginLeft: "325px",
+  top: "40%",
+  fontSize: "25px",
+  color: "red",
+}
 
 export default function EditProductModal({
   visible,
@@ -28,15 +46,24 @@ export default function EditProductModal({
   const [form] = Form.useForm();
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
-  const [warning, setWarning] = useState("");
+  const [productImages, setProductImages] = useState([]);
 
-  const deleteImage = (e) => {
+  const deleteImage = (productId) => {
     agent
-      .deleteimage(existingRecord.images[0].id)
+      .deleteimage(productId)
       .then((res) => res.json())
       .then(({ data }) => {
         refetch();
       });
+  };
+
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
   };
 
   useEffect(() => {
@@ -72,6 +99,29 @@ export default function EditProductModal({
     }
   }, [existingRecord]);
 
+  const handleUpload = async (info) => {
+    const { status } = info.file;
+    if (status !== "uploading") {
+      console.log(info.fileList);
+      const formData = new FormData();
+      productImages.forEach((productImage) => {
+        formData.append("productImages", productImage);
+      });
+
+      formData.append("productId", existingRecord.id);
+
+      agent
+        .createProductImage(formData)
+        .then((res) => console.log(res))
+        .then(console.log);
+    }
+    if (status === "done") {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -86,6 +136,7 @@ export default function EditProductModal({
           form
             .validateFields()
             .then((values) => {
+              console.log("values :" + values);
               agent
                 .editProduct(existingRecord.id, values, token)
                 .then((res) => res.json());
@@ -198,31 +249,42 @@ export default function EditProductModal({
           </Form.Item>
 
           {/* image */}
-          <Form.Item label="Product Images" name="images">
-            {existingRecord ? (
+          <Form.Item
+            label="Product Images"
+            name="productImages"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+            noStyle
+          >
+            {existingRecord &&
               existingRecord.images &&
               existingRecord.images.map((image) => (
-                <div key={image.id} style={imageStyle}>
-                  <Image width={100} src={image.path} />
-                  <div style={titleStyle}>
-                    <p>{image.originalname}</p>
+                <div key={image.id}>
+                  <div style={imageStyle}>
+                    <Image width={100} height={136} src={image.path} />
+                    <div style={titleStyle}>
+                      <p>{image.originalname}</p>
+                    </div>
+                    <CloseCircleOutlined
+                      onClick={() => deleteImage(image.id)}
+                      style={deleteButtonStyle}
+                    />
                   </div>
-                  <CloseCircleOutlined
-                    onClick={deleteImage}
-                    style={{
-                      cursor: "pointer",
-                      position: "absolute",
-                      marginLeft: "300px",
-                      top: "40%",
-                      fontSize: "25px",
-                      color: "red",
-                    }}
-                  />
                 </div>
-              ))
-            ) : (
-              <p>{warning}</p>
-            )}
+              ))}
+            <br />
+            <Upload
+              name="files"
+              onChange={handleUpload}
+              beforeUpload={(file, fileList) => {
+                setProductImages(fileList);
+                return false;
+              }}
+              accept="image/*"
+              multiple={true}
+            >
+              <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>

@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { Button, Grid } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-
 import styles from "./CartItem.module.css";
 import QuantityCounter from "./QuantityCounter";
 
 const { useBreakpoint } = Grid;
 
-function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
+function CartItem({
+  id,
+  productName,
+  price,
+  imageUrl,
+  onRemove,
+  description,
+  quantity,
+}) {
   const screens = useBreakpoint();
-  const [count, setCount] = useState(1);
-
-  const handleCount = (value) => {
-    if (value > 0) setCount(value);
-  };
 
   return (
     <section>
@@ -62,22 +65,25 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
             { [styles.productInfoXs]: screens.xs }
           )}
         >
-          <h1
-            className={classNames(
-              { [styles.title]: screens },
-              { [styles.titleMd]: screens.md },
-              { [styles.titleXl]: screens.xl }
-            )}
-          >
-            {productName}
-          </h1>
+          <Link to={`/products/${id}`}>
+            <h1
+              className={classNames(
+                { [styles.title]: screens },
+                { [styles.titleMd]: screens.md },
+                { [styles.titleXl]: screens.xl }
+              )}
+            >
+              {productName}
+            </h1>
+          </Link>
+
           <div
             className={classNames(
               { [styles.priceOnSmallScreen]: screens },
               { [styles.priceOnSmallScreenXs]: screens.xs }
             )}
           >
-            ৳&nbsp;{price * count}
+            ৳&nbsp;{price * quantity}
           </div>
           <div className={styles.description}>{description}</div>
           <div
@@ -86,7 +92,7 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
               { [styles.counterStyleXs]: screens.xs }
             )}
           >
-            <QuantityCounter value={count} onChange={handleCount} />
+            <QuantityCounter value={quantity} productId={id} />
           </div>
         </div>
 
@@ -96,7 +102,7 @@ function CartItem({ id, productName, price, imageUrl, onRemove, description }) {
             { [styles.priceOnBigScreenXs]: screens.xs }
           )}
         >
-          ৳&nbsp;{price * count}
+          ৳&nbsp;{price * quantity}
         </div>
       </div>
       <hr className={styles.cartHr} />

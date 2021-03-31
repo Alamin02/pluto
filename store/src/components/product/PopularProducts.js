@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Badge } from "antd";
+import qs from "query-string";
 
 import MainContainer from "../layout/MainContainer";
 import CardItem from "./ProductCard";
@@ -9,10 +10,16 @@ import { agent } from "../../helpers/agent";
 
 function ProductList() {
   const [productsData, setProductsData] = useState([]);
+  const [sort, setSort] = useState("name");
+
+  const queryString = qs.stringify({
+    perPage: 8,
+    sort,
+  });
 
   function fetchProducts() {
     agent
-      .getProducts("?perPage=8")
+      .getProducts(queryString)
       .then((res) => res.json())
       .then(({ data }) => {
         setProductsData(data.products);

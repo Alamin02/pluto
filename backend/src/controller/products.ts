@@ -1,9 +1,10 @@
 import express = require("express");
-import { getConnection } from "typeorm";
+import { getConnection, Like } from "typeorm";
+
 import { validationResult } from "express-validator";
 import accessControl from "../utils/access-control";
 
-import { Product, Offer, Category, ProductImage } from "../entity";
+import { Product, Offer, Category, ProductImage, Order } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -15,10 +16,18 @@ export async function getAllProducts(
 
   const page: number = parseInt(<string>req.query.page) || 1;
   const perPage: number = parseInt(<string>req.query.perPage) || 12;
+  const search: string = <string>req.query.search || "";
+  const sort: string = <string>req.query.sort || "";
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ["id", "name", "description", "price", "summary"],
     relations: ["category", "offer", "images"],
+    where: {
+      name: Like(`%${search}%`),
+    },
+    order: {
+      [sort]: "ASC",
+    },
     take: perPage,
     skip: (page - 1) * perPage,
   });

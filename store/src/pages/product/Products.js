@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Row, Col, Badge, Pagination } from "antd";
+import { Row, Col, Badge, Pagination, Input, Select } from "antd";
 import qs from "query-string";
 
 import { agent } from "../../helpers/agent";
 import MainHeader from "../../components/main-header/MainHeader";
 import ProductMenu from "../../components/product/ProductMenu";
-import ProductOption from "../../components/product/option/ProductOption";
 import CardItem from "../../components/product/ProductCard";
 import MainContainer from "../../components/layout/MainContainer";
 
+const { Search } = Input;
+const { Option } = Select;
+
 export default function Products() {
-  let history = useHistory();
-  let query = qs.parse(window.location.search);
+  const history = useHistory();
+  const query = qs.parse(window.location.search);
 
   const [productsData, setProductsData] = useState([]);
   const [totalProductsInfo, setTotalProductsInfo] = useState("");
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
+  const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 12);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("name");
 
   function fetchProducts() {
-    let queryString = `?page=${currentPage}`;
+    const queryString = qs.stringify({
+      page: currentPage,
+      perPage,
+      search,
+      sort,
+    });
 
     agent
       .getProducts(queryString)
@@ -30,23 +40,77 @@ export default function Products() {
       });
   }
 
-  function onChange(page) {
+  function onChange(page, pageSize) {
     setCurrentPage(page);
+    setPerPage(pageSize);
 
-    history.push({ search: `?page=${page}` });
+    history.push({
+      search: `?page=${page}`,
+    });
+  }
+
+  function onSearch(value) {
+    setSearch(value);
+    setCurrentPage(1);
+    history.push({
+      search: `?page=1`,
+    });
+  }
+
+  function onSort(value) {
+    console.log(`Sort by > ${value}`);
+    setSort(value);
+    setCurrentPage(1);
+    history.push({
+      search: `?page=1`,
+    });
   }
 
   useEffect(() => {
     fetchProducts();
-  }, [currentPage]);
+  }, [currentPage, perPage, search, sort]);
 
   return (
     <div>
       <MainHeader name="popular list" sub="home - shop - products" />
       <MainContainer>
         <ProductMenu />
-        <ProductOption />
         <br />
+        <Row gutter={[16, 16]}>
+          <Col span={12}>
+            {/* sort menu */}
+            <span style={{ marginRight: "10px" }}>Sort By:</span>
+            <Select
+              defaultValue="name"
+              style={{ width: 200 }}
+              onChange={onSort}
+            >
+              <Option value="name">Name</Option>po
+              <Option value="price">Price</Option>
+            </Select>
+          </Col>
+          <Col span={12}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              {/* search bar */}
+              <Search
+                placeholder="Search products"
+                onSearch={onSearch}
+                enterButton
+                allowClear="true"
+                style={{ width: "300px" }}
+              />
+            </div>
+          </Col>
+        </Row>
+        <br />
+        <br />
+
+        {/* all products list */}
         <Row gutter={[16, 16]}>
           {productsData.map((product) => {
             if (product.offer) {
@@ -85,18 +149,18 @@ export default function Products() {
             }
           })}
         </Row>
-
         <Pagination
           style={{ display: "flex", justifyContent: "center", margin: "50px" }}
-          showSizeChanger
           showQuickJumper
           defaultCurrent={1}
+          showSizeChanger={false}
           current={currentPage}
           onChange={onChange}
-          defaultPageSize={totalProductsInfo.perPage}
+          defaultPageSize={totalProductsInfo.perPage || 10}
+          pageSize={perPage || 10}
           total={totalProductsInfo.productCount}
           showTotal={(total, range) =>
-            `${range[0]}-${range[1]} of ${total} Products`
+            `${range[0]} to ${range[1]} of ${total} Products`
           }
         />
       </MainContainer>

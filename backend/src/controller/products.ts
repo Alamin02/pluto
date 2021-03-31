@@ -150,7 +150,7 @@ export async function updateProduct(
   }
 
   const id = req.params.productId;
-  const { name, price, summary, description, offerId, categoryId } = req.body;
+  const { name, price, summary, description, offerId } = req.body;
   const productsRepository = getConnection().getRepository(Product);
 
   try {
@@ -159,30 +159,6 @@ export async function updateProduct(
     const offersRepository = getConnection().getRepository(Offer);
     // find offer by id
     const offer = await offersRepository.findOne({ id: offerId });
-    const categoryRepository = getConnection().getRepository(Category);
-    const categoryCheck = await categoryRepository.findOne({
-      id: categoryId,
-    });
-    const productImageRepository = getConnection().getRepository(ProductImage);
-
-    const createProductImage = [];
-    const files = req.files as Express.Multer.File[];
-    console.log(files);
-
-    if (files.length) {
-      for (let i = 0; i < files.length; i++) {
-        const productImage = new ProductImage();
-        productImage.path = files[i].path;
-        productImage.originalname = files[i].originalname;
-
-        const savedProductImage = await productImageRepository.save(
-          productImage
-        );
-        createProductImage.push(savedProductImage);
-      }
-    } else {
-      return res.json({ errors: [{ msg: "Image not found" }] });
-    }
 
     const newProduct = new Product();
 
@@ -190,14 +166,9 @@ export async function updateProduct(
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
-    newProduct.images = createProductImage;
+    newProduct.images = [];
     if (offer) {
       newProduct.offer = offer;
-    }
-    if (categoryCheck) {
-      newProduct.category = categoryId;
-    } else {
-      res.status(400).json({ errors: [{ msg: "category not found" }] });
     }
     productsRepository.merge(findProductById, newProduct);
 

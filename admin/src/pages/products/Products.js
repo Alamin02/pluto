@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Table,
   Space,
@@ -8,8 +9,11 @@ import {
   Typography,
   Row,
   Col,
+  Pagination,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import qs from "query-string";
+
 import { columns } from "./productTableColumn";
 import CreateProductModal from "./CreateProductModal";
 import EditProductModal from "./EditProductModal";
@@ -19,24 +23,46 @@ const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
 
 export default function Products() {
+  const history = useHistory();
+  const query = qs.parse(window.location.search);
+
+  const [totalProductsInfo, setTotalProductsInfo] = useState("");
   const [visible, setVisible] = useState(false);
-  const [id, setId] = useState(0);
-  const [visibleEditProduct, setvisibleEditProduct] = useState(false);
-  const [selectedProduct, setselectedProduct] = useState(null);
+  const [visibleEditProduct, setVisibleEditProduct] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
+  const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 10);
+  const [sort, setSort] = useState("name");
 
   const fetchProducts = () => {
-    const token = localStorage.getItem("token");
+    const queryString = qs.stringify({
+      page: currentPage,
+      perPage,
+      sort,
+    });
+
     agent
-      .getProducts(token)
+      .getProducts(queryString)
       .then((res) => res.json())
       .then(({ data }) => {
+        console.log(data.productCount);
+        setTotalProductsInfo(data);
         setProductData(data.products);
         if (selectedProduct)
-          setselectedProduct(
+          setSelectedProduct(
             data.products.find((product) => product.id === selectedProduct.id)
           );
       });
   };
+
+  function onChange(page, pageSize) {
+    setCurrentPage(page);
+    setPerPage(pageSize);
+
+    history.push({
+      search: `?page=${page}`,
+    });
+  }
 
   const onCreate = (values) => {
     fetchProducts();
@@ -44,12 +70,12 @@ export default function Products() {
   };
 
   const onEditProduct = () => {
-    setvisibleEditProduct(false);
+    setVisibleEditProduct(false);
   };
 
   const onEdit = (record) => {
-    setselectedProduct(record);
-    setvisibleEditProduct(true);
+    setSelectedProduct(record);
+    setVisibleEditProduct(true);
     console.log(record);
   };
 
@@ -73,10 +99,12 @@ export default function Products() {
   }
 
   const [productData, setProductData] = useState([]);
+  console.log(productData);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [currentPage, perPage, sort]);
+
   const actionColumn = {
     title: "Action",
     key: "action",
@@ -121,7 +149,6 @@ export default function Products() {
         </Button>
 
         <CreateProductModal
-          productId={id}
           visible={visible}
           onCreate={onCreate}
           onCancel={() => {
@@ -135,10 +162,11 @@ export default function Products() {
           onCreate={onEditProduct}
           existingRecord={selectedProduct}
           onCancel={() => {
-            setvisibleEditProduct(false);
+            setVisibleEditProduct(false);
           }}
           refetch={fetchProducts}
         />
+
         {/* table */}
         <Table
           rowKey={(record) => record.id}
@@ -148,7 +176,8 @@ export default function Products() {
           bordered
           sticky
           scroll={{ y: 1330 }}
-          pagination={{ pageSize: 10 }}
+          // pagination={{ pageSize: 10 }}
+          pagination={false}
           title={() => (
             <Row justify="space-between">
               <Col>
@@ -164,9 +193,23 @@ export default function Products() {
           )}
           footer={() => (
             <div>
-              <p>Total products: XX</p>
+              <p>Total products: {totalProductsInfo.productCount}</p>
             </div>
           )}
+        />
+        <Pagination
+          style={{ display: "flex", justifyContent: "center", margin: "50px" }}
+          showQuickJumper
+          defaultCurrent={1}
+          showSizeChanger={false}
+          current={currentPage}
+          onChange={onChange}
+          defaultPageSize={totalProductsInfo.perPage || 10}
+          pageSize={perPage || 10}
+          total={totalProductsInfo.productCount}
+          showTotal={(total, range) =>
+            `${range[0]} to ${range[1]} of ${total} Products`
+          }
         />
       </Space>
     </div>

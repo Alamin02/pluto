@@ -44,12 +44,11 @@ export const agent = {
   },
 
   // get all products
-  getProducts: (token) => {
-    return fetch("http://localhost:4000/api/v1/products", {
+  getProducts: (queryString = "") => {
+    return fetch(`${baseUrl}/products?${queryString}`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
   },

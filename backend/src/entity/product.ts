@@ -5,6 +5,7 @@ import {
   OneToMany,
   JoinTable,
   ManyToMany,
+  CreateDateColumn,
   ManyToOne,
 } from "typeorm";
 
@@ -41,17 +42,10 @@ export class Product {
   })
   category!: Category;
 
-  // @ManyToMany(() => Category)
-  // @JoinTable()
-  // categories!: Category[];
-
-  // @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  // createdAt!: Date;
-
-  // @Column({
-  //   type: "timestamp",
-  //   default: () => "CURRENT_TIMESTAMP",
-  //   onUpdate: "CURRENT_TIMESTAMP",
-  // })
-  // updatedAt!: Date;
+  @CreateDateColumn({
+    type: "date",
+    // default: () => "CURRENT_TIMESTAMP",
+    // onUpdate: "CURRENT_TIMESTAMP",
+  })
+  createdAt!: Date;
 }

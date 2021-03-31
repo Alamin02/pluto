@@ -21,7 +21,7 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
   const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 12);
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("name");
+  const [sort, setSort] = useState("createdAt");
 
   function fetchProducts() {
     const queryString = qs.stringify({
@@ -81,11 +81,12 @@ export default function Products() {
             {/* sort menu */}
             <span style={{ marginRight: "10px" }}>Sort By:</span>
             <Select
-              defaultValue="name"
+              defaultValue="createdAt"
               style={{ width: 200 }}
               onChange={onSort}
             >
-              <Option value="name">Name</Option>po
+              <Option value="createdAt">Product added</Option>
+              <Option value="name">Name</Option>
               <Option value="price">Price</Option>
             </Select>
           </Col>

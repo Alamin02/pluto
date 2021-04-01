@@ -272,4 +272,14 @@ export const agent = {
       },
     });
   },
+
+  // address
+  getAddresses: () => {
+    return fetch(`${baseUrl}/addresses`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

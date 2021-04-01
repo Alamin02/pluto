@@ -37,4 +37,12 @@ export const agent = {
       },
     });
   },
+  getMe: (token) => {
+    return fetch(`${baseUrl}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

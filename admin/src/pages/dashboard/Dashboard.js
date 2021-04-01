@@ -12,6 +12,7 @@ import {
   SkinOutlined,
   TagOutlined,
   MessageOutlined,
+  EnvironmentOutlined,
 } from "@ant-design/icons";
 
 import styles from "./Dashboard.module.css";
@@ -51,12 +52,18 @@ const sidebarInfo = [
   },
   {
     id: 6,
+    itemName: "addresses",
+    itemUrl: "/addresses",
+    icon: <EnvironmentOutlined />,
+  },
+  {
+    id: 7,
     itemName: "orders",
     itemUrl: "/orders",
     icon: <ShoppingCartOutlined />,
   },
   {
-    id: 7,
+    id: 8,
     itemName: "Blogs",
     itemUrl: "/blogs",
     icon: <MessageOutlined />,

@@ -93,7 +93,7 @@ const RegistrationForm = () => {
           >
             {/* Username */}
             <Form.Item
-              name="fullname"
+              name="name"
               label={<span>Fullname&nbsp;</span>}
               rules={[
                 {

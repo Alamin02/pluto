@@ -1,10 +1,16 @@
-import { Tag } from "antd"
+import { Tag } from "antd";
 export const columns = [
   {
     title: "Id",
     dataIndex: "id",
     key: "id",
+    ellipsis: true,
     render: (id) => <span>{id}</span>,
+  },
+  {
+    title: "Product Added",
+    dataIndex: "createdAt",
+    key: "createdAt",
   },
   {
     title: "Product Name",
@@ -15,6 +21,7 @@ export const columns = [
     title: "Price",
     dataIndex: "price",
     key: "price",
+    width: "50",
   },
   {
     title: "Offer",
@@ -45,11 +52,12 @@ export const columns = [
     title: "Summary",
     dataIndex: "summary",
     key: "summary",
+    ellipsis: true,
   },
   {
     title: "Description",
     dataIndex: "description",
     key: "description",
+    ellipsis: true,
   },
-
 ];

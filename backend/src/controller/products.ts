@@ -20,7 +20,7 @@ export async function getAllProducts(
   const sort: string = <string>req.query.sort || "";
 
   const [products, productCount] = await productRepository.findAndCount({
-    select: ["id", "name", "description", "price", "summary"],
+    select: ["id", "name", "description", "price", "summary", "createdAt"],
     relations: ["category", "offer", "images"],
     where: {
       name: Like(`%${search}%`),

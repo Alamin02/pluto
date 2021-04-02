@@ -92,8 +92,10 @@ export async function userRegistration(
     res.status(400).json({ errors: [{ msg: "User could not be created" }] });
     return;
   }
+  // Generating a token
+  const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
 
-  res.json({ success: [{ msg: "New user has been created!" }] });
+  res.json({ success: [{ msg: "New user has been created!" }], token: token });
 }
 
 // @GET - /api/v1/users/

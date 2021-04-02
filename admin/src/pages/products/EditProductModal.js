@@ -34,7 +34,7 @@ const deleteButtonStyle = {
   top: "40%",
   fontSize: "25px",
   color: "red",
-}
+};
 
 export default function EditProductModal({
   visible,
@@ -70,7 +70,7 @@ export default function EditProductModal({
     form.resetFields();
     if (existingRecord) {
       agent
-        .getCategories(existingRecord.category.id)
+        .getCategories()
         .then((res) => res.json())
         .then(({ data }) => {
           if (data) {
@@ -102,7 +102,6 @@ export default function EditProductModal({
   const handleUpload = async (info) => {
     const { status } = info.file;
     if (status !== "uploading") {
-      console.log(info.fileList);
       const formData = new FormData();
       productImages.forEach((productImage) => {
         formData.append("productImages", productImage);
@@ -113,7 +112,7 @@ export default function EditProductModal({
       agent
         .createProductImage(formData)
         .then((res) => console.log(res))
-        .then(console.log);
+        .then(() => refetch());
     }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
@@ -136,10 +135,12 @@ export default function EditProductModal({
           form
             .validateFields()
             .then((values) => {
-              console.log("values :" + values);
               agent
                 .editProduct(existingRecord.id, values, token)
-                .then((res) => res.json());
+                .then((res) => res.json())
+                .then(() => {
+                  refetch();
+                });
 
               form.resetFields();
               onCreate(values);
@@ -221,9 +222,10 @@ export default function EditProductModal({
               },
             ]}
             name="categoryId"
+            initialValue={existingRecord.category && existingRecord.category.id}
           >
             {existingRecord && (
-              <Select defaultValue={existingRecord.category.id}>
+              <Select>
                 {categoryOptions.map((category) => (
                   <Option value={category.id} key={category.id}>
                     {category.name}
@@ -280,6 +282,7 @@ export default function EditProductModal({
                 setProductImages(fileList);
                 return false;
               }}
+              showUploadList={false}
               accept="image/*"
               multiple={true}
             >

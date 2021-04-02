@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import { Form, Input, Button, Checkbox, Divider } from "antd";
+import { useDispatch } from "react-redux";
+import { Form, Input, Button, Checkbox, Divider, message } from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -13,8 +14,29 @@ import styles from "./LoginForm.module.css";
 import Heading from "../heading/Heading";
 
 const Login = () => {
+
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    fetch("http://localhost:4000/api/v1/users/login", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then(({ token }) => {
+        if (token) {
+          localStorage.setItem("token", token);
+          dispatch({ type: "auth/login", payload: token });
+          message.success("Login Successfully")
+          form.resetFields();
+        } else {
+          message.error("Could not login, check credentials");
+        }
+      });
   };
   return (
     <>
@@ -26,6 +48,7 @@ const Login = () => {
           />
           <Form
             name="normal_login"
+            form={form}
             className={classNames(styles.loginForm, styles.containerFluid)}
             initialValues={{
               remember: true,
@@ -34,17 +57,18 @@ const Login = () => {
           >
             {/* Username */}
             <Form.Item
-              name="username"
+              name="email"
               rules={[
                 {
                   required: true,
-                  message: "Please input your Username!",
+                  message: "Please input your email!",
                 },
               ]}
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
+                type="email"
+                placeholder="Email"
               />
             </Form.Item>
             {/* Password */}

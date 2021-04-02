@@ -64,25 +64,15 @@ export const agent = {
     });
   },
 
-  // update product
-  updateProduct: (productId, productData, token) => {
-    return fetch(`${baseUrl}/users/products/${productId}`, {
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: productData,
-    });
-  },
-
   // edit product
   editProduct: (productId, productData, token) => {
     return fetch(`${baseUrl}/products/${productId}`, {
       method: "put",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-      body: productData,
+      body: JSON.stringify(productData),
     });
   },
 

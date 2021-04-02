@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import styles from "./QuantityCounter.module.css";
 
 function QuantityCounter({ value, productId }) {

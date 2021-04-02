@@ -17,7 +17,7 @@ export async function getAllProducts(
   const page: number = parseInt(<string>req.query.page) || 1;
   const perPage: number = parseInt(<string>req.query.perPage) || 12;
   const search: string = <string>req.query.search || "";
-  const sort: string = <string>req.query.sort || "";
+  const sort: string = <string>req.query.sort || "createdAt";
 
   const [products, productCount] = await productRepository.findAndCount({
     select: ["id", "name", "description", "price", "summary", "createdAt"],
@@ -159,7 +159,7 @@ export async function updateProduct(
   }
 
   const id = req.params.productId;
-  const { name, price, summary, description, offerId } = req.body;
+  const { name, price, summary, description, offerId, categoryId } = req.body;
   const productsRepository = getConnection().getRepository(Product);
 
   try {
@@ -169,16 +169,26 @@ export async function updateProduct(
     // find offer by id
     const offer = await offersRepository.findOne({ id: offerId });
 
+    // categories repository
+    const categoriesRepository = getConnection().getRepository(Category);
+    // find category by id
+    const category = await categoriesRepository.findOne({ id: categoryId });
+
     const newProduct = new Product();
 
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
-    newProduct.images = [];
+
     if (offer) {
       newProduct.offer = offer;
     }
+
+    if (category) {
+      newProduct.category = category;
+    }
+
     productsRepository.merge(findProductById, newProduct);
 
     await productsRepository.save(findProductById);

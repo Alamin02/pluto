@@ -66,9 +66,7 @@ const RegistrationForm = () => {
       body: JSON.stringify(values),
     })
       .then((res) => res.json())
-      .then(({ token, success }) => {
-        console.log(token)
-        console.log(success)
+      .then(({ token }) => {
         if (token) {
           localStorage.setItem("token", token);
           window.location.reload();

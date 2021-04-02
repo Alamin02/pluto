@@ -14,7 +14,6 @@ import Heading from "../heading/Heading";
 
 const Login = () => {
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
     fetch("http://localhost:4000/api/v1/users/login", {
       method: "post",
       headers: {
@@ -24,7 +23,6 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then(({ token }) => {
-        console.log(token)
         if (token) {
           localStorage.setItem("token", token);
           window.location.reload();

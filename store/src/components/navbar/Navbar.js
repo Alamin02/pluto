@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Menu, Grid, Button } from "antd";
+import { Menu, Grid, Button, message } from "antd";
 import { Badge } from "antd";
 import { agent } from "../../helpers/agent";
 import {
@@ -32,6 +32,7 @@ const downOutlinedStyle = {
 function Navbar() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
+  console.log(token)
   const [productsCategory, setProductsCategory] = useState([]);
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);
@@ -64,8 +65,10 @@ function Navbar() {
   }, [token]);
 
   const handleLogout = () => {
-    const removeToken = localStorage.removeItem("token");
-    dispatch({ type: "auth/logout", payload: removeToken });
+    //localStorage.removeItem("token");
+    dispatch({ type: "auth/logout", payload: localStorage.removeItem("token") });
+    message.success("logout successfully")
+
   };
 
   return (
@@ -87,7 +90,7 @@ function Navbar() {
               />
             </Link>
           </div>
-          {(!token.length) ? (
+          {(!token || !token.length) ? (
             <div className={styles.navbarTopRight}>
               <Link to="/login">
                 log in

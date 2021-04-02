@@ -73,6 +73,7 @@ const RegistrationForm = () => {
           localStorage.setItem("token", token);
           dispatch({ type: "auth/login", payload: token });
           message.success("user create successfully")
+          form.resetFields();
         } else {
           message.error("User already exists");
         }

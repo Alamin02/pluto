@@ -16,6 +16,7 @@ import Heading from "../heading/Heading";
 const Login = () => {
 
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   const onFinish = (values) => {
     fetch("http://localhost:4000/api/v1/users/login", {
@@ -30,6 +31,8 @@ const Login = () => {
         if (token) {
           localStorage.setItem("token", token);
           dispatch({ type: "auth/login", payload: token });
+          message.success("Login Successfully")
+          form.resetFields();
         } else {
           message.error("Could not login, check credentials");
         }
@@ -45,6 +48,7 @@ const Login = () => {
           />
           <Form
             name="normal_login"
+            form={form}
             className={classNames(styles.loginForm, styles.containerFluid)}
             initialValues={{
               remember: true,

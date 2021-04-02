@@ -9,7 +9,7 @@ export function authReducer(state = initialState, action) {
       return { ...state, isAuthenticated: true, tokenValue: action.payload };
 
     case "auth/logout":
-      return { ...state, isAuthenticated: false, tokenValue: "" };
+      return { ...state, isAuthenticated: false, tokenValue: action.payload };
 
     default:
       return state;

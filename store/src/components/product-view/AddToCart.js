@@ -9,23 +9,33 @@ import { Link } from "react-router-dom";
 
 export default function AddToCart({ product }) {
   const dispatch = useDispatch();
-  const productNumber = useSelector((state) => state.update.count);
 
   const productList = useSelector((state) => state.cart.products);
 
-  const isProductOnCart = !!productList.find(
+  const productOnCart = productList.find(
     (_product) => _product.id === product.id
   );
+
+  const productQuantity = (productOnCart && productOnCart.quantity) || 1;
 
   const handleAddToCart = () => {
     dispatch({ type: "cart/addProduct", payload: product });
     openNotification({ productTitle: product.name, type: "success" });
   };
+
   const handlePlusButton = () => {
-    dispatch({ type: "Add" });
+    dispatch({
+      type: "cart/updateQuantity",
+      payload: { productId: product.id, quantity: productQuantity + 1 },
+    });
   };
+
   const handleMinusButton = () => {
-    dispatch({ type: "Remove" });
+    if (productQuantity > 0)
+      dispatch({
+        type: "cart/updateQuantity",
+        payload: { productId: product.id, quantity: productQuantity - 1 },
+      });
   };
 
   return (
@@ -39,15 +49,14 @@ export default function AddToCart({ product }) {
           max={20}
           step={1}
           className={styles.inputStyled}
-          defaultValue={productNumber}
-          value={productNumber}
+          value={productQuantity}
         />
         <Radio.Button onClick={() => handlePlusButton()}>
           <PlusOutlined />
         </Radio.Button>
       </Radio.Group>
       <br />
-      {isProductOnCart ? (
+      {productOnCart ? (
         <Link to="/cart">
           <Button type="primary" style={{ textTransform: "uppercase" }}>
             Visit Cart

@@ -8,7 +8,7 @@ const navbarMenus = {
   home: "home",
   homeUrl: "/",
 
-  shop: "shop",
+  shop: "categories",
 
   offers: "offers",
   offersUrl: "/offers",
@@ -25,32 +25,5 @@ const navbarMenus = {
   cartUrl: "/cart",
 };
 
-const shopSubmenus = [
-  {
-    id: 1,
-    submenu: "smartphone",
-    shopSubmenuUrl: "#",
-  },
-  {
-    id: 2,
-    submenu: "desktop",
-    shopSubmenuUrl: "#",
-  },
-  {
-    id: 3,
-    submenu: "laptop",
-    shopSubmenuUrl: "#",
-  },
-  {
-    id: 4,
-    submenu: "printer",
-    shopSubmenuUrl: "#",
-  },
-  {
-    id: 5,
-    submenu: "monitor",
-    shopSubmenuUrl: "#",
-  },
-];
 
-export { navbarMenus, shopSubmenus };
+export { navbarMenus };

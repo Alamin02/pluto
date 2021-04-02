@@ -37,9 +37,6 @@ router.post(
 // @GET - /api/v1/users/
 router.get("/", usersController);
 
-// @GET - /api/v1/users/
-router.get("/:userId", usersController);
-
 // @PUT - /api/v1/users/:userId
 router.put(
   "/:userId",

@@ -32,7 +32,6 @@ const downOutlinedStyle = {
 function Navbar() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
-  console.log(token)
   const [productsCategory, setProductsCategory] = useState([]);
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);

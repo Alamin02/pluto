@@ -8,6 +8,7 @@ import {
   Button,
   Typography,
   Divider,
+  message
 } from "antd";
 import {
   FacebookFilled,
@@ -56,7 +57,25 @@ const tailFormItemLayout = {
 const RegistrationForm = () => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    values.role = "user"
+    fetch("http://localhost:4000/api/v1/users/register", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then(({ token, success }) => {
+        console.log(token)
+        console.log(success)
+        if (token) {
+          localStorage.setItem("token", token);
+          window.location.reload();
+        } else {
+          message.error("User already exists");
+        }
+      });
   };
 
   const prefixSelector = (

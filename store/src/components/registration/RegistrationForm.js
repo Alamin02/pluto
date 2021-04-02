@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux"
 import classNames from "classnames";
 
 import {
@@ -8,6 +9,7 @@ import {
   Button,
   Typography,
   Divider,
+  message
 } from "antd";
 import {
   FacebookFilled,
@@ -54,9 +56,28 @@ const tailFormItemLayout = {
 };
 
 const RegistrationForm = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    values.role = "user"
+    fetch("http://localhost:4000/api/v1/users/register", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then(({ token }) => {
+        if (token) {
+          localStorage.setItem("token", token);
+          dispatch({ type: "auth/login", payload: token });
+          message.success("user create successfully")
+          form.resetFields();
+        } else {
+          message.error("User already exists");
+        }
+      });
   };
 
   const prefixSelector = (
@@ -93,7 +114,7 @@ const RegistrationForm = () => {
           >
             {/* Username */}
             <Form.Item
-              name="fullname"
+              name="name"
               label={<span>Fullname&nbsp;</span>}
               rules={[
                 {

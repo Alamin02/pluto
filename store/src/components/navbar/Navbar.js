@@ -1,13 +1,16 @@
+import { useDispatch } from "react-redux"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Menu, Grid } from "antd";
+import { Menu, Grid, Button, message } from "antd";
 import { Badge } from "antd";
 import { agent } from "../../helpers/agent";
 import {
   PhoneOutlined,
   ShoppingOutlined,
   DownOutlined,
+  UserOutlined,
+  LogoutOutlined
 } from "@ant-design/icons";
 import classNames from "classnames";
 
@@ -27,6 +30,8 @@ const downOutlinedStyle = {
 };
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.tokenValue);
   const [productsCategory, setProductsCategory] = useState([]);
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);
@@ -44,6 +49,25 @@ function Navbar() {
   useEffect(() => {
     fetchProductsCategory();
   }, []);
+
+
+  useEffect(() => {
+    if (token)
+      agent
+        .getMe(token)
+        .then((res) => res.json())
+        .then(({ data, error }) => {
+          if (error) {
+            localStorage.removeItem("token");
+          }
+        });
+  }, [token]);
+
+  const handleLogout = () => {
+    dispatch({ type: "auth/logout", payload: localStorage.removeItem("token") });
+    message.success("logout successfully")
+
+  };
 
   return (
     <div className={styles.navBackgroundColor}>
@@ -64,13 +88,34 @@ function Navbar() {
               />
             </Link>
           </div>
-          <div className={styles.navbarTopRight}>
-            <Link to="/login">log in</Link>
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            <Link to={navbarMenus.cartUrl}>
-              <ShoppingOutlined />
-            </Link>
-          </div>
+          {(!token || !token.length) ? (
+            <div className={styles.navbarTopRight}>
+              <Link to="/login">
+                log in
+              </Link>&nbsp;&nbsp;|&nbsp;&nbsp;
+              <Link to={navbarMenus.cartUrl}>
+                <ShoppingOutlined />
+              </Link>
+            </div>
+          ) : (
+            <div className={styles.navbarTopRight}>
+              <Link to="#">
+                <UserOutlined />
+              </Link>&nbsp;&nbsp;
+              <Button
+                icon={<LogoutOutlined />}
+                onClick={handleLogout}
+                type="primary"
+                danger
+
+              >
+              </Button>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <Link to={navbarMenus.cartUrl}>
+                <ShoppingOutlined />
+              </Link>
+            </div>
+          )}
         </nav>
         <hr className={styles.navHr} />
 
@@ -91,7 +136,7 @@ function Navbar() {
             }
             style={menuStyle}
           >
-            {productsCategory.map((category) => {
+            {productsCategory && productsCategory.map((category) => {
               if (category.children) {
                 return (
                   <SubMenu key={category.id} title={category.name} style={menuStyle}>

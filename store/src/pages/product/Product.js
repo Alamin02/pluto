@@ -5,6 +5,7 @@ import ProductView from "../../components/product-view/ProductView";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
 import MainContainer from "../../components/layout/MainContainer";
+import Loading from "../../components/Loading";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
@@ -28,7 +29,7 @@ const ProductDetails = () => {
   }, [id]);
 
   if (isLoading) {
-    return <p>Loading...</p>; // Have to replace with loading component
+    return <Loading />; // Have to replace with loading component
   }
 
   return (

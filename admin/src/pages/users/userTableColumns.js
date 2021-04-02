@@ -1,3 +1,5 @@
+import { Tag } from "antd";
+
 export const columns = [
   {
     title: "Id",
@@ -25,5 +27,17 @@ export const columns = [
     title: "Phone",
     dataIndex: "phone",
     key: "phone",
+  },
+  {
+    title: "Addresses",
+    dataIndex: "addresses",
+    key: "addresses",
+    render: (addresses) => {
+      if (addresses.length) {
+        return <span>{addresses[0].address}</span>;
+      } else {
+        return <Tag color="lime">Empty</Tag>;
+      }
+    },
   },
 ];

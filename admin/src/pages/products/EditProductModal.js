@@ -34,7 +34,7 @@ const deleteButtonStyle = {
   top: "40%",
   fontSize: "25px",
   color: "red",
-}
+};
 
 export default function EditProductModal({
   visible,
@@ -70,7 +70,7 @@ export default function EditProductModal({
     form.resetFields();
     if (existingRecord) {
       agent
-        .getCategories(existingRecord.category.id)
+        .getCategories()
         .then((res) => res.json())
         .then(({ data }) => {
           if (data) {
@@ -136,10 +136,12 @@ export default function EditProductModal({
           form
             .validateFields()
             .then((values) => {
-              console.log("values :" + values);
               agent
                 .editProduct(existingRecord.id, values, token)
-                .then((res) => res.json());
+                .then((res) => res.json())
+                .then(() => {
+                  refetch();
+                });
 
               form.resetFields();
               onCreate(values);
@@ -223,7 +225,11 @@ export default function EditProductModal({
             name="categoryId"
           >
             {existingRecord && (
-              <Select defaultValue={existingRecord.category.id}>
+              <Select
+                defaultValue={
+                  existingRecord.category && existingRecord.category.id
+                }
+              >
                 {categoryOptions.map((category) => (
                   <Option value={category.id} key={category.id}>
                     {category.name}

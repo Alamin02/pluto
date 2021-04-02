@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { useDispatch } from "react-redux";
 import { Form, Input, Button, Checkbox, Divider, message } from "antd";
 import {
   UserOutlined,
@@ -13,6 +14,9 @@ import styles from "./LoginForm.module.css";
 import Heading from "../heading/Heading";
 
 const Login = () => {
+
+  const dispatch = useDispatch();
+
   const onFinish = (values) => {
     fetch("http://localhost:4000/api/v1/users/login", {
       method: "post",
@@ -25,7 +29,7 @@ const Login = () => {
       .then(({ token }) => {
         if (token) {
           localStorage.setItem("token", token);
-          window.location.reload();
+          dispatch({ type: "auth/login", payload: token });
         } else {
           message.error("Could not login, check credentials");
         }

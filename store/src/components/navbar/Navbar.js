@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -29,7 +30,8 @@ const downOutlinedStyle = {
 };
 
 function Navbar() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.tokenValue);
   const [productsCategory, setProductsCategory] = useState([]);
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);
@@ -57,14 +59,13 @@ function Navbar() {
         .then(({ data, error }) => {
           if (error) {
             localStorage.removeItem("token");
-            setToken(null);
           }
         });
   }, [token]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
+    const removeToken = localStorage.removeItem("token");
+    dispatch({ type: "auth/logout", payload: removeToken });
   };
 
   return (
@@ -86,7 +87,7 @@ function Navbar() {
               />
             </Link>
           </div>
-          {(!token) ? (
+          {(!token.length) ? (
             <div className={styles.navbarTopRight}>
               <Link to="/login">
                 log in

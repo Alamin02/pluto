@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux"
 import classNames from "classnames";
 
 import {
@@ -55,6 +56,7 @@ const tailFormItemLayout = {
 };
 
 const RegistrationForm = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const onFinish = (values) => {
     values.role = "user"
@@ -69,7 +71,8 @@ const RegistrationForm = () => {
       .then(({ token }) => {
         if (token) {
           localStorage.setItem("token", token);
-          window.location.reload();
+          dispatch({ type: "auth/login", payload: token });
+          message.success("user create successfully")
         } else {
           message.error("User already exists");
         }

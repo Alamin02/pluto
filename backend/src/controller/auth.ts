@@ -58,7 +58,7 @@ export async function userRegistration(
     });
   }
 
-  const { name, email, password, phone, role } = req.body;
+  const { name, email, password, phone, role, addresses } = req.body;
   const hash = await bcrypt.hash(password, saltRounds);
 
   // If there is a user
@@ -81,6 +81,10 @@ export async function userRegistration(
     newUser.role = role;
     newUser.password = hash;
 
+    if (addresses) {
+      newUser.addresses = addresses;
+    }
+
     await userRepository.save(newUser);
   } catch (e) {
     console.error(e);
@@ -100,6 +104,7 @@ export async function users(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const users = await userRepository.find({
     select: ["id", "name", "email", "phone", "role"],
+    relations: ["addresses"],
   });
 
   res.json({ data: users });

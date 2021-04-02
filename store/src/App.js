@@ -2,10 +2,11 @@ import React from "react";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import Home from "./pages/Home";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import ContactUs from "./pages/ContactUs";
 import Error404 from "./components/error-404/Error404";
-import Home from "./pages/Home";
 
 import ForgetPasswordPage from "./pages/auth/ForgetPassword";
 import LoginPage from "./pages/auth/Login";
@@ -32,6 +33,7 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/" component={Home} exact />
+
         <Route path="/registration" component={RegistrationPage} exact />
         <Route path="/login" component={LoginPage} />
         <Route path="/forgetPassword" component={ForgetPasswordPage} exact />
@@ -50,6 +52,8 @@ function App() {
 
         <Route path="/profile" component={UserProfile} exact />
         <Route path="/profile/edit" component={UpdateUserProfile} exact />
+
+        <Route path="/contact" component={ContactUs} exact />
 
         <Route component={Error404} />
       </Switch>

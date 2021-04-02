@@ -102,7 +102,6 @@ export default function EditProductModal({
   const handleUpload = async (info) => {
     const { status } = info.file;
     if (status !== "uploading") {
-      console.log(info.fileList);
       const formData = new FormData();
       productImages.forEach((productImage) => {
         formData.append("productImages", productImage);
@@ -113,7 +112,7 @@ export default function EditProductModal({
       agent
         .createProductImage(formData)
         .then((res) => console.log(res))
-        .then(console.log);
+        .then(() => refetch());
     }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
@@ -223,13 +222,10 @@ export default function EditProductModal({
               },
             ]}
             name="categoryId"
+            initialValue={existingRecord.category && existingRecord.category.id}
           >
             {existingRecord && (
-              <Select
-                defaultValue={
-                  existingRecord.category && existingRecord.category.id
-                }
-              >
+              <Select>
                 {categoryOptions.map((category) => (
                   <Option value={category.id} key={category.id}>
                     {category.name}
@@ -286,6 +282,7 @@ export default function EditProductModal({
                 setProductImages(fileList);
                 return false;
               }}
+              showUploadList={false}
               accept="image/*"
               multiple={true}
             >

@@ -64,7 +64,6 @@ function Navbar() {
   }, [token]);
 
   const handleLogout = () => {
-    //localStorage.removeItem("token");
     dispatch({ type: "auth/logout", payload: localStorage.removeItem("token") });
     message.success("logout successfully")
 

@@ -45,4 +45,11 @@ export const agent = {
       },
     });
   },
+  getSingleUser: (userId) => {
+    return fetch(`${baseUrl}/users/${userId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 };

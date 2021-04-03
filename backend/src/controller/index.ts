@@ -3,11 +3,14 @@ import { getAllProductsImages, getSingleImage } from "./productImage";
 export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
-  users as usersController,
+} from "./auth";
+
+export {
+  getUsers as getUsersController,
   getUser as getUserController,
   updateUser as updateUserController,
   deleteUser as deleteUserController,
-} from "./auth";
+} from "./user";
 
 export {
   createProduct as createProductController,

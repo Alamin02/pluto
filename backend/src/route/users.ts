@@ -6,7 +6,7 @@ import { authenticationMiddleware } from "../middleware";
 import {
   userLoginController,
   userRegistrationController,
-  usersController,
+  getUsersController,
   getUserController,
   updateUserController,
   deleteUserController,
@@ -36,7 +36,7 @@ router.post(
 );
 
 // @GET - /api/v1/users/
-router.get("/", usersController);
+router.get("/", getUsersController);
 
 // @GET - /api/v1/user/
 router.get("/:userId", getUserController);

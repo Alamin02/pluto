@@ -10,26 +10,25 @@ import { agent } from "../../helpers/agent";
 
 function ProductList() {
   const [productsData, setProductsData] = useState([]);
-  const [sort, setSort] = useState("name");
+  const sort = "name";
 
   const queryString = qs.stringify({
     perPage: 8,
     sort,
   });
 
-  function fetchProducts() {
-    agent
-      .getProducts(queryString)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setProductsData(data.products);
-        console.log(data.products);
-      });
-  }
-
   useEffect(() => {
+    const fetchProducts = () => {
+      agent
+        .getProducts(queryString)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          setProductsData(data.products);
+          console.log(data.products);
+        });
+    }
     fetchProducts();
-  }, []);
+  }, [queryString]);
 
   return (
     <MainContainer>
@@ -50,7 +49,7 @@ function ProductList() {
                         src={product.images[0].path}
                         price={Math.floor(
                           product.price -
-                            (product.price * product.offer.discount) / 100
+                          (product.price * product.offer.discount) / 100
                         )}
                         discount={product.price}
                       />

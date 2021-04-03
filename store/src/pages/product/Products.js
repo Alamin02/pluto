@@ -23,23 +23,6 @@ export default function Products() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("createdAt");
 
-  function fetchProducts() {
-    const queryString = qs.stringify({
-      page: currentPage,
-      perPage,
-      search,
-      sort,
-    });
-
-    agent
-      .getProducts(queryString)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setTotalProductsInfo(data);
-        setProductsData(data.products);
-      });
-  }
-
   function onChange(page, pageSize) {
     setCurrentPage(page);
     setPerPage(pageSize);
@@ -67,6 +50,22 @@ export default function Products() {
   }
 
   useEffect(() => {
+    const fetchProducts = () => {
+      const queryString = qs.stringify({
+        page: currentPage,
+        perPage,
+        search,
+        sort,
+      });
+
+      agent
+        .getProducts(queryString)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          setTotalProductsInfo(data);
+          setProductsData(data.products);
+        });
+    }
     fetchProducts();
   }, [currentPage, perPage, search, sort]);
 
@@ -127,7 +126,7 @@ export default function Products() {
                         src={product.images[0].path}
                         price={Math.floor(
                           product.price -
-                            (product.price * product.offer.discount) / 100
+                          (product.price * product.offer.discount) / 100
                         )}
                         discount={product.price}
                       />

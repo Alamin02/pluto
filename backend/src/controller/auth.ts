@@ -110,6 +110,26 @@ export async function users(req: express.Request, res: express.Response) {
   res.json({ data: users });
 }
 
+// @GET - /api/v1/user
+// Individual user
+export async function getUser(req: express.Request, res: express.Response) {
+  const id = req.params.userId;
+
+  const userRepository = getConnection().getRepository(User);
+  const findUserById = await userRepository.findOne(
+    { id },
+    {
+      relations: ["addresses"],
+    }
+  );
+
+  if (!findUserById) {
+    return res.status(400).json({ errors: [{ msg: "User not found" }] });
+  }
+
+  res.json({ msg: "User found", data: findUserById });
+}
+
 // @PUT /v1/api/users/:userId
 // update an user
 export async function updateUser(req: express.Request, res: express.Response) {

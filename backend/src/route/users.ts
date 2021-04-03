@@ -7,6 +7,7 @@ import {
   userLoginController,
   userRegistrationController,
   usersController,
+  getUserController,
   updateUserController,
   deleteUserController,
 } from "../controller";
@@ -36,6 +37,9 @@ router.post(
 
 // @GET - /api/v1/users/
 router.get("/", usersController);
+
+// @GET - /api/v1/user/
+router.get("/:userId", getUserController);
 
 // @PUT - /api/v1/users/:userId
 router.put(

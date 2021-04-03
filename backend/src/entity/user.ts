@@ -19,7 +19,7 @@ export class User {
   @Column("varchar")
   role!: string;
 
-  @Column("varchar")
+  @Column("varchar", { select: false })
   password!: string;
 
   @OneToMany(() => Order, (order) => order.user)

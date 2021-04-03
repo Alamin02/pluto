@@ -11,9 +11,8 @@
 }
 
 .closeButtonContainer {
-  flex: 1 1 0%;
-  padding: 2.5rem;
-  flex: 1 1 0%;
+  flex: none;
+  padding: 3rem;
 }
 .closeButtonContainerXs {
   flex: 1 1 0%;
@@ -39,30 +38,33 @@
 }
 
 .productImage {
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-  flex: 1 1 0%;
-  width: 12rem;
+  padding: 0 2rem;
+  margin: 0 1rem;
+  flex: none;
+  width: 14rem;
 }
 .productImageXs {
   padding-left: 0;
-  flex: 1 1 0%;
-  margin-left: 0rem;
+  margin: 0rem;
+  padding: 0;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .productInfo {
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
+  margin: 0 3rem;
+  flex-grow: 1;
 }
 .productInfoXs {
-  margin-left: 0rem;
-  margin-right: 1rem;
-  margin: 0rem;
+  margin-left: 0.1rem;
 }
 
 .title {
   font-size: 1rem;
   margin-top: 1.3rem;
+}
+.title:hover {
+  text-decoration: underline;
 }
 .titleMd {
   font-size: 1.5rem;
@@ -86,13 +88,12 @@
 .description {
   flex: 1 1 auto;
   padding-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .counterStyle {
-  margin-bottom: -0.5rem;
-  margin-left: -0.5rem;
+  margin: 0 -0.5rem;
   width: 2rem;
-  margin-top: 0.5rem;
 }
 .counterStyleXs {
   margin-bottom: -0.5rem;
@@ -101,7 +102,7 @@
 }
 
 .priceOnBigScreen {
-  flex: 1 1 0%;
+  flex: none;
   padding: 2.5rem;
   font-size: 2rem;
   white-space: nowrap;

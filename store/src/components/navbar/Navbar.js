@@ -31,7 +31,7 @@ const downOutlinedStyle = {
 };
 
 function Navbar() {
-  let history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
   const [productsCategory, setProductsCategory] = useState([]);

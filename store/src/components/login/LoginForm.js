@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { Form, Input, Button, Checkbox, message } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
@@ -8,6 +9,7 @@ import MainContainer from "../layout/MainContainer";
 import HeaderSection from "../styled-components/HeaderSection";
 
 const Login = () => {
+  let history = useHistory();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
@@ -26,6 +28,7 @@ const Login = () => {
           dispatch({ type: "auth/login", payload: token });
           message.success("Login Successfully");
           form.resetFields();
+          history.push("/");
         } else {
           message.error("Could not login, check credentials");
         }

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-
+import { useHistory } from "react-router-dom";
 import { Form, Input, Checkbox, Button, Typography, message } from "antd";
 
 import MainContainer from "../layout/MainContainer";
@@ -41,6 +41,7 @@ const tailFormItemLayout = {
 };
 
 const RegistrationForm = () => {
+  let history = useHistory();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const onFinish = (values) => {
@@ -59,6 +60,7 @@ const RegistrationForm = () => {
           dispatch({ type: "auth/login", payload: token });
           message.success("user create successfully");
           form.resetFields();
+          history.push("/");
         } else {
           message.error("User already exists");
         }

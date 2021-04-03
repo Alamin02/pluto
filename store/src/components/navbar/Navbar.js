@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
@@ -30,6 +31,7 @@ const downOutlinedStyle = {
 };
 
 function Navbar() {
+  let history = useHistory();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
   const [productsCategory, setProductsCategory] = useState([]);
@@ -66,6 +68,7 @@ function Navbar() {
   const handleLogout = () => {
     dispatch({ type: "auth/logout", payload: localStorage.removeItem("token") });
     message.success("logout successfully")
+    history.push("/")
 
   };
 
@@ -99,7 +102,7 @@ function Navbar() {
             </div>
           ) : (
             <div className={styles.navbarTopRight}>
-              <Link to="#">
+              <Link to="/profile">
                 <UserOutlined />
               </Link>&nbsp;&nbsp;
               <Button

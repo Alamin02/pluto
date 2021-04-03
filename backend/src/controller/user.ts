@@ -26,12 +26,10 @@ export async function getUser(req: express.Request, res: express.Response) {
   const id = req.params.userId;
 
   const userRepository = getConnection().getRepository(User);
-  const findUserById = await userRepository.findOne(
-    { id },
-    {
-      relations: ["addresses"],
-    }
-  );
+  const findUserById = await userRepository.findOne({
+    select: ["id", "name", "email", "phone", "role"],
+    relations: ["addresses"],
+  });
 
   if (!findUserById) {
     return res.status(400).json({ errors: [{ msg: "User not found" }] });

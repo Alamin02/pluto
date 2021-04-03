@@ -1,17 +1,39 @@
+import { useState, useEffect } from "react"
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Grid } from "antd";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-
 import styles from "./UserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
 import userInfo from "../../components/user-profile/userInfo";
 import HeaderSection from "../../components/styled-components/HeaderSection";
+import { agent } from "../../helpers/agent";
 
 const { useBreakpoint } = Grid;
 
 function UserProfile() {
   const screens = useBreakpoint();
+  const token = useSelector((state) => state.auth.tokenValue);
+  const [userData, setUserData] = useState()
+
+  useEffect(() => {
+    if (token)
+      agent
+        .getMe(token)
+        .then((res) => res.json())
+        .then(({ data, error }) => {
+          if (data) {
+            agent
+              .getSingleUser(data.id)
+              .then((res) => res.json())
+              .then(({ data }) => setUserData([data]))
+          }
+          if (error) {
+            localStorage.removeItem("token");
+          }
+        });
+  }, [token]);
 
   return (
     <MainContainer>
@@ -34,31 +56,37 @@ function UserProfile() {
               )}
               alt="user_photo"
             />
-            <div
-              className={classNames(
-                { [styles.basicInfoText]: screens },
-                { [styles.basicInfoTextXs]: screens.xs }
-              )}
-            >
-              <div
-                className={classNames(
-                  { [styles.welcomeMessage]: screens },
-                  { [styles.welcomeMessageXs]: screens.xs }
-                )}
-              >
-                Welcome, {userInfo.name}.
+            {(userData && userData.map((data) => {
+              return (
+                <div
+                  className={classNames(
+                    { [styles.basicInfoText]: screens },
+                    { [styles.basicInfoTextXs]: screens.xs }
+                  )}
+                  key={data.id}
+                >
+                  <div
+                    className={classNames(
+                      { [styles.welcomeMessage]: screens },
+                      { [styles.welcomeMessageXs]: screens.xs }
+                    )}
+                  >
+                    Welcome, {data.name}.
               </div>
-              <div>
-                <MailOutlined />
+                  <div>
+                    <MailOutlined />
                 &nbsp;&nbsp;
-                {userInfo.email}
-              </div>
-              <div className={styles.alignItems}>
-                <PhoneOutlined />
+                {data.email}
+                  </div>
+                  <div className={styles.alignItems}>
+                    <PhoneOutlined />
                 &nbsp;&nbsp;
-                {userInfo.phone}
-              </div>
-            </div>
+                {data.phone}
+                  </div>
+                </div>
+              )
+            }))}
+
           </div>
         </section>
 

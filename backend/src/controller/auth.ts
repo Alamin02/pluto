@@ -78,7 +78,7 @@ export async function userRegistration(
     newUser.name = name;
     newUser.email = email;
     newUser.phone = phone;
-    newUser.role = role;
+    newUser.role = "user";
     newUser.password = hash;
 
     if (addresses) {

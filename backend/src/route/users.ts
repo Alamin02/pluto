@@ -38,6 +38,13 @@ router.post(
 // @GET - /api/v1/users/
 router.get("/", getUsersController);
 
+router.get("/me", authenticationMiddleware, (req, res) => {
+  res.json({ data: res.locals.user });
+});
+
+// @GET - /api/v1/user/
+router.get("/:userId", getUserController);
+
 // @PUT - /api/v1/users/:userId
 router.put(
   "/:userId",
@@ -51,12 +58,5 @@ router.put(
 
 // @DELETE - /api/v1/users/:userId
 router.delete("/:userId", authenticationMiddleware, deleteUserController);
-
-router.get("/me", authenticationMiddleware, (req, res) => {
-  res.json({ data: res.locals.user });
-});
-
-// @GET - /api/v1/user/
-router.get("/:userId", getUserController);
 
 export default router;

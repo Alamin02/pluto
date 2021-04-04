@@ -14,7 +14,6 @@ export const authenticationMiddleware = (
   next: express.NextFunction
 ) => {
   const authHeader = req.headers["authorization"];
-  console.log("WHAT");
 
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -28,11 +27,9 @@ export const authenticationMiddleware = (
 
     const userRepository = getConnection().getRepository(User);
 
-    console.log(user);
-
     const userRecord = await userRepository.findOne(
       { email: user.email },
-      { select: ["name", "email", "role"] }
+      { select: ["id", "name", "email", "role"] }
     );
 
     if (!userRecord) {

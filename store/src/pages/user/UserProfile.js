@@ -15,7 +15,6 @@ const { useBreakpoint } = Grid;
 function UserProfile() {
   const screens = useBreakpoint();
   const token = useSelector((state) => state.auth.tokenValue);
-  console.log(token)
 
   const [userData, setUserData] = useState([])
 
@@ -25,13 +24,14 @@ function UserProfile() {
         .getMe(token)
         .then((res) => res.json())
         .then(({ data, error }) => {
-          console.log(data)
           if (data.id) {
             agent
               .getSingleUser(data.id)
               .then((res) => res.json())
-              .then(({ data }) => setUserData([data]))
+              .then(({ data }) =>
+                setUserData([data]))
           }
+
           if (error) {
             localStorage.removeItem("token");
           }

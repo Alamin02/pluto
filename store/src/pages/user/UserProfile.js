@@ -15,7 +15,9 @@ const { useBreakpoint } = Grid;
 function UserProfile() {
   const screens = useBreakpoint();
   const token = useSelector((state) => state.auth.tokenValue);
-  const [userData, setUserData] = useState()
+  console.log(token)
+
+  const [userData, setUserData] = useState([])
 
   useEffect(() => {
     if (token)
@@ -23,7 +25,8 @@ function UserProfile() {
         .getMe(token)
         .then((res) => res.json())
         .then(({ data, error }) => {
-          if (data) {
+          console.log(data)
+          if (data.id) {
             agent
               .getSingleUser(data.id)
               .then((res) => res.json())
@@ -56,7 +59,7 @@ function UserProfile() {
               )}
               alt="user_photo"
             />
-            {(userData && userData.map((data) => {
+            {(userData.length === 1 && userData.map((data) => {
               return (
                 <div
                   className={classNames(

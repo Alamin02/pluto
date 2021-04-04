@@ -1,4 +1,5 @@
-.navBackgroundColor {
+.menuStyle {
+  text-transform: capitalize;
 }
 
 .navbarTop {
@@ -12,6 +13,7 @@
 .logoContainer {
   text-align: center;
 }
+
 .logo {
   height: 3rem;
   width: auto;

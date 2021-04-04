@@ -19,11 +19,8 @@ const navbarMenus = {
   contact: "contact",
   contactUrl: "/contact",
 
-  loginUrl: "",
-
   cart: "cart",
   cartUrl: "/cart",
 };
-
 
 export { navbarMenus };

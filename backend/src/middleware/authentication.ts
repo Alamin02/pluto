@@ -14,6 +14,7 @@ export const authenticationMiddleware = (
   next: express.NextFunction
 ) => {
   const authHeader = req.headers["authorization"];
+  console.log("WHAT");
 
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -26,6 +27,9 @@ export const authenticationMiddleware = (
     if (err) return res.status(401).json({ error: "Unauthorized" });
 
     const userRepository = getConnection().getRepository(User);
+
+    console.log(user);
+
     const userRecord = await userRepository.findOne(
       { email: user.email },
       { select: ["name", "email", "role"] }

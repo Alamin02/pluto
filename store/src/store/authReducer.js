@@ -1,6 +1,6 @@
 const initialState = {
   isAuthenticated: !!localStorage.getItem("token"),
-  tokenValue: ""
+  tokenValue: localStorage.getItem("token") || "",
 };
 
 export function authReducer(state = initialState, action) {

@@ -47,6 +47,7 @@ export const agent = {
   },
   getSingleUser: (userId) => {
     return fetch(`${baseUrl}/users/${userId}`, {
+      method: "get",
       headers: {
         "Content-Type": "application/json",
       },

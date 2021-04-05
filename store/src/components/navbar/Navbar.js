@@ -31,6 +31,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
   const [productsCategory, setProductsCategory] = useState([]);
+  const [user, setUser] = useState("");
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);
 
@@ -40,7 +41,6 @@ function Navbar() {
       .then((res) => res.json())
       .then(({ data }) => {
         setProductsCategory(data);
-        console.log(data);
       });
   }
 
@@ -57,6 +57,7 @@ function Navbar() {
           if (error) {
             localStorage.removeItem("token");
           }
+          setUser(data);
         });
   }, [token]);
 
@@ -72,15 +73,24 @@ function Navbar() {
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link to="/profile">User profile</Link>
+        <div style={{ textTransform: "capitalize" }}>{user.name}</div>
+        <div style={{ color: "gray" }}>{user.email}</div>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item>
+        <Link to="/profile">Profile</Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to="/profile/edit">Update profile</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item>
         <Button
+          style={{ padding: "0" }}
+          size="small"
           icon={<LogoutOutlined />}
           onClick={handleLogout}
-          type="primary"
-          danger
+          type="text"
         >
           Logout
         </Button>
@@ -115,7 +125,6 @@ function Navbar() {
                 <Badge count={!!productList.length ? productList.length : 0}>
                   <Avatar
                     style={{ color: "white", backgroundColor: "#bbbbbb" }}
-                    shape="square"
                     icon={<ShoppingOutlined />}
                   />
                 </Badge>
@@ -124,14 +133,16 @@ function Navbar() {
           ) : (
             <div className={styles.navbarTopRight}>
               <Dropdown overlay={menu} placement="bottomRight">
-                <Avatar icon={<UserOutlined />} />
+                <Avatar
+                  style={{ color: "white", backgroundColor: "#bbbbbb" }}
+                  icon={<UserOutlined />}
+                />
               </Dropdown>
               &nbsp;&nbsp;|&nbsp;&nbsp;
               <Link to={navbarMenus.cartUrl}>
                 <Badge count={!!productList.length ? productList.length : 0}>
                   <Avatar
                     style={{ color: "white", backgroundColor: "#bbbbbb" }}
-                    shape="square"
                     icon={<ShoppingOutlined />}
                   />
                 </Badge>

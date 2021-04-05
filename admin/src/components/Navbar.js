@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 
-// styling start
 const navbar = {
   display: "flex",
   flexDirection: "row",
@@ -13,24 +12,27 @@ const navbar = {
 };
 
 const siteLogo = {
-  marginRight: "2rem",
-  height: "40px",
+  height: "30px",
+};
+
+const divider = {
+  margin: "0 1rem",
+  marginBottom: "0.4rem",
+  fontSize: "1.5rem",
+  color: "#a8a8a8",
 };
 
 const navLeft = {
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
 };
 
 const adminPanelText = {
   display: "inline-block",
-  fontSize: "2rem",
+  fontSize: "1.5rem",
   color: "white",
   textTransform: "capitalize",
-};
-
-const adminUserName = {
-  fontSize: "1rem",
 };
 
 export default function Navbar({ email }) {
@@ -43,16 +45,21 @@ export default function Navbar({ email }) {
     <div>
       <div style={navbar}>
         <div style={navLeft}>
+          <div style={adminPanelText}>admin panel</div>
+          <div style={divider}>|</div>
           <img
             src="https://i.imgur.com/ld4xrld.png"
             alt="logo"
             style={siteLogo}
           />
-          <div style={adminPanelText}>admin panel</div>
         </div>
         <div>
-          <Button type="link" icon={<UserOutlined />}>
-            <span style={adminUserName}>{email}</span>
+          <Button
+            type="text"
+            style={{ color: "white" }}
+            icon={<UserOutlined />}
+          >
+            {email}
           </Button>
           <Button
             icon={<LogoutOutlined />}

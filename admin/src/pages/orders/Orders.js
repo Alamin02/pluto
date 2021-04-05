@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  Space,
-  Button,
-  Row,
-  Col,
-  Typography,
-} from "antd";
+import { Table, Space, Button, Row, Col, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
 import { agent } from "../../helpers/agent";
 import { columns } from "./orderTableColumns";
 
@@ -17,15 +9,12 @@ const { Title } = Typography;
 export default function Orders() {
   const [orderData, setOrderData] = useState([]);
 
-  // const token = localStorage.getItem("token");
-
   function fetchOrders() {
     agent
       .getOrders()
       .then((res) => res.json())
       .then(({ data }) => {
         setOrderData(data.orders);
-        // console.log(data.orders);
       });
   }
 

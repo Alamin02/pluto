@@ -11,7 +11,7 @@ const run = async () => {
   const userRepository = getConnection().getRepository(User);
   const newUser = new User();
 
-  const hash = await bcrypt.hash(cliArgs.password, 10);
+  const hash = await bcrypt.hash(cliArgs.password.toString(), 10);
 
   newUser.name = cliArgs.name || "Admin";
   newUser.email = cliArgs.email;

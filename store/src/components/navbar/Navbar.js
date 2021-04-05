@@ -85,15 +85,10 @@ function Navbar() {
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item>
-        <Button
-          style={{ padding: "0" }}
-          size="small"
-          icon={<LogoutOutlined />}
-          onClick={handleLogout}
-          type="text"
-        >
-          Logout
-        </Button>
+        <div onClick={handleLogout}>
+          <LogoutOutlined />
+          <span className={styles.logoutText}>Logout</span>
+        </div>
       </Menu.Item>
     </Menu>
   );

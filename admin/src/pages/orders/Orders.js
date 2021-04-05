@@ -3,13 +3,11 @@ import {
   Table,
   Space,
   Button,
-  Popconfirm,
-  message,
   Row,
   Col,
   Typography,
 } from "antd";
-import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 
 import { agent } from "../../helpers/agent";
 import { columns } from "./orderTableColumns";

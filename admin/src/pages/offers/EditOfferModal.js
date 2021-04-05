@@ -11,7 +11,7 @@ export default function EditOfferModal({
 
   useEffect(() => {
     form.resetFields();
-  }, [existingRecord]);
+  }, [existingRecord, form]);
 
   return (
     <div>

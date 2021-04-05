@@ -97,7 +97,7 @@ export default function EditProductModal({
         setOfferOptions(data);
       });
     }
-  }, [existingRecord]);
+  }, [existingRecord, form]);
 
   const handleUpload = async (info) => {
     const { status } = info.file;

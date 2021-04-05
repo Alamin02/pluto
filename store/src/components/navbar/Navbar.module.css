@@ -44,3 +44,13 @@
 .logoutText {
   margin-left: 0.5rem;
 }
+
+.avatarStyle {
+  color: white;
+  background-color: #bbbbbb;
+}
+.downOutlinedStyle {
+  margin-left: 0.5rem;
+  margin-right: 0;
+  font-size: 0.8rem;
+}

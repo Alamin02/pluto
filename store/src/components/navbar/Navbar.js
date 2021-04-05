@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Menu, Grid, Button, message, Dropdown } from "antd";
+import { Menu, Grid, message, Dropdown } from "antd";
 import { Avatar, Badge } from "antd";
 import classNames from "classnames";
 import {
@@ -20,11 +20,6 @@ import { navbarMenus } from "./navbarInfo";
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
 
-const downOutlinedStyle = {
-  marginLeft: "0.5rem",
-  marginRight: "0",
-  fontSize: "0.8rem",
-};
 
 function Navbar() {
   const history = useHistory();
@@ -119,7 +114,7 @@ function Navbar() {
               <Link to={navbarMenus.cartUrl}>
                 <Badge count={!!productList.length ? productList.length : 0}>
                   <Avatar
-                    style={{ color: "white", backgroundColor: "#bbbbbb" }}
+                    className={styles.avatarStyle}
                     icon={<ShoppingOutlined />}
                   />
                 </Badge>
@@ -129,7 +124,7 @@ function Navbar() {
             <div className={styles.navbarTopRight}>
               <Dropdown overlay={menu} placement="bottomRight">
                 <Avatar
-                  style={{ color: "white", backgroundColor: "#bbbbbb" }}
+                  className={styles.avatarStyle}
                   icon={<UserOutlined />}
                 />
               </Dropdown>
@@ -137,7 +132,7 @@ function Navbar() {
               <Link to={navbarMenus.cartUrl}>
                 <Badge count={!!productList.length ? productList.length : 0}>
                   <Avatar
-                    style={{ color: "white", backgroundColor: "#bbbbbb" }}
+                    className={styles.avatarStyle}
                     icon={<ShoppingOutlined />}
                   />
                 </Badge>
@@ -159,7 +154,7 @@ function Navbar() {
             title={
               <span>
                 {navbarMenus.shop}
-                <DownOutlined style={downOutlinedStyle} />
+                <DownOutlined className={styles.downOutlinedStyle} />
               </span>
             }
             className={styles.menuStyle}

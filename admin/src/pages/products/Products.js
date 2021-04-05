@@ -32,7 +32,8 @@ export default function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
   const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 10);
-  const [sort, setSort] = useState("name");
+
+  const sort = "name";
 
   const fetchProducts = () => {
     const queryString = qs.stringify({

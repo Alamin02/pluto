@@ -1,4 +1,4 @@
-import { useHistory } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Form, Input, Button, Checkbox, message } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
@@ -12,6 +12,8 @@ const Login = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  let location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } };
 
   const onFinish = (values) => {
     fetch("http://localhost:4000/api/v1/users/login", {
@@ -28,7 +30,7 @@ const Login = () => {
           dispatch({ type: "auth/login", payload: token });
           message.success("Login Successfully");
           form.resetFields();
-          history.push("/");
+          history.replace(from);
         } else {
           message.error("Could not login, check credentials");
         }

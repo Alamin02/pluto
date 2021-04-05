@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Row, Collapse } from "antd";
+import { useSelector } from "react-redux";
 
 import CheckOutForm from "../../components/check-out/CheckOutForm";
 import CheckOutRegister from "../../components/check-out/CheckOutRegister";
@@ -7,6 +8,7 @@ import CheckOutCollapsible from "../../components/check-out/CheckOutCollapsible"
 import styles from "../../components/check-out/CheckOut.module.css";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import MainContainer from "../../components/layout/MainContainer";
+import { Link } from "react-router-dom";
 
 const { Panel } = Collapse;
 
@@ -28,6 +30,24 @@ const DescriptionCollapse = ({ title, key, register, form }) => {
 
 const title = <h4 style={{ fontWeight: "600" }}>01.CHECK OUT METHOD</h4>;
 export default function CheckOut() {
+  const productList = useSelector((state) => state.cart.products);
+
+  if (!productList.length) {
+    return (
+      <MainContainer>
+        <div
+          style={{
+            textAlign: "center",
+            margin: "5rem 0",
+          }}
+        >
+          <Link to="/">Start shopping</Link>&nbsp;& then you will see your
+          orders
+        </div>
+      </MainContainer>
+    );
+  }
+
   return (
     <MainContainer>
       <div className={styles.container}>

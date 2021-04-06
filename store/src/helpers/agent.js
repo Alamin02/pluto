@@ -52,5 +52,12 @@ export const agent = {
         "Content-Type": "application/json",
       },
     });
-  }
+  },
+
+  createUserImage: (data) => {
+    return fetch(`${baseUrl}/profile`, {
+      method: "post",
+      body: data,
+    });
+  },
 };

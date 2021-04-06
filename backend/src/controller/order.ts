@@ -12,7 +12,7 @@ export async function createOrder(req: express.Request, res: express.Response) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { user, orderedProducts, status, paymentMethod } = req.body;
+  const { user, orderedProducts, paymentMethod } = req.body;
 
   // Save to database
   try {
@@ -38,11 +38,10 @@ export async function createOrder(req: express.Request, res: express.Response) {
 
     newOrder.user = user;
     newOrder.orderedProducts = createdOrderedProducts;
-    newOrder.status = status;
+    newOrder.status = "order placed";
     newOrder.paymentMethod = paymentMethod;
 
     const order = await orderRepository.save(newOrder);
-    return res.json({ newOrder: order });
   } catch (err) {
     res.json({ errors: "Order could not be added" });
   }

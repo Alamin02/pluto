@@ -47,7 +47,7 @@ function App() {
         <Route path="/offers" component={Offers} />
 
         <Route path="/cart" component={Cart} exact />
-        <PrivateRoute path="/checkOut" component={CheckOut} exact />
+        <PrivateRoute path="/checkout" component={CheckOut} exact />
 
         <Route path="/products" component={Products} exact />
         <Route path="/products/:id" component={Product} exact />

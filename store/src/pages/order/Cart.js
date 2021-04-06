@@ -24,6 +24,27 @@ function Cart() {
     dispatch({ type: "cart/removeProduct", payload: { id } });
   };
 
+  console.log("cart", productList);
+
+  if (!productList.length) {
+    return (
+      <MainContainer>
+        <div
+          style={{
+            textAlign: "center",
+            margin: "5rem 0",
+          }}
+        >
+          <h3>Your cart is empty</h3>
+          <br />
+          <Link to="/">
+            <Button type="primary">Start shopping now</Button>
+          </Link>
+        </div>
+      </MainContainer>
+    );
+  }
+
   return (
     <MainContainer>
       <div className={styles.container}>
@@ -53,7 +74,7 @@ function Cart() {
         <div className={styles.bottomSection}>
           <div>&nbsp;</div>
           <div>
-            <Link to="checkOut">
+            <Link to="checkout">
               <Button type="primary" style={{ textTransform: "uppercase" }}>
                 Checkout
               </Button>

@@ -20,7 +20,6 @@ import { navbarMenus } from "./navbarInfo";
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
 
-
 function Navbar() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -67,7 +66,7 @@ function Navbar() {
 
   const menu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item className={styles.cursor}>
         <div style={{ textTransform: "capitalize" }}>{user.name}</div>
         <div style={{ color: "gray" }}>{user.email}</div>
       </Menu.Item>

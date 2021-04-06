@@ -53,7 +53,7 @@ function Cart() {
         <div className={styles.bottomSection}>
           <div>&nbsp;</div>
           <div>
-            <Link to="checkOut">
+            <Link to="checkout">
               <Button type="primary" style={{ textTransform: "uppercase" }}>
                 Checkout
               </Button>

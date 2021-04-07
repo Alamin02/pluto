@@ -24,9 +24,8 @@ function ProductList() {
         .then((res) => res.json())
         .then(({ data }) => {
           setProductsData(data.products);
-          console.log(data.products);
         });
-    }
+    };
     fetchProducts();
   }, [queryString]);
 
@@ -49,7 +48,7 @@ function ProductList() {
                         src={product.images[0].path}
                         price={Math.floor(
                           product.price -
-                          (product.price * product.offer.discount) / 100
+                            (product.price * product.offer.discount) / 100
                         )}
                         discount={product.price}
                       />

@@ -24,8 +24,6 @@ function Cart() {
     dispatch({ type: "cart/removeProduct", payload: { id } });
   };
 
-  console.log("cart", productList);
-
   if (!productList.length) {
     return (
       <MainContainer>

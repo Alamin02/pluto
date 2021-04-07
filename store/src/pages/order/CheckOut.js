@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Grid } from "antd";
+import { Form, Input, Button, Grid, Select } from "antd";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
@@ -12,6 +12,7 @@ import { agent } from "../../helpers/agent";
 import Cart from "../../pages/order/Cart";
 
 const { useBreakpoint } = Grid;
+const { Option } = Select;
 
 const layout = {
   labelCol: {
@@ -166,12 +167,19 @@ export default function CheckOut() {
               },
             ]}
           >
-            <Input
+            <Select
               className={classNames(
                 { [styles.inputStyle]: screens },
                 { [styles.inputStyleXs]: screens.xs }
               )}
-            />
+              placeholder="Select payment method"
+              allowClear
+              style={{ width: 300 }}
+            >
+              <Option value="dogecoin">Dogecoin</Option>
+              <Option value="bkash">bKash</Option>
+              <Option value="rocket">Rocket</Option>
+            </Select>
           </Form.Item>
         </Section>
 

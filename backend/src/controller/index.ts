@@ -1,5 +1,3 @@
-import { getAllProductsImages, getSingleImage } from "./productImage";
-
 export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
@@ -60,6 +58,7 @@ export {
   deleteAddress as deleteAddressController,
 } from "./addresses";
 
+export { createUserImage as createUserImageController } from "./userImage";
 export {
   getAllProductsImages as getAllProductsImagesController,
   getSingleImage as getSingleImageController,

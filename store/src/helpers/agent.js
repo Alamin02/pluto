@@ -63,4 +63,11 @@ export const agent = {
       body: JSON.stringify(orderData),
     });
   },
+
+  createUserImage: (data) => {
+    return fetch(`${baseUrl}/profile`, {
+      method: "post",
+      body: data,
+    });
+  },
 };

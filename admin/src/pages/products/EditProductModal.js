@@ -287,6 +287,7 @@ export default function EditProductModal({
               showUploadList={false}
               accept="image/*"
               multiple={true}
+
             >
               <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
             </Upload>

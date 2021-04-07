@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 
-import { Product } from "../entity";
+import { User } from "../entity";
 
-@Entity("productImages")
-export class ProductImage {
+@Entity("userImages")
+export class UserImage {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -13,8 +13,8 @@ export class ProductImage {
   @Column("varchar")
   path!: string;
 
-  @ManyToOne(() => Product, (product) => product.images, {
+  @ManyToOne(() => User, (user) => user.image, {
     onDelete: "CASCADE",
   })
-  product!: Product;
+  user!: User;
 }

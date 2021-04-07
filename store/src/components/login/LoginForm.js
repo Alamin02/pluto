@@ -53,7 +53,6 @@ const Login = () => {
         >
           {/* email */}
           <Form.Item
-            bordered="false"
             name="email"
             rules={[
               {
@@ -63,7 +62,6 @@ const Login = () => {
             ]}
           >
             <Input
-              bordered="false"
               prefix={<MailOutlined style={{ color: "gray" }} />}
               type="email"
               placeholder="Email"

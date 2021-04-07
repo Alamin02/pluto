@@ -17,7 +17,6 @@ router.get("/", getAllOrdersController);
 // Create a order
 router.post(
   "/",
-
   [
     body("paymentMethod")
       .not()

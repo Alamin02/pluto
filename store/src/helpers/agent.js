@@ -54,6 +54,17 @@ export const agent = {
     });
   },
 
+  createOrder: (orderData, token) => {
+    return fetch(`${baseUrl}/orders`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    });
+  },
+
   createUserImage: (data) => {
     return fetch(`${baseUrl}/profile`, {
       method: "post",

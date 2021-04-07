@@ -9,14 +9,12 @@ export async function createUserImage(
   res: express.Response
 ) {
   const id = req.body.userId;
-  console.log(id);
   const usersRepository = getConnection().getRepository(User);
   const user = await usersRepository.findOne({ id });
   const userImageRepository = getConnection().getRepository(UserImage);
 
   const createUserImage = [];
   const files = req.files as Express.Multer.File[];
-  console.log(files);
 
   if (files.length && user) {
     for (let i = 0; i < files.length; i++) {

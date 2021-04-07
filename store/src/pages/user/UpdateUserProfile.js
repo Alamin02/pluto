@@ -24,6 +24,7 @@ function UpdateUserProfile() {
   const token = useSelector((state) => state.auth.tokenValue);
   const [userImage, setUserImage] = useState([]);
   const [userId, setUserId] = useState(null)
+  const [imageData, setImageData] = useState([])
 
   const layout = {
     labelCol: {
@@ -69,7 +70,7 @@ function UpdateUserProfile() {
   const handleUpload = async (info) => {
     const { status } = info.file;
     if (status !== "uploading") {
-      console.log(info.file, info.fileList)
+
       const formData = new FormData();
       userImage.forEach((userImage) => {
         formData.append("userImage", userImage);
@@ -77,9 +78,11 @@ function UpdateUserProfile() {
 
       formData.append("userId", userId);
 
+
       agent
         .createUserImage(formData)
-        .then(res => console.log(res))
+        .then(res => res.json())
+        .then(({ data }) => setImageData(data))
 
     }
     if (status === "done") {
@@ -90,15 +93,15 @@ function UpdateUserProfile() {
   };
 
   //........................//
-
   const normFile = (e) => {
     console.log("Upload event:", e);
 
     if (Array.isArray(e)) {
       return e;
     }
-    return e && e.fileList;
+    return e && e.fileList && imageData;
   };
+
 
   const onFinish = (values) => {
     console.log(values)
@@ -196,8 +199,9 @@ function UpdateUserProfile() {
                       message: "Please select photo!",
                     },
                   ]}
-                  valuePropName="fileList"
+                  valuePropName="imageData"
                   getValueFromEvent={normFile}
+
                 >
                   <Upload
                     name="files"
@@ -206,8 +210,9 @@ function UpdateUserProfile() {
                       setUserImage(fileList);
                       return false;
                     }}
-                    accept="image/*"
+                    listType="picture"
                     maxCount={1}
+
                   >
                     <Button
                       icon={<UploadOutlined />}
@@ -216,8 +221,8 @@ function UpdateUserProfile() {
                         { [styles.inputStyleXs]: screens.xs }
                       )}
                     >
-                      Select file
-                </Button>
+                      Select file (Max: 1)
+                    </Button>
                   </Upload>
                 </Form.Item>
 

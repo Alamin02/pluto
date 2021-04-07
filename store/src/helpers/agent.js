@@ -59,6 +59,7 @@ export const agent = {
       method: "post",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(orderData),
     });

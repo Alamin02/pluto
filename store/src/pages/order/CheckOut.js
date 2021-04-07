@@ -42,8 +42,15 @@ export default function CheckOut() {
   const onFinish = (values) => {
     console.log("values: ", values);
 
+    const order = {
+      ...values,
+      user: {
+        id: values.user,
+      },
+    };
+
     agent
-      .createOrder(values, token)
+      .createOrder(order, token)
       .then((res) => res.json())
       .then(() => form.validateFields())
       .catch((error) => {
@@ -160,7 +167,6 @@ export default function CheckOut() {
             ]}
           >
             <Input
-              name="paymentMethod"
               className={classNames(
                 { [styles.inputStyle]: screens },
                 { [styles.inputStyleXs]: screens.xs }

@@ -36,7 +36,7 @@
 }
 
 .userAvatar {
-  width: 6rem;
+  width: 8rem;
 }
 .userAvatarXs {
   width: 9rem;
@@ -66,4 +66,32 @@
 
 .emptySpace {
   padding: 1rem;
+}
+
+.imageBox {
+  display: inline;
+  position: relative;
+}
+
+.editBox {
+  border: 1px solid #30363d;
+  border-radius: 50% !important;
+  color: #f0f6fc;
+  background-color: #161b22;
+  position: absolute !important;
+  top: 85px !important;
+  left: 10 !important;
+  padding-right: 8px !important;
+  padding-left: 8px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  margin-left: 8px !important;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 576px) {
+  .imageBox {
+    width: 100%;
+    text-align: center;
+  }
 }

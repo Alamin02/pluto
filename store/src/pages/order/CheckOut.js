@@ -36,6 +36,7 @@ export default function CheckOut() {
   const [user, setUser] = useState("");
   const token = useSelector((state) => state.auth.tokenValue);
   const productList = useSelector((state) => state.cart.products);
+  const [userData, setUserData] = useState([]);
 
   // on form submit
   const onFinish = (values) => {
@@ -84,7 +85,25 @@ export default function CheckOut() {
           setUser(data);
         });
     form.resetFields();
-  }, [token, totalPrice, productList, form, user.id]);
+  }, [token, totalPrice, productList, form]);
+
+  useEffect(() => {
+    if (token)
+      agent
+        .getMe(token)
+        .then((res) => res.json())
+        .then(({ data, error }) => {
+          if (data.id) {
+            agent
+              .getSingleUser(data.id)
+              .then((res) => res.json())
+              .then(({ data }) => setUserData(data));
+          }
+          if (error) {
+            localStorage.removeItem("token");
+          }
+        });
+  }, [token]);
 
   if (!productList.length) {
     return (
@@ -124,28 +143,59 @@ export default function CheckOut() {
         }}
       >
         <div className={styles.emptySpace}></div>
+
+        {/* user id */}
+        <Form.Item
+          {...tailLayout}
+          hidden={true}
+          name="user"
+          label="User"
+          initialValue={user.id}
+        >
+          <Input readOnly />
+        </Form.Item>
+        {/* product list */}
+        <Form.Item
+          {...tailLayout}
+          hidden={true}
+          name="orderedProducts"
+          label="Ordered products"
+          initialValue={productList}
+        >
+          <Input readOnly />
+        </Form.Item>
+
+        {/* shipping info */}
+        {/* <Section heading="Shipping info">
+          <Form.Item
+            {...tailLayout}
+            name="shippingAddress"
+            label="Shipping address"
+            rules={[
+              {
+                required: true,
+                message: "You must choose a shipping address!",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Select shipping info"
+              allowClear
+              style={{ width: 300 }}
+            >
+              {userData.addresses &&
+                userData.addresses.map((address) => {
+                  return (
+                    <Option value={address.address}>{address.address}</Option>
+                  );
+                })}
+            </Select>
+          </Form.Item>
+        </Section>
+        <div className={styles.emptySpace}></div> */}
+
+        {/* payment method */}
         <Section heading="payment info">
-          {/* user id */}
-          <Form.Item
-            {...tailLayout}
-            hidden={true}
-            name="user"
-            label="User"
-            initialValue={user.id}
-          >
-            <Input readOnly />
-          </Form.Item>
-          {/* product list */}
-          <Form.Item
-            {...tailLayout}
-            hidden={true}
-            name="orderedProducts"
-            label="Ordered products"
-            initialValue={productList}
-          >
-            <Input readOnly />
-          </Form.Item>
-          {/* payment method */}
           <Form.Item
             {...tailLayout}
             name="paymentMethod"
@@ -168,9 +218,7 @@ export default function CheckOut() {
             </Select>
           </Form.Item>
         </Section>
-
         <div className={styles.emptySpace}></div>
-
         {/* submit button */}
         <Form.Item className={styles.buttonSection}>
           <div className={styles.buttonSection}>

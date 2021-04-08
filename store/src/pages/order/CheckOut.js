@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select, Modal } from "antd";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import MainContainer from "../../components/layout/MainContainer";
 import HeaderSection from "../../components/styled-components/HeaderSection";
@@ -30,6 +31,7 @@ const tailLayout = {
 };
 
 export default function CheckOut() {
+  const history = useHistory();
   const [form] = Form.useForm();
 
   const [totalPrice, setTotalPrice] = useState(0);
@@ -62,6 +64,19 @@ export default function CheckOut() {
       .createOrder(order, token)
       .then((res) => res.json())
       .then(() => form.validateFields())
+      .then(() =>
+        Modal.success({
+          visible: true,
+          title: "Success",
+          icon: <ExclamationCircleOutlined />,
+          content: "Your order has been placed.",
+          okText: "Go to cart",
+          cancelText: "Cancel",
+          onOk() {
+            history.push("/profile");
+          },
+        })
+      )
       .catch((error) => {
         console.log("Error while creating order.", error);
       });

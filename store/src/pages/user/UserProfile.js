@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Grid } from "antd";
-import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
+import { MailOutlined, PhoneOutlined, EditOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import styles from "./UserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
@@ -43,21 +43,27 @@ function UserProfile() {
       <div className={styles.container}>
         <HeaderSection headerText="manage my account" />
 
-        <Section heading="Basic info">
+        <Section heading="Basic info" key={userInfo.key}>
           <div
             className={classNames(
               { [styles.basicInfo]: screens },
               { [styles.basicInfoXs]: screens.xs }
             )}
           >
-            <img
-              src={userInfo.photo}
-              className={classNames(
-                { [styles.userAvatar]: screens },
-                { [styles.userAvatarXs]: screens.xs }
-              )}
-              alt="user_photo"
-            />
+            <div className={styles.imageBox}>
+              <img
+                src={userInfo.photo}
+                className={classNames(
+                  { [styles.userAvatar]: screens },
+                  { [styles.userAvatarXs]: screens.xs }
+                )}
+                alt="user_photo"
+              />
+              <div className={styles.editBox}>
+                <EditOutlined />
+              </div>
+            </div>
+
             {userData.length === 1 &&
               userData.map((data) => {
                 return (
@@ -81,7 +87,12 @@ function UserProfile() {
                       &nbsp;&nbsp;
                       {data.email}
                     </div>
-                    <div className={styles.alignItems}>
+                    <div
+                      className={classNames(
+                        { [styles.phoneNumber]: screens },
+                        { [styles.phoneNumberXs]: screens.xs }
+                      )}
+                    >
                       <PhoneOutlined />
                       &nbsp;&nbsp;
                       {data.phone}

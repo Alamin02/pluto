@@ -32,44 +32,48 @@ function ProductList() {
   return (
     <MainContainer>
       <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-        <HeaderSection headerText="popular products" />
+        <HeaderSection headerText="Popular Products" />
         <Row gutter={[16, 16]}>
-          {productsData.map((product) => {
-            if (product.offer) {
-              return (
-                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
-                  <Link to={`/products/${product.id}`}>
-                    <Badge.Ribbon
-                      color="red"
-                      text={product.offer.discount + ` % off`}
-                    >
+          {productsData.length > 0 ? (
+            productsData.map((product) => {
+              if (product.offer) {
+                return (
+                  <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
+                    <Link to={`/products/${product.id}`}>
+                      <Badge.Ribbon
+                        color="red"
+                        text={product.offer.discount + ` % off`}
+                      >
+                        <CardItem
+                          title={product.name}
+                          src={product.images[0].path}
+                          price={Math.floor(
+                            product.price -
+                              (product.price * product.offer.discount) / 100
+                          )}
+                          discount={product.price}
+                        />
+                      </Badge.Ribbon>
+                    </Link>
+                  </Col>
+                );
+              } else {
+                return (
+                  <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
+                    <Link to={`/products/${product.id}`}>
                       <CardItem
                         title={product.name}
-                        src={product.images[0].path}
-                        price={Math.floor(
-                          product.price -
-                            (product.price * product.offer.discount) / 100
-                        )}
-                        discount={product.price}
+                        src={product.images.length && product.images[0].path}
+                        price={product.price}
                       />
-                    </Badge.Ribbon>
-                  </Link>
-                </Col>
-              );
-            } else {
-              return (
-                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
-                  <Link to={`/products/${product.id}`}>
-                    <CardItem
-                      title={product.name}
-                      src={product.images.length && product.images[0].path}
-                      price={product.price}
-                    />
-                  </Link>
-                </Col>
-              );
-            }
-          })}
+                    </Link>
+                  </Col>
+                );
+              }
+            })
+          ) : (
+            <h2>No Products are available</h2>
+          )}
         </Row>
       </div>
     </MainContainer>

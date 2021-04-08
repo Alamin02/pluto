@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Grid, Select } from "antd";
+import { Form, Input, Button, Select } from "antd";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import classNames from "classnames";
 
 import MainContainer from "../../components/layout/MainContainer";
 import HeaderSection from "../../components/styled-components/HeaderSection";
-import styles from "../../components/check-out/CheckOut.module.css";
+import styles from "./CheckOut.module.css";
 import Section from "../../components/styled-components/Section";
 import { agent } from "../../helpers/agent";
-import Cart from "../../pages/order/Cart";
+import OrderedProducts from "../../components/check-out/OrderedProducts";
 
-const { useBreakpoint } = Grid;
 const { Option } = Select;
 
 const layout = {
@@ -24,8 +22,10 @@ const layout = {
 };
 
 const tailLayout = {
+  labelCol: { span: 3 },
   wrapperCol: {
     span: 8,
+    offset: 1,
   },
 };
 
@@ -37,17 +37,24 @@ export default function CheckOut() {
   const token = useSelector((state) => state.auth.tokenValue);
   const productList = useSelector((state) => state.cart.products);
 
-  const screens = useBreakpoint();
-
   // on form submit
   const onFinish = (values) => {
-    console.log("values: ", values);
+    const newOrderedProducts = [];
+    for (const orderedProduct of productList) {
+      newOrderedProducts.push({
+        product: {
+          id: orderedProduct.id,
+        },
+        quantity: orderedProduct.quantity,
+      });
+    }
 
     const order = {
       ...values,
       user: {
         id: values.user,
       },
+      orderedProducts: newOrderedProducts,
     };
 
     agent
@@ -82,12 +89,7 @@ export default function CheckOut() {
   if (!productList.length) {
     return (
       <MainContainer>
-        <div
-          style={{
-            textAlign: "center",
-            margin: "5rem 0",
-          }}
-        >
+        <div className={styles.emptyCart}>
           <Link to="/">Start shopping</Link>&nbsp;& then you will see your
           orders
         </div>
@@ -108,7 +110,7 @@ export default function CheckOut() {
       <div className={styles.emptySpace}></div>
 
       <Section heading="Your orders">
-        <Cart />
+        <OrderedProducts />
       </Section>
 
       {/* FORM */}
@@ -131,13 +133,7 @@ export default function CheckOut() {
             label="User"
             initialValue={user.id}
           >
-            <Input
-              readOnly
-              className={classNames(
-                { [styles.inputStyle]: screens },
-                { [styles.inputStyleXs]: screens.xs }
-              )}
-            />
+            <Input readOnly />
           </Form.Item>
           {/* product list */}
           <Form.Item
@@ -147,13 +143,7 @@ export default function CheckOut() {
             label="Ordered products"
             initialValue={productList}
           >
-            <Input
-              readOnly
-              className={classNames(
-                { [styles.inputStyle]: screens },
-                { [styles.inputStyleXs]: screens.xs }
-              )}
-            />
+            <Input readOnly />
           </Form.Item>
           {/* payment method */}
           <Form.Item
@@ -163,15 +153,11 @@ export default function CheckOut() {
             rules={[
               {
                 required: true,
-                message: "Please input your payment method!",
+                message: "You must choose a payment method!",
               },
             ]}
           >
             <Select
-              className={classNames(
-                { [styles.inputStyle]: screens },
-                { [styles.inputStyleXs]: screens.xs }
-              )}
               placeholder="Select payment method"
               allowClear
               style={{ width: 300 }}
@@ -189,7 +175,7 @@ export default function CheckOut() {
         <Form.Item className={styles.buttonSection}>
           <div className={styles.buttonSection}>
             <Button type="primary" htmlType="submit">
-              Add order
+              Confirm order
             </Button>
           </div>
         </Form.Item>

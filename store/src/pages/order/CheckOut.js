@@ -145,6 +145,11 @@ export default function CheckOut() {
 
       <Section heading="Your orders">
         <OrderedProducts />
+        <Link to="/cart">
+          <Button type="primary" className={styles.cartButton}>
+            Go to cart
+          </Button>
+        </Link>
       </Section>
 
       {/* FORM */}

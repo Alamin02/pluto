@@ -66,9 +66,11 @@ function Navbar() {
 
   const menu = (
     <Menu>
-      <Menu.Item className={styles.cursor}>
-        <div style={{ textTransform: "capitalize" }}>{user.name}</div>
-        <div style={{ color: "gray" }}>{user.email}</div>
+      <Menu.Item>
+        <Link to="/profile">
+          <div style={{ textTransform: "capitalize" }}>{user.name}</div>
+          <div style={{ color: "gray" }}>{user.email}</div>
+        </Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item>
@@ -106,7 +108,7 @@ function Navbar() {
               />
             </Link>
           </div>
-          {!token || !token.length ? (
+          {!token || !token.length || !user ? (
             <div className={styles.navbarTopRight}>
               <Link to="/login">log in</Link>
               &nbsp;&nbsp;|&nbsp;&nbsp;

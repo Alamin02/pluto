@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Grid } from "antd";
@@ -9,6 +9,7 @@ import MainContainer from "../../components/layout/MainContainer";
 import userInfo from "../../components/user-profile/userInfo";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
+import Section from "../../components/styled-components/Section";
 
 const { useBreakpoint } = Grid;
 
@@ -16,7 +17,7 @@ function UserProfile() {
   const screens = useBreakpoint();
   const token = useSelector((state) => state.auth.tokenValue);
 
-  const [userData, setUserData] = useState([])
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     if (token)
@@ -28,8 +29,7 @@ function UserProfile() {
             agent
               .getSingleUser(data.id)
               .then((res) => res.json())
-              .then(({ data }) =>
-                setUserData([data]))
+              .then(({ data }) => setUserData([data]));
           }
 
           if (error) {
@@ -43,8 +43,7 @@ function UserProfile() {
       <div className={styles.container}>
         <HeaderSection headerText="manage my account" />
 
-        <section className={styles.eachSection} key={userInfo.key}>
-          <h2 className={styles.eachSectionTitle}>Basic info</h2>
+        <Section heading="Basic info">
           <div
             className={classNames(
               { [styles.basicInfo]: screens },
@@ -59,46 +58,45 @@ function UserProfile() {
               )}
               alt="user_photo"
             />
-            {(userData.length === 1 && userData.map((data) => {
-              return (
-                <div
-                  className={classNames(
-                    { [styles.basicInfoText]: screens },
-                    { [styles.basicInfoTextXs]: screens.xs }
-                  )}
-                  key={data.id}
-                >
+            {userData.length === 1 &&
+              userData.map((data) => {
+                return (
                   <div
                     className={classNames(
-                      { [styles.welcomeMessage]: screens },
-                      { [styles.welcomeMessageXs]: screens.xs }
+                      { [styles.basicInfoText]: screens },
+                      { [styles.basicInfoTextXs]: screens.xs }
                     )}
+                    key={data.id}
                   >
-                    Welcome, {data.name}.
-              </div>
-                  <div>
-                    <MailOutlined />
-                &nbsp;&nbsp;
-                {data.email}
+                    <div
+                      className={classNames(
+                        { [styles.welcomeMessage]: screens },
+                        { [styles.welcomeMessageXs]: screens.xs }
+                      )}
+                    >
+                      Welcome, {data.name}.
+                    </div>
+                    <div>
+                      <MailOutlined />
+                      &nbsp;&nbsp;
+                      {data.email}
+                    </div>
+                    <div className={styles.alignItems}>
+                      <PhoneOutlined />
+                      &nbsp;&nbsp;
+                      {data.phone}
+                    </div>
                   </div>
-                  <div className={styles.alignItems}>
-                    <PhoneOutlined />
-                &nbsp;&nbsp;
-                {data.phone}
-                  </div>
-                </div>
-              )
-            }))}
-
+                );
+              })}
           </div>
-        </section>
+        </Section>
 
         <section className={styles.emptySpace}></section>
 
-        <section className={styles.eachSection} key={userInfo.key}>
-          <h2 className={styles.eachSectionTitle}>Shipping address</h2>
+        <Section heading="Shipping address">
           <div>Your Product is set to ship to {userInfo.address}</div>
-        </section>
+        </Section>
 
         <section className={styles.buttonSection}>
           <Link to="/profile/edit">

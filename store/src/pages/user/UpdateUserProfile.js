@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Form, Input, Button, Upload, Select, Grid } from "antd";
+import { Form, Input, Button, Upload, Select } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import classNames from "classnames";
 
 import styles from "./UpdateUserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
@@ -12,20 +11,18 @@ import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
 
 const { Option } = Select;
-const { useBreakpoint } = Grid;
 
 function handleChange(value) {
   console.log(`selected ${value}`);
 }
 
 function UpdateUserProfile() {
-  const screens = useBreakpoint();
   const [form] = Form.useForm();
   const token = useSelector((state) => state.auth.tokenValue);
   const [userImage, setUserImage] = useState([]);
-  const [userId, setUserId] = useState(null)
-  const [userData, setUserData] = useState([])
-  const [imageData, setImageData] = useState([])
+  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState([]);
+  const [imageData, setImageData] = useState([]);
 
   const layout = {
     labelCol: {
@@ -37,11 +34,12 @@ function UpdateUserProfile() {
   };
 
   const tailLayout = {
+    labelCol: { span: 3 },
     wrapperCol: {
       span: 8,
+      offset: 1,
     },
   };
-
 
   useEffect(() => {
     if (token)
@@ -50,12 +48,11 @@ function UpdateUserProfile() {
         .then((res) => res.json())
         .then(({ data, error }) => {
           if (data.id) {
-            setUserId(data.id)
+            setUserId(data.id);
             agent
               .getSingleUser(data.id)
               .then((res) => res.json())
-              .then(({ data }) =>
-                setUserData([data]))
+              .then(({ data }) => setUserData([data]));
           }
 
           if (error) {
@@ -65,7 +62,7 @@ function UpdateUserProfile() {
   }, [token]);
 
   const normFile = (e) => {
-    const dataOfImage = {}
+    const dataOfImage = {};
     console.log("Upload event:", e);
     const formData = new FormData();
     userImage.forEach((userImage) => {
@@ -76,18 +73,18 @@ function UpdateUserProfile() {
 
     agent
       .createUserImage(formData)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data[0].path)
+        console.log(data[0].path);
         dataOfImage.imagePath = data[0].path;
-      })
+      });
 
     return dataOfImage;
   };
 
   const onFinish = (values) => {
-    console.log(values)
-  }
+    console.log(values);
+  };
 
   return (
     <MainContainer>
@@ -102,132 +99,105 @@ function UpdateUserProfile() {
           }}
           onFinish={onFinish}
         >
-          {(userData.length === 1 && userData.map((data) => {
-            return (
-              <section className={styles.eachSection} key={data.id}>
-                <h2 className={styles.eachSectionTitle}>Update basic info</h2>
-                {/* email */}
+          {userData.length === 1 &&
+            userData.map((data) => {
+              return (
+                <section className={styles.eachSection} key={data.id}>
+                  <h2 className={styles.eachSectionTitle}>Update basic info</h2>
+                  {/* email */}
 
-                <Form.Item
-                  {...tailLayout}
-                  label="Email"
-                  name="email"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please input your email!",
-                    },
-                  ]}
-                  initialValue={data.email}
-                >
-                  <Input
-                    className={classNames(
-                      { [styles.inputStyle]: screens },
-                      { [styles.inputStyleXs]: screens.xs }
-                    )}
-                  />
-                </Form.Item>
-
-                {/* name */}
-                <Form.Item
-                  {...tailLayout}
-                  label="Name"
-                  name="name"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please input your name!",
-                    },
-                  ]}
-                  initialValue={data.name}
-                >
-                  <Input
-                    className={classNames(
-                      { [styles.inputStyle]: screens },
-                      { [styles.inputStyleXs]: screens.xs }
-                    )}
-                  />
-                </Form.Item>
-
-                {/* phone */}
-                <Form.Item
-                  {...tailLayout}
-                  label="Phone number"
-                  name="phone"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please input your phone number!",
-                    },
-                  ]}
-                  initialValue={data.phone}
-                >
-                  <Input
-                    className={classNames(
-                      { [styles.inputStyle]: screens },
-                      { [styles.inputStyleXs]: screens.xs }
-                    )}
-                  />
-                </Form.Item>
-
-                {/* image */}
-                <Form.Item
-                  {...tailLayout}
-                  label="Photo"
-                  name="userImage"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please select photo!",
-                    },
-                  ]}
-                  valuePropName="dataOfImage"
-                  getValueFromEvent={normFile}
-
-                >
-                  <Upload
-                    name="files"
-                    beforeUpload={(file, fileList) => {
-                      setUserImage(fileList);
-                      return false;
-                    }}
-                    listType="picture"
-                    maxCount={1}
-
+                  <Form.Item
+                    {...tailLayout}
+                    label="Email"
+                    name="email"
+                    rules={[
+                      {
+                        required: false,
+                        message: "Please input your email!",
+                      },
+                    ]}
+                    initialValue={data.email}
                   >
-                    <Button
-                      icon={<UploadOutlined />}
-                      className={classNames(
-                        { [styles.inputStyle]: screens },
-                        { [styles.inputStyleXs]: screens.xs }
-                      )}
-                    >
-                      Select file (Max: 1)
-                    </Button>
-                  </Upload>
-                </Form.Item>
+                    <Input />
+                  </Form.Item>
 
-                <Form.Item
-                  {...tailLayout}
-                  label="Password"
-                  name="password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your password!",
-                    },
-                  ]}
-                >
-                  <Input.Password
-                    placeholder="Enter new password"
-                    className={classNames(
-                      { [styles.inputStyle]: screens },
-                      { [styles.inputStyleXs]: screens.xs }
-                    )}
-                  />
-                </Form.Item>
-              </section>)
-          }))}
+                  {/* name */}
+                  <Form.Item
+                    {...tailLayout}
+                    label="Name"
+                    name="name"
+                    rules={[
+                      {
+                        required: false,
+                        message: "Please input your name!",
+                      },
+                    ]}
+                    initialValue={data.name}
+                  >
+                    <Input />
+                  </Form.Item>
+
+                  {/* phone */}
+                  <Form.Item
+                    {...tailLayout}
+                    label="Phone number"
+                    name="phone"
+                    rules={[
+                      {
+                        required: false,
+                        message: "Please input your phone number!",
+                      },
+                    ]}
+                    initialValue={data.phone}
+                  >
+                    <Input />
+                  </Form.Item>
+
+                  {/* image */}
+                  <Form.Item
+                    {...tailLayout}
+                    label="Photo"
+                    name="userImage"
+                    rules={[
+                      {
+                        required: false,
+                        message: "Please select photo!",
+                      },
+                    ]}
+                    valuePropName="dataOfImage"
+                    getValueFromEvent={normFile}
+                  >
+                    <Upload
+                      name="files"
+                      beforeUpload={(file, fileList) => {
+                        setUserImage(fileList);
+                        return false;
+                      }}
+                      listType="picture"
+                      maxCount={1}
+                    >
+                      <Button icon={<UploadOutlined />}>
+                        Select file (Max: 1)
+                      </Button>
+                    </Upload>
+                  </Form.Item>
+
+                  <Form.Item
+                    {...tailLayout}
+                    label="Password"
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                    ]}
+                  >
+                    <Input.Password placeholder="Enter new password" />
+                  </Form.Item>
+                </section>
+              );
+            })}
           <section className={styles.emptySpace}></section>
 
           {/* 2nd section start */}
@@ -248,10 +218,6 @@ function UpdateUserProfile() {
               {/* <Input /> */}
               <Select
                 placeholder="Choose your Location"
-                className={classNames(
-                  { [styles.inputStyle]: screens },
-                  { [styles.inputStyleXs]: screens.xs }
-                )}
                 onChange={handleChange}
               >
                 {shippingAddressList.map((address) => (
@@ -265,15 +231,10 @@ function UpdateUserProfile() {
           {/* 2nd section end */}
 
           <Form.Item className={styles.buttonSection}>
-
             <Button type="primary" htmlType="submit">
               Save changes
-              </Button>
-
+            </Button>
           </Form.Item>
-
-
-
         </Form>
       </div>
     </MainContainer>

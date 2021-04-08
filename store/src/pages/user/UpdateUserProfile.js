@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux";
-import { Form, Input, Button, Upload, Select, Grid, message } from "antd";
+import { Form, Input, Button, Upload, Select, Grid } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
@@ -24,6 +24,7 @@ function UpdateUserProfile() {
   const token = useSelector((state) => state.auth.tokenValue);
   const [userImage, setUserImage] = useState([]);
   const [userId, setUserId] = useState(null)
+  const [userData, setUserData] = useState([])
   const [imageData, setImageData] = useState([])
 
   const layout = {
@@ -41,8 +42,6 @@ function UpdateUserProfile() {
     },
   };
 
-  //----------------//
-  const [userData, setUserData] = useState([])
 
   useEffect(() => {
     if (token)
@@ -64,44 +63,27 @@ function UpdateUserProfile() {
           }
         });
   }, [token]);
-  //................//
 
-  //.....................//
-  const handleUpload = async (info) => {
-    const { status } = info.file;
-    if (status !== "uploading") {
-
-      const formData = new FormData();
-      userImage.forEach((userImage) => {
-        formData.append("userImage", userImage);
-      });
-
-      formData.append("userId", userId);
-
-
-      agent
-        .createUserImage(formData)
-        .then(res => res.json())
-        .then(({ data }) => setImageData(data))
-
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  };
-
-  //........................//
   const normFile = (e) => {
+    const dataOfImage = {}
     console.log("Upload event:", e);
+    const formData = new FormData();
+    userImage.forEach((userImage) => {
+      formData.append("userImage", userImage);
+    });
 
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList && imageData;
+    formData.append("userId", userId);
+
+    agent
+      .createUserImage(formData)
+      .then(res => res.json())
+      .then(({ data }) => {
+        console.log(data[0].path)
+        dataOfImage.imagePath = data[0].path;
+      })
+
+    return dataOfImage;
   };
-
 
   const onFinish = (values) => {
     console.log(values)
@@ -199,13 +181,12 @@ function UpdateUserProfile() {
                       message: "Please select photo!",
                     },
                   ]}
-                  valuePropName="imageData"
+                  valuePropName="dataOfImage"
                   getValueFromEvent={normFile}
 
                 >
                   <Upload
                     name="files"
-                    onChange={handleUpload}
                     beforeUpload={(file, fileList) => {
                       setUserImage(fileList);
                       return false;

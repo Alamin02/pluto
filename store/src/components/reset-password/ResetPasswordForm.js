@@ -3,7 +3,8 @@ import { Form, Input, Button } from "antd";
 
 import styles from "./ResetPasswordForm.module.css";
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = ({ id }) => {
+
   const [form] = Form.useForm();
   const layout = {
     labelCol: {
@@ -23,6 +24,7 @@ const ResetPasswordForm = () => {
 
   const onFinishForPassword = (values) => {
     console.log("password: ", values)
+
   }
 
   return (
@@ -59,7 +61,7 @@ const ResetPasswordForm = () => {
         {/* New Password */}
         <Form.Item
           {...tailLayout}
-          name="password"
+          name="new password"
           label="New Password"
           rules={[
             {
@@ -67,6 +69,7 @@ const ResetPasswordForm = () => {
               message: "Please input your Password!",
             },
           ]}
+          hasFeedback
         >
           <Input
             type="password"
@@ -76,13 +79,26 @@ const ResetPasswordForm = () => {
         {/* Confirm Password */}
         <Form.Item
           {...tailLayout}
-          name="password"
+          name="confrim password"
           label="Confirm Password"
+          dependencies={["new password"]}
+          hasFeedback
           rules={[
             {
               required: true,
               message: "Please input your Password!",
             },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("new password") === value) {
+                  return Promise.resolve();
+                }
+
+                return Promise.reject(
+                  "The two passwords that you entered do not match!"
+                );
+              },
+            }),
           ]}
         >
           <Input

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Grid, Menu, Form, Upload, Dropdown } from "antd";
-import { MailOutlined, PhoneOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { MailOutlined, PhoneOutlined, EditOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import styles from "./UserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
@@ -135,7 +135,7 @@ function UserProfile() {
             )}
           >
 
-            {(sourceOfImage.length == 1) ?
+            {(sourceOfImage.length === 1) ?
               (<div className={styles.imageBox} key={1}>
                 <img
                   src={sourceOfImage[0]}

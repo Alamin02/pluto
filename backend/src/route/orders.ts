@@ -11,8 +11,8 @@ import { authenticationMiddleware } from "../middleware";
 
 const router = express.Router();
 
-// Get all orders list
-router.get("/", getAllOrdersController);
+// Get all orders list ***
+router.get("/:userId", getAllOrdersController);
 
 // Create a order
 router.post(

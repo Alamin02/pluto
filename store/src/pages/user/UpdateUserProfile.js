@@ -4,11 +4,10 @@ import { Form, Input, Button, Select } from "antd";
 
 import styles from "./UpdateUserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
-import userInfo from "../../components/user-profile/userInfo";
 import shippingAddressList from "../../components/user-profile/shippingAddressList";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
-import ResetPasswordForm from "../../components/reset-password/ResetPasswordForm"
+import ResetPasswordForm from "../../components/reset-password/ResetPasswordForm";
 
 const { Option } = Select;
 
@@ -61,8 +60,6 @@ function UpdateUserProfile() {
   const onFinish = (values) => {
     console.log(values);
   };
-
-
 
   return (
     <MainContainer>
@@ -168,7 +165,7 @@ function UpdateUserProfile() {
           <Form.Item className={styles.buttonSection}>
             <Button type="primary" htmlType="submit">
               Update profile
-                </Button>
+            </Button>
           </Form.Item>
         </Form>
       </div>
@@ -176,12 +173,10 @@ function UpdateUserProfile() {
       {/* reset password section */}
       <ResetPasswordForm />
     </MainContainer>
-
   );
 }
 
 export default UpdateUserProfile;
-
 
 //.............................//
 // const [userImage, setUserImage] = useState([]);
@@ -208,33 +203,33 @@ export default UpdateUserProfile;
 //   return dataOfImage;
 // };
 
-{/* image
-                  <Form.Item
-                    {...tailLayout}
-                    label="Photo"
-                    name="userImage"
-                    rules={[
-                      {
-                        required: false,
-                        message: "Please select photo!",
-                      },
-                    ]}
-                    valuePropName="dataOfImage"
-                    getValueFromEvent={normFile}
-                  >
-                    <Upload
-                      name="files"
-                      beforeUpload={(file, fileList) => {
-                        setUserImage(fileList);
-                        return false;
-                      }}
-                      listType="picture"
-                      maxCount={1}
-                    >
-                      <Button icon={<UploadOutlined />}>
-                        Select file (Max: 1)
-                      </Button>
-                    </Upload>
-                  </Form.Item> */}
+// {/* image
+//                   <Form.Item
+//                     {...tailLayout}
+//                     label="Photo"
+//                     name="userImage"
+//                     rules={[
+//                       {
+//                         required: false,
+//                         message: "Please select photo!",
+//                       },
+//                     ]}
+//                     valuePropName="dataOfImage"
+//                     getValueFromEvent={normFile}
+//                   >
+//                     <Upload
+//                       name="files"
+//                       beforeUpload={(file, fileList) => {
+//                         setUserImage(fileList);
+//                         return false;
+//                       }}
+//                       listType="picture"
+//                       maxCount={1}
+//                     >
+//                       <Button icon={<UploadOutlined />}>
+//                         Select file (Max: 1)
+//                       </Button>
+//                     </Upload>
+//                   </Form.Item> */}
 
 //.............................//

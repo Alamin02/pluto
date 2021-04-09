@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Grid, Menu, Form, Upload, Dropdown } from "antd";
-import { MailOutlined, PhoneOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Grid, Menu, Form, Upload, Dropdown, Tag, Table } from "antd";
+import { MailOutlined, PhoneOutlined, EditOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import styles from "./UserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
@@ -13,6 +13,31 @@ import Section from "../../components/styled-components/Section";
 
 const { useBreakpoint } = Grid;
 
+const columns = [
+  {
+    title: "Order status",
+    dataIndex: "status",
+    key: "status",
+  },
+  {
+    title: "Payment Method",
+    dataIndex: "paymentMethod",
+    key: "paymentMethod",
+  },
+  {
+    title: "Products",
+    key: "orderedProducts",
+    dataIndex: "orderedProducts",
+    render: (orderedProducts) => (
+      <>
+        {orderedProducts.map((product) => {
+          return <Tag color={"geekblue"}>{product.product.name}</Tag>;
+        })}
+      </>
+    ),
+  },
+];
+
 function UserProfile() {
   const [form] = Form.useForm();
   const screens = useBreakpoint();
@@ -20,7 +45,8 @@ function UserProfile() {
   const [userData, setUserData] = useState([]);
   const [userImage, setUserImage] = useState([]);
   const [userId, setUserId] = useState(null);
-  const [sourceOfImage, setSourceOfImage] = useState([])
+  const [sourceOfImage, setSourceOfImage] = useState([]);
+  const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
     if (token)
@@ -28,7 +54,7 @@ function UserProfile() {
         .getMe(token)
         .then((res) => res.json())
         .then(({ data, error }) => {
-          setUserId(data.id)
+          setUserId(data.id);
           if (data.id) {
             agent
               .getSingleUser(data.id)
@@ -40,8 +66,18 @@ function UserProfile() {
             localStorage.removeItem("token");
           }
         });
-
   }, [token]);
+
+  useEffect(() => {
+    if (token)
+      agent
+        .getUserOrder(userId)
+        .then((res) => res.json())
+        .then(({ data }) => setUserOrders(data.orders))
+        .catch((error) => {
+          console.log("Error while fetching user order(s)", error);
+        });
+  }, [token, userId]);
 
   const layout = {
     labelCol: {
@@ -76,9 +112,9 @@ function UserProfile() {
         .then((res) => res.json())
         .then(({ data }) => {
           dataOfImage.imagePath = data[0].path;
-          setSourceOfImage([data[0].path])
+          setSourceOfImage([data[0].path]);
         });
-    }
+    };
     return (
       <Menu>
         <Menu.Item>
@@ -111,16 +147,14 @@ function UserProfile() {
                 maxCount={1}
                 showUploadList={false}
               >
-                <Button>
-                  Upload a Photo
-                </Button>
+                <Button>Upload a Photo</Button>
               </Upload>
             </Form.Item>
           </Form>
         </Menu.Item>
       </Menu>
-    )
-  }
+    );
+  };
 
   return (
     <MainContainer>
@@ -134,9 +168,8 @@ function UserProfile() {
               { [styles.basicInfoXs]: screens.xs }
             )}
           >
-
-            {(sourceOfImage.length == 1) ?
-              (<div className={styles.imageBox} key={1}>
+            {sourceOfImage.length === 1 ? (
+              <div className={styles.imageBox} key={1}>
                 <img
                   src={sourceOfImage[0]}
                   className={classNames(
@@ -145,30 +178,29 @@ function UserProfile() {
                   )}
                   alt="user_photo"
                 />
-                <div className={styles.editBox} >
-                  <Dropdown overlay={editButtonClick} placement="bottomRight">
+                <div className={styles.editBox}>
+                  <Dropdown overlay={editButtonClick} placement="bottomLeft">
                     <EditOutlined />
                   </Dropdown>
                 </div>
               </div>
-              )
-              : (
-                <div className={styles.imageBox} key={2}>
-                  <img
-                    src={userInfo.photo}
-                    className={classNames(
-                      { [styles.userAvatar]: screens },
-                      { [styles.userAvatarXs]: screens.xs }
-                    )}
-                    alt="user_photo"
-                  />
-                  <div className={styles.editBox} >
-                    <Dropdown overlay={editButtonClick} placement="bottomRight">
-                      <EditOutlined />
-                    </Dropdown>
-                  </div>
+            ) : (
+              <div className={styles.imageBox} key={2}>
+                <img
+                  src={userInfo.photo}
+                  className={classNames(
+                    { [styles.userAvatar]: screens },
+                    { [styles.userAvatarXs]: screens.xs }
+                  )}
+                  alt="user_photo"
+                />
+                <div className={styles.editBox}>
+                  <Dropdown overlay={editButtonClick} placement="bottomLeft">
+                    <EditOutlined />
+                  </Dropdown>
                 </div>
-              )}
+              </div>
+            )}
 
             {userData.length === 1 &&
               userData.map((data) => {
@@ -211,8 +243,12 @@ function UserProfile() {
 
         <section className={styles.emptySpace}></section>
 
-        <Section heading="Shipping address">
-          <div>Your Product is set to ship to {userInfo.address}</div>
+        <Section heading="Your orders">
+          {userOrders.length === 0 ? (
+            <div>You currently have no orders</div>
+          ) : (
+            <Table columns={columns} dataSource={userOrders} />
+          )}
         </Section>
 
         <section className={styles.buttonSection}>

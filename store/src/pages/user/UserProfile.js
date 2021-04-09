@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Grid } from "antd";
-import { MailOutlined, PhoneOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Grid, Menu, Form, Upload, Dropdown } from "antd";
+import { MailOutlined, PhoneOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import styles from "./UserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
@@ -14,10 +14,13 @@ import Section from "../../components/styled-components/Section";
 const { useBreakpoint } = Grid;
 
 function UserProfile() {
+  const [form] = Form.useForm();
   const screens = useBreakpoint();
   const token = useSelector((state) => state.auth.tokenValue);
-
   const [userData, setUserData] = useState([]);
+  const [userImage, setUserImage] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [sourceOfImage, setSourceOfImage] = useState([])
 
   useEffect(() => {
     if (token)
@@ -25,6 +28,7 @@ function UserProfile() {
         .getMe(token)
         .then((res) => res.json())
         .then(({ data, error }) => {
+          setUserId(data.id)
           if (data.id) {
             agent
               .getSingleUser(data.id)
@@ -36,7 +40,87 @@ function UserProfile() {
             localStorage.removeItem("token");
           }
         });
+
   }, [token]);
+
+  const layout = {
+    labelCol: {
+      span: 3,
+    },
+    wrapperCol: {
+      span: 2,
+    },
+  };
+
+  const tailLayout = {
+    labelCol: { span: 3 },
+    wrapperCol: {
+      span: 8,
+      offset: 1,
+    },
+  };
+
+  const editButtonClick = () => {
+    const normFile = (e) => {
+      const dataOfImage = {};
+      console.log("Upload event:", e);
+      const formData = new FormData();
+      userImage.forEach((userImage) => {
+        formData.append("userImage", userImage);
+      });
+
+      formData.append("userId", userId);
+
+      agent
+        .createUserImage(formData)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          dataOfImage.imagePath = data[0].path;
+          setSourceOfImage([data[0].path])
+        });
+    }
+    return (
+      <Menu>
+        <Menu.Item>
+          <Form
+            {...layout}
+            form={form}
+            initialValues={{
+              remember: true,
+            }}
+          >
+            <Form.Item
+              {...tailLayout}
+              name="userImage"
+              rules={[
+                {
+                  required: false,
+                  message: "Please select photo!",
+                },
+              ]}
+              valuePropName="dataOfImage"
+              getValueFromEvent={normFile}
+            >
+              <Upload
+                name="files"
+                beforeUpload={(file, fileList) => {
+                  setUserImage(fileList);
+                  return false;
+                }}
+                listType="picture"
+                maxCount={1}
+                showUploadList={false}
+              >
+                <Button>
+                  Upload a Photo
+                </Button>
+              </Upload>
+            </Form.Item>
+          </Form>
+        </Menu.Item>
+      </Menu>
+    )
+  }
 
   return (
     <MainContainer>
@@ -50,19 +134,41 @@ function UserProfile() {
               { [styles.basicInfoXs]: screens.xs }
             )}
           >
-            <div className={styles.imageBox}>
-              <img
-                src={userInfo.photo}
-                className={classNames(
-                  { [styles.userAvatar]: screens },
-                  { [styles.userAvatarXs]: screens.xs }
-                )}
-                alt="user_photo"
-              />
-              <div className={styles.editBox}>
-                <EditOutlined />
+
+            {(sourceOfImage.length == 1) ?
+              (<div className={styles.imageBox} key={1}>
+                <img
+                  src={sourceOfImage[0]}
+                  className={classNames(
+                    { [styles.userAvatar]: screens },
+                    { [styles.userAvatarXs]: screens.xs }
+                  )}
+                  alt="user_photo"
+                />
+                <div className={styles.editBox} >
+                  <Dropdown overlay={editButtonClick} placement="bottomRight">
+                    <EditOutlined />
+                  </Dropdown>
+                </div>
               </div>
-            </div>
+              )
+              : (
+                <div className={styles.imageBox} key={2}>
+                  <img
+                    src={userInfo.photo}
+                    className={classNames(
+                      { [styles.userAvatar]: screens },
+                      { [styles.userAvatarXs]: screens.xs }
+                    )}
+                    alt="user_photo"
+                  />
+                  <div className={styles.editBox} >
+                    <Dropdown overlay={editButtonClick} placement="bottomRight">
+                      <EditOutlined />
+                    </Dropdown>
+                  </div>
+                </div>
+              )}
 
             {userData.length === 1 &&
               userData.map((data) => {

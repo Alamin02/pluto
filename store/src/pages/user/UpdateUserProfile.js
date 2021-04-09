@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Form, Input, Button, Upload, Select } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Select } from "antd";
 
 import styles from "./UpdateUserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
@@ -9,6 +8,7 @@ import userInfo from "../../components/user-profile/userInfo";
 import shippingAddressList from "../../components/user-profile/shippingAddressList";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
+import ResetPasswordForm from "../../components/reset-password/ResetPasswordForm"
 
 const { Option } = Select;
 
@@ -19,10 +19,7 @@ function handleChange(value) {
 function UpdateUserProfile() {
   const [form] = Form.useForm();
   const token = useSelector((state) => state.auth.tokenValue);
-  const [userImage, setUserImage] = useState([]);
-  const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState([]);
-  const [imageData, setImageData] = useState([]);
 
   const layout = {
     labelCol: {
@@ -48,7 +45,7 @@ function UpdateUserProfile() {
         .then((res) => res.json())
         .then(({ data, error }) => {
           if (data.id) {
-            setUserId(data.id);
+            // setUserId(data.id);
             agent
               .getSingleUser(data.id)
               .then((res) => res.json())
@@ -61,36 +58,16 @@ function UpdateUserProfile() {
         });
   }, [token]);
 
-  const normFile = (e) => {
-    const dataOfImage = {};
-    console.log("Upload event:", e);
-    const formData = new FormData();
-    userImage.forEach((userImage) => {
-      formData.append("userImage", userImage);
-    });
-
-    formData.append("userId", userId);
-
-    agent
-      .createUserImage(formData)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        console.log(data[0].path);
-        dataOfImage.imagePath = data[0].path;
-      });
-
-    return dataOfImage;
-  };
-
   const onFinish = (values) => {
     console.log(values);
   };
+
+
 
   return (
     <MainContainer>
       <div className={styles.container}>
         <HeaderSection headerText="update my profile" />
-
         <Form
           {...layout}
           form={form}
@@ -152,56 +129,14 @@ function UpdateUserProfile() {
                   >
                     <Input />
                   </Form.Item>
-
-                  {/* image */}
-                  <Form.Item
-                    {...tailLayout}
-                    label="Photo"
-                    name="userImage"
-                    rules={[
-                      {
-                        required: false,
-                        message: "Please select photo!",
-                      },
-                    ]}
-                    valuePropName="dataOfImage"
-                    getValueFromEvent={normFile}
-                  >
-                    <Upload
-                      name="files"
-                      beforeUpload={(file, fileList) => {
-                        setUserImage(fileList);
-                        return false;
-                      }}
-                      listType="picture"
-                      maxCount={1}
-                    >
-                      <Button icon={<UploadOutlined />}>
-                        Select file (Max: 1)
-                      </Button>
-                    </Upload>
-                  </Form.Item>
-
-                  <Form.Item
-                    {...tailLayout}
-                    label="Password"
-                    name="password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your password!",
-                      },
-                    ]}
-                  >
-                    <Input.Password placeholder="Enter new password" />
-                  </Form.Item>
                 </section>
               );
             })}
           <section className={styles.emptySpace}></section>
 
-          {/* 2nd section start */}
-          <section className={styles.eachSection} key={userInfo.key}>
+          {/* address section */}
+
+          <section className={styles.eachSection}>
             <h2 className={styles.eachSectionTitle}>Update shipping address</h2>
             {/* address */}
             <Form.Item
@@ -228,17 +163,78 @@ function UpdateUserProfile() {
               </Select>
             </Form.Item>
           </section>
-          {/* 2nd section end */}
 
+          {/* submit button section */}
           <Form.Item className={styles.buttonSection}>
             <Button type="primary" htmlType="submit">
-              Save changes
-            </Button>
+              Update profile
+                </Button>
           </Form.Item>
         </Form>
       </div>
+
+      {/* reset password section */}
+      <ResetPasswordForm />
     </MainContainer>
+
   );
 }
 
 export default UpdateUserProfile;
+
+
+//.............................//
+// const [userImage, setUserImage] = useState([]);
+// const [userId, setUserId] = useState(null);
+
+// const normFile = (e) => {
+//   const dataOfImage = {};
+//   console.log("Upload event:", e);
+//   const formData = new FormData();
+//   userImage.forEach((userImage) => {
+//     formData.append("userImage", userImage);
+//   });
+
+//   formData.append("userId", userId);
+
+//   agent
+//     .createUserImage(formData)
+//     .then((res) => res.json())
+//     .then(({ data }) => {
+//       console.log(data[0].path);
+//       dataOfImage.imagePath = data[0].path;
+//     });
+
+//   return dataOfImage;
+// };
+
+{/* image
+                  <Form.Item
+                    {...tailLayout}
+                    label="Photo"
+                    name="userImage"
+                    rules={[
+                      {
+                        required: false,
+                        message: "Please select photo!",
+                      },
+                    ]}
+                    valuePropName="dataOfImage"
+                    getValueFromEvent={normFile}
+                  >
+                    <Upload
+                      name="files"
+                      beforeUpload={(file, fileList) => {
+                        setUserImage(fileList);
+                        return false;
+                      }}
+                      listType="picture"
+                      maxCount={1}
+                    >
+                      <Button icon={<UploadOutlined />}>
+                        Select file (Max: 1)
+                      </Button>
+                    </Upload>
+                  </Form.Item> */}
+
+//.............................//

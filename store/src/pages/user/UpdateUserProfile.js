@@ -7,7 +7,7 @@ import MainContainer from "../../components/layout/MainContainer";
 import shippingAddressList from "../../components/user-profile/shippingAddressList";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
-import ResetPasswordForm from "../../components/reset-password/ResetPasswordForm"
+import ResetPasswordForm from "../../components/reset-password/ResetPasswordForm";
 
 const { Option } = Select;
 
@@ -61,8 +61,6 @@ function UpdateUserProfile() {
   const onFinish = (values) => {
     console.log(values);
   };
-
-
 
   return (
     <MainContainer>
@@ -168,7 +166,7 @@ function UpdateUserProfile() {
           <Form.Item className={styles.buttonSection}>
             <Button type="primary" htmlType="submit">
               Update profile
-                </Button>
+            </Button>
           </Form.Item>
         </Form>
       </div>
@@ -176,7 +174,6 @@ function UpdateUserProfile() {
       {/* reset password section */}
       <ResetPasswordForm id={userId} />
     </MainContainer>
-
   );
 }
 

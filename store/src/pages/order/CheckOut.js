@@ -38,7 +38,7 @@ export default function CheckOut() {
   const [user, setUser] = useState("");
   const token = useSelector((state) => state.auth.tokenValue);
   const productList = useSelector((state) => state.cart.products);
-  const [userData, setUserData] = useState([]);
+  // const [userData, setUserData] = useState([]);
 
   // on form submit
   const onFinish = (values) => {
@@ -102,23 +102,23 @@ export default function CheckOut() {
     form.resetFields();
   }, [token, totalPrice, productList, form]);
 
-  useEffect(() => {
-    if (token)
-      agent
-        .getMe(token)
-        .then((res) => res.json())
-        .then(({ data, error }) => {
-          if (data.id) {
-            agent
-              .getSingleUser(data.id)
-              .then((res) => res.json())
-              .then(({ data }) => setUserData(data));
-          }
-          if (error) {
-            localStorage.removeItem("token");
-          }
-        });
-  }, [token]);
+  // useEffect(() => {
+  //   if (token)
+  //     agent
+  //       .getMe(token)
+  //       .then((res) => res.json())
+  //       .then(({ data, error }) => {
+  //         if (data.id) {
+  //           agent
+  //             .getSingleUser(data.id)
+  //             .then((res) => res.json())
+  //             .then(({ data }) => setUserData(data));
+  //         }
+  //         if (error) {
+  //           localStorage.removeItem("token");
+  //         }
+  //       });
+  // }, [token]);
 
   if (!productList.length) {
     return (

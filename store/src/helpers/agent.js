@@ -71,4 +71,13 @@ export const agent = {
       body: data,
     });
   },
+
+  getUserOrder: (userId) => {
+    return fetch(`${baseUrl}/orders/${userId}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

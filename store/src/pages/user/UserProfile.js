@@ -133,8 +133,8 @@ function UserProfile() {
             }}
           >
             <Form.Item
-              {...tailLayout}
               name="userImage"
+              style={{ marginBottom: "0" }}
               rules={[
                 {
                   required: false,
@@ -154,7 +154,7 @@ function UserProfile() {
                 maxCount={1}
                 showUploadList={false}
               >
-                <Button>Upload a Photo</Button>
+                <Button type="primary">Upload a Photo</Button>
               </Upload>
             </Form.Item>
           </Form>

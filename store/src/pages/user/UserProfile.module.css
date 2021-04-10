@@ -21,12 +21,15 @@
 
 .userAvatar {
   width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
 }
 .userAvatarXs {
   width: 9rem;
   margin-bottom: 1.7rem;
   margin-top: 0.5rem;
   align-self: center;
+  border-radius: 50%;
 }
 
 .basicInfoText {
@@ -78,6 +81,25 @@
   padding-bottom: 4px !important;
   margin-left: 8px !important;
   cursor: pointer;
+}
+
+.buttonStyle {
+  border: none;
+  background: #eae5e5;
+}
+.buttonStyle:hover {
+  color: black !important;
+  background: #eae5e5;
+}
+.menuStyle {
+  width: 180px;
+  height: 45px;
+  background-color: #eae5e5 !important;
+}
+.menuItemStyle {
+  width: 180px;
+  height: 45px;
+  background-color: #eae5e5 !important;
 }
 
 @media screen and (max-width: 576px) {

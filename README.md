@@ -101,7 +101,7 @@ To log in to the admin panel run the following command to generate admin credent
 
 ```sh
 # Create admin account from command line
-yarn create:admin --email=test_email@email.com password=test_password
+yarn create:admin --email=test_email@email.com --password=test_password
 ```
 
 Replace `test_email@email.com` and `test_password` with your preferred email and password. Use these credentials to log in to the `admin` panel.

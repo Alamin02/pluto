@@ -15,6 +15,7 @@ const { Option } = Select;
 export default function Products() {
   const history = useHistory();
   const query = qs.parse(window.location.search);
+  // console.log("query",query.pageSize);
 
   const [productsData, setProductsData] = useState([]);
   const [totalProductsInfo, setTotalProductsInfo] = useState("");
@@ -23,6 +24,8 @@ export default function Products() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("createdAt");
 
+  // console.log("currentPage",currentPage);
+  // console.log("perPage",perPage);
   function fetchProducts() {
     const queryString = qs.stringify({
       page: currentPage,

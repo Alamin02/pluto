@@ -54,7 +54,7 @@ export default function CheckOut() {
     const order = {
       ...values,
       user: {
-        id: values.user,
+        id: user.id,
       },
       orderedProducts: newOrderedProducts,
     };

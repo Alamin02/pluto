@@ -1,7 +1,6 @@
-
-import { Form, Input, Button } from "antd";
-
+import { Form, Input, Button, message } from "antd";
 import styles from "./ResetPasswordForm.module.css";
+import { agent } from "../../helpers/agent"
 
 const ResetPasswordForm = ({ id }) => {
 
@@ -23,13 +22,23 @@ const ResetPasswordForm = ({ id }) => {
   };
 
   const onFinishForPassword = (values) => {
+    console.log(id)
     console.log("password: ", values)
-
+    agent
+      .updateUserPassword(values, id)
+      .then((res) => res.json())
+      .then(({ info }) => {
+        if (info) {
+          message.success(" Password Update successfully");
+          form.resetFields();
+        } else {
+          message.error(" The password you enter doesn't match with the older one");
+          form.resetFields();
+        }
+      })
   }
 
   return (
-
-
     <Form
       name="reset-password"
       {...layout}
@@ -61,7 +70,7 @@ const ResetPasswordForm = ({ id }) => {
         {/* New Password */}
         <Form.Item
           {...tailLayout}
-          name="new password"
+          name="newPassword"
           label="New Password"
           rules={[
             {
@@ -81,7 +90,7 @@ const ResetPasswordForm = ({ id }) => {
           {...tailLayout}
           name="confrim password"
           label="Confirm Password"
-          dependencies={["new password"]}
+          dependencies={["newPassword"]}
           hasFeedback
           rules={[
             {
@@ -90,7 +99,7 @@ const ResetPasswordForm = ({ id }) => {
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue("new password") === value) {
+                if (!value || getFieldValue("newPassword") === value) {
                   return Promise.resolve();
                 }
 

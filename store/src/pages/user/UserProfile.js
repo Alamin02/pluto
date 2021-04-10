@@ -31,7 +31,14 @@ const columns = [
     render: (orderedProducts) => (
       <>
         {orderedProducts.map((product) => {
-          return <Tag color={"geekblue"}>{product.product.name}</Tag>;
+          return (
+            <div>
+              <Tag icon={product.quantity} color={"geekblue"}>
+                &nbsp;&nbsp;×&nbsp;&nbsp;
+                {product.product.name}
+              </Tag>
+            </div>
+          );
         })}
       </>
     ),
@@ -241,6 +248,12 @@ function UserProfile() {
           </div>
         </Section>
 
+        <section className={styles.buttonSection}>
+          <Link to="/profile/edit">
+            <Button type="primary">Update Profile</Button>
+          </Link>
+        </section>
+
         <section className={styles.emptySpace}></section>
 
         <Section heading="Your orders">
@@ -250,13 +263,9 @@ function UserProfile() {
             <Table columns={columns} dataSource={userOrders} />
           )}
         </Section>
-
-        <section className={styles.buttonSection}>
-          <Link to="/profile/edit">
-            <Button type="primary">Update Profile</Button>
-          </Link>
-        </section>
       </div>
+
+      <br />
     </MainContainer>
   );
 }

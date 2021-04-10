@@ -38,7 +38,6 @@ export default function CheckOut() {
   const [user, setUser] = useState("");
   const token = useSelector((state) => state.auth.tokenValue);
   const productList = useSelector((state) => state.cart.products);
-  // const [userData, setUserData] = useState([]);
 
   // on form submit
   const onFinish = (values) => {
@@ -63,14 +62,13 @@ export default function CheckOut() {
     agent
       .createOrder(order, token)
       .then((res) => res.json())
-      .then(() => form.validateFields())
       .then(() =>
         Modal.success({
           visible: true,
           title: "Success",
           icon: <ExclamationCircleOutlined />,
           content: "Your order has been placed.",
-          okText: "Go to cart",
+          okText: "See your orders",
           cancelText: "Cancel",
           onOk() {
             history.push("/profile");
@@ -101,24 +99,6 @@ export default function CheckOut() {
         });
     form.resetFields();
   }, [token, totalPrice, productList, form]);
-
-  // useEffect(() => {
-  //   if (token)
-  //     agent
-  //       .getMe(token)
-  //       .then((res) => res.json())
-  //       .then(({ data, error }) => {
-  //         if (data.id) {
-  //           agent
-  //             .getSingleUser(data.id)
-  //             .then((res) => res.json())
-  //             .then(({ data }) => setUserData(data));
-  //         }
-  //         if (error) {
-  //           localStorage.removeItem("token");
-  //         }
-  //       });
-  // }, [token]);
 
   if (!productList.length) {
     return (
@@ -184,35 +164,6 @@ export default function CheckOut() {
         >
           <Input readOnly />
         </Form.Item>
-
-        {/* shipping info */}
-        {/* <Section heading="Shipping info">
-          <Form.Item
-            {...tailLayout}
-            name="shippingAddress"
-            label="Shipping address"
-            rules={[
-              {
-                required: true,
-                message: "You must choose a shipping address!",
-              },
-            ]}
-          >
-            <Select
-              placeholder="Select shipping info"
-              allowClear
-              style={{ width: 300 }}
-            >
-              {userData.addresses &&
-                userData.addresses.map((address) => {
-                  return (
-                    <Option value={address.address}>{address.address}</Option>
-                  );
-                })}
-            </Select>
-          </Form.Item>
-        </Section>
-        <div className={styles.emptySpace}></div> */}
 
         {/* payment method */}
         <Section heading="payment info">

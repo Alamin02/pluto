@@ -68,8 +68,8 @@ function Navbar() {
     <Menu>
       <Menu.Item>
         <Link to="/profile">
-          <div style={{ textTransform: "capitalize" }}>{user.name}</div>
-          <div style={{ color: "gray" }}>{user.email}</div>
+          <div style={{ textTransform: "capitalize" }}>{user && user.name}</div>
+          <div style={{ color: "gray" }}>{user && user.email}</div>
         </Link>
       </Menu.Item>
       <Menu.Divider />

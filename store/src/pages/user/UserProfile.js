@@ -31,7 +31,14 @@ const columns = [
     render: (orderedProducts) => (
       <>
         {orderedProducts.map((product) => {
-          return <Tag color={"geekblue"}>{product.product.name}</Tag>;
+          return (
+            <div>
+              <Tag icon={product.quantity} color={"geekblue"}>
+                &nbsp;&nbsp;×&nbsp;&nbsp;
+                {product.product.name}
+              </Tag>
+            </div>
+          );
         })}
       </>
     ),
@@ -126,8 +133,8 @@ function UserProfile() {
             }}
           >
             <Form.Item
-              {...tailLayout}
               name="userImage"
+              style={{ marginBottom: "0" }}
               rules={[
                 {
                   required: false,
@@ -147,7 +154,7 @@ function UserProfile() {
                 maxCount={1}
                 showUploadList={false}
               >
-                <Button>Upload a Photo</Button>
+                <Button type="primary">Upload a Photo</Button>
               </Upload>
             </Form.Item>
           </Form>
@@ -241,6 +248,12 @@ function UserProfile() {
           </div>
         </Section>
 
+        <section className={styles.buttonSection}>
+          <Link to="/profile/edit">
+            <Button type="primary">Update Profile</Button>
+          </Link>
+        </section>
+
         <section className={styles.emptySpace}></section>
 
         <Section heading="Your orders">
@@ -250,13 +263,9 @@ function UserProfile() {
             <Table columns={columns} dataSource={userOrders} />
           )}
         </Section>
-
-        <section className={styles.buttonSection}>
-          <Link to="/profile/edit">
-            <Button type="primary">Update Profile</Button>
-          </Link>
-        </section>
       </div>
+
+      <br />
     </MainContainer>
   );
 }

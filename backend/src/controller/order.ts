@@ -41,9 +41,12 @@ export async function createOrder(req: express.Request, res: express.Response) {
     newOrder.status = "order placed";
     newOrder.paymentMethod = paymentMethod;
 
-    const order = await orderRepository.save(newOrder);
+    await orderRepository.save(newOrder);
   } catch (err) {
-    res.json({ errors: "Order could not be added" });
+    return res.status(400).json({
+      msg: "Order could not be added",
+      error: err,
+    });
   }
 
   res.json({ msg: "Order created" });

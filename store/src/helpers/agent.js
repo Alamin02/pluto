@@ -58,8 +58,8 @@ export const agent = {
     return fetch(`${baseUrl}/orders`, {
       method: "post",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(orderData),
     });

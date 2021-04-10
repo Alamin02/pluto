@@ -95,13 +95,6 @@ function UserProfile() {
     },
   };
 
-  const tailLayout = {
-    labelCol: { span: 3 },
-    wrapperCol: {
-      span: 8,
-      offset: 1,
-    },
-  };
 
   const editButtonClick = () => {
     const normFile = (e) => {

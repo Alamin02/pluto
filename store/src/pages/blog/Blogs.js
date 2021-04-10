@@ -53,19 +53,19 @@ export default function Blogs() {
           <BreadCrumb /> */}
           
           <Pagination
-          style={{ display: "flex", justifyContent: "center", margin: "50px" }}
-          showQuickJumper
-          defaultCurrent={1}
-          showSizeChanger={false}
-          current={currentPage}
-          onChange={onChange}
-          defaultPageSize={blogsData.perPage || 10}
-          pageSize={perPage || 10}
-          total={blogsData.blogCount}
-          showTotal={(total, range) =>
-            `${range[0]} to ${range[1]} of ${total} Products`
-          }
-        />
+            style={{ display: "flex", justifyContent: "center", margin: "50px" }}
+            showQuickJumper
+            defaultCurrent={1}
+            showSizeChanger={false}
+            current={currentPage}
+            onChange={onChange}
+            defaultPageSize={blogsData.perPage || 10}
+            pageSize={perPage || 10}
+            total={blogsData.blogCount}
+            showTotal={(total, range) =>
+              `${range[0]} to ${range[1]} of ${total} blogs`
+            }
+          />
         </div>
       </MainContainer>
     </>

@@ -8,6 +8,7 @@ export {
   getUser as getUserController,
   updateUser as updateUserController,
   deleteUser as deleteUserController,
+  updateUserPassword as updateUserPasswordController,
 } from "./user";
 
 export {

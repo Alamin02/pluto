@@ -5,8 +5,9 @@ import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 require("dotenv").config();
-
 import { User } from "../entity";
+
+const saltRounds = 10;
 
 // @GET - /api/v1/users/
 // Get all users
@@ -89,6 +90,38 @@ export async function deleteUser(req: express.Request, res: express.Response) {
         { msg: "User could not be deleted or invalid url parameter(userId)" },
       ],
     });
+  }
+}
+
+// update user password
+export async function updateUserPassword(
+  req: express.Request,
+  res: express.Response
+) {
+  const userId = req.params.userId;
+  const { password, newPassword } = req.body;
+  const hashPassword = await bcrypt.hash(newPassword, saltRounds);
+  const userRepository = getConnection().getRepository(User);
+  const currentUser = await userRepository.findOne({ id: userId });
+  if (currentUser) {
+    const isPasswordMatch = bcrypt.compareSync(password, currentUser.password);
+    if (isPasswordMatch) {
+      try {
+        const newUser = new User();
+        newUser.password = hashPassword;
+        await userRepository.update(userId, newUser);
+        return res.json({ info: "successfully updated" });
+      } catch (e) {
+        return res.json({
+          errors: [
+            { msg: "The password you enter doesn't match with the older one" },
+          ],
+        });
+      }
+    }
+    return res.json({ error: "password does not match" });
+  } else {
+    return res.status(400).json({ errors: "User does not exist" });
   }
 }
 

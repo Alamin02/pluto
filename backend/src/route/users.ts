@@ -10,6 +10,7 @@ import {
   getUserController,
   updateUserController,
   deleteUserController,
+  updateUserPasswordController,
 } from "../controller";
 
 const router = express.Router();
@@ -44,6 +45,9 @@ router.get("/me", authenticationMiddleware, (req, res) => {
 
 // @GET - /api/v1/user/
 router.get("/:userId", getUserController);
+
+// @PUT - /api/v1/users/
+router.put("/:userId", updateUserPasswordController);
 
 // @PUT - /api/v1/users/:userId
 router.put(

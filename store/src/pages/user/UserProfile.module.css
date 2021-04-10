@@ -83,25 +83,6 @@
   cursor: pointer;
 }
 
-.buttonStyle {
-  border: none;
-  background: #eae5e5;
-}
-.buttonStyle:hover {
-  color: black !important;
-  background: #eae5e5;
-}
-.menuStyle {
-  width: 180px;
-  height: 45px;
-  background-color: #eae5e5 !important;
-}
-.menuItemStyle {
-  width: 180px;
-  height: 45px;
-  background-color: #eae5e5 !important;
-}
-
 @media screen and (max-width: 576px) {
   .imageBox {
     width: 100%;

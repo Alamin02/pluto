@@ -88,5 +88,15 @@ export const agent = {
       },
       body: JSON.stringify(data),
     })
+  },
+  updateUserInfo: (data, userId, token) => {
+    return fetch(`${baseUrl}/users/update/${userId}`, {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data)
+    })
   }
 };

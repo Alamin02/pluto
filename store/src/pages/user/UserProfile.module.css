@@ -73,8 +73,8 @@
   color: #f0f6fc;
   background-color: #161b22;
   position: absolute !important;
-  top: 95px !important;
-  left: 10 !important;
+  top: 77% !important;
+  left: 2% !important;
   padding-right: 8px !important;
   padding-left: 8px !important;
   padding-top: 4px !important;
@@ -87,5 +87,9 @@
   .imageBox {
     width: 100%;
     text-align: center;
+  }
+  .editBox {
+    top: 66% !important;
+    left: 30% !important;
   }
 }

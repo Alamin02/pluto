@@ -5,8 +5,9 @@ import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 require("dotenv").config();
-import { User } from "../entity";
+import { Address, User } from "../entity";
 
+const secret = process.env.JWT_SECRET || "";
 const saltRounds = 10;
 
 // @GET - /api/v1/users/
@@ -44,26 +45,47 @@ export async function getUser(req: express.Request, res: express.Response) {
 // update an user
 export async function updateUser(req: express.Request, res: express.Response) {
   const userId = req.params.userId;
-  const { name, email, phone, role } = req.body;
+  const { name, email, phone, address } = req.body;
+  console.log(!address);
 
   const userRepository = getConnection().getRepository(User);
+  const userAddressRepository = getConnection().getRepository(Address);
   const userToUpdate = await userRepository.findOne({ id: userId });
   if (userToUpdate) {
     try {
+      const newAddress: any = [];
       const newUser = new User();
       newUser.name = name;
       newUser.email = email;
       newUser.phone = phone;
-      newUser.role = role;
-      await userRepository.update(userId, newUser);
-      res.status(200).json({ success: [{ msg: "User info updated" }] });
+      if (address) {
+        const userAddress = new Address();
+        userAddress.division = address;
+        userAddress.district = address;
+        userAddress.city = address;
+        userAddress.user = userToUpdate;
+        const saveUserAddress = await userAddressRepository.save(userAddress);
+        newAddress.push(saveUserAddress);
+        newUser.addresses = newAddress;
+        await userRepository.update(userId, newUser);
+        return res
+          .status(200)
+          .json({ success: [{ msg: "User info updated" }], data: newUser });
+      } else {
+        await userRepository.update(userId, newUser);
+        const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
+        return res
+          .status(200)
+          .json({ msg: "Address not found", data: newUser, token: token });
+      }
     } catch (e) {
-      res
+      console.log(e);
+      return res
         .status(400)
         .json({ errors: [{ msg: "User info could not be updated" }] });
     }
   } else {
-    res.status(400).json({
+    return res.status(400).json({
       errors: [{ msg: "User not found or invalid url parameter(userId)" }],
     });
   }

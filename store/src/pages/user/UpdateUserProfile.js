@@ -1,6 +1,8 @@
+import { useHistory } from "react-router-dom"
+import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select, message } from "antd";
 
 import styles from "./UpdateUserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
@@ -16,6 +18,8 @@ function handleChange(value) {
 }
 
 function UpdateUserProfile() {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const token = useSelector((state) => state.auth.tokenValue);
   const [userData, setUserData] = useState([]);
@@ -60,6 +64,17 @@ function UpdateUserProfile() {
 
   const onFinish = (values) => {
     console.log(values);
+    agent
+      .updateUserInfo(values, userId, token)
+      .then(res => res.json())
+      .then(({ token }) => {
+        if (token) {
+          localStorage.setItem("token", token);
+          dispatch({ type: "auth/login", payload: token });
+          message.success("user update successfully");
+          history.push("/profile")
+        }
+      })
   };
 
   return (

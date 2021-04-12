@@ -36,6 +36,17 @@ router.post(
   userRegistrationController
 );
 
+// @PUT - /api/v1/users/:userId
+router.put(
+  "/update/:userId",
+  [
+    body("name").not().isEmpty().withMessage("Name must not be empty"),
+    body("email").isEmail().withMessage("Invalid Email address"),
+  ],
+  authenticationMiddleware,
+  updateUserController
+);
+
 // @GET - /api/v1/users/
 router.get("/", getUsersController);
 
@@ -48,17 +59,6 @@ router.get("/:userId", getUserController);
 
 // @PUT - /api/v1/users/
 router.put("/:userId", updateUserPasswordController);
-
-// @PUT - /api/v1/users/:userId
-router.put(
-  "/:userId",
-  [
-    body("name").not().isEmpty().withMessage("Name must not be empty"),
-    body("email").isEmail().withMessage("Invalid Email address"),
-  ],
-  authenticationMiddleware,
-  updateUserController
-);
 
 // @DELETE - /api/v1/users/:userId
 router.delete("/:userId", authenticationMiddleware, deleteUserController);

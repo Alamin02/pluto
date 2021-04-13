@@ -72,10 +72,11 @@ export const agent = {
     });
   },
 
-  getUserOrder: (userId) => {
-    return fetch(`${baseUrl}/orders/${userId}`, {
+  getUserOrder: (token) => {
+    return fetch(`${baseUrl}/orders`, {
       method: "get",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
@@ -87,7 +88,7 @@ export const agent = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
+    });
   },
   updateUserInfo: (data, userId, token) => {
     return fetch(`${baseUrl}/users/update/${userId}`, {
@@ -96,7 +97,7 @@ export const agent = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data)
-    })
-  }
+      body: JSON.stringify(data),
+    });
+  },
 };

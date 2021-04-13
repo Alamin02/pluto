@@ -78,7 +78,7 @@ function UserProfile() {
   useEffect(() => {
     if (token)
       agent
-        .getUserOrder(userId)
+        .getUserOrder(token)
         .then((res) => res.json())
         .then(({ data }) => setUserOrders(data.orders))
         .catch((error) => {
@@ -94,7 +94,6 @@ function UserProfile() {
       span: 2,
     },
   };
-
 
   const editButtonClick = () => {
     const normFile = (e) => {

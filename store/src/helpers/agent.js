@@ -100,4 +100,25 @@ export const agent = {
       body: JSON.stringify(data),
     });
   },
+
+  createAddress: (addressData, token) => {
+    return fetch(`${baseUrl}/addresses`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(addressData),
+    });
+  },
+
+  getUserAddress: (token) => {
+    return fetch(`${baseUrl}/addresses`, {
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

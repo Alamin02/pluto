@@ -76,8 +76,6 @@ export async function getAllOrders(
     skip: (page - 1) * perPage,
   });
 
-  console.log("order - backend", res.locals.user);
-
   res.json({
     data: {
       orders,

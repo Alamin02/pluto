@@ -252,7 +252,11 @@ function UserProfile() {
           {userOrders.length === 0 ? (
             <div>You currently have no orders</div>
           ) : (
-            <Table columns={columns} dataSource={userOrders} />
+            <Table
+              columns={columns}
+              dataSource={userOrders}
+              pagination={false}
+            />
           )}
         </Section>
       </div>

@@ -14,6 +14,11 @@ export async function getAllAddresses(
   const addresses = await addressRepository.find({
     select: ["id", "division", "city", "district", "address"],
     relations: ["user"],
+    where: {
+      user: {
+        id: res.locals.user.id,
+      },
+    },
   });
 
   res.json({ data: addresses });

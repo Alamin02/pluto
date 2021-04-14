@@ -13,7 +13,7 @@ import {
 const router = express.Router();
 
 // Get all addresses list
-router.get("/", getAllAddressesController);
+router.get("/", authenticationMiddleware, getAllAddressesController);
 
 // Create address
 router.post(
@@ -38,7 +38,7 @@ router.post(
 );
 
 // Get a particular address
-router.get("/:addressId", getAddressController);
+router.get("/:addressId", authenticationMiddleware, getAddressController);
 
 // Update address
 router.put(

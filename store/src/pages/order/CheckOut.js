@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Select, Modal } from "antd";
+import { Form, Input, Button, Select, Modal, Radio } from "antd";
 import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 import MainContainer from "../../components/layout/MainContainer";
 import HeaderSection from "../../components/styled-components/HeaderSection";
@@ -10,6 +10,7 @@ import styles from "./CheckOut.module.css";
 import Section from "../../components/styled-components/Section";
 import { agent } from "../../helpers/agent";
 import OrderedProducts from "../../components/check-out/OrderedProducts";
+import CreateNewAddressModal from "../../components/address/CreateNewAddressModal";
 
 const { Option } = Select;
 
@@ -34,13 +35,31 @@ export default function CheckOut() {
   const history = useHistory();
   const [form] = Form.useForm();
 
-  const [totalPrice, setTotalPrice] = useState(0);
   const [user, setUser] = useState("");
   const token = useSelector((state) => state.auth.tokenValue);
   const productList = useSelector((state) => state.cart.products);
+  const [visibleCreateModal, setVisibleCreateModal] = useState(false);
+  const [userAddress, setUserAddress] = useState([]);
+
+  const fetchAddresses = (token) => {
+    agent
+      .getUserAddress(token)
+      .then((res) => res.json())
+      .then(({ data }) => setUserAddress(data));
+  };
+
+  useEffect(() => {
+    fetchAddresses(token);
+  }, [token]);
+
+  const onCreateAddress = () => {
+    setVisibleCreateModal(false);
+    fetchAddresses(token);
+  };
 
   // on form submit
   const onFinish = (values) => {
+    console.log("values", values);
     const newOrderedProducts = [];
     for (const orderedProduct of productList) {
       newOrderedProducts.push({
@@ -57,6 +76,9 @@ export default function CheckOut() {
         id: user.id,
       },
       orderedProducts: newOrderedProducts,
+      address: {
+        id: userAddress.id,
+      },
     };
 
     agent
@@ -81,12 +103,6 @@ export default function CheckOut() {
   };
 
   useEffect(() => {
-    let price = 0;
-    productList.forEach((product) => {
-      price += product.price * product.quantity;
-    });
-    setTotalPrice(price);
-
     if (token)
       agent
         .getMe(token)
@@ -99,8 +115,6 @@ export default function CheckOut() {
         });
     form.resetFields();
   }, [token, form, productList]);
-
-  console.log("userData", user);
 
   if (!productList.length) {
     return (
@@ -168,6 +182,59 @@ export default function CheckOut() {
         </Form.Item>
 
         {/* payment method */}
+        <Section heading="shipping info">
+          <Form.Item
+            {...tailLayout}
+            name="shippingAddress"
+            label="Address"
+            rules={[
+              {
+                required: true,
+                message: "You must choose a shipping address!",
+              },
+            ]}
+          >
+            {userAddress.length === 0 ? (
+              <div className={styles.emptyAddress}>
+                You currently have no shipping addresses.
+              </div>
+            ) : (
+              <Radio.Group>
+                {userAddress.map((address) => (
+                  <Radio
+                    style={{ marginBottom: "0.5rem" }}
+                    value={address.address}
+                  >
+                    {address.address}
+                  </Radio>
+                ))}
+              </Radio.Group>
+            )}
+          </Form.Item>
+
+          <Button
+            type="primary"
+            style={{ textTransform: "capitalize" }}
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setVisibleCreateModal(true);
+            }}
+          >
+            add new address
+          </Button>
+
+          <CreateNewAddressModal
+            visible={visibleCreateModal}
+            onCreate={onCreateAddress}
+            onCancel={() => {
+              setVisibleCreateModal(false);
+            }}
+            userId={user.id}
+          />
+        </Section>
+        <div className={styles.emptySpace}></div>
+
+        {/* payment method */}
         <Section heading="payment info">
           <Form.Item
             {...tailLayout}
@@ -192,6 +259,7 @@ export default function CheckOut() {
           </Form.Item>
         </Section>
         <div className={styles.emptySpace}></div>
+
         {/* submit button */}
         <Form.Item className={styles.buttonSection}>
           <div className={styles.buttonSection}>

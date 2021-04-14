@@ -1,5 +1,5 @@
 const initialState = {
-  imageId: ""
+  image: localStorage.getItem("data") || "",
 };
 
 export function fileReducer(state = initialState, action) {
@@ -7,7 +7,7 @@ export function fileReducer(state = initialState, action) {
     case "user/profile":
       return {
         ...state,
-        imageId: action.payload
+        image: action.payload
       };
 
     default:

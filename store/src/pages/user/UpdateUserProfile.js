@@ -30,7 +30,8 @@ function UpdateUserProfile() {
   const [userImage, setUserImage] = useState([]);
   const [sourceOfImage, setSourceOfImage] = useState([]);
   const token = useSelector((state) => state.auth.tokenValue);
-  const imageId = useSelector((state) => state.file.imageId)
+  const imageData = useSelector((state) => state.file.image)
+  console.log(imageData)
 
 
   const layout = {
@@ -51,7 +52,7 @@ function UpdateUserProfile() {
   };
 
   useEffect(() => {
-    if (token || imageId)
+    if (token || imageData)
       agent
         .getMe(token)
         .then((res) => res.json())
@@ -62,12 +63,16 @@ function UpdateUserProfile() {
               .getSingleUser(data.id)
               .then((res) => res.json())
               .then(({ data }) => {
-                const result = data.image.filter(imgId => {
-                  return imgId.id === imageId
-                })
-                setUserData([data]);
-                if (result.length) {
-                  setSourceOfImage([result[0].path])
+                if (data) {
+                  setUserData([data]);
+                }
+                if (imageData) {
+                  const result = data.image.filter(imgId => {
+                    return imgId.id === imageData[0].id
+                  })
+                  if (result.length) {
+                    setSourceOfImage([result[0].path])
+                  }
                 }
               });
           }
@@ -76,7 +81,7 @@ function UpdateUserProfile() {
             localStorage.removeItem("token");
           }
         });
-  }, [token, imageId]);
+  }, [token, imageData]);
 
   const onFinish = (values) => {
     console.log(values);
@@ -107,7 +112,8 @@ function UpdateUserProfile() {
         .createUserImage(formData)
         .then((res) => res.json())
         .then(({ data }) => {
-          dispatch({ type: "user/profile", payload: data[0].id });
+          localStorage.setItem("data", data);
+          dispatch({ type: "user/profile", payload: data });
         });
     };
 

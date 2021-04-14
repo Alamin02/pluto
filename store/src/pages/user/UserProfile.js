@@ -48,14 +48,14 @@ const columns = [
 function UserProfile() {
   const screens = useBreakpoint();
   const token = useSelector((state) => state.auth.tokenValue);
-  const imageId = useSelector((state) => state.file.imageId)
+  const imageData = useSelector((state) => state.file.image)
   const [userData, setUserData] = useState([]);
   const [userId, setUserId] = useState(null);
   const [sourceOfImage, setSourceOfImage] = useState([]);
   const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
-    if (token || imageId)
+    if (token || imageData)
       agent
         .getMe(token)
         .then((res) => res.json())
@@ -66,18 +66,24 @@ function UserProfile() {
               .getSingleUser(data.id)
               .then((res) => res.json())
               .then(({ data }) => {
-                const result = data.image.filter(imgId => {
-                  return imgId.id === imageId
-                })
-                setUserData([data]);
-                setSourceOfImage([result[0].path])
+                if (data) {
+                  setUserData([data]);
+                }
+                if (imageData) {
+                  const result = data.image.filter(imgId => {
+                    return imgId.id === imageData[0].id
+                  })
+                  if (result.length) {
+                    setSourceOfImage([result[0].path])
+                  }
+                }
               })
           }
           if (error) {
             localStorage.removeItem("token");
           }
         });
-  }, [token, imageId]);
+  }, [token, imageData]);
 
   useEffect(() => {
     if (token)

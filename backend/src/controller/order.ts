@@ -96,7 +96,6 @@ export async function getSingleOrder(
   res: express.Response
 ) {
   const id = req.params.orderId;
-  console.log(typeof id);
   const orderRepository = getConnection().getRepository(Order);
   const singleOrder = await orderRepository.findOne({
     select: ["id", "status", "paymentMethod"],

@@ -7,20 +7,16 @@ import { columns } from "./orderTableColumns";
 const { Title } = Typography;
 
 export default function Orders() {
+  const token = localStorage.getItem("token");
   const [orderData, setOrderData] = useState([]);
 
-  function fetchOrders() {
-    agent
-      .getOrders()
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setOrderData(data.orders);
-      });
-  }
-
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    if (token)
+      agent
+        .getOrders(token)
+        .then((res) => res.json())
+        .then(({ data }) => setOrderData(data.orders));
+  }, [token]);
 
   return (
     <div>

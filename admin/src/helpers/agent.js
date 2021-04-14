@@ -221,10 +221,11 @@ export const agent = {
   },
 
   // order
-  getOrders: () => {
+  getOrders: (token) => {
     return fetch(`${baseUrl}/orders`, {
       method: "get",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });

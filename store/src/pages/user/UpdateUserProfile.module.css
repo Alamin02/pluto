@@ -35,3 +35,52 @@
 .emptySpace {
   padding: 1rem;
 }
+
+.basicInfoText {
+  margin-left: 2.5rem;
+}
+.basicInfoTextXs {
+  margin-left: 0;
+}
+
+.userAvatar {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+}
+.userAvatarXs {
+  width: 9rem;
+  margin-bottom: 1.7rem;
+  margin-top: 0.5rem;
+  align-self: center;
+  border-radius: 50%;
+}
+
+.basicInfo {
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: row;
+}
+.basicInfoXs {
+  flex-direction: column;
+}
+
+.imageBox {
+  display: inline;
+  position: relative;
+}
+.editBox {
+  border: 1px solid #30363d;
+  border-radius: 50% !important;
+  color: #f0f6fc;
+  background-color: #161b22;
+  position: absolute !important;
+  top: 66% !important;
+  left: -7% !important;
+  padding-right: 8px !important;
+  padding-left: 8px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  margin-left: 8px !important;
+  cursor: pointer;
+}

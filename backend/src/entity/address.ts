@@ -16,8 +16,8 @@ export class Address {
   @Column("varchar")
   city!: String;
 
-  // @Column({ type: "text", unique: true })
-  // address!: string;
+  @Column({ type: "text", unique: true })
+  address!: string;
 
   @ManyToOne(() => User, (user) => user.addresses, { onDelete: "CASCADE" })
   user!: User;

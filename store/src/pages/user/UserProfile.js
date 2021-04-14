@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Grid, Menu, Form, Upload, Dropdown, Tag, Table } from "antd";
-import { MailOutlined, PhoneOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Grid, Tag, Table } from "antd";
+import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import styles from "./UserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
@@ -46,17 +46,16 @@ const columns = [
 ];
 
 function UserProfile() {
-  const [form] = Form.useForm();
   const screens = useBreakpoint();
   const token = useSelector((state) => state.auth.tokenValue);
+  const imageId = useSelector((state) => state.file.imageId)
   const [userData, setUserData] = useState([]);
-  const [userImage, setUserImage] = useState([]);
   const [userId, setUserId] = useState(null);
   const [sourceOfImage, setSourceOfImage] = useState([]);
   const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
-    if (token)
+    if (token || imageId)
       agent
         .getMe(token)
         .then((res) => res.json())
@@ -66,14 +65,19 @@ function UserProfile() {
             agent
               .getSingleUser(data.id)
               .then((res) => res.json())
-              .then(({ data }) => setUserData([data]));
+              .then(({ data }) => {
+                const result = data.image.filter(imgId => {
+                  return imgId.id === imageId
+                })
+                setUserData([data]);
+                setSourceOfImage([result[0].path])
+              })
           }
-
           if (error) {
             localStorage.removeItem("token");
           }
         });
-  }, [token]);
+  }, [token, imageId]);
 
   useEffect(() => {
     if (token)
@@ -86,81 +90,11 @@ function UserProfile() {
         });
   }, [token, userId]);
 
-  const layout = {
-    labelCol: {
-      span: 3,
-    },
-    wrapperCol: {
-      span: 2,
-    },
-  };
-
-
-  const editButtonClick = () => {
-    const normFile = (e) => {
-      const dataOfImage = {};
-      console.log("Upload event:", e);
-      const formData = new FormData();
-      userImage.forEach((userImage) => {
-        formData.append("userImage", userImage);
-      });
-
-      formData.append("userId", userId);
-
-      agent
-        .createUserImage(formData)
-        .then((res) => res.json())
-        .then(({ data }) => {
-          dataOfImage.imagePath = data[0].path;
-          setSourceOfImage([data[0].path]);
-        });
-    };
-    return (
-      <Menu>
-        <Menu.Item>
-          <Form
-            {...layout}
-            form={form}
-            initialValues={{
-              remember: true,
-            }}
-          >
-            <Form.Item
-              name="userImage"
-              style={{ marginBottom: "0" }}
-              rules={[
-                {
-                  required: false,
-                  message: "Please select photo!",
-                },
-              ]}
-              valuePropName="dataOfImage"
-              getValueFromEvent={normFile}
-            >
-              <Upload
-                name="files"
-                beforeUpload={(file, fileList) => {
-                  setUserImage(fileList);
-                  return false;
-                }}
-                listType="picture"
-                maxCount={1}
-                showUploadList={false}
-              >
-                <Button type="primary">Upload a Photo</Button>
-              </Upload>
-            </Form.Item>
-          </Form>
-        </Menu.Item>
-      </Menu>
-    );
-  };
 
   return (
     <MainContainer>
       <div className={styles.container}>
         <HeaderSection headerText="manage my account" />
-
         <Section heading="Basic info" key={userInfo.key}>
           <div
             className={classNames(
@@ -168,7 +102,7 @@ function UserProfile() {
               { [styles.basicInfoXs]: screens.xs }
             )}
           >
-            {sourceOfImage.length === 1 ? (
+            {sourceOfImage && sourceOfImage.length === 1 ? (
               <div className={styles.imageBox} key={1}>
                 <img
                   src={sourceOfImage[0]}
@@ -178,11 +112,6 @@ function UserProfile() {
                   )}
                   alt="user_photo"
                 />
-                <div className={styles.editBox}>
-                  <Dropdown overlay={editButtonClick} placement="bottomLeft">
-                    <EditOutlined />
-                  </Dropdown>
-                </div>
               </div>
             ) : (
               <div className={styles.imageBox} key={2}>
@@ -194,11 +123,6 @@ function UserProfile() {
                   )}
                   alt="user_photo"
                 />
-                <div className={styles.editBox}>
-                  <Dropdown overlay={editButtonClick} placement="bottomLeft">
-                    <EditOutlined />
-                  </Dropdown>
-                </div>
               </div>
             )}
 

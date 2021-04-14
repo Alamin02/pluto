@@ -5,7 +5,7 @@ import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 require("dotenv").config();
-import { Address, User } from "../entity";
+import { Address, User, UserImage } from "../entity";
 
 const secret = process.env.JWT_SECRET || "";
 const saltRounds = 10;
@@ -16,7 +16,7 @@ export async function getUsers(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const users = await userRepository.find({
     select: ["id", "name", "email", "phone", "role"],
-    relations: ["addresses"],
+    relations: ["addresses", "image"],
   });
 
   res.json({ data: users });
@@ -30,7 +30,7 @@ export async function getUser(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const findUserById = await userRepository.findOne({
     select: ["id", "name", "email", "phone", "role"],
-    relations: ["addresses"],
+    relations: ["addresses", "image"],
     where: [{ id: id }],
   });
 
@@ -46,7 +46,6 @@ export async function getUser(req: express.Request, res: express.Response) {
 export async function updateUser(req: express.Request, res: express.Response) {
   const userId = req.params.userId;
   const { name, email, phone, address } = req.body;
-  console.log(!address);
 
   const userRepository = getConnection().getRepository(User);
   const userAddressRepository = getConnection().getRepository(Address);

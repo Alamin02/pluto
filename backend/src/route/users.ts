@@ -12,6 +12,7 @@ import {
   deleteUserController,
   updateUserPasswordController,
   updateUserFrontendController,
+  getProfileController,
 } from "../controller";
 
 const router = express.Router();
@@ -66,8 +67,13 @@ router.get("/me", authenticationMiddleware, (req, res) => {
   res.json({ data: res.locals.user });
 });
 
+router.get("/profile", authenticationMiddleware, getProfileController);
+
 // @GET - /api/v1/user/
-router.get("/:userId", getUserController);
+router.get(
+  "/:\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b",
+  getUserController
+);
 
 // @PUT - /api/v1/users/
 router.put("/:userId", updateUserPasswordController);

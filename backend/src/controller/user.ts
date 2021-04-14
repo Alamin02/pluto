@@ -181,4 +181,27 @@ export async function updateUserPassword(
   }
 }
 
+export async function getProfile(req: express.Request, res: express.Response) {
+  const { id } = res.locals.user;
+
+  console.log({ id });
+
+  const userRepository = getConnection().getRepository(User);
+  const findUserById = await userRepository.findOne({
+    select: ["id", "name", "email", "phone", "role"],
+    relations: ["addresses", "image"],
+    where: {
+      id: id,
+    },
+  });
+
+  console.log({ findUserById });
+
+  if (!findUserById) {
+    return res.status(400).json({ errors: [{ msg: "User not found" }] });
+  }
+
+  res.json({ msg: "User found", data: findUserById });
+}
+
 export default router;

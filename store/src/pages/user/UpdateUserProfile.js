@@ -1,8 +1,20 @@
-import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Form, Input, Button, Select, message, Row, Col, Dropdown, Grid, Menu, Upload } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  message,
+  Row,
+  Col,
+  Dropdown,
+  Grid,
+  Menu,
+  Upload,
+} from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import userInfo from "../../components/user-profile/userInfo";
@@ -25,14 +37,12 @@ function UpdateUserProfile() {
   const screens = useBreakpoint();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const [userData, setUserData] = useState([]);
-  const [userId, setUserId] = useState(null)
+  const [userData, setUserData] = useState({});
+  const [userId, setUserId] = useState(null);
   const [userImage, setUserImage] = useState([]);
   const [sourceOfImage, setSourceOfImage] = useState([]);
   const token = useSelector((state) => state.auth.tokenValue);
-  const imageData = useSelector((state) => state.file.image)
-  console.log(imageData)
-
+  const imageData = useSelector((state) => state.file.image);
 
   const layout = {
     labelCol: {
@@ -52,50 +62,32 @@ function UpdateUserProfile() {
   };
 
   useEffect(() => {
-    if (token || imageData)
+    if (token)
       agent
-        .getMe(token)
+        .getProfile(token)
         .then((res) => res.json())
-        .then(({ data, error }) => {
-          if (data.id) {
-            setUserId(data.id);
-            agent
-              .getSingleUser(data.id)
-              .then((res) => res.json())
-              .then(({ data }) => {
-                if (data) {
-                  setUserData([data]);
-                }
-                if (imageData) {
-                  const result = data.image.filter(imgId => {
-                    return imgId.id === imageData[0].id
-                  })
-                  if (result.length) {
-                    setSourceOfImage([result[0].path])
-                  }
-                }
-              });
-          }
-
-          if (error) {
-            localStorage.removeItem("token");
+        .then(({ data }) => {
+          if (data) {
+            console.log({ data });
+            setUserData(data);
+            dispatch({ type: "user/profile", payload: data.image });
           }
         });
-  }, [token, imageData]);
+  }, [token]);
 
   const onFinish = (values) => {
     console.log(values);
     agent
       .updateUserInfo(values, userId, token)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(({ token }) => {
         if (token) {
           localStorage.setItem("token", token);
           dispatch({ type: "auth/login", payload: token });
           message.success("user update successfully");
-          history.push("/profile")
+          history.push("/profile");
         }
-      })
+      });
   };
 
   const editButtonClick = () => {
@@ -106,10 +98,10 @@ function UpdateUserProfile() {
         formData.append("userImage", userImage);
       });
 
-      formData.append("userId", userId);
+      console.log("Seding image");
 
       agent
-        .createUserImage(formData)
+        .createUserImage(formData, token)
         .then((res) => res.json())
         .then(({ data }) => {
           localStorage.setItem("data", data);
@@ -171,112 +163,90 @@ function UpdateUserProfile() {
           }}
           onFinish={onFinish}
         >
-          {userData.length === 1 &&
-            userData.map((data) => {
-              return (
-                <section className={styles.eachSection} key={data.id}>
-                  <Row gutter={[16, 16]}>
-                    <Col span={12}>
-                      <h2 className={styles.eachSectionTitle}>Update basic info</h2>
+          <section className={styles.eachSection} key={userData.id}>
+            <Row gutter={[16, 16]}>
+              <Col span={12}>
+                <h2 className={styles.eachSectionTitle}>Update basic info</h2>
 
-                      {/* email */}
+                {/* email */}
 
-                      <Form.Item
-                        {...tailLayout}
-                        label="Email"
-                        name="email"
-                        rules={[
-                          {
-                            required: false,
-                            message: "Please input your email!",
-                          },
-                        ]}
-                        initialValue={data.email}
+                <Form.Item
+                  {...tailLayout}
+                  label="Email"
+                  name="email"
+                  rules={[
+                    {
+                      required: false,
+                      message: "Please input your email!",
+                    },
+                  ]}
+                  initialValue={userData.email}
+                >
+                  <Input size="large" />
+                </Form.Item>
+
+                {/* name */}
+                <Form.Item
+                  {...tailLayout}
+                  label="Name"
+                  name="name"
+                  rules={[
+                    {
+                      required: false,
+                      message: "Please input your name!",
+                    },
+                  ]}
+                  initialValue={userData.name}
+                >
+                  <Input />
+                </Form.Item>
+
+                {/* phone */}
+                <Form.Item
+                  {...tailLayout}
+                  label="Phone number"
+                  name="phone"
+                  rules={[
+                    {
+                      required: false,
+                      message: "Please input your phone number!",
+                    },
+                  ]}
+                  initialValue={userData.phone}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <h2 className={styles.eachSectionTitle}>Update user Profile</h2>
+                <div
+                  className={classNames(
+                    { [styles.basicInfo]: screens },
+                    { [styles.basicInfoXs]: screens.xs }
+                  )}
+                >
+                  <div className={styles.imageBox} key={1}>
+                    <img
+                      src={imageData ? imageData.path : userInfo.photo}
+                      className={classNames(
+                        { [styles.userAvatar]: screens },
+                        { [styles.userAvatarXs]: screens.xs }
+                      )}
+                      alt="user_photo"
+                    />
+                    <div className={styles.editBox}>
+                      <Dropdown
+                        overlay={editButtonClick}
+                        placement="bottomLeft"
                       >
-                        <Input size="large" />
-                      </Form.Item>
-
-                      {/* name */}
-                      <Form.Item
-                        {...tailLayout}
-                        label="Name"
-                        name="name"
-                        rules={[
-                          {
-                            required: false,
-                            message: "Please input your name!",
-                          },
-                        ]}
-                        initialValue={data.name}
-                      >
-                        <Input />
-                      </Form.Item>
-
-                      {/* phone */}
-                      <Form.Item
-                        {...tailLayout}
-                        label="Phone number"
-                        name="phone"
-                        rules={[
-                          {
-                            required: false,
-                            message: "Please input your phone number!",
-                          },
-                        ]}
-                        initialValue={data.phone}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <h2 className={styles.eachSectionTitle}>Update user Profile</h2>
-                      <div
-                        className={classNames(
-                          { [styles.basicInfo]: screens },
-                          { [styles.basicInfoXs]: screens.xs }
-                        )}
-                      >
-                        {sourceOfImage && sourceOfImage.length === 1 ? (
-                          <div className={styles.imageBox} key={1}>
-                            <img
-                              src={sourceOfImage[0]}
-                              className={classNames(
-                                { [styles.userAvatar]: screens },
-                                { [styles.userAvatarXs]: screens.xs }
-                              )}
-                              alt="user_photo"
-                            />
-                            <div className={styles.editBox}>
-                              <Dropdown overlay={editButtonClick} placement="bottomLeft">
-                                <EditOutlined />
-                              </Dropdown>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className={styles.imageBox} key={2}>
-                            <img
-                              src={userInfo.photo}
-                              className={classNames(
-                                { [styles.userAvatar]: screens },
-                                { [styles.userAvatarXs]: screens.xs }
-                              )}
-                              alt="user_photo"
-                            />
-                            <div className={styles.editBox}>
-                              <Dropdown overlay={editButtonClick} placement="bottomLeft">
-                                <EditOutlined />
-                              </Dropdown>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </Col>
-                  </Row>
-                </section>
-              );
-            })}
-
-
+                        <EditOutlined />
+                      </Dropdown>
+                    </div>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </section>
 
           <section className={styles.emptySpace}></section>
 
@@ -326,4 +296,3 @@ function UpdateUserProfile() {
 }
 
 export default UpdateUserProfile;
-

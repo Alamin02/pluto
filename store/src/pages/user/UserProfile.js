@@ -48,41 +48,26 @@ const columns = [
 function UserProfile() {
   const screens = useBreakpoint();
   const token = useSelector((state) => state.auth.tokenValue);
-  const imageData = useSelector((state) => state.file.image)
+  const imageData = useSelector((state) => state.file.image);
   const [userData, setUserData] = useState([]);
   const [userId, setUserId] = useState(null);
   const [sourceOfImage, setSourceOfImage] = useState([]);
   const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
-    if (token || imageData)
-      agent
-        .getMe(token)
-        .then((res) => res.json())
-        .then(({ data, error }) => {
-          setUserId(data.id);
-          if (data.id) {
-            agent
-              .getSingleUser(data.id)
-              .then((res) => res.json())
-              .then(({ data }) => {
-                if (data) {
-                  setUserData([data]);
-                }
-                if (imageData) {
-                  const result = data.image.filter(imgId => {
-                    return imgId.id === imageData[0].id
-                  })
-                  if (result.length) {
-                    setSourceOfImage([result[0].path])
-                  }
-                }
-              })
-          }
-          if (error) {
-            localStorage.removeItem("token");
-          }
-        });
+    if (token)
+      if (token) {
+        agent
+          .getProfile(token)
+          .then((res) => res.json())
+          .then(({ data }) => {
+            console.log(data);
+
+            if (data) {
+              setUserData([data]);
+            }
+          });
+      }
   }, [token, imageData]);
 
   useEffect(() => {

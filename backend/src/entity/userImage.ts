@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToOne,
+} from "typeorm";
 
 import { User } from "../entity";
 
@@ -13,7 +19,7 @@ export class UserImage {
   @Column("varchar")
   path!: string;
 
-  @ManyToOne(() => User, (user) => user.image, {
+  @OneToOne(() => User, (user) => user.image, {
     onDelete: "CASCADE",
   })
   user!: User;

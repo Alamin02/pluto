@@ -36,7 +36,7 @@ app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
 app.use("/api/v1/images", productImageRouter);
-app.use("/api/v1/profile", userImageRouter);
+app.use("/api/v1/user-image", userImageRouter);
 
 connectDatabase();
 

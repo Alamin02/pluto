@@ -45,11 +45,12 @@ export const agent = {
       },
     });
   },
-  getSingleUser: (userId) => {
-    return fetch(`${baseUrl}/users/${userId}`, {
+  getProfile: (token) => {
+    return fetch(`${baseUrl}/users/profile`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
   },
@@ -65,10 +66,13 @@ export const agent = {
     });
   },
 
-  createUserImage: (data) => {
-    return fetch(`${baseUrl}/profile`, {
+  createUserImage: (data, token) => {
+    return fetch(`${baseUrl}/user-image`, {
       method: "post",
       body: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   },
 

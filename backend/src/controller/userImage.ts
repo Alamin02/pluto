@@ -8,26 +8,22 @@ export async function createUserImage(
   req: express.Request,
   res: express.Response
 ) {
-  const id = req.body.userId;
+  const { id } = res.locals.user;
   const usersRepository = getConnection().getRepository(User);
-  const user = await usersRepository.findOne({ id });
+  const user = await usersRepository.findOneOrFail({ id });
   const userImageRepository = getConnection().getRepository(UserImage);
 
-  const createUserImage = [];
-  const files = req.files as Express.Multer.File[];
+  const file = req.file as Express.Multer.File;
 
-  if (files.length && user) {
-    for (let i = 0; i < files.length; i++) {
-      const userImage = new UserImage();
-      userImage.path = files[i].path;
-      userImage.originalname = files[i].originalname;
-      userImage.user = user;
+  if (file) {
+    const userImage = new UserImage();
+    userImage.path = file.path;
+    userImage.originalname = file.originalname;
+    userImage.user = user;
 
-      const savedUserImage = await userImageRepository.save(userImage);
-      createUserImage.push(savedUserImage);
-    }
+    const savedUserImage = await userImageRepository.save(userImage);
 
-    res.json({ msg: "Image added", data: createUserImage });
+    res.json({ msg: "Image added", data: savedUserImage });
   } else {
     return res.status(400).json({ errors: [{ msg: "Image not found" }] });
   }

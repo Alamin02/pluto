@@ -1,10 +1,15 @@
 import express = require("express");
-import { imageUpload } from "../middleware";
+import { imageUpload, authenticationMiddleware } from "../middleware";
 import { createUserImageController } from "../controller";
 const router = express.Router();
 
 // create user image
 // POST
-router.post("/", imageUpload.array("userImage", 1), createUserImageController);
+router.post(
+  "/",
+  authenticationMiddleware,
+  imageUpload.single("userImage"),
+  createUserImageController
+);
 
 export default router;

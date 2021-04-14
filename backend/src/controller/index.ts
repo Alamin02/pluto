@@ -10,6 +10,7 @@ export {
   updateUserPassword as updateUserPasswordController,
   updateUserAdminPanel as updateUserAdminPanelController,
   updateUserFrontend as updateUserFrontendController,
+  getProfile as getProfileController,
 } from "./user";
 
 export {

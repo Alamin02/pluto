@@ -38,9 +38,8 @@ function UpdateUserProfile() {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [userData, setUserData] = useState({});
-  const [userId, setUserId] = useState(null);
   const [userImage, setUserImage] = useState([]);
-  const [sourceOfImage, setSourceOfImage] = useState([]);
+  const [userId, setUserId] = useState(null)
   const token = useSelector((state) => state.auth.tokenValue);
   const imageData = useSelector((state) => state.file.image);
 
@@ -68,7 +67,7 @@ function UpdateUserProfile() {
         .then((res) => res.json())
         .then(({ data }) => {
           if (data) {
-            console.log({ data });
+            setUserId(data.id)
             setUserData(data);
             dispatch({ type: "user/profile", payload: data.image });
           }
@@ -97,8 +96,6 @@ function UpdateUserProfile() {
       userImage.forEach((userImage) => {
         formData.append("userImage", userImage);
       });
-
-      console.log("Seding image");
 
       agent
         .createUserImage(formData, token)

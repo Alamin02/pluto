@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Grid, Tag, Table } from "antd";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
@@ -47,28 +47,27 @@ const columns = [
 
 function UserProfile() {
   const screens = useBreakpoint();
+  const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
   const imageData = useSelector((state) => state.file.image);
-  const [userData, setUserData] = useState([]);
-  const [userId, setUserId] = useState(null);
-  const [sourceOfImage, setSourceOfImage] = useState([]);
+  const [userId, setUserId] = useState(null)
+  const [userData, setUserData] = useState({});
   const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
-    if (token)
-      if (token) {
-        agent
-          .getProfile(token)
-          .then((res) => res.json())
-          .then(({ data }) => {
-            console.log(data);
-
-            if (data) {
-              setUserData([data]);
-            }
-          });
-      }
-  }, [token, imageData]);
+    if (token) {
+      agent
+        .getProfile(token)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          if (data) {
+            setUserId(data.id)
+            setUserData(data);
+            dispatch({ type: "user/profile", payload: data.image });
+          }
+        });
+    }
+  }, [token]);
 
   useEffect(() => {
     if (token)
@@ -92,66 +91,48 @@ function UserProfile() {
               { [styles.basicInfoXs]: screens.xs }
             )}
           >
-            {sourceOfImage && sourceOfImage.length === 1 ? (
-              <div className={styles.imageBox} key={1}>
-                <img
-                  src={sourceOfImage[0]}
-                  className={classNames(
-                    { [styles.userAvatar]: screens },
-                    { [styles.userAvatarXs]: screens.xs }
-                  )}
-                  alt="user_photo"
-                />
-              </div>
-            ) : (
-              <div className={styles.imageBox} key={2}>
-                <img
-                  src={userInfo.photo}
-                  className={classNames(
-                    { [styles.userAvatar]: screens },
-                    { [styles.userAvatarXs]: screens.xs }
-                  )}
-                  alt="user_photo"
-                />
-              </div>
-            )}
+            <div className={styles.imageBox} key={1}>
+              <img
+                src={imageData ? imageData.path : userInfo.photo}
+                className={classNames(
+                  { [styles.userAvatar]: screens },
+                  { [styles.userAvatarXs]: screens.xs }
+                )}
+                alt="user_photo"
+              />
+            </div>
 
-            {userData.length === 1 &&
-              userData.map((data) => {
-                return (
-                  <div
-                    className={classNames(
-                      { [styles.basicInfoText]: screens },
-                      { [styles.basicInfoTextXs]: screens.xs }
-                    )}
-                    key={data.id}
-                  >
-                    <div
-                      className={classNames(
-                        { [styles.welcomeMessage]: screens },
-                        { [styles.welcomeMessageXs]: screens.xs }
-                      )}
-                    >
-                      Welcome, {data.name}.
+            <div
+              className={classNames(
+                { [styles.basicInfoText]: screens },
+                { [styles.basicInfoTextXs]: screens.xs }
+              )}
+              key={userData.id}
+            >
+              <div
+                className={classNames(
+                  { [styles.welcomeMessage]: screens },
+                  { [styles.welcomeMessageXs]: screens.xs }
+                )}
+              >
+                Welcome, {userData.name}.
                     </div>
-                    <div>
-                      <MailOutlined />
+              <div>
+                <MailOutlined />
                       &nbsp;&nbsp;
-                      {data.email}
-                    </div>
-                    <div
-                      className={classNames(
-                        { [styles.phoneNumber]: screens },
-                        { [styles.phoneNumberXs]: screens.xs }
-                      )}
-                    >
-                      <PhoneOutlined />
+                      {userData.email}
+              </div>
+              <div
+                className={classNames(
+                  { [styles.phoneNumber]: screens },
+                  { [styles.phoneNumberXs]: screens.xs }
+                )}
+              >
+                <PhoneOutlined />
                       &nbsp;&nbsp;
-                      {data.phone}
-                    </div>
-                  </div>
-                );
-              })}
+                      {userData.phone}
+              </div>
+            </div>
           </div>
         </Section>
 

@@ -8,9 +8,10 @@ import {
   userRegistrationController,
   getUsersController,
   getUserController,
-  updateUserController,
+  updateUserAdminPanelController,
   deleteUserController,
   updateUserPasswordController,
+  updateUserFrontendController,
 } from "../controller";
 
 const router = express.Router();
@@ -44,7 +45,18 @@ router.put(
     body("email").isEmail().withMessage("Invalid Email address"),
   ],
   authenticationMiddleware,
-  updateUserController
+  updateUserFrontendController
+);
+
+// @PUT - /api/v1/users/:userId
+router.put(
+  "/admin/:userId",
+  [
+    body("name").not().isEmpty().withMessage("Name must not be empty"),
+    body("email").isEmail().withMessage("Invalid Email address"),
+  ],
+  authenticationMiddleware,
+  updateUserAdminPanelController
 );
 
 // @GET - /api/v1/users/

@@ -23,7 +23,7 @@ export const agent = {
   },
 
   editUser: (userData, token, userId) => {
-    return fetch(`${baseUrl}/users/${userId}`, {
+    return fetch(`${baseUrl}/users/admin/${userId}`, {
       method: "put",
       headers: {
         Authorization: `Bearer ${token}`,

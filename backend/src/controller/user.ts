@@ -5,7 +5,7 @@ import jwt = require("jsonwebtoken");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 require("dotenv").config();
-import { Address, User } from "../entity";
+import { Address, User, UserImage } from "../entity";
 
 const secret = process.env.JWT_SECRET || "";
 const saltRounds = 10;
@@ -16,7 +16,7 @@ export async function getUsers(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const users = await userRepository.find({
     select: ["id", "name", "email", "phone", "role"],
-    relations: ["addresses"],
+    relations: ["addresses", "image"],
   });
 
   res.json({ data: users });
@@ -30,7 +30,7 @@ export async function getUser(req: express.Request, res: express.Response) {
   const userRepository = getConnection().getRepository(User);
   const findUserById = await userRepository.findOne({
     select: ["id", "name", "email", "phone", "role"],
-    relations: ["addresses"],
+    relations: ["addresses", "image"],
     where: [{ id: id }],
   });
 
@@ -43,10 +43,12 @@ export async function getUser(req: express.Request, res: express.Response) {
 
 // @PUT /v1/api/users/:userId
 // update an user
-export async function updateUser(req: express.Request, res: express.Response) {
+export async function updateUserFrontend(
+  req: express.Request,
+  res: express.Response
+) {
   const userId = req.params.userId;
   const { name, email, phone, address } = req.body;
-  console.log(!address);
 
   const userRepository = getConnection().getRepository(User);
   const userAddressRepository = getConnection().getRepository(Address);
@@ -86,6 +88,38 @@ export async function updateUser(req: express.Request, res: express.Response) {
     }
   } else {
     return res.status(400).json({
+      errors: [{ msg: "User not found or invalid url parameter(userId)" }],
+    });
+  }
+}
+
+// @PUT /v1/api/users/:userId
+// update an user
+export async function updateUserAdminPanel(
+  req: express.Request,
+  res: express.Response
+) {
+  const userId = req.params.userId;
+  const { name, email, phone, role } = req.body;
+
+  const userRepository = getConnection().getRepository(User);
+  const userToUpdate = await userRepository.findOne({ id: userId });
+  if (userToUpdate) {
+    try {
+      const newUser = new User();
+      newUser.name = name;
+      newUser.email = email;
+      newUser.phone = phone;
+      newUser.role = role;
+      await userRepository.update(userId, newUser);
+      res.status(200).json({ success: [{ msg: "User info updated" }] });
+    } catch (e) {
+      res
+        .status(400)
+        .json({ errors: [{ msg: "User info could not be updated" }] });
+    }
+  } else {
+    res.status(400).json({
       errors: [{ msg: "User not found or invalid url parameter(userId)" }],
     });
   }

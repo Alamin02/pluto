@@ -6,9 +6,10 @@ export {
 export {
   getUsers as getUsersController,
   getUser as getUserController,
-  updateUser as updateUserController,
   deleteUser as deleteUserController,
   updateUserPassword as updateUserPasswordController,
+  updateUserAdminPanel as updateUserAdminPanelController,
+  updateUserFrontend as updateUserFrontendController,
 } from "./user";
 
 export {

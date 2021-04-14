@@ -82,14 +82,13 @@ function UserProfile() {
   useEffect(() => {
     if (token)
       agent
-        .getUserOrder(userId)
+        .getUserOrder(token)
         .then((res) => res.json())
         .then(({ data }) => setUserOrders(data.orders))
         .catch((error) => {
           console.log("Error while fetching user order(s)", error);
         });
   }, [token, userId]);
-
 
   return (
     <MainContainer>

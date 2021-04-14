@@ -12,7 +12,7 @@ import { authenticationMiddleware } from "../middleware";
 const router = express.Router();
 
 // Get all orders list ***
-router.get("/:userId", getAllOrdersController);
+router.get("/", authenticationMiddleware, getAllOrdersController);
 
 // Create a order
 router.post(
@@ -27,7 +27,7 @@ router.post(
 );
 
 // Get a particular order
-router.get("/:orderId", getSingleOrderController);
+router.get("/:orderId", authenticationMiddleware, getSingleOrderController);
 
 // Update order
 router.put(
@@ -41,10 +41,11 @@ router.put(
       .isEmpty()
       .withMessage("Blog description can not be empty"),
   ],
+  authenticationMiddleware,
   updateSingleOrderController
 );
 
 // Delete order
-router.delete("/:orderId", deleteOrderController);
+router.delete("/:orderId", authenticationMiddleware, deleteOrderController);
 
 export default router;

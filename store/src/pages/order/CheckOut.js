@@ -98,7 +98,9 @@ export default function CheckOut() {
           setUser(data);
         });
     form.resetFields();
-  }, [token, totalPrice, productList, form]);
+  }, [token, form, productList]);
+
+  console.log("userData", user);
 
   if (!productList.length) {
     return (

@@ -58,7 +58,7 @@ export async function getAllOrders(
   req: express.Request,
   res: express.Response
 ) {
-  const userId = req.params.userId;
+  // const userId = req.params.userId;
   const orderRepository = getConnection().getRepository(Order);
 
   const page = parseInt(<string>req.query.page);
@@ -69,12 +69,14 @@ export async function getAllOrders(
     relations: ["user", "orderedProducts", "orderedProducts.product"],
     where: {
       user: {
-        id: userId,
+        id: res.locals.user.id,
       },
     },
     take: page * perPage,
     skip: (page - 1) * perPage,
   });
+
+  console.log("order - backend", res.locals.user);
 
   res.json({
     data: {
@@ -94,7 +96,6 @@ export async function getSingleOrder(
   res: express.Response
 ) {
   const id = req.params.orderId;
-  console.log(typeof id);
   const orderRepository = getConnection().getRepository(Order);
   const singleOrder = await orderRepository.findOne({
     select: ["id", "status", "paymentMethod"],

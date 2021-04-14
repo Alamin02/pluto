@@ -67,7 +67,7 @@ function UserProfile() {
           }
         });
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   useEffect(() => {
     if (token)

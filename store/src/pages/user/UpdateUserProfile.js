@@ -72,7 +72,7 @@ function UpdateUserProfile() {
             dispatch({ type: "user/profile", payload: data.image });
           }
         });
-  }, [token]);
+  }, [token, dispatch]);
 
   const onFinish = (values) => {
     console.log(values);

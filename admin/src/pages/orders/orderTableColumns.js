@@ -9,6 +9,11 @@ export const columns = [
     render: (id) => <span>{id}</span>,
   },
   {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+  },
+  {
     title: "User",
     dataIndex: "user",
     key: "user",
@@ -45,8 +50,13 @@ export const columns = [
     key: "paymentMethod",
   },
   {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
+    render: (address) => {
+      if (address) {
+        return <span>{address.address}</span>;
+      }
+    },
   },
 ];

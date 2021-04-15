@@ -59,7 +59,6 @@ export default function CheckOut() {
 
   // on form submit
   const onFinish = (values) => {
-    console.log("values", values);
     const newOrderedProducts = [];
     for (const orderedProduct of productList) {
       newOrderedProducts.push({
@@ -77,7 +76,7 @@ export default function CheckOut() {
       },
       orderedProducts: newOrderedProducts,
       address: {
-        id: userAddress.id,
+        id: values.shippingAddress,
       },
     };
 
@@ -201,10 +200,7 @@ export default function CheckOut() {
             ) : (
               <Radio.Group>
                 {userAddress.map((address) => (
-                  <Radio
-                    style={{ marginBottom: "0.5rem" }}
-                    value={address.address}
-                  >
+                  <Radio style={{ marginBottom: "0.5rem" }} value={address.id}>
                     {address.address}
                   </Radio>
                 ))}

@@ -15,7 +15,6 @@ export default function Addresses() {
       .then((res) => res.json())
       .then(({ data }) => {
         setAddressData(data);
-        console.log(data);
       });
   };
 

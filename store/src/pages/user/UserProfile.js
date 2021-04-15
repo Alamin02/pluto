@@ -44,6 +44,16 @@ const columns = [
       </>
     ),
   },
+  {
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
+    render: (address) => {
+      if (address) {
+        return <span>{address.address}</span>;
+      }
+    },
+  },
 ];
 
 function UserProfile() {

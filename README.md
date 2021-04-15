@@ -10,14 +10,16 @@ A lightweight eCommerce application (not the dwarf planet).
 [![GitHub stars](https://img.shields.io/github/stars/Alamin02/pluto?style=flat-square)](https://github.com/Alamin02/pluto/stargazers)
 ![GitHub contributors](https://img.shields.io/github/contributors/Alamin02/pluto?style=flat-square)
 
-<a href="#✨-key-features">✨ Key Features</a> •
-<a href="#🛠️-development">🛠️ Development</a> •
-<a href="#🤝-contributors">🤝 Contributors</a> •
-<a href="#⚖️-license">⚖️ License</a>
-
 </div>
 
-## ✨ Key Features
+## Table of Contents
+
+- [Key Features](#key-features)
+- [Development](#development)
+- [Contributors](#contributors)
+- [License](#license)
+
+## Key Features
 
 - Monolithic repo containing **store**, **backend** & **admin** all together.
 
@@ -37,7 +39,7 @@ _Screenshots will be added prior to first release_
 
 </details>
 
-## 🛠️ Development
+## Development
 
 Prerequisites:
 
@@ -108,7 +110,7 @@ Replace `test_email@email.com` and `test_password` with your preferred email and
 
 _⚠️ Using `yarn` instead of `npm` is advised_
 
-## 🤝 Contributors
+## Contributors
 
 Organized _alphabetically_
 
@@ -152,6 +154,6 @@ Wali Ullah
 </tr>
 </table>
 
-## ⚖️ License
+## License
 
 _License will be added prior to first release_

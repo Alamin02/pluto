@@ -16,8 +16,11 @@ function Cart() {
     let price = 0;
     productList.forEach((product) => {
       price += product.price * product.quantity;
+      localStorage.setItem("product", product)
     });
     setTotalPrice(price);
+    localStorage.setItem("productList", JSON.stringify(productList))
+
   }, [productList, totalPrice, setTotalPrice]);
 
   const handleRemoveProduct = (id) => {

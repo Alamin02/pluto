@@ -58,20 +58,24 @@ export async function getAllOrders(
   req: express.Request,
   res: express.Response
 ) {
-  // const userId = req.params.userId;
   const orderRepository = getConnection().getRepository(Order);
-
+  
   const page = parseInt(<string>req.query.page);
   const perPage = parseInt(<string>req.query.perPage);
-
+  
+  const { id, role } = res.locals.user;
   const [orders, orderCount] = await orderRepository.findAndCount({
     select: ["id", "status", "paymentMethod"],
     relations: ["user", "orderedProducts", "orderedProducts.product"],
-    where: {
-      user: {
-        id: res.locals.user.id,
-      },
-    },
+    ...(role === "admin"
+      ? {}
+      : {
+          where: {
+            user: {
+              id: id,
+            },
+          },
+        }),
     take: page * perPage,
     skip: (page - 1) * perPage,
   });

@@ -12,7 +12,7 @@ export async function createOrder(req: express.Request, res: express.Response) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { user, orderedProducts, paymentMethod } = req.body;
+  const { user, orderedProducts, paymentMethod, address } = req.body;
 
   // Save to database
   try {
@@ -40,6 +40,7 @@ export async function createOrder(req: express.Request, res: express.Response) {
     newOrder.orderedProducts = createdOrderedProducts;
     newOrder.status = "order placed";
     newOrder.paymentMethod = paymentMethod;
+    newOrder.address = address;
 
     await orderRepository.save(newOrder);
   } catch (err) {
@@ -59,14 +60,19 @@ export async function getAllOrders(
   res: express.Response
 ) {
   const orderRepository = getConnection().getRepository(Order);
-  
+
   const page = parseInt(<string>req.query.page);
   const perPage = parseInt(<string>req.query.perPage);
-  
+
   const { id, role } = res.locals.user;
   const [orders, orderCount] = await orderRepository.findAndCount({
     select: ["id", "status", "paymentMethod"],
-    relations: ["user", "orderedProducts", "orderedProducts.product"],
+    relations: [
+      "user",
+      "orderedProducts",
+      "orderedProducts.product",
+      "address",
+    ],
     ...(role === "admin"
       ? {}
       : {

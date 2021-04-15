@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from "typeorm";
 
-import { User, OrderedProduct } from "../entity";
+import { User, Address, OrderedProduct } from "../entity";
 
 @Entity("orders")
 export class Order {
@@ -24,4 +24,7 @@ export class Order {
 
   @Column("varchar")
   paymentMethod!: string;
+
+  @ManyToOne(() => Address, (address) => address.orders)
+  address!: Address;
 }

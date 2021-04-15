@@ -10,6 +10,7 @@ import userInfo from "../../components/user-profile/userInfo";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
 import Section from "../../components/styled-components/Section";
+import AddressUserProfile from "../../components/address/AddressUserProfile";
 
 const { useBreakpoint } = Grid;
 
@@ -50,7 +51,7 @@ function UserProfile() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
   const imageData = useSelector((state) => state.file.image);
-  const [userId, setUserId] = useState(null)
+  const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState({});
   const [userOrders, setUserOrders] = useState([]);
 
@@ -61,7 +62,7 @@ function UserProfile() {
         .then((res) => res.json())
         .then(({ data }) => {
           if (data) {
-            setUserId(data.id)
+            setUserId(data.id);
             setUserData(data);
             dispatch({ type: "user/profile", payload: data.image });
           }
@@ -116,11 +117,11 @@ function UserProfile() {
                 )}
               >
                 Welcome, {userData.name}.
-                    </div>
+              </div>
               <div>
                 <MailOutlined />
-                      &nbsp;&nbsp;
-                      {userData.email}
+                &nbsp;&nbsp;
+                {userData.email}
               </div>
               <div
                 className={classNames(
@@ -129,11 +130,17 @@ function UserProfile() {
                 )}
               >
                 <PhoneOutlined />
-                      &nbsp;&nbsp;
-                      {userData.phone}
+                &nbsp;&nbsp;
+                {userData.phone}
               </div>
             </div>
           </div>
+        </Section>
+
+        <section className={styles.emptySpace}></section>
+
+        <Section heading="Your shipping addresses">
+          <AddressUserProfile />
         </Section>
 
         <section className={styles.buttonSection}>
@@ -150,6 +157,7 @@ function UserProfile() {
           ) : (
             <Table
               columns={columns}
+              bordered
               dataSource={userOrders}
               pagination={false}
             />

@@ -48,38 +48,39 @@ export async function updateUserFrontend(
   res: express.Response
 ) {
   const userId = req.params.userId;
-  const { name, email, phone, address } = req.body;
+  const { name, email, phone } = req.body;
 
   const userRepository = getConnection().getRepository(User);
-  const userAddressRepository = getConnection().getRepository(Address);
   const userToUpdate = await userRepository.findOne({ id: userId });
   if (userToUpdate) {
     try {
-      const newAddress: any = [];
       const newUser = new User();
-      newUser.name = name;
-      newUser.email = email;
-      newUser.phone = phone;
-      if (address) {
-        const userAddress = new Address();
-        userAddress.division = address;
-        userAddress.district = address;
-        userAddress.city = address;
-        userAddress.user = userToUpdate;
-        const saveUserAddress = await userAddressRepository.save(userAddress);
-        newAddress.push(saveUserAddress);
-        newUser.addresses = newAddress;
-        await userRepository.update(userId, newUser);
-        return res
-          .status(200)
-          .json({ success: [{ msg: "User info updated" }], data: newUser });
-      } else {
-        await userRepository.update(userId, newUser);
-        const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
-        return res
-          .status(200)
-          .json({ msg: "Address not found", data: newUser, token: token });
+      if (name) {
+        newUser.name = name;
       }
+      if (userToUpdate.email !== email) {
+        const previousEntry = await userRepository.findOne({ email });
+        if (!previousEntry) {
+          newUser.email = email;
+        } else {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: "Email already exists" }] });
+        }
+      } else {
+        newUser.email = email;
+      }
+      if (phone) {
+        newUser.phone = phone;
+      }
+      await userRepository.update(userId, newUser);
+      // Generating a token
+      const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
+      return res.status(200).json({
+        success: [{ msg: "User info updated" }],
+        data: newUser,
+        token: token,
+      });
     } catch (e) {
       console.log(e);
       return res

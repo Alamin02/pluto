@@ -78,9 +78,12 @@ export default function UpdateUserProfile() {
           dispatch({ type: "auth/login", payload: token });
           message.success("User info has been updated.");
           history.push("/profile");
+        } else {
+          message.error("Email already Exists")
         }
-      });
+      })
   };
+
 
   const editButtonClick = () => {
     const normFile = (e) => {
@@ -165,7 +168,7 @@ export default function UpdateUserProfile() {
                 name="email"
                 rules={[
                   {
-                    required: false,
+                    required: true,
                     message: "Please input your email!",
                   },
                 ]}
@@ -251,3 +254,4 @@ export default function UpdateUserProfile() {
     </MainContainer>
   );
 }
+

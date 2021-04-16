@@ -66,21 +66,21 @@ function Navbar() {
 
   const menu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item style={{ padding: "0.5rem 1.5rem" }}>
         <Link to="/profile">
           <div style={{ textTransform: "capitalize" }}>{user && user.name}</div>
           <div style={{ color: "gray" }}>{user && user.email}</div>
         </Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item>
+      <Menu.Item style={{ padding: "0.5rem 1.5rem" }}>
         <Link to="/profile">Profile</Link>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item style={{ padding: "0.5rem 1.5rem" }}>
         <Link to="/profile/edit">Update profile</Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item>
+      <Menu.Item style={{ padding: "0.5rem 1.5rem" }}>
         <div onClick={handleLogout}>
           <LogoutOutlined />
           <span className={styles.logoutText}>Logout</span>

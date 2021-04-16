@@ -194,15 +194,19 @@ export default function CheckOut() {
             ]}
           >
             {userAddress.length === 0 ? (
-              <div className={styles.emptyAddress}>
-                You currently have no shipping addresses.
-              </div>
+              <div>You currently have no shipping addresses.</div>
             ) : (
               <Radio.Group>
                 {userAddress.map((address) => (
-                  <Radio style={{ marginBottom: "0.5rem" }} value={address.id}>
-                    {address.address}
-                  </Radio>
+                  <div>
+                    <Radio
+                      style={{ marginBottom: "0.5rem" }}
+                      value={address.id}
+                    >
+                      {address.address}
+                    </Radio>
+                    <br />
+                  </div>
                 ))}
               </Radio.Group>
             )}

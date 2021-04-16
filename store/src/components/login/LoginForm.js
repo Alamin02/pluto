@@ -28,7 +28,7 @@ const Login = () => {
         if (token) {
           localStorage.setItem("token", token);
           dispatch({ type: "auth/login", payload: token });
-          message.success("Login Successfully");
+          message.success("Login successful");
           form.resetFields();
           history.replace(from);
         } else {

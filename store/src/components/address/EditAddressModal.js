@@ -1,22 +1,26 @@
-import React from "react";
-import { Modal, Form, Input, message, Select } from "antd";
+import React, { useEffect } from "react";
+import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
-const { Option } = Select;
-export default function CreateNewAddressModal({
+
+export default function EditAddressModal({
   visible,
   onCreate,
   onCancel,
-  userId,
+  currentAddress,
 }) {
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.resetFields();
+  }, [currentAddress, form]);
 
   return (
     <div>
       <Modal
         visible={visible}
-        title="Create new address"
-        okText="Create"
+        title="Edit User"
+        okText="Save"
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
@@ -25,29 +29,18 @@ export default function CreateNewAddressModal({
           form
             .validateFields()
             .then((values) => {
-              const addressData = {
-                ...values,
-                user: {
-                  id: userId,
-                },
-              };
-
               agent
-                .createAddress(addressData, token)
+                .updateAddress(values, token, currentAddress.id)
                 .then((res) => res.json())
                 .then((data) => {
                   if (!data.errors) {
-                    message.success("New address added successfully");
-
-                    onCreate(values);
-                    form.resetFields();
+                    message.success("Address updated successfully");
                   } else {
                     for (let error of data.errors) {
                       message.error(error.msg);
                     }
                   }
                 });
-
               form.resetFields();
               onCreate(values);
             })
@@ -56,28 +49,24 @@ export default function CreateNewAddressModal({
             });
         }}
       >
-        <Form form={form} layout="vertical" name="form_in_modal">
-          {/* division */}
+        <Form
+          form={form}
+          layout="vertical"
+          name="form_in_modal"
+          initialValues={currentAddress}
+        >
+          {/* district */}
           <Form.Item
             name="division"
             label="Division&nbsp;:"
             rules={[
               {
                 required: true,
-                message: "Please choose a division!",
+                message: "Please enter division name!",
               },
             ]}
           >
-            <Select defaultValue="Choose division..." allowClear>
-              <Option value="barisal">Barisal</Option>
-              <Option value="chittagong">Chittagong</Option>
-              <Option value="dhaka">Dhaka</Option>
-              <Option value="khulna">Khulna</Option>
-              <Option value="mymenshingh">Mymenshingh</Option>
-              <Option value="rajshahi">Rajshahi</Option>
-              <Option value="rangpur">Rangpur</Option>
-              <Option value="sylhet">Sylhet</Option>
-            </Select>
+            <Input />
           </Form.Item>
 
           {/* district */}

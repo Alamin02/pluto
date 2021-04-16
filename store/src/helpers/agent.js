@@ -125,4 +125,15 @@ export const agent = {
       },
     });
   },
+
+  updateAddress: (addressData, token, addressId) => {
+    return fetch(`${baseUrl}/addresses/${addressId}`, {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(addressData),
+    });
+  },
 };

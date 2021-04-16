@@ -58,11 +58,11 @@ const RegistrationForm = () => {
         if (token) {
           localStorage.setItem("token", token);
           dispatch({ type: "auth/login", payload: token });
-          message.success("user create successfully");
+          message.success("New account has been created");
           form.resetFields();
           history.push("/");
         } else {
-          message.error("User already exists");
+          message.error("Account with similar email already exists");
         }
       });
   };
@@ -87,7 +87,7 @@ const RegistrationForm = () => {
         {/* Username */}
         <Form.Item
           name="name"
-          label={<span>Fullname&nbsp;</span>}
+          label={<span>Full name&nbsp;</span>}
           rules={[
             {
               required: true,
@@ -163,9 +163,7 @@ const RegistrationForm = () => {
                   return Promise.resolve();
                 }
 
-                return Promise.reject(
-                  "The two passwords that you entered do not match!"
-                );
+                return Promise.reject("Password does not match!");
               },
             }),
           ]}

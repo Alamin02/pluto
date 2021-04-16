@@ -1,5 +1,5 @@
 const initialState = {
-  products: JSON.parse(localStorage.getItem('productList')) || "[]",
+  products: JSON.parse(localStorage.getItem("productList")) || [],
   totalValue: 0,
 };
 

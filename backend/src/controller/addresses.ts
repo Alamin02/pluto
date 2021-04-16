@@ -98,7 +98,7 @@ export async function updateAddress(
   }
 
   try {
-    const { division, city, district, address, user } = req.body;
+    const { division, city, district, address } = req.body;
 
     const newAddress = new Address();
 
@@ -106,7 +106,7 @@ export async function updateAddress(
     newAddress.district = district;
     newAddress.city = city;
     newAddress.address = address;
-    newAddress.user = user;
+    newAddress.user = res.locals.user.id;
 
     await addressRepository.update({ id: req.params.addressId }, newAddress);
   } catch (e) {

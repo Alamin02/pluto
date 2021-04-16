@@ -3,7 +3,7 @@ import { Table } from "antd";
 import { Link } from "react-router-dom";
 
 import { agent } from "../../helpers/agent";
-import { columns } from "./addressTableColumnsUserProfile";
+import { columns } from "./addressTableColumns";
 
 export default function Addresses() {
   const token = localStorage.getItem("token");

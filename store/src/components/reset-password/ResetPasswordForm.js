@@ -1,9 +1,9 @@
 import { Form, Input, Button, message } from "antd";
 import styles from "./ResetPasswordForm.module.css";
-import { agent } from "../../helpers/agent"
+import Section from "../styled-components/Section";
+import { agent } from "../../helpers/agent";
 
 const ResetPasswordForm = ({ id }) => {
-
   const [form] = Form.useForm();
   const layout = {
     labelCol: {
@@ -22,21 +22,21 @@ const ResetPasswordForm = ({ id }) => {
   };
 
   const onFinishForPassword = (values) => {
-    console.log(id)
-    console.log("password: ", values)
     agent
       .updateUserPassword(values, id)
       .then((res) => res.json())
       .then(({ info }) => {
         if (info) {
-          message.success(" Password Update successfully");
+          message.success(" Password updated successfully");
           form.resetFields();
         } else {
-          message.error(" The password you enter doesn't match with the older one");
+          message.error(
+            " The password you entered doesn't match with the older one"
+          );
           form.resetFields();
         }
-      })
-  }
+      });
+  };
 
   return (
     <Form
@@ -48,8 +48,7 @@ const ResetPasswordForm = ({ id }) => {
       }}
       onFinish={onFinishForPassword}
     >
-      <section className={styles.passwordSection}>
-        <h2 className={styles.passwordSectionTitle}>Update User Password</h2>
+      <Section heading="Update User Password">
         {/* OLd Password */}
         <Form.Item
           {...tailLayout}
@@ -58,14 +57,11 @@ const ResetPasswordForm = ({ id }) => {
           rules={[
             {
               required: true,
-              message: "Please input your Password!",
+              message: "Please input your password!",
             },
           ]}
         >
-          <Input
-            type="password"
-            placeholder="Password"
-          />
+          <Input type="password" placeholder="Password" />
         </Form.Item>
         {/* New Password */}
         <Form.Item
@@ -75,27 +71,24 @@ const ResetPasswordForm = ({ id }) => {
           rules={[
             {
               required: true,
-              message: "Please input your Password!",
+              message: "Please input your password!",
             },
           ]}
           hasFeedback
         >
-          <Input
-            type="password"
-            placeholder="Password"
-          />
+          <Input type="password" placeholder="Password" />
         </Form.Item>
         {/* Confirm Password */}
         <Form.Item
           {...tailLayout}
-          name="confrim password"
+          name="confirm password"
           label="Confirm Password"
           dependencies={["newPassword"]}
           hasFeedback
           rules={[
             {
               required: true,
-              message: "Please input your Password!",
+              message: "Please input your password!",
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
@@ -110,25 +103,17 @@ const ResetPasswordForm = ({ id }) => {
             }),
           ]}
         >
-          <Input
-            type="password"
-            placeholder="Password"
-          />
+          <Input type="password" placeholder="Password" />
         </Form.Item>
-
-      </section>
+      </Section>
 
       {/* set new password button */}
       <Form.Item className={styles.buttonSection}>
-        <Button
-          type="primary"
-          htmlType="submit"
-        >
+        <Button type="primary" htmlType="submit">
           Set New Password
-              </Button>
+        </Button>
       </Form.Item>
     </Form>
-
   );
 };
 

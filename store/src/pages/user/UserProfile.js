@@ -93,87 +93,85 @@ function UserProfile() {
 
   return (
     <MainContainer>
-      <div className={styles.container}>
-        <HeaderSection headerText="manage my account" />
-        <Section heading="Basic info" key={userInfo.key}>
+      <HeaderSection headerText="manage my account" />
+      <Section heading="Basic info" key={userInfo.key}>
+        <div
+          className={classNames(
+            { [styles.basicInfo]: screens },
+            { [styles.basicInfoXs]: screens.xs }
+          )}
+        >
+          <div className={styles.imageBox} key={1}>
+            <img
+              src={imageData ? imageData.path : userInfo.photo}
+              className={classNames(
+                { [styles.userAvatar]: screens },
+                { [styles.userAvatarXs]: screens.xs }
+              )}
+              alt="user_photo"
+            />
+          </div>
+
           <div
             className={classNames(
-              { [styles.basicInfo]: screens },
-              { [styles.basicInfoXs]: screens.xs }
+              { [styles.basicInfoText]: screens },
+              { [styles.basicInfoTextXs]: screens.xs }
             )}
+            key={userData.id}
           >
-            <div className={styles.imageBox} key={1}>
-              <img
-                src={imageData ? imageData.path : userInfo.photo}
-                className={classNames(
-                  { [styles.userAvatar]: screens },
-                  { [styles.userAvatarXs]: screens.xs }
-                )}
-                alt="user_photo"
-              />
-            </div>
-
             <div
               className={classNames(
-                { [styles.basicInfoText]: screens },
-                { [styles.basicInfoTextXs]: screens.xs }
+                { [styles.welcomeMessage]: screens },
+                { [styles.welcomeMessageXs]: screens.xs }
               )}
-              key={userData.id}
             >
-              <div
-                className={classNames(
-                  { [styles.welcomeMessage]: screens },
-                  { [styles.welcomeMessageXs]: screens.xs }
-                )}
-              >
-                Welcome, {userData.name}.
-              </div>
-              <div>
-                <MailOutlined />
-                &nbsp;&nbsp;
-                {userData.email}
-              </div>
-              <div
-                className={classNames(
-                  { [styles.phoneNumber]: screens },
-                  { [styles.phoneNumberXs]: screens.xs }
-                )}
-              >
-                <PhoneOutlined />
-                &nbsp;&nbsp;
-                {userData.phone}
-              </div>
+              Welcome, {userData.name}.
+            </div>
+            <div>
+              <MailOutlined />
+              &nbsp;&nbsp;
+              {userData.email}
+            </div>
+            <div
+              className={classNames(
+                { [styles.phoneNumber]: screens },
+                { [styles.phoneNumberXs]: screens.xs }
+              )}
+            >
+              <PhoneOutlined />
+              &nbsp;&nbsp;
+              {userData.phone}
             </div>
           </div>
-        </Section>
+        </div>
+      </Section>
 
-        <section className={styles.emptySpace}></section>
+      <section className={styles.emptySpace}></section>
 
-        <Section heading="Your shipping addresses">
-          <AddressUserProfile />
-        </Section>
+      <Section heading="Your shipping addresses">
+        <AddressUserProfile />
+      </Section>
 
-        <section className={styles.buttonSection}>
-          <Link to="/profile/edit">
-            <Button type="primary">Update Profile</Button>
-          </Link>
-        </section>
+      <section className={styles.buttonSection}>
+        <Link to="/profile/edit">
+          <Button type="primary">Update Profile</Button>
+        </Link>
+      </section>
 
-        <section className={styles.emptySpace}></section>
+      <section className={styles.emptySpace}></section>
 
-        <Section heading="Your orders">
-          {userOrders.length === 0 ? (
-            <div>You currently have no orders</div>
-          ) : (
-            <Table
-              columns={columns}
-              bordered
-              dataSource={userOrders}
-              pagination={false}
-            />
-          )}
-        </Section>
-      </div>
+      <Section heading="Your orders">
+        {userOrders.length === 0 ? (
+          <div>You currently have no orders</div>
+        ) : (
+          <Table
+            columns={columns}
+            bordered
+            dataSource={userOrders}
+            pagination={false}
+          />
+        )}
+      </Section>
 
       <br />
     </MainContainer>

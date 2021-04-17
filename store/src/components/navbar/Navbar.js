@@ -15,7 +15,7 @@ import { agent } from "../../helpers/agent";
 import styles from "./Navbar.module.css";
 import appStyles from "../../App.module.css";
 import { navbarMenus } from "./navbarInfo";
-import userInfo from "../user-profile/userInfo"
+import userInfo from "../user-profile/userInfo";
 
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
@@ -28,7 +28,7 @@ function Navbar() {
   const [user, setUser] = useState("");
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);
-  const imageData = useSelector((state) => state.file.image)
+  const imageData = useSelector((state) => state.file.image);
 
   function fetchProductsCategory() {
     agent
@@ -50,13 +50,13 @@ function Navbar() {
         .then((res) => res.json())
         .then(({ data, errors }) => {
           if (errors) {
-            localStorage.removeItem("token")
+            localStorage.removeItem("token");
           }
           setUser(data);
-          dispatch({ type: "user/profile", payload: data.image });
+          if (data) dispatch({ type: "user/profile", payload: data.image });
         });
     }
-  }, [token, dispatch])
+  }, [token, dispatch]);
 
   const handleLogout = () => {
     dispatch({

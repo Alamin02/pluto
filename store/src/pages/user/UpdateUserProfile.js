@@ -157,7 +157,7 @@ export default function UpdateUserProfile() {
       >
         <section className={styles.eachSection} key={userData.id}>
           <Row gutter={[16, 16]}>
-            <Col span={12}>
+            <Col span={12} md={12} sm={24} xs={24}>
               <h2 className={styles.eachSectionTitle}>Update basic info</h2>
 
               {/* email */}
@@ -209,7 +209,7 @@ export default function UpdateUserProfile() {
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={12} md={12} sm={24} xs={24}>
               <h2 className={styles.eachSectionTitle}>Update user Profile</h2>
               <div
                 className={classNames(

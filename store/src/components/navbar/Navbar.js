@@ -8,7 +8,6 @@ import {
   PhoneOutlined,
   ShoppingOutlined,
   DownOutlined,
-  UserOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 
@@ -16,6 +15,7 @@ import { agent } from "../../helpers/agent";
 import styles from "./Navbar.module.css";
 import appStyles from "../../App.module.css";
 import { navbarMenus } from "./navbarInfo";
+import userInfo from "../user-profile/userInfo"
 
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
@@ -28,6 +28,7 @@ function Navbar() {
   const [user, setUser] = useState("");
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);
+  const imageData = useSelector((state) => state.file.image)
 
   function fetchProductsCategory() {
     agent
@@ -43,17 +44,19 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (token)
+    if (token) {
       agent
-        .getMe(token)
+        .getProfile(token)
         .then((res) => res.json())
-        .then(({ data, error }) => {
-          if (error) {
-            localStorage.removeItem("token");
+        .then(({ data, errors }) => {
+          if (errors) {
+            localStorage.removeItem("token")
           }
           setUser(data);
+          dispatch({ type: "user/profile", payload: data.image });
         });
-  }, [token]);
+    }
+  }, [token, dispatch])
 
   const handleLogout = () => {
     dispatch({
@@ -126,7 +129,8 @@ function Navbar() {
               <Dropdown overlay={menu} placement="bottomRight">
                 <Avatar
                   className={styles.avatarStyle}
-                  icon={<UserOutlined />}
+                  // icon={<UserOutlined />}
+                  src={imageData ? imageData.path : userInfo.photo}
                 />
               </Dropdown>
               &nbsp;&nbsp;|&nbsp;&nbsp;

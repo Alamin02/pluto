@@ -43,7 +43,7 @@ function MessageForm() {
             after their review of your submitted information
           </p>
         </Col>
-        <Col span={12} xs={24} sm={24} md={24} lg={12}>
+        <Col span={12} xs={24} sm={24} md={24} lg={12} style={{ paddingLeft: "10px" }}>
           <Row gutter={[16, 16]}>
             <Col span={12} xs={24} sm={12}>
               <div style={labelStyle}>

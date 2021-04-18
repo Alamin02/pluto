@@ -1,12 +1,17 @@
-import { getAllProductsImages, getSingleImage } from "./productImage";
-
 export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
-  users as usersController,
-  updateUser as updateUserController,
-  deleteUser as deleteUserController,
 } from "./auth";
+
+export {
+  getUsers as getUsersController,
+  getUser as getUserController,
+  deleteUser as deleteUserController,
+  updateUserPassword as updateUserPasswordController,
+  updateUserAdminPanel as updateUserAdminPanelController,
+  updateUserFrontend as updateUserFrontendController,
+  getProfile as getProfileController,
+} from "./user";
 
 export {
   createProduct as createProductController,
@@ -56,6 +61,7 @@ export {
   deleteAddress as deleteAddressController,
 } from "./addresses";
 
+export { createUserImage as createUserImageController } from "./userImage";
 export {
   getAllProductsImages as getAllProductsImagesController,
   getSingleImage as getSingleImageController,

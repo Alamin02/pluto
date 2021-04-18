@@ -97,7 +97,7 @@ export default function EditProductModal({
         setOfferOptions(data);
       });
     }
-  }, [existingRecord]);
+  }, [existingRecord, form]);
 
   const handleUpload = async (info) => {
     const { status } = info.file;
@@ -222,7 +222,7 @@ export default function EditProductModal({
               },
             ]}
             name="categoryId"
-            initialValue={existingRecord.category && existingRecord.category.id}
+            initialValue={existingRecord && existingRecord.category && existingRecord.category.id}
           >
             {existingRecord && (
               <Select>
@@ -236,11 +236,13 @@ export default function EditProductModal({
           </Form.Item>
 
           {/* offer */}
-          <Form.Item label="Offer" name="offerId">
+          <Form.Item
+            label="Offer"
+            name="offerId"
+            initialValue={existingRecord && existingRecord.offer && existingRecord.offer.id}
+          >
             {existingRecord && (
-              <Select
-                defaultValue={existingRecord.offer && existingRecord.offer.id}
-              >
+              <Select>
                 {offerOptions.map((offer) => (
                   <Option value={offer.id} key={offer.id}>
                     {offer.name}
@@ -285,6 +287,7 @@ export default function EditProductModal({
               showUploadList={false}
               accept="image/*"
               multiple={true}
+
             >
               <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
             </Upload>

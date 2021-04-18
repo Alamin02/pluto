@@ -7,3 +7,4 @@ export { Offer } from "./offer";
 export { Order } from "./order";
 export { OrderedProduct } from "./orderedProduct";
 export { Address } from "./address";
+export { UserImage } from "./userImage";

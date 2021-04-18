@@ -2,6 +2,8 @@ import React from "react";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import PrivateRoute from "./components/routes/PrivateRoute";
+
 import Home from "./pages/Home";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
@@ -45,7 +47,7 @@ function App() {
         <Route path="/offers" component={Offers} />
 
         <Route path="/cart" component={Cart} exact />
-        <Route path="/checkOut" component={CheckOut} exact />
+        <PrivateRoute path="/checkout" component={CheckOut} exact />
 
         <Route path="/products" component={Products} exact />
         <Route path="/products/:id" component={Product} exact />

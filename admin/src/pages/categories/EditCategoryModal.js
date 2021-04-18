@@ -13,7 +13,7 @@ export default function EditCategoryModal({
 
   useEffect(() => {
     form.resetFields();
-  }, [currentCategory]);
+  }, [currentCategory, form]);
 
   return (
     <div>

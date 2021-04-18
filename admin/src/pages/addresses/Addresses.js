@@ -8,21 +8,22 @@ import { columns } from "./addressTableColumns";
 const { Title } = Typography;
 
 export default function Addresses() {
+  const token = localStorage.getItem("token");
   const [addressData, setAddressData] = useState([]);
 
-  function fetchOrders() {
+  const fetchOrders = (token) => {
     agent
-      .getAddresses()
+      .getAddresses(token)
       .then((res) => res.json())
       .then(({ data }) => {
         setAddressData(data);
         console.log(data);
       });
-  }
+  };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    fetchOrders(token);
+  }, [token]);
 
   return (
     <div>

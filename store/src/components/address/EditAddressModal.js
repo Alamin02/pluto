@@ -1,45 +1,48 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Input, message } from "antd";
+
 import { agent } from "../../helpers/agent";
-export default function EditOfferModal({
+
+export default function EditAddressModal({
   visible,
   onCreate,
   onCancel,
-  existingRecord,
+  currentAddress,
 }) {
   const [form] = Form.useForm();
 
   useEffect(() => {
     form.resetFields();
-  }, [existingRecord, form]);
+  }, [currentAddress, form]);
 
   return (
     <div>
       <Modal
         visible={visible}
-        title="Edit offer"
+        title="Edit User"
         okText="Save"
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
           const token = localStorage.getItem("token");
+
           form
             .validateFields()
             .then((values) => {
               agent
-                .editOffer(values, token, existingRecord.id)
+                .updateAddress(values, token, currentAddress.id)
                 .then((res) => res.json())
                 .then((data) => {
                   if (!data.errors) {
-                    form.resetFields();
-                    onCreate(data);
-                    message.success(data.msg);
+                    message.success("Address updated successfully");
                   } else {
                     for (let error of data.errors) {
                       message.error(error.msg);
                     }
                   }
                 });
+              form.resetFields();
+              onCreate(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);
@@ -49,48 +52,63 @@ export default function EditOfferModal({
         <Form
           form={form}
           layout="vertical"
-          initialValues={existingRecord}
-          preserve={false}
+          name="form_in_modal"
+          initialValues={currentAddress}
         >
-          {/* offer name */}
+          {/* district */}
           <Form.Item
-            name="name"
-            label="Offer Name&nbsp;:"
+            name="division"
+            label="Division&nbsp;:"
             rules={[
               {
                 required: true,
-                message: "Please enter offer name!",
+                message: "Please enter division name!",
               },
             ]}
           >
             <Input />
           </Form.Item>
 
-          {/* discount */}
+          {/* district */}
           <Form.Item
-            name="discount"
-            label="Discount&nbsp;:"
+            name="district"
+            label="District&nbsp;:"
             rules={[
               {
                 required: true,
-                message: "Please enter discount!",
+                message: "Please enter district name!",
               },
             ]}
           >
             <Input />
           </Form.Item>
-          {/* description */}
+
+          {/* city */}
           <Form.Item
-            name="description"
-            label="Description&nbsp;:"
+            name="city"
+            label="City&nbsp;:"
             rules={[
               {
                 required: true,
-                message: "Please enter description!",
+                message: "Please enter city name!",
               },
             ]}
           >
-            <Input.TextArea />
+            <Input />
+          </Form.Item>
+
+          {/* address */}
+          <Form.Item
+            name="address"
+            label="Full address&nbsp;:"
+            rules={[
+              {
+                required: true,
+                message: "Please enter full address!",
+              },
+            ]}
+          >
+            <Input />
           </Form.Item>
         </Form>
       </Modal>

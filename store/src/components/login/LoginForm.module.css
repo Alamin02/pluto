@@ -1,42 +1,22 @@
 @import "~antd/dist/antd.css";
 
-.containerFluid {
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 0 15px;
-}
-.titleHolder {
-  text-align: center;
-  position: relative;
-  padding: 0 0 20px;
-}
-.titleHolder:after {
-  transform: translateX(-50%);
-  content: "";
-  background: #1890ff;
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  height: 3px;
-  width: 80px;
-}
 .loginForm {
-  max-width: 300px;
+  max-width: 350px;
+  margin: 0 auto;
+  background: #fafafa;
+  padding: 2rem;
+  border-radius: 5px;
 }
-.loginFormForgot {
-  float: right;
+
+.rememberSection {
+  display: flex;
+  justify-content: space-between;
 }
-.antColRtl .loginFormForgot {
-  float: left;
-}
-.loginFormButton {
+
+.loginButton {
   width: 100%;
 }
-.navHr {
-  border: 1px solid #eeeeee;
-  border-radius: 9999px;
-}
-.icon{
-  font-size: 30px;
-  text-align:center
+
+.center {
+  text-align: center;
 }

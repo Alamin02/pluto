@@ -1,7 +1,7 @@
-/* .contactUsContainer {
-  max-width: 1200px;
-  margin: 40px 70px;
-} */
+.contactUsContainer {
+  padding-left: 11px;
+  padding-right: 11px;
+}
 .contactTitle {
   color: #003164 !important;
   font-size: 40px !important;
@@ -25,6 +25,7 @@
   margin-top: 33px !important;
 }
 
-.longMessageText{
+.longMessageText {
   margin-right: 15px;
+  text-align: justify;
 }

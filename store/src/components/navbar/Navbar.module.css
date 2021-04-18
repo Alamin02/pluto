@@ -1,4 +1,5 @@
-.navBackgroundColor {
+.menuStyle {
+  text-transform: capitalize;
 }
 
 .navbarTop {
@@ -12,6 +13,7 @@
 .logoContainer {
   text-align: center;
 }
+
 .logo {
   height: 3rem;
   width: auto;
@@ -37,4 +39,18 @@
   text-align: center;
   padding: 1rem;
   border-bottom: none;
+}
+
+.logoutText {
+  margin-left: 0.5rem;
+}
+
+.avatarStyle {
+  color: white;
+  background-color: #bbbbbb;
+}
+.downOutlinedStyle {
+  margin-left: 0.5rem;
+  margin-right: 0;
+  font-size: 0.8rem;
 }

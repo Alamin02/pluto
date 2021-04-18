@@ -36,9 +36,9 @@ export default function EditBlogModal({
   const [form] = Form.useForm();
   useEffect(() => {
     form.resetFields();
-  }, [existingRecord]);
+  }, [existingRecord, form]);
   const [blogImage, setBlogImage] = useState("");
-  const [warning, setWarning] = useState("");
+  const warning = "";
 
   const deleteImage = (e) => {
     agent
@@ -172,12 +172,12 @@ export default function EditBlogModal({
               valuePropName="fileList"
               getValueFromEvent={normFile}
               noStyle
-              // rules={[
-              //   {
-              //     required: true,
-              //     message: "Please input blogImage",
-              //   },
-              // ]}
+            // rules={[
+            //   {
+            //     required: true,
+            //     message: "Please input blogImage",
+            //   },
+            // ]}
             >
               <Upload.Dragger
                 name="files"

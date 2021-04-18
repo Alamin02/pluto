@@ -27,12 +27,14 @@ export default function Products() {
   const query = qs.parse(window.location.search);
 
   const [totalProductsInfo, setTotalProductsInfo] = useState("");
+  const [productData, setProductData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [visibleEditProduct, setVisibleEditProduct] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
   const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 10);
-  const [sort, setSort] = useState("name");
+
+  const sort = "name";
 
   const fetchProducts = () => {
     const queryString = qs.stringify({
@@ -98,10 +100,29 @@ export default function Products() {
       .then(() => fetchProducts());
   }
 
-  const [productData, setProductData] = useState([]);
-  console.log(productData);
 
   useEffect(() => {
+    const fetchProducts = () => {
+      const queryString = qs.stringify({
+        page: currentPage,
+        perPage,
+        sort,
+
+      });
+
+      agent
+        .getProducts(queryString)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          console.log(data.productCount);
+          setTotalProductsInfo(data);
+          setProductData(data.products);
+          if (selectedProduct)
+            setSelectedProduct(
+              data.products.find((product) => product.id === selectedProduct.id)
+            );
+        });
+    };
     fetchProducts();
   }, [currentPage, perPage, sort]);
 

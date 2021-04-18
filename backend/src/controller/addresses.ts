@@ -11,9 +11,20 @@ export async function getAllAddresses(
   res: express.Response
 ) {
   const addressRepository = getConnection().getRepository(Address);
+  const { id, role } = res.locals.user;
+
   const addresses = await addressRepository.find({
     select: ["id", "division", "city", "district", "address"],
     relations: ["user"],
+    ...(role === "admin"
+      ? {}
+      : {
+          where: {
+            user: {
+              id: id,
+            },
+          },
+        }),
   });
 
   res.json({ data: addresses });
@@ -87,7 +98,7 @@ export async function updateAddress(
   }
 
   try {
-    const { division, city, district, address, user } = req.body;
+    const { division, city, district, address } = req.body;
 
     const newAddress = new Address();
 
@@ -95,7 +106,7 @@ export async function updateAddress(
     newAddress.district = district;
     newAddress.city = city;
     newAddress.address = address;
-    newAddress.user = user;
+    newAddress.user = res.locals.user.id;
 
     await addressRepository.update({ id: req.params.addressId }, newAddress);
   } catch (e) {

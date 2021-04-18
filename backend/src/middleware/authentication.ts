@@ -26,9 +26,10 @@ export const authenticationMiddleware = (
     if (err) return res.status(401).json({ error: "Unauthorized" });
 
     const userRepository = getConnection().getRepository(User);
+
     const userRecord = await userRepository.findOne(
       { email: user.email },
-      { select: ["name", "email", "role"] }
+      { select: ["id", "name", "email", "role"] }
     );
 
     if (!userRecord) {

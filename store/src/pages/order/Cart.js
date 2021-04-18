@@ -16,15 +16,16 @@ function Cart() {
     let price = 0;
     productList.forEach((product) => {
       price += product.price * product.quantity;
+      localStorage.setItem("product", product)
     });
     setTotalPrice(price);
+    localStorage.setItem("productList", JSON.stringify(productList))
+
   }, [productList, totalPrice, setTotalPrice]);
 
   const handleRemoveProduct = (id) => {
     dispatch({ type: "cart/removeProduct", payload: { id } });
   };
-
-  console.log("cart", productList);
 
   if (!productList.length) {
     return (
@@ -74,7 +75,7 @@ function Cart() {
         <div className={styles.bottomSection}>
           <div>&nbsp;</div>
           <div>
-            <Link to="checkOut">
+            <Link to="checkout">
               <Button type="primary" style={{ textTransform: "uppercase" }}>
                 Checkout
               </Button>

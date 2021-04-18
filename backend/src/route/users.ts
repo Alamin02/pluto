@@ -6,9 +6,13 @@ import { authenticationMiddleware } from "../middleware";
 import {
   userLoginController,
   userRegistrationController,
-  usersController,
-  updateUserController,
+  getUsersController,
+  getUserController,
+  updateUserAdminPanelController,
   deleteUserController,
+  updateUserPasswordController,
+  updateUserFrontendController,
+  getProfileController,
 } from "../controller";
 
 const router = express.Router();
@@ -34,25 +38,47 @@ router.post(
   userRegistrationController
 );
 
-// @GET - /api/v1/users/
-router.get("/", usersController);
-
 // @PUT - /api/v1/users/:userId
 router.put(
-  "/:userId",
+  "/update/:userId",
   [
     body("name").not().isEmpty().withMessage("Name must not be empty"),
     body("email").isEmail().withMessage("Invalid Email address"),
   ],
   authenticationMiddleware,
-  updateUserController
+  updateUserFrontendController
 );
 
-// @DELETE - /api/v1/users/:userId
-router.delete("/:userId", authenticationMiddleware, deleteUserController);
+// @PUT - /api/v1/users/:userId
+router.put(
+  "/admin/:userId",
+  [
+    body("name").not().isEmpty().withMessage("Name must not be empty"),
+    body("email").isEmail().withMessage("Invalid Email address"),
+  ],
+  authenticationMiddleware,
+  updateUserAdminPanelController
+);
+
+// @GET - /api/v1/users/
+router.get("/", getUsersController);
 
 router.get("/me", authenticationMiddleware, (req, res) => {
   res.json({ data: res.locals.user });
 });
+
+router.get("/profile", authenticationMiddleware, getProfileController);
+
+// @GET - /api/v1/user/
+router.get(
+  "/:\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b",
+  getUserController
+);
+
+// @PUT - /api/v1/users/
+router.put("/:userId", updateUserPasswordController);
+
+// @DELETE - /api/v1/users/:userId
+router.delete("/:userId", authenticationMiddleware, deleteUserController);
 
 export default router;

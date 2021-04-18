@@ -20,7 +20,11 @@ export default function AddToCart({ product }) {
 
   const handleAddToCart = () => {
     dispatch({ type: "cart/addProduct", payload: product });
-    openNotification({ productTitle: product.name, type: "success" });
+    openNotification({
+      productTitle: product.name,
+      type: "success",
+      placement: "bottomRight",
+    });
   };
 
   const handlePlusButton = () => {

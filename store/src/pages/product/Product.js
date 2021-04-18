@@ -13,23 +13,21 @@ const ProductDetails = () => {
 
   const { id } = useParams();
 
-  function fetchProduct() {
-    agent
-      .getProduct(id)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        console.log(data);
-        setProduct(data);
-        setIsLoading(false);
-      });
-  }
-
   useEffect(() => {
+    const fetchProduct = () => {
+      agent
+        .getProduct(id)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          setProduct(data);
+          setIsLoading(false);
+        });
+    };
     fetchProduct();
   }, [id]);
 
   if (isLoading) {
-    return <Loading />; // Have to replace with loading component
+    return <Loading />;
   }
 
   return (

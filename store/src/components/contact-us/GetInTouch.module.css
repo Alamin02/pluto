@@ -9,6 +9,11 @@
   text-align: center;
 }
 
-.titleStyle{
+.titleStyle {
   margin-bottom: 0;
+}
+@media screen and (min-width: 768px) {
+  .bodyStyle {
+    height: 230px !important;
+  }
 }

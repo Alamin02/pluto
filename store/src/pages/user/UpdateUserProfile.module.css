@@ -1,7 +1,3 @@
-.container {
-  margin-top: 1rem;
-}
-
 .mainHeading {
   text-transform: capitalize;
   text-align: center;
@@ -25,13 +21,206 @@
   padding-top: 1.5rem;
 }
 
-.inputStyle{
+.inputStyle {
   margin-left: 3rem;
 }
-.inputStyleXs{
+.inputStyleXs {
   margin-left: 0rem;
 }
 
 .emptySpace {
   padding: 1rem;
+}
+
+.basicInfoText {
+  margin-left: 2.5rem;
+}
+.basicInfoTextXs {
+  margin-left: 0;
+}
+
+.userAvatar {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+}
+.userAvatarXs {
+  width: 9rem;
+  margin-bottom: 1.7rem;
+  margin-top: 0.5rem;
+  align-self: center;
+  border-radius: 50%;
+}
+
+.basicInfo {
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: row;
+}
+.basicInfoXs {
+  flex-direction: column;
+}
+
+.imageBox {
+  display: block;
+  position: relative;
+}
+.editBox {
+  border: 1px solid #30363d;
+  border-radius: 50% !important;
+  color: #f0f6fc;
+  background-color: #161b22;
+  position: absolute !important;
+  top: 66% !important;
+  left: -7% !important;
+  padding-right: 8px !important;
+  padding-left: 8px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  margin-left: 8px !important;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 575px) {
+  .basicInfo {
+    text-align: center;
+  }
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 33.5% !important;
+  }
+}
+@media screen and (max-width: 555px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 33% !important;
+  }
+}
+@media screen and (max-width: 530px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 32% !important;
+  }
+}
+@media screen and (max-width: 510px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 31% !important;
+  }
+}
+@media screen and (max-width: 480px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 30% !important;
+  }
+}
+@media screen and (max-width: 450px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 29% !important;
+  }
+}
+@media screen and (max-width: 430px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 28% !important;
+  }
+}
+@media screen and (max-width: 415px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 27% !important;
+  }
+}
+@media screen and (max-width: 400px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 26% !important;
+  }
+}
+@media screen and (max-width: 390px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 25% !important;
+  }
+}
+@media screen and (max-width: 380px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 23% !important;
+  }
+}
+@media screen and (max-width: 365px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 22% !important;
+  }
+}
+@media screen and (max-width: 351px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 21% !important;
+  }
+}
+@media screen and (max-width: 341px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 21% !important;
+  }
+}
+@media screen and (max-width: 331px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 19% !important;
+  }
+}
+@media screen and (max-width: 321px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 17% !important;
+  }
+}
+@media screen and (max-width: 311px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 16% !important;
+  }
+}
+@media screen and (max-width: 301px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 15% !important;
+  }
+}
+@media screen and (max-width: 291px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 14% !important;
+  }
+}
+@media screen and (max-width: 281px) {
+  .editBox {
+    position: absolute !important;
+    top: 57% !important;
+    left: 13% !important;
+  }
 }

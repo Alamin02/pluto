@@ -1,91 +1,119 @@
-import classNames from "classnames";
-import { Form, Input, Button } from "antd";
-import { LockOutlined } from "@ant-design/icons";
-
+import { Form, Input, Button, message } from "antd";
 import styles from "./ResetPasswordForm.module.css";
-import Heading from "../heading/Heading";
+import Section from "../styled-components/Section";
+import { agent } from "../../helpers/agent";
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = ({ id }) => {
+  const [form] = Form.useForm();
+  const layout = {
+    labelCol: {
+      span: 3,
+    },
+    wrapperCol: {
+      span: 2,
+    },
+  };
+  const tailLayout = {
+    labelCol: { span: 3 },
+    wrapperCol: {
+      span: 8,
+      offset: 1,
+    },
+  };
+
+  const onFinishForPassword = (values) => {
+    agent
+      .updateUserPassword(values, id)
+      .then((res) => res.json())
+      .then(({ info }) => {
+        if (info) {
+          message.success(" Password updated successfully");
+          form.resetFields();
+        } else {
+          message.error(
+            " The password you entered doesn't match with the older one"
+          );
+          form.resetFields();
+        }
+      });
+  };
+
   return (
-    <>
-      <div className={classNames(styles.bgColor, styles.block)}>
-        <div className={styles.containerFluid}>
-          <Heading
-            headingStyle={styles.titleHolder}
-            headingTitle="Reset your Password"
-          />
-          <Form
-            name="reset-password"
-            className={classNames(styles.forgetPassForm, styles.containerFluid)}
-            initialValues={{
-              remember: true,
-            }}
-          >
-            {/* OLd Password */}
-            <Form.Item
-              name="password"
-              label="OLd Password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your Password!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-            {/* New Password */}
-            <Form.Item
-              name="password"
-              label="New Password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your Password!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-            {/* Confirm Password */}
-            <Form.Item
-              name="password"
-              label="Confirm Password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your Password!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-            {/* Button Block */}
-            <Form.Item className={styles.antColRtl}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className={styles.loginFormButton}
-              >
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      </div>
-    </>
+    <Form
+      name="reset-password"
+      {...layout}
+      form={form}
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinishForPassword}
+    >
+      <Section heading="Update User Password">
+        {/* OLd Password */}
+        <Form.Item
+          {...tailLayout}
+          name="password"
+          label="Old Password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+        >
+          <Input type="password" placeholder="Password" />
+        </Form.Item>
+        {/* New Password */}
+        <Form.Item
+          {...tailLayout}
+          name="newPassword"
+          label="New Password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+          hasFeedback
+        >
+          <Input type="password" placeholder="Password" />
+        </Form.Item>
+        {/* Confirm Password */}
+        <Form.Item
+          {...tailLayout}
+          name="confirm password"
+          label="Confirm Password"
+          dependencies={["newPassword"]}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("newPassword") === value) {
+                  return Promise.resolve();
+                }
+
+                return Promise.reject(
+                  "The two passwords that you entered do not match!"
+                );
+              },
+            }),
+          ]}
+        >
+          <Input type="password" placeholder="Password" />
+        </Form.Item>
+      </Section>
+
+      {/* set new password button */}
+      <Form.Item className={styles.buttonSection}>
+        <Button type="primary" htmlType="submit">
+          Set New Password
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

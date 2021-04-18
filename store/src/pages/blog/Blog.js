@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import sampleBlogList from "../../components/blogs/sampleBlogList";
 import BlogDetails from "../../components/blogs/BlogDetails";
 import Error404 from "../../components/error-404/Error404";
 import MainContainer from "../../components/layout/MainContainer";

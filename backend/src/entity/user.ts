@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+} from "typeorm";
 
-import { Order, Address } from "../entity";
+import { Order, Address, UserImage } from "../entity";
 
 @Entity("users")
 export class User {
@@ -21,6 +28,10 @@ export class User {
 
   @Column("varchar")
   password!: string;
+
+  @OneToOne(() => UserImage, (userImage) => userImage.user)
+  @JoinColumn()
+  image!: UserImage;
 
   @OneToMany(() => Order, (order) => order.user)
   orders!: Order[];

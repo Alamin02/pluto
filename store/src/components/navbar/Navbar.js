@@ -1,40 +1,34 @@
-import { useDispatch } from "react-redux"
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Menu, Grid, Button, message } from "antd";
-import { Badge } from "antd";
-import { agent } from "../../helpers/agent";
+import { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Menu, Grid, message, Dropdown } from "antd";
+import { Avatar, Badge } from "antd";
+import classNames from "classnames";
 import {
   PhoneOutlined,
   ShoppingOutlined,
   DownOutlined,
-  UserOutlined,
-  LogoutOutlined
+  LogoutOutlined,
 } from "@ant-design/icons";
-import classNames from "classnames";
 
+import { agent } from "../../helpers/agent";
 import styles from "./Navbar.module.css";
 import appStyles from "../../App.module.css";
 import { navbarMenus } from "./navbarInfo";
+import userInfo from "../user-profile/userInfo";
 
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
-const menuStyle = {
-  textTransform: "capitalize",
-};
-const downOutlinedStyle = {
-  marginLeft: "0.5rem",
-  marginRight: "0",
-  fontSize: "0.8rem",
-};
 
 function Navbar() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
   const [productsCategory, setProductsCategory] = useState([]);
+  const [user, setUser] = useState("");
   const screens = useBreakpoint();
   const productList = useSelector((state) => state.cart.products);
+  const imageData = useSelector((state) => state.file.image);
 
   function fetchProductsCategory() {
     agent
@@ -42,7 +36,6 @@ function Navbar() {
       .then((res) => res.json())
       .then(({ data }) => {
         setProductsCategory(data);
-        console.log(data);
       });
   }
 
@@ -50,24 +43,54 @@ function Navbar() {
     fetchProductsCategory();
   }, []);
 
-
   useEffect(() => {
-    if (token)
+    if (token) {
       agent
-        .getMe(token)
+        .getProfile(token)
         .then((res) => res.json())
-        .then(({ data, error }) => {
-          if (error) {
+        .then(({ data, errors }) => {
+          if (errors) {
             localStorage.removeItem("token");
           }
+          setUser(data);
+          if (data) dispatch({ type: "user/profile", payload: data.image });
         });
-  }, [token]);
+    }
+  }, [token, dispatch]);
 
   const handleLogout = () => {
-    dispatch({ type: "auth/logout", payload: localStorage.removeItem("token") });
-    message.success("logout successfully")
-
+    dispatch({
+      type: "auth/logout",
+      payload: localStorage.removeItem("token"),
+    });
+    message.success("You have logged out");
+    history.push("/");
   };
+
+  const menu = (
+    <Menu>
+      <Menu.Item style={{ padding: "0.5rem 1.5rem" }}>
+        <Link to="/profile">
+          <div style={{ textTransform: "capitalize" }}>{user && user.name}</div>
+          <div style={{ color: "gray" }}>{user && user.email}</div>
+        </Link>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item style={{ padding: "0.5rem 1.5rem" }}>
+        <Link to="/profile">Profile</Link>
+      </Menu.Item>
+      <Menu.Item style={{ padding: "0.5rem 1.5rem" }}>
+        <Link to="/profile/edit">Update profile</Link>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item style={{ padding: "0.5rem 1.5rem" }}>
+        <div onClick={handleLogout}>
+          <LogoutOutlined />
+          <span className={styles.logoutText}>Logout</span>
+        </div>
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <div className={styles.navBackgroundColor}>
@@ -88,31 +111,36 @@ function Navbar() {
               />
             </Link>
           </div>
-          {(!token || !token.length) ? (
+          {!token || !token.length || !user ? (
             <div className={styles.navbarTopRight}>
-              <Link to="/login">
-                log in
-              </Link>&nbsp;&nbsp;|&nbsp;&nbsp;
+              <Link to="/login">log in</Link>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
               <Link to={navbarMenus.cartUrl}>
-                <ShoppingOutlined />
+                <Badge count={!!productList.length ? productList.length : 0}>
+                  <Avatar
+                    className={styles.avatarStyle}
+                    icon={<ShoppingOutlined />}
+                  />
+                </Badge>
               </Link>
             </div>
           ) : (
             <div className={styles.navbarTopRight}>
-              <Link to="#">
-                <UserOutlined />
-              </Link>&nbsp;&nbsp;
-              <Button
-                icon={<LogoutOutlined />}
-                onClick={handleLogout}
-                type="primary"
-                danger
-
-              >
-              </Button>
+              <Dropdown overlay={menu} placement="bottomRight">
+                <Avatar
+                  className={styles.avatarStyle}
+                  // icon={<UserOutlined />}
+                  src={imageData ? imageData.path : userInfo.photo}
+                />
+              </Dropdown>
               &nbsp;&nbsp;|&nbsp;&nbsp;
               <Link to={navbarMenus.cartUrl}>
-                <ShoppingOutlined />
+                <Badge count={!!productList.length ? productList.length : 0}>
+                  <Avatar
+                    className={styles.avatarStyle}
+                    icon={<ShoppingOutlined />}
+                  />
+                </Badge>
               </Link>
             </div>
           )}
@@ -122,7 +150,7 @@ function Navbar() {
         {/* bottom navbar */}
         <Menu mode="horizontal" className={styles.navbarBottom}>
           <Menu.Item>
-            <Link to={navbarMenus.homeUrl} style={menuStyle}>
+            <Link to={navbarMenus.homeUrl} className={styles.menuStyle}>
               {navbarMenus.home}
             </Link>
           </Menu.Item>
@@ -131,55 +159,54 @@ function Navbar() {
             title={
               <span>
                 {navbarMenus.shop}
-                <DownOutlined style={downOutlinedStyle} />
+                <DownOutlined className={styles.downOutlinedStyle} />
               </span>
             }
-            style={menuStyle}
+            className={styles.menuStyle}
           >
-            {productsCategory && productsCategory.map((category) => {
-              if (category.children) {
-                return (
-                  <SubMenu key={category.id} title={category.name} style={menuStyle}>
-                    {category.children.map((subCategory) => {
-                      return (<Menu.Item key={subCategory.id}>{subCategory.name}</Menu.Item>)
-                    }
-                    )}
-                  </SubMenu>
-                )
-              } else {
-                return (
-                  <Menu.Item key={category.id} style={menuStyle}>{category.name}</Menu.Item>
-                )
-              }
-            })}
+            {productsCategory &&
+              productsCategory.map((category) => {
+                if (category.children) {
+                  return (
+                    <SubMenu
+                      key={category.id}
+                      title={category.name}
+                      className={styles.menuStyle}
+                    >
+                      {category.children.map((subCategory) => {
+                        return (
+                          <Menu.Item key={subCategory.id}>
+                            {subCategory.name}
+                          </Menu.Item>
+                        );
+                      })}
+                    </SubMenu>
+                  );
+                } else {
+                  return (
+                    <Menu.Item key={category.id} className={styles.menuStyle}>
+                      {category.name}
+                    </Menu.Item>
+                  );
+                }
+              })}
           </SubMenu>
 
           <Menu.Item>
-            <Link to={navbarMenus.offersUrl} style={menuStyle}>
+            <Link to={navbarMenus.offersUrl} className={styles.menuStyle}>
               {navbarMenus.offers}
             </Link>
           </Menu.Item>
 
           <Menu.Item>
-            <Link to={navbarMenus.blogUrl} style={menuStyle}>
+            <Link to={navbarMenus.blogUrl} className={styles.menuStyle}>
               {navbarMenus.blog}
             </Link>
           </Menu.Item>
 
           <Menu.Item>
-            <Link to={navbarMenus.contactUrl} style={menuStyle}>
+            <Link to={navbarMenus.contactUrl} className={styles.menuStyle}>
               {navbarMenus.contact}
-            </Link>
-          </Menu.Item>
-
-          <Menu.Item>
-            <Link to={navbarMenus.cartUrl} style={menuStyle}>
-              <Badge
-                size="small"
-                count={!!productList.length ? productList.length : 0}
-              >
-                {navbarMenus.cart}
-              </Badge>
             </Link>
           </Menu.Item>
         </Menu>

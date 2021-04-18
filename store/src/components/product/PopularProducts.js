@@ -10,74 +10,70 @@ import { agent } from "../../helpers/agent";
 
 function ProductList() {
   const [productsData, setProductsData] = useState([]);
-  const [sort, setSort] = useState("name");
+  const sort = "name";
 
   const queryString = qs.stringify({
     perPage: 8,
     sort,
   });
 
-  function fetchProducts() {
-    agent
-      .getProducts(queryString)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setProductsData(data.products);
-        // console.log(data.products);
-      });
-  }
-
   useEffect(() => {
+    const fetchProducts = () => {
+      agent
+        .getProducts(queryString)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          setProductsData(data.products);
+        });
+    };
     fetchProducts();
-  }, []);
+  }, [queryString]);
 
   return (
     <MainContainer>
       <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
         <HeaderSection headerText="Popular Products" />
         <Row gutter={[16, 16]}>
-
-        {productsData.length > 0 ?  productsData.map((product) => {
-                if (product.offer) {
-                  return (
-                    <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
-                      <Link to={`/products/${product.id}`}>
-                        <Badge.Ribbon
-                          color="red"
-                          text={product.offer.discount + ` % off`}
-                        >
-                          <CardItem
-                            title={product.name}
-                            src={product.images[0].path}
-                            price={Math.floor(
-                              product.price -
-                                (product.price * product.offer.discount) / 100
-                            )}
-                            discount={product.price}
-                          />
-                        </Badge.Ribbon>
-                      </Link>
-                    </Col>
-                  );
-                }
-                 else {
-                  return (
-                    <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
-                      <Link to={`/products/${product.id}`}>
+          {productsData.length > 0 ? (
+            productsData.map((product) => {
+              if (product.offer) {
+                return (
+                  <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
+                    <Link to={`/products/${product.id}`}>
+                      <Badge.Ribbon
+                        color="red"
+                        text={product.offer.discount + ` % off`}
+                      >
                         <CardItem
                           title={product.name}
-                          src={product.images.length && product.images[0].path}
-                          price={product.price}
+                          src={product.images[0].path}
+                          price={Math.floor(
+                            product.price -
+                              (product.price * product.offer.discount) / 100
+                          )}
+                          discount={product.price}
                         />
-                      </Link>
-                    </Col>
-                  );
-                }
-              })
-           : <h2>No Products are available</h2>
-        }
-
-          
+                      </Badge.Ribbon>
+                    </Link>
+                  </Col>
+                );
+              } else {
+                return (
+                  <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
+                    <Link to={`/products/${product.id}`}>
+                      <CardItem
+                        title={product.name}
+                        src={product.images.length && product.images[0].path}
+                        price={product.price}
+                      />
+                    </Link>
+                  </Col>
+                );
+              }
+            })
+          ) : (
+            <h2>No Products are available</h2>
+          )}
         </Row>
       </div>
     </MainContainer>

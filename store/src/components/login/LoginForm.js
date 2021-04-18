@@ -1,22 +1,19 @@
-import classNames from "classnames";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Form, Input, Button, Checkbox, Divider, message } from "antd";
-import {
-  UserOutlined,
-  LockOutlined,
-  FacebookFilled,
-  GoogleSquareFilled,
-  TwitterSquareFilled,
-} from "@ant-design/icons";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import styles from "./LoginForm.module.css";
-import Heading from "../heading/Heading";
+import MainContainer from "../layout/MainContainer";
+import HeaderSection from "../styled-components/HeaderSection";
 
 const Login = () => {
-
+  let history = useHistory();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  let location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } };
 
   const onFinish = (values) => {
     fetch("http://localhost:4000/api/v1/users/login", {
@@ -31,99 +28,91 @@ const Login = () => {
         if (token) {
           localStorage.setItem("token", token);
           dispatch({ type: "auth/login", payload: token });
-          message.success("Login Successfully")
+          message.success("Login successful");
           form.resetFields();
+          history.replace(from);
         } else {
           message.error("Could not login, check credentials");
         }
       });
   };
   return (
-    <>
-      <div className={classNames(styles.bgColor, styles.block)}>
-        <div className={styles.containerFluid}>
-          <Heading
-            headingStyle={styles.titleHolder}
-            headingTitle="Log Into Your Account"
-          />
-          <Form
-            name="normal_login"
-            form={form}
-            className={classNames(styles.loginForm, styles.containerFluid)}
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
+    <MainContainer>
+      <div>
+        <div style={{ textAlign: "center" }}>
+          <HeaderSection headerText="Log in" />
+        </div>
+        <Form
+          // name="normal_login"
+          form={form}
+          className={styles.loginForm}
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+        >
+          {/* email */}
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+            ]}
           >
-            {/* Username */}
-            <Form.Item
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your email!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                type="email"
-                placeholder="Email"
-              />
-            </Form.Item>
-            {/* Password */}
-            <Form.Item
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your Password!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-            {/* "Remember me" Block  */}
-            <Form.Item>
+            <Input
+              prefix={<MailOutlined style={{ color: "gray" }} />}
+              type="email"
+              placeholder="Email"
+            />
+          </Form.Item>
+
+          {/* password */}
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Password!",
+              },
+            ]}
+          >
+            <Input
+              prefix={<LockOutlined style={{ color: "gray" }} />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+
+          {/* remember me / forgot pwd */}
+          <Form.Item>
+            <div className={styles.rememberSection}>
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
+              <Link to="/forgetPassword">Forgot password?</Link>
+            </div>
+          </Form.Item>
 
-              <Link className={styles.loginFormForgot} to="/forgetPassword">
-                Forgot password ?
-              </Link>
-            </Form.Item>
-            {/* Button Block */}
-            <Form.Item className={styles.antColRtl}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className={styles.loginFormButton}
-              >
-                Log in
-              </Button>
-              Or <Link to="/registration">register now!</Link>
-            </Form.Item>
-          </Form>
-          <Divider style={{ marginTop: "-10px" }}>Or Login Using </Divider>
-          <div className={styles.icon}>
-            <Link to="#">
-              <FacebookFilled style={{ color: "#08c" }} />
-            </Link>
-            <Link to="#">
-              <GoogleSquareFilled style={{ color: "#db3236" }} />
-            </Link>
-            <Link to="#">
-              <TwitterSquareFilled style={{ color: "#1da1f2" }} />
-            </Link>
+          {/* submit button*/}
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.loginButton}
+            >
+              Login
+            </Button>
+          </Form.Item>
+
+          {/* register */}
+          <div className={styles.center}>
+            or <Link to="/registration">register</Link>
           </div>
-        </div>
+        </Form>
       </div>
-    </>
+    </MainContainer>
   );
 };
 

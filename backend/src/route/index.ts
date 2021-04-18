@@ -6,3 +6,4 @@ export { default as categoryRouter } from "./category";
 export { default as orderRouter } from "./orders";
 export { default as addressRouter } from "./addresses";
 export { default as productImageRouter } from "./productImages";
+export { default as userImageRouter } from "./userImages";

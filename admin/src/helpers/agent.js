@@ -23,7 +23,7 @@ export const agent = {
   },
 
   editUser: (userData, token, userId) => {
-    return fetch(`${baseUrl}/users/${userId}`, {
+    return fetch(`${baseUrl}/users/admin/${userId}`, {
       method: "put",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -221,10 +221,11 @@ export const agent = {
   },
 
   // order
-  getOrders: () => {
+  getOrders: (token) => {
     return fetch(`${baseUrl}/orders`, {
       method: "get",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
@@ -264,11 +265,12 @@ export const agent = {
   },
 
   // address
-  getAddresses: () => {
+  getAddresses: (token) => {
     return fetch(`${baseUrl}/addresses`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
   },

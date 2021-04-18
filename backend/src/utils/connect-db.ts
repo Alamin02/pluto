@@ -10,6 +10,7 @@ import {
   OrderedProduct,
   Category,
   Address,
+  UserImage,
 } from "../entity";
 
 export function connectDatabase() {
@@ -26,6 +27,7 @@ export function connectDatabase() {
       Order,
       OrderedProduct,
       Address,
+      UserImage,
     ],
     synchronize: true,
   });

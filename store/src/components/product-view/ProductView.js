@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Row, Col, Space, Button } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 import styles from "./ProductView.module.css";
 import Collapsible from "./Collapsible";
@@ -31,9 +33,15 @@ function ProductView({ product }) {
 
               {/* <Category /> */}
 
-              <Button type="primary" style={{ textTransform: "uppercase" }}>
-                Share this
-              </Button>
+              <Link to="/">
+                <Button
+                  type="primary"
+                  icon={<ArrowLeftOutlined />}
+                  style={{ textTransform: "capitalize" }}
+                >
+                  go to home page
+                </Button>
+              </Link>
             </Space>
           </div>
         </Col>

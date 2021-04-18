@@ -12,7 +12,7 @@ export async function createOrder(req: express.Request, res: express.Response) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { user, orderedProducts, status, paymentMethod } = req.body;
+  const { user, orderedProducts, paymentMethod, address } = req.body;
 
   // Save to database
   try {
@@ -38,13 +38,16 @@ export async function createOrder(req: express.Request, res: express.Response) {
 
     newOrder.user = user;
     newOrder.orderedProducts = createdOrderedProducts;
-    newOrder.status = status;
+    newOrder.status = "order placed";
     newOrder.paymentMethod = paymentMethod;
+    newOrder.address = address;
 
-    const order = await orderRepository.save(newOrder);
-    return res.json({ newOrder: order });
+    await orderRepository.save(newOrder);
   } catch (err) {
-    res.json({ errors: "Order could not be added" });
+    return res.status(400).json({
+      msg: "Order could not be added",
+      error: err,
+    });
   }
 
   res.json({ msg: "Order created" });
@@ -61,9 +64,24 @@ export async function getAllOrders(
   const page = parseInt(<string>req.query.page);
   const perPage = parseInt(<string>req.query.perPage);
 
+  const { id, role } = res.locals.user;
   const [orders, orderCount] = await orderRepository.findAndCount({
     select: ["id", "status", "paymentMethod"],
-    relations: ["user", "orderedProducts", "orderedProducts.product"],
+    relations: [
+      "user",
+      "orderedProducts",
+      "orderedProducts.product",
+      "address",
+    ],
+    ...(role === "admin"
+      ? {}
+      : {
+          where: {
+            user: {
+              id: id,
+            },
+          },
+        }),
     take: page * perPage,
     skip: (page - 1) * perPage,
   });
@@ -86,7 +104,6 @@ export async function getSingleOrder(
   res: express.Response
 ) {
   const id = req.params.orderId;
-  console.log(typeof id);
   const orderRepository = getConnection().getRepository(Order);
   const singleOrder = await orderRepository.findOne({
     select: ["id", "status", "paymentMethod"],

@@ -6,22 +6,26 @@
   display: flex;
   width: 100%;
   flex-direction: row;
+  flex-wrap: nowrap;
 }
 .flexContainerXs {
   flex-direction: column;
 }
 
 .firstFlexBoxContainer {
-  width: 66.666667%;
+  flex-basis: 50%;
 }
+
 .firstFlexBoxContainerXs {
-  width: 100%;
+  flex-basis: 100%;
 }
 
 .firstFlexBoxTopImageContainer {
-  margin-bottom: 1rem;
   position: relative;
   overflow: hidden;
+  margin-bottom: 1rem;
+  border-radius: 0.3rem;
+  margin-right: 1rem;
 }
 
 .firstFlexBoxImage {
@@ -43,12 +47,16 @@
   position: absolute;
   color: black;
   padding: 0.5rem;
-  left: 2.5rem;
-  top: 1.5rem;
+  left: 2.5rem !important;
+  top: 1.5rem !important;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 1.2rem;
   letter-spacing: 0.03em;
+}
+.imageTitleSm {
+  font-size: 0.9rem;
+  padding: 0.5rem;
 }
 .imageTitleXs {
   padding: 0.5rem;
@@ -63,46 +71,9 @@
   position: relative;
   overflow: hidden;
   margin-bottom: 0;
+  border-radius: 0.3rem;
+  margin-right: 1rem;
 }
 .firstFlexBoxBottomImageContainerXs {
   margin-bottom: 0.5rem;
-}
-
-.secondFlexBoxContainer {
-  width: 33.3333333%;
-  height: 41rem;
-  margin-top: 0rem;
-  margin-left: 1rem;
-  position: relative;
-  overflow: hidden;
-}
-.secondFlexBoxContainerXs {
-  width: 100%;
-  height: 11.5rem;
-  margin-top: 0.5rem;
-  margin-left: 0rem;
-}
-
-.secondFlexBoxImageV {
-  display: block;
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-}
-.secondFlexBoxImageV:hover {
-  transform: scale(1.1);
-}
-.secondFlexBoxImageVXs {
-  display: none;
-}
-.secondFlexBoxImageH {
-  display: none;
-}
-.secondFlexBoxImageHXs {
-  object-fit: cover;
-  display: block;
-  height: 11.5rem;
 }

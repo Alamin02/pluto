@@ -28,6 +28,7 @@ export default function FeaturedProducts() {
             className={classNames(
               { [styles.firstFlexBoxContainer]: screens },
               { [styles.firstFlexBoxContainerXs]: screens.xs }
+
             )}
           >
             {/* top image of 1st flexbox container */}
@@ -44,6 +45,7 @@ export default function FeaturedProducts() {
                 <div
                   className={classNames(
                     { [styles.imageTitle]: screens },
+                    { [styles.imageTitleSm]: screens.sm },
                     { [styles.imageTitleXs]: screens.xs }
                   )}
                 >
@@ -71,6 +73,7 @@ export default function FeaturedProducts() {
                 <div
                   className={classNames(
                     { [styles.imageTitle]: screens },
+                    { [styles.imageTitleSm]: screens.sm },
                     { [styles.imageTitleXs]: screens.xs }
                   )}
                 >
@@ -83,39 +86,62 @@ export default function FeaturedProducts() {
           {/* 2nd flexbox container */}
           <section
             className={classNames(
-              { [styles.secondFlexBoxContainer]: screens },
-              { [styles.secondFlexBoxContainerXs]: screens.xs }
+              { [styles.firstFlexBoxContainer]: screens },
+              { [styles.firstFlexBoxContainerXs]: screens.xs }
             )}
           >
-            {/* horizontal 3rd image */}
-            <Link to={featuredProductsInfo.image3Url}>
-              <img
-                className={classNames(
-                  { [styles.secondFlexBoxImageH]: screens },
-                  { [styles.secondFlexBoxImageHXs]: screens.xs }
-                )}
-                src={featuredProductsInfo.image3HSrc}
-                alt={featuredProductsInfo.image3Title}
-              />
-              {/* vertical 3rd image */}
-              <img
-                className={classNames(
-                  { [styles.secondFlexBoxImageV]: screens },
-                  { [styles.secondFlexBoxImageVXs]: screens.xs }
-                )}
-                src={featuredProductsInfo.image3VSrc}
-                alt={featuredProductsInfo.image3Title}
-              />
-              <div
-                className={classNames(
-                  { [styles.imageTitle]: screens },
-                  { [styles.imageTitleXs]: screens.xs }
-                )}
-              >
-                {featuredProductsInfo.image3Title}
-              </div>
-            </Link>
+            {/* top image of 1st flexbox container */}
+            <div className={styles.firstFlexBoxTopImageContainer}>
+              <Link to={featuredProductsInfo.image3Url}>
+                <img
+                  className={classNames(
+                    { [styles.firstFlexBoxImage]: screens },
+                    { [styles.firstFlexBoxImageXs]: screens.xs }
+                  )}
+                  src={featuredProductsInfo.image3Src}
+                  alt={featuredProductsInfo.image3Title}
+                />
+                <div
+                  className={classNames(
+                    { [styles.imageTitle]: screens },
+                    { [styles.imageTitleSm]: screens.sm },
+                    { [styles.imageTitleXs]: screens.xs }
+                  )}
+                >
+                  {featuredProductsInfo.image3Title}
+                </div>
+              </Link>
+            </div>
+
+            {/* bottom image of 1st flexbox container */}
+            <div
+              className={classNames(
+                { [styles.firstFlexBoxBottomImageContainer]: screens },
+                { [styles.firstFlexBoxBottomImageContainerXs]: screens.xs }
+              )}
+            >
+              <Link to={featuredProductsInfo.image4Url}>
+                <img
+                  className={classNames(
+                    { [styles.firstFlexBoxImage]: screens },
+                    { [styles.firstFlexBoxImageXs]: screens.xs }
+                  )}
+                  src={featuredProductsInfo.image4Src}
+                  alt={featuredProductsInfo.image4Title}
+                />
+                <div
+                  className={classNames(
+                    { [styles.imageTitle]: screens },
+                    { [styles.imageTitleSm]: screens.sm },
+                    { [styles.imageTitleXs]: screens.xs }
+                  )}
+                >
+                  {featuredProductsInfo.image4Title}
+                </div>
+              </Link>
+            </div>
           </section>
+
         </section>
         {/* flexbox end */}
       </div>

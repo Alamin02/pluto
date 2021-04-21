@@ -1,0 +1,75 @@
+/* swiper library specific styles */
+.swiper-pagination {
+  bottom: 0;
+  padding-bottom: 1.5rem;
+}
+
+.swiper-button-prev::after {
+  font-size: 20px;
+}
+
+.swiper-button-next::after {
+  font-size: 20px;
+}
+
+/* custom carousel specific styles */
+.carousel-image {
+  width: 100vw;
+  height: 250px;
+  object-fit: cover;
+}
+
+.carousel-details-container {
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.carousel-title {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.carousel-summary {
+  display: none;
+}
+
+@media screen and (min-width: 800px) {
+  .swiper-button-prev::after {
+    font-size: 40px;
+  }
+
+  .swiper-button-next::after {
+    font-size: 40px;
+  }
+
+  .carousel-image {
+    width: 100vw;
+    height: 600px;
+    object-fit: cover;
+  }
+
+  .carousel-details-container {
+    position: absolute;
+    left: 350px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .carousel-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+
+  .carousel-summary {
+    font-size: 1rem;
+    width: 40ch;
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+}

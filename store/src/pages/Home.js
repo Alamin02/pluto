@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Button } from "antd";
 
 import MainContainer from "../components/layout/MainContainer";
-// import Slider from "../components/slider/Slider";
 import FeaturedProducts from "../components/featured-products/FeaturedProducts";
 import PopularProducts from "../components/product/PopularProducts";
 import Carousel from "../components/carousel/Carousel";
@@ -12,7 +11,6 @@ export default function Home() {
   return (
     <div>
       <Carousel />
-      {/* <Slider /> */}
       <MainContainer>
         <FeaturedProducts />
         <PopularProducts />

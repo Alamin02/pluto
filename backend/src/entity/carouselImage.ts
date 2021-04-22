@@ -17,4 +17,5 @@ export class CarouselImage {
     onDelete: "CASCADE",
   })
   carousel!: Carousel;
+  save: any;
 }

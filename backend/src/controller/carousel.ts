@@ -20,23 +20,23 @@ export async function createCarousel(
 
   try {
     const carouselRepository = getConnection().getRepository(Carousel);
-    // const carouselImageRepository = getConnection().getCustomRepository(
-    //   CarouselImage
-    // );
+    const carouselImageRepository = getConnection().getRepository(
+      CarouselImage
+    );
 
-    // const file = req.file as Express.Multer.File;
+    const file = req.file as Express.Multer.File;
 
-    // const carouselImage = new CarouselImage();
-    // carouselImage.path = file.path;
-    // carouselImage.originalName = file.originalname;
+    const carouselImage = new CarouselImage();
+    carouselImage.path = file.path;
+    carouselImage.originalName = file.originalname;
 
-    // await carouselImageRepository.save(carouselImage);
+    await carouselImageRepository.save(carouselImage);
 
     const newCarousel = new Carousel();
     newCarousel.title = title;
     newCarousel.summary = summary;
     newCarousel.link = link || "#";
-    // newCarousel.image = carouselImage;
+    newCarousel.image = carouselImage;
 
     await carouselRepository.save(newCarousel);
   } catch (e) {

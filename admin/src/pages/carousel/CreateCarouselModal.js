@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Upload, message } from "antd";
+import { Modal, Form, Input, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 import { agent } from "../../helpers/agent";
@@ -18,29 +18,9 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
 
   const [carouselImage, setCarouselImage] = useState(null);
 
-  const handleUpload = async (info) => {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  };
-
   const getImageFromDragger = (event) => {
     console.log("Upload event:", event);
     return event && event.file;
-  };
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -61,8 +41,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
 
               formData.append("title", values.title);
               formData.append("summary", values.summary);
-              // formData.append("carouselImage", carouselImage);
-              formData.forEach((file) => console.log("File: ", file));
+              formData.append("carouselImage", carouselImage);
 
               agent
                 .createCarousel(formData, token)
@@ -78,12 +57,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
             });
         }}
       >
-        <Form
-          {...layout}
-          form={form}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
+        <Form {...layout} form={form}>
           <Form.Item
             label="Title"
             name="title"
@@ -110,7 +84,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
             <Input.TextArea />
           </Form.Item>
 
-          {/* <Form.Item label="Dragger">
+          <Form.Item label="Dragger">
             <Form.Item
               name="carouselImage"
               valuePropName="file"
@@ -118,19 +92,18 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
               noStyle
               rules={[
                 {
-                  required: false,
+                  required: true,
                   message: "Please input carousel photo",
                 },
               ]}
             >
               <Upload.Dragger
-                onChange={handleUpload}
                 beforeUpload={(file, fileList) => {
                   setCarouselImage(file);
                   return false;
                 }}
                 accept="image/*"
-                multiple={true}
+                multiple={false}
               >
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />
@@ -143,7 +116,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
                 </p>
               </Upload.Dragger>
             </Form.Item>
-          </Form.Item> */}
+          </Form.Item>
         </Form>
       </Modal>
     </div>

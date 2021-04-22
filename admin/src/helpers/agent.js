@@ -274,4 +274,34 @@ export const agent = {
       },
     });
   },
+
+  // carousel
+  createCarousel: (formData, token) => {
+    return fetch(`${baseUrl}/carousels`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+  },
+
+  getCarousels: () => {
+    return fetch(`${baseUrl}/carousels`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  deleteCarousel: (token, carouselId) => {
+    return fetch(`${baseUrl}/carousels/${carouselId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

@@ -15,6 +15,8 @@ const router = express.Router();
 // Create carousel
 router.post(
   "/",
+  imageUpload.single("carouselImage"),
+  authenticationMiddleware,
   [
     body("title")
       .not()
@@ -25,7 +27,6 @@ router.post(
       .isEmpty()
       .withMessage("Carousel summary can not be empty"),
   ],
-  authenticationMiddleware,
   createCarouselController
 );
 

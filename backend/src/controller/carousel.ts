@@ -24,7 +24,7 @@ export async function createCarousel(
     //   CarouselImage
     // );
 
-    const file = req.file as Express.Multer.File;
+    // const file = req.file as Express.Multer.File;
 
     // const carouselImage = new CarouselImage();
     // carouselImage.path = file.path;

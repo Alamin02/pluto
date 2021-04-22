@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import { Button } from "antd";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay, A11y } from "swiper";
 import "swiper/swiper-bundle.css";
-import "./Carousel.css";
 
-import carouselItems from "./carouselItems";
-import { Button } from "antd";
+import { agent } from "../../helpers/agent";
+import "./Carousel.css";
 
 SwiperCore.use([Navigation, Pagination, Autoplay, A11y]);
 
 export default function Carousel() {
+  const [carousels, setCarousels] = useState([]);
+
+  useEffect(() => {
+    agent
+      .getCarousels()
+      .then((res) => res.json())
+      .then(({ data }) => setCarousels(data));
+  }, []);
+
   return (
     <React.Fragment>
       <Swiper
@@ -21,24 +29,20 @@ export default function Carousel() {
         autoplay={{ delay: 3500, disableOnInteraction: true }}
         spaceBetween={50}
         slidesPerView={1}
-        onSlideChange={(swiper) =>
-          console.log("onSlideChange >", swiper.activeIndex)
-        }
-        onSwiper={(swiper) => console.log("onSwiper >")}
       >
-        {carouselItems.map((item) => (
-          <SwiperSlide key={item.title}>
+        {carousels.map((carousel) => (
+          <SwiperSlide key={carousel.title}>
             <div>
               <img
                 className="carousel-image"
-                src={item.image.path}
-                alt={item.title}
+                src={carousel.image.path}
+                alt={carousel.title}
               />
               <div className="carousel-details-container">
-                <p className="carousel-title">{item.title}</p>
-                <p className="carousel-summary">{item.summary}</p>
+                <p className="carousel-title">{carousel.title}</p>
+                <p className="carousel-summary">{carousel.summary}</p>
                 <Button type="primary" style={{ textTransform: "capitalize" }}>
-                  <Link to={item.link}>view product</Link>
+                  <Link to={carousel.link}>view product</Link>
                 </Button>
               </div>
             </div>

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation, Pagination, Autoplay, A11y } from "swiper";
+import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/swiper-bundle.css";
 
 import MainContainer from "../layout/MainContainer";
 import { agent } from "../../helpers/agent";
 import "./Carousel.css";
 
-SwiperCore.use([Navigation, Pagination, Autoplay, A11y]);
+SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 export default function Carousel() {
   const [carousels, setCarousels] = useState([]);

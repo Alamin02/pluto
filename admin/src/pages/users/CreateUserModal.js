@@ -3,7 +3,7 @@ import { Modal, Form, Input, message, Select } from "antd";
 
 import { agent } from "../../helpers/agent";
 const { Option } = Select;
-export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
+export default function CreateUserModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
   return (

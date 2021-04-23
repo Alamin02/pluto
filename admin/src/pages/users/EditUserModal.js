@@ -3,7 +3,7 @@ import { Modal, Form, Input, message } from "antd";
 
 import { agent } from "../../helpers/agent";
 
-export default function EditCategoryModal({
+export default function EditUserModal({
   visible,
   onCreate,
   onCancel,

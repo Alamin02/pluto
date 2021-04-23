@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Row, Col, Pagination, Input, Select } from "antd";
+import { Row, Col, Pagination, Input, Select, Skeleton } from "antd";
 import qs from "query-string";
 
 import { agent } from "../../helpers/agent";
@@ -150,7 +150,7 @@ export default function Products() {
           </div>
         ) : (
           <div style={{ marginTop: "1em" }}>
-            No products are available or backend hasn't been started yet.
+            <Skeleton active />
           </div>
         )}
       </MainContainer>

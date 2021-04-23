@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col } from "antd";
+import { Row, Col, Skeleton } from "antd";
 import qs from "query-string";
 
 import MainContainer from "../layout/MainContainer";
@@ -25,7 +25,6 @@ function ProductList() {
         .then(({ data }) => {
           setProductsData(data.products);
         });
-      // .then(setLoading(false));
     };
     fetchProducts();
   }, [queryString]);
@@ -53,7 +52,7 @@ function ProductList() {
           </Row>
         ) : (
           <div>
-            No products are available or backend hasn't been started yet.
+            <Skeleton active />
           </div>
         )}
       </div>

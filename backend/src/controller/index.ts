@@ -68,3 +68,5 @@ export {
   deleteProductImage as deleteProductImageController,
   createProductImage as createProductImageController,
 } from "./productImage";
+
+export { createFeaturedProduct as createFeaturedProductController } from "./featuredProduct";

@@ -8,9 +8,6 @@ export class FeaturedProductImage {
   id!: string;
 
   @Column("varchar")
-  title!: string;
-
-  @Column("varchar")
   originalname!: string;
 
   @Column("varchar")

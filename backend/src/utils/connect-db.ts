@@ -11,6 +11,8 @@ import {
   Category,
   Address,
   UserImage,
+  FeaturedProduct,
+  FeaturedProductImage,
 } from "../entity";
 
 export function connectDatabase() {
@@ -28,6 +30,8 @@ export function connectDatabase() {
       OrderedProduct,
       Address,
       UserImage,
+      FeaturedProduct,
+      FeaturedProductImage,
     ],
     synchronize: true,
   });

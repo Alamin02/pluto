@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Skeleton } from "antd";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/swiper-bundle.css";
@@ -25,7 +25,7 @@ export default function Carousel() {
     return (
       <MainContainer>
         <div style={{ padding: "0.5rem" }}>
-          No carousel images available to show. Add them from admin panel.
+          <Skeleton active />
         </div>
       </MainContainer>
     );

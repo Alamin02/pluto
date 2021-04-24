@@ -274,4 +274,34 @@ export const agent = {
       },
     });
   },
+
+  // create featured products
+  createFeaturedProduct: (featuredProductData, token) => {
+    return fetch(`${baseUrl}/featured-products`, {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: featuredProductData,
+    });
+  },
+  // get featured product
+  getFeaturedProducts: () => {
+    return fetch(`${baseUrl}/featured-products`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+  // delete featured product
+  deleteFeaturedProduct: (token, Id) => {
+    return fetch(`${baseUrl}/featured-products/${Id}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

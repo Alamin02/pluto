@@ -13,6 +13,7 @@ import {
   TagOutlined,
   MessageOutlined,
   EnvironmentOutlined,
+  FileImageOutlined
 } from "@ant-design/icons";
 
 import styles from "./Dashboard.module.css";
@@ -67,6 +68,12 @@ const sidebarInfo = [
     itemName: "Blogs",
     itemUrl: "/blogs",
     icon: <MessageOutlined />,
+  },
+  {
+    id: 9,
+    itemName: "Featured Products",
+    itemUrl: "/featured-products",
+    icon: <FileImageOutlined />,
   },
 ];
 

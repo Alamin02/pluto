@@ -50,6 +50,7 @@ export default function Products() {
         console.log(data.productCount);
         setTotalProductsInfo(data);
         setProductData(data.products);
+        console.log(data.products)
         if (selectedProduct)
           setSelectedProduct(
             data.products.find((product) => product.id === selectedProduct.id)

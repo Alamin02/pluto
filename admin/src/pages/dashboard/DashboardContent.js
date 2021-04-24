@@ -9,6 +9,7 @@ import Orders from "../orders/Orders";
 import Categories from "../categories/Catagories";
 import Blogs from "../blogs/Blogs";
 import Addresses from "../addresses/Addresses";
+import FeaturedProducts from "../featuredProducts/FeaturedProducts"
 
 export default function DashboardContent() {
   return (
@@ -24,6 +25,7 @@ export default function DashboardContent() {
         <Route path="/Categories" component={Categories} exact />
         <Route path="/blogs" component={Blogs} exact />
         <Route path="/addresses" component={Addresses} exact />
+        <Route path="/featured-products" component={FeaturedProducts} exact />
       </Switch>
     </div>
   );

@@ -20,9 +20,9 @@ const { Title } = Typography;
 
 const FeaturedProducts = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState(false);
-  // const [visibleEditModal, setVisibleEditModal] = useState(false);
+  const [visibleEditModal, setVisibleEditModal] = useState(false);
   const [featuredProductData, setFeaturedProductData] = useState([]);
-  // const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedFeaturedProduct, setSelectedFeaturedProduct] = useState(null);
 
   const token = localStorage.getItem("token");
 
@@ -31,9 +31,13 @@ const FeaturedProducts = () => {
       .getFeaturedProducts()
       .then((res) => res.json())
       .then(({ data }) => {
-        if (data) {
-          setFeaturedProductData(data.featuredProduct);
-        }
+        console.log(data.featuredProducts)
+        setFeaturedProductData(data.featuredProducts);
+        if (selectedFeaturedProduct)
+          setSelectedFeaturedProduct(
+            data.featuredProducts.find((featuredProduct) => featuredProduct.id === selectedFeaturedProduct.id)
+          );
+
       });
   }
 
@@ -42,15 +46,16 @@ const FeaturedProducts = () => {
     setVisibleCreateModal(false);
   }
 
-  // function onEditFeaturedProduct() {
-  //   fetchUsers();
-  //   setVisibleEditModal(false);
-  // }
+  function onEditFeaturedProduct() {
+    fetchFeaturedProducts();
+    setVisibleEditModal(false);
+  }
 
-  // function onEdit(record) {
-  //   setVisibleEditModal(true);
-  //   setSelectedUser(record);
-  // }
+  function onEdit(record) {
+    setVisibleEditModal(true);
+    setSelectedFeaturedProduct(record);
+    console.log(record)
+  }
 
   function handleDelete(Id) {
     agent
@@ -72,7 +77,7 @@ const FeaturedProducts = () => {
         <Button
           icon={<EditOutlined />}
           onClick={() => {
-            // onEdit(record);
+            onEdit(record);
           }}
         >
           Edit
@@ -95,7 +100,9 @@ const FeaturedProducts = () => {
   return (
     <div>
       <Space direction="vertical" size="middle">
-        {(!featuredProductData.length) ? (
+        {(featuredProductData && featuredProductData.length === 4) ? (
+          <></>
+        ) : (
           <Button
             type="primary"
             style={{ textTransform: "capitalize" }}
@@ -106,10 +113,7 @@ const FeaturedProducts = () => {
           >
             add featured Product
           </Button>
-        ) : (
-          <></>
         )}
-
 
         <CreateFeaturedProductModal
           visible={visibleCreateModal}
@@ -119,14 +123,15 @@ const FeaturedProducts = () => {
           }}
         />
 
-        {/* <EditFeaturedProductModal
+        <EditFeaturedProductModal
           visible={visibleEditModal}
           onCreate={onEditFeaturedProduct}
-          currentUser={selectedUser}
+          existingRecord={selectedFeaturedProduct}
           onCancel={() => {
             setVisibleEditModal(false);
           }}
-        /> */}
+          refetch={fetchFeaturedProducts}
+        />
 
         <Table
           rowKey={(record) => record.id}

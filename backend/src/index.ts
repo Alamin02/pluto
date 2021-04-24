@@ -18,6 +18,7 @@ import {
   productImageRouter,
   userImageRouter,
   featuredProductRouter,
+  featuredProductImageRouter,
 } from "./route";
 
 const app = express();
@@ -39,6 +40,7 @@ app.use("/api/v1/addresses", addressRouter);
 app.use("/api/v1/images", productImageRouter);
 app.use("/api/v1/user-image", userImageRouter);
 app.use("/api/v1/featured-products", featuredProductRouter);
+app.use("/api/v1/featured-products/images", featuredProductImageRouter);
 
 connectDatabase();
 

@@ -294,12 +294,37 @@ export const agent = {
       },
     });
   },
+  // edit  featured product
+  editFeaturedProduct: (featuredProductId, featuredProductData, token) => {
+    return fetch(`${baseUrl}/featured-products/${featuredProductId}`, {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(featuredProductData),
+    });
+  },
   // delete featured product
-  deleteFeaturedProduct: (token, Id) => {
-    return fetch(`${baseUrl}/featured-products/${Id}`, {
+  deleteFeaturedProduct: (token, featuredProductId) => {
+    return fetch(`${baseUrl}/featured-products/${featuredProductId}`, {
       method: "delete",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+  },
+  createFeaturedProductImage: (data) => {
+    return fetch(`${baseUrl}/featured-products/images/`, {
+      method: "post",
+      body: data,
+    });
+  },
+  deleteFeaturedProductImage: (imageId) => {
+    return fetch(`${baseUrl}/featured-products/images/${imageId}`, {
+      method: "delete",
+      headers: {
         "Content-Type": "application/json",
       },
     });

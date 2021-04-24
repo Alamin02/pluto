@@ -4,38 +4,97 @@ import { getConnection, Like } from "typeorm";
 import { validationResult } from "express-validator";
 import accessControl from "../utils/access-control";
 
-import { FeaturedProduct, FeaturedProductImage } from "../entity";
+import {
+  FeaturedProduct,
+  Offer,
+  Category,
+  FeaturedProductImage,
+  Order,
+} from "../entity";
 
-// @POST - /api/v1/featured-products
-// Create featured product
+// @GET - /api/v1/products
+// Get all products list
+export async function getAllFeaturedProducts(
+  req: express.Request,
+  res: express.Response
+) {
+  const faeturedProductRepository = getConnection().getRepository(
+    FeaturedProduct
+  );
+
+  const page: number = parseInt(<string>req.query.page) || 1;
+  const perPage: number = parseInt(<string>req.query.perPage) || 12;
+  const search: string = <string>req.query.search || "";
+  const sort: string = <string>req.query.sort || "createdAt";
+
+  const [
+    featuredProducts,
+    featuredProductCount,
+  ] = await faeturedProductRepository.findAndCount({
+    select: ["id", "name", "description", "price", "summary", "createdAt"],
+    relations: ["category", "offer", "images"],
+    where: {
+      name: Like(`%${search}%`),
+    },
+    order: {
+      [sort]: "ASC",
+    },
+    take: perPage,
+    skip: (page - 1) * perPage,
+  });
+
+  res.json({
+    data: {
+      featuredProducts,
+      featuredProductCount,
+      currentPage: page,
+      maxPages: Math.ceil(featuredProductCount / perPage),
+      perPage,
+    },
+  });
+}
+
+// @POST - /api/v1/products
+// Create product
 export async function createFeaturedProduct(
   req: express.Request,
   res: express.Response
 ) {
-  // const permission = accessControl
-  //   .can(res.locals.user.role)
-  //   .createAny("product");
+  //  const permission = accessControl
+  //    .can(res.locals.user.role)
+  //    .createAny("product");
 
-  // if (!permission.granted) {
-  //   return res.status(403).json({ errors: [{ msg: "not authorized" }] });
-  // }
+  //  if (!permission.granted) {
+  //    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  //  }
 
   // // error validation
-  // const errors = validationResult(req);
+  //  const errors = validationResult(req);
 
-  // if (!errors.isEmpty()) {
+  //  if (!errors.isEmpty()) {
   //   return res.status(400).json({ errors: errors.array() });
   // }
+  const { name, price, summary, description, offerId, categoryId } = req.body;
 
   try {
-    // get the repository from  featured product entity
-    const featuredProductsRepository = getConnection().getRepository(
+    // get the repository from product entity
+    const faeturedProductRepository = getConnection().getRepository(
       FeaturedProduct
     );
+    const categoryRepository = getConnection().getRepository(Category);
+    const categoryCheck = await categoryRepository.findOne({
+      id: categoryId,
+    });
+
+    const offersRepository = getConnection().getRepository(Offer);
 
     const featuredProductImageRepository = getConnection().getRepository(
       FeaturedProductImage
     );
+    let offer;
+    if (offerId) {
+      offer = await offersRepository.findOne({ id: offerId });
+    }
 
     const createFeaturedProductImage = [];
     const files = req.files as Express.Multer.File[];
@@ -52,60 +111,127 @@ export async function createFeaturedProduct(
         createFeaturedProductImage.push(savedFeaturedProductImage);
       }
     } else {
-      return res.json({
-        errors: [{ msg: "Featured Product Image not found" }],
-      });
+      return res.json({ errors: [{ msg: "Image not found" }] });
     }
 
     const newFeaturedProduct = new FeaturedProduct();
+    newFeaturedProduct.name = name;
+    newFeaturedProduct.description = description;
+    newFeaturedProduct.price = price;
+    newFeaturedProduct.summary = summary;
     newFeaturedProduct.images = createFeaturedProductImage;
+    if (categoryCheck) {
+      newFeaturedProduct.category = categoryId;
+    } else {
+      res.status(400).json({ errors: [{ msg: "category not found" }] });
+    }
 
-    // save data
-    const data = await featuredProductsRepository.save(newFeaturedProduct);
-    res.json({ msg: "Featured Products created", data: data });
-    return;
+    if (offer) {
+      newFeaturedProduct.offer = offer;
+    }
+
+    // save data to repository from request body
+    await faeturedProductRepository.save(newFeaturedProduct);
   } catch (e) {
     res.status(400).json({ errors: [{ msg: e }] });
     return;
   }
+  res.json({ msg: "Featured Product created" });
 }
 
-// @GET - /api/v1/featured-products
-// Get all featured products list
-export async function getAllFeaturedProducts(
+// @GET - /api/v1/products/:productId
+// Get a particular product
+export async function getFeaturedProduct(
   req: express.Request,
   res: express.Response
 ) {
+  const id = req.params.featuredProductId;
+
+  const featuredProductRepository = getConnection().getRepository(
+    FeaturedProduct
+  );
+  const findFeaturedProductById = await featuredProductRepository.findOne(
+    {
+      id,
+    },
+    { relations: ["images"] }
+  );
+
+  if (!findFeaturedProductById) {
+    return res
+      .status(400)
+      .json({ errors: [{ msg: "Featured Product not found" }] });
+  }
+
+  res.json({ msg: "featured product found", data: findFeaturedProductById });
+}
+
+// @PUT - /api/v1/products/:Id
+// Update product
+export async function updateFeaturedProduct(
+  req: express.Request,
+  res: express.Response
+) {
+  // const permission = accessControl
+  //   .can(res.locals.user.role)
+  //   .updateAny("product");
+
+  // if (!permission.granted) {
+  //   return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  // }
+
+  const id = req.params.featuredProductId;
+  const { name, price, summary, description, offerId, categoryId } = req.body;
   const featuredProductsRepository = getConnection().getRepository(
     FeaturedProduct
   );
 
-  const page: number = parseInt(<string>req.query.page) || 1;
-  const perPage: number = parseInt(<string>req.query.perPage) || 12;
+  try {
+    const findFeaturedProductById: any = await featuredProductsRepository.findOne(
+      { id }
+    );
+    // offer repository
+    const offersRepository = getConnection().getRepository(Offer);
+    // find offer by id
+    const offer = await offersRepository.findOne({ id: offerId });
 
-  const [
-    featuredProduct,
-    featuredProductCount,
-  ] = await featuredProductsRepository.findAndCount({
-    select: ["id", "createdAt"],
-    relations: ["images"],
-    take: perPage,
-    skip: (page - 1) * perPage,
-  });
+    // categories repository
+    const categoriesRepository = getConnection().getRepository(Category);
+    // find category by id
+    const category = await categoriesRepository.findOne({ id: categoryId });
 
-  res.json({
-    data: {
-      featuredProduct,
-      featuredProductCount,
-      currentPage: page,
-      maxPages: Math.ceil(featuredProductCount / perPage),
-      perPage,
-    },
-  });
+    const newFeaturedProduct = new FeaturedProduct();
+
+    newFeaturedProduct.name = name;
+    newFeaturedProduct.description = description;
+    newFeaturedProduct.price = price;
+    newFeaturedProduct.summary = summary;
+
+    if (offer) {
+      newFeaturedProduct.offer = offer;
+    }
+
+    if (category) {
+      newFeaturedProduct.category = category;
+    }
+
+    featuredProductsRepository.merge(
+      findFeaturedProductById,
+      newFeaturedProduct
+    );
+
+    await featuredProductsRepository.save(findFeaturedProductById);
+  } catch (e) {
+    return res
+      .status(400)
+      .json({ errors: [{ msg: "Featured Product could not be updated" }] });
+  }
+
+  res.json({ msg: "Featured Product updated" });
 }
 
-// @DELETE - /api/v1/featured-products/:Id
-// Delete a featured product
+// @DELETE - /api/v1/products/:Id
+// Delete a product
 export async function deleteFeaturedProduct(
   req: express.Request,
   res: express.Response
@@ -118,17 +244,17 @@ export async function deleteFeaturedProduct(
   //   return res.status(403).json({ errors: [{ msg: "not authorized" }] });
   // }
 
-  const id = req.params.Id;
-  const featuredProductsRepository = getConnection().getRepository(
+  const id = req.params.featuredProductId;
+  const featuredProductRepository = getConnection().getRepository(
     FeaturedProduct
   );
-  const featuredProductToUpdate = await featuredProductsRepository.findOne({
+  const featuredProductToUpdate = await featuredProductRepository.findOne({
     id: id,
   });
 
   if (featuredProductToUpdate) {
     try {
-      await featuredProductsRepository.delete({ id });
+      await featuredProductRepository.delete({ id });
       res.json({ msg: "Featured Product deleted" });
     } catch (e) {
       res.status(400).json({ msg: e });

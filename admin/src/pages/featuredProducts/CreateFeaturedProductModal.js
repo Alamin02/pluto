@@ -1,11 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, message, Select, Upload, Input } from "antd";
-import { InboxOutlined } from "@ant-design/icons"
+import { Modal, Form, Input, Upload, Cascader, message, Select } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
 
 import { agent } from "../../helpers/agent";
+
 const { Option } = Select;
-export default function CreateFeaturedProductModal({ visible, onCreate, onCancel }) {
-  const [featuredProductImages, setFeaturedProductImages] = useState([])
+
+const layout = {
+  labelCol: {
+    span: 6,
+  },
+  wrapperCol: {
+    span: 18,
+  },
+};
+
+export default function ProductForm({
+  productId,
+  visible,
+  onCreate,
+  onCancel,
+}) {
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [featuredProductImages, setFeaturedProductImages] = useState([]);
+  const [offerOptions, setOfferOptions] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:4000/api/v1/category", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setCategoryOptions(data);
+      });
+
+    agent.getOffers().then((data) => {
+      setOfferOptions(data);
+    });
+  }, []);
+
   const [form] = Form.useForm();
 
   const normFile = (e) => {
@@ -17,6 +55,17 @@ export default function CreateFeaturedProductModal({ visible, onCreate, onCancel
     return e && e.fileList;
   };
 
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  function onChangeCategory(value) {
+    form.setFieldsValue("categoryId", value[0]);
+  }
 
   const handleUpload = async (info) => {
     const { status } = info.file;
@@ -34,7 +83,7 @@ export default function CreateFeaturedProductModal({ visible, onCreate, onCancel
     <div>
       <Modal
         visible={visible}
-        title="Add Featured Product Image"
+        title="Add User"
         okText="Create"
         cancelText="Cancel"
         onCancel={onCancel}
@@ -46,6 +95,20 @@ export default function CreateFeaturedProductModal({ visible, onCreate, onCancel
             .then((values) => {
               const formData = new FormData();
 
+              formData.append("name", values.name);
+              formData.append("offerId", values.offer);
+              formData.append("price", values.price);
+              formData.append("summary", values.summary);
+              formData.append("description", values.description);
+
+              let categoryArray = values.categoryId;
+
+              if (categoryArray.length === 2) {
+                formData.append("categoryId", values.categoryId[1]);
+              } else {
+                formData.append("categoryId", values.categoryId[0]);
+              }
+
               featuredProductImages.forEach((featuredProductImage) => {
                 formData.append("featuredProductImages", featuredProductImage);
               });
@@ -53,7 +116,7 @@ export default function CreateFeaturedProductModal({ visible, onCreate, onCancel
               agent
                 .createFeaturedProduct(formData, token)
                 .then((res) => res.json())
-                .then(({ data }) => {
+                .then(() => {
                   form.resetFields();
                   onCreate(values);
                 });
@@ -65,10 +128,102 @@ export default function CreateFeaturedProductModal({ visible, onCreate, onCancel
         }}
       >
         <Form
+          {...layout}
           form={form}
-          layout="vertical"
-          name="form_in_modal"
+          // form loads initial values from here
+          initialValues={
+            {
+              // productName: "Shirt",
+            }
+          }
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
+          <Form.Item
+            label="Product Name"
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: "Please input product name",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Price"
+            name="price"
+            rules={[
+              {
+                required: true,
+                message: "Please input product price",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Summary"
+            name="summary"
+            rules={[
+              {
+                required: true,
+                message: "Please input product sumamry",
+              },
+            ]}
+          >
+            <Input.TextArea />
+          </Form.Item>
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: "Please input product description",
+              },
+            ]}
+          >
+            <Input.TextArea />
+          </Form.Item>
+
+          <Form.Item
+            label="Category"
+            rules={[
+              {
+                required: true,
+                message: "Please input product category",
+              },
+            ]}
+            name="categoryId"
+          >
+            {/* <Input /> */}
+            <Cascader
+              name="category"
+              fieldNames={{
+                label: "name",
+                value: "id",
+                children: "children",
+              }}
+              options={categoryOptions}
+              onChange={onChangeCategory}
+              placeholder="Please choose category"
+            />
+          </Form.Item>
+
+          <Form.Item name="offer" label="New offer&nbsp;:">
+            <Select defaultValue="null">
+              {offerOptions &&
+                offerOptions.map((offer) => (
+                  <Option value={offer.id} id={offer.id}>
+                    {offer.name}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
+
           <Form.Item label="Dragger">
             <Form.Item
               name="featuredProductImages"

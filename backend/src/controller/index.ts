@@ -70,7 +70,16 @@ export {
 } from "./productImage";
 
 export {
-  createFeaturedProduct as createFeaturedProductController,
   getAllFeaturedProducts as getAllFeaturedProductsController,
+  createFeaturedProduct as createFeaturedProductController,
+  getFeaturedProduct as getFeaturedProductController,
+  updateFeaturedProduct as updateFeaturedProductController,
   deleteFeaturedProduct as deleteFeaturedProductController,
 } from "./featuredProduct";
+
+export {
+  createFeaturedProductImage as createFeaturedProductImageController,
+  getAllFeaturedProductsImages as getAllFeaturedProductsImagesController,
+  getSingleFeaturedProductImage as getSingleFeaturedProductImageController,
+  deleteFeaturedProductImage as deleteFeaturedProductImageController,
+} from "./featuredProductImage";

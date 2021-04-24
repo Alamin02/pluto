@@ -69,3 +69,73 @@ export async function createFeaturedProduct(
     return;
   }
 }
+
+// @GET - /api/v1/featured-products
+// Get all featured products list
+export async function getAllFeaturedProducts(
+  req: express.Request,
+  res: express.Response
+) {
+  const featuredProductsRepository = getConnection().getRepository(
+    FeaturedProduct
+  );
+
+  const page: number = parseInt(<string>req.query.page) || 1;
+  const perPage: number = parseInt(<string>req.query.perPage) || 12;
+
+  const [
+    featuredProduct,
+    featuredProductCount,
+  ] = await featuredProductsRepository.findAndCount({
+    select: ["id", "createdAt"],
+    relations: ["images"],
+    take: perPage,
+    skip: (page - 1) * perPage,
+  });
+
+  res.json({
+    data: {
+      featuredProduct,
+      featuredProductCount,
+      currentPage: page,
+      maxPages: Math.ceil(featuredProductCount / perPage),
+      perPage,
+    },
+  });
+}
+
+// @DELETE - /api/v1/featured-products/:Id
+// Delete a featured product
+export async function deleteFeaturedProduct(
+  req: express.Request,
+  res: express.Response
+) {
+  // const permission = accessControl
+  //   .can(res.locals.user.role)
+  //   .deleteAny("product");
+
+  // if (!permission.granted) {
+  //   return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+  // }
+
+  const id = req.params.Id;
+  const featuredProductsRepository = getConnection().getRepository(
+    FeaturedProduct
+  );
+  const featuredProductToUpdate = await featuredProductsRepository.findOne({
+    id: id,
+  });
+
+  if (featuredProductToUpdate) {
+    try {
+      await featuredProductsRepository.delete({ id });
+      res.json({ msg: "Featured Product deleted" });
+    } catch (e) {
+      res.status(400).json({ msg: e });
+    }
+  } else {
+    res.status(400).json({
+      errors: [{ msg: "Featured Product to delete not found or invalid id" }],
+    });
+  }
+}

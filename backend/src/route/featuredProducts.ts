@@ -2,12 +2,23 @@ import express = require("express");
 
 const router = express.Router();
 
-import { createFeaturedProductController } from "../controller";
+import {
+  createFeaturedProductController,
+  getAllFeaturedProductsController,
+  deleteFeaturedProductController,
+} from "../controller";
 
 import { authenticationMiddleware, imageUpload } from "../middleware";
 
+// delete featured product
+router.delete(
+  "/:Id",
+  authenticationMiddleware,
+  deleteFeaturedProductController
+);
+
 // Get all featured products list
-router.get("/");
+router.get("/", getAllFeaturedProductsController);
 
 // Create featured product
 router.post(

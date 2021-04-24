@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+} from "typeorm";
 
 import { FeaturedProductImage } from "../entity";
 
@@ -15,4 +20,9 @@ export class FeaturedProduct {
     }
   )
   images!: FeaturedProductImage[];
+
+  @CreateDateColumn({
+    type: "date",
+  })
+  createdAt!: Date;
 }

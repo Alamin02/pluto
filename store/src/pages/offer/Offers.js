@@ -1,41 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Badge } from "antd";
+import { Row, Col, Typography, Card } from "antd";
 
 import ProductCard from "../../components/product/ProductCard";
-import HeaderSection from "../../components/styled-components/HeaderSection";
-import ProductList from "../../assets/data/sampleProductData";
 import MainContainer from "../../components/layout/MainContainer";
+import { agent } from "../../helpers/agent";
+
+const { Title, Text } = Typography;
 
 function Offers() {
+  const [offersData, setOffersData] = useState([]);
+
+  useEffect(() => {
+    agent
+      .getOffers()
+      .then((res) => res.json())
+      .then(({ data }) => setOffersData(data));
+  }, []);
+
+  console.log(offersData);
+
   return (
     <MainContainer>
       <div style={{ marginTop: "1rem" }}>
-        <HeaderSection headerText="latest offers" />
-        <Row gutter={[16, 16]}>
-          {ProductList.map((product) => {
-            if (product.offer) {
-              return (
-                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
-                  <div>
-                    <Link to={`/products/${product.id}`}>
-                      <Badge.Ribbon color="red" text={product.offer}>
+        {offersData.map((offer) => {
+          return (
+            <div key={offer.id}>
+              <div style={{ marginBottom: "3rem" }}>
+                <Card>
+                  <div style={{ marginTop: "1rem" }}></div>
+                  <Title level={2}>{offer.name}</Title>
+                  <Text>{offer.description}</Text>
+                </Card>
+                <div style={{ marginBottom: "1rem" }}></div>
+                <Row gutter={[16, 16]}>
+                  {offer.products.map((product) => (
+                    <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
+                      <Link to={`/products/${product.id}`}>
                         <ProductCard
-                          id={product.id}
-                          title={product.productName}
+                          title={product.name}
                           price={product.price}
-                          src={product.imageUrl}
+                          discount={offer.discount}
                         />
-                      </Badge.Ribbon>
-                    </Link>
-                  </div>
-                </Col>
-              );
-            } else {
-              return null;
-            }
-          })}
-        </Row>
+                      </Link>
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </MainContainer>
   );

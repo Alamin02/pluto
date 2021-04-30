@@ -11,7 +11,9 @@ export async function getAllOffers(
   res: express.Response
 ) {
   const offersRepository = getConnection().getRepository(Offer);
-  const allOffers = await offersRepository.find();
+  const allOffers = await offersRepository.find({
+    relations: ["products"],
+  });
 
   res.status(200).json({ data: allOffers });
 }

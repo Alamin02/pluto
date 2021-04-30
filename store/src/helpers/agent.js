@@ -136,4 +136,13 @@ export const agent = {
       body: JSON.stringify(addressData),
     });
   },
+
+  getOffers: () => {
+    return fetch(`${baseUrl}/offers`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

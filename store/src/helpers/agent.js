@@ -136,4 +136,21 @@ export const agent = {
       body: JSON.stringify(addressData),
     });
   },
+  // get featured products
+  getFeaturedProducts: () => {
+    return fetch(`${baseUrl}/featured-products`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+  getfeaturedProduct: (featuredProductId) => {
+    return fetch(`${baseUrl}/featured-products/${featuredProductId}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 };

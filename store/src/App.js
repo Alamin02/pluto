@@ -26,6 +26,8 @@ import CheckOut from "./pages/order/CheckOut";
 import Product from "./pages/product/Product";
 import Products from "./pages/product/Products";
 
+import FeaturedProduct from "./pages/featuredProduct/FeaturedProduct"
+
 import UpdateUserProfile from "./pages/user/UpdateUserProfile";
 import UserProfile from "./pages/user/UserProfile";
 
@@ -51,6 +53,8 @@ function App() {
 
         <Route path="/products" component={Products} exact />
         <Route path="/products/:id" component={Product} exact />
+
+        <Route path="/featured-products/:id" component={FeaturedProduct} exact />
 
         <Route path="/profile" component={UserProfile} exact />
         <Route path="/profile/edit" component={UpdateUserProfile} exact />

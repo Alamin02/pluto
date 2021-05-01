@@ -66,7 +66,7 @@
 
   .carousel-details-container {
     position: absolute;
-    left: 350px;
+    left: 500px;
     top: 50%;
     transform: translate(-50%, -50%);
   }
@@ -75,6 +75,8 @@
     font-size: 2.5rem;
     font-weight: bold;
     margin: 0;
+    width: 25ch;
+    line-height: 1.3;
     margin-bottom: 1rem;
   }
 

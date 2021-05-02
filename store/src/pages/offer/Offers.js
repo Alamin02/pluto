@@ -18,8 +18,6 @@ function Offers() {
       .then(({ data }) => setOffersData(data));
   }, []);
 
-  console.log(offersData);
-
   return (
     <MainContainer>
       <div style={{ marginTop: "1rem" }}>

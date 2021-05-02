@@ -12,7 +12,7 @@ export async function getAllOffers(
 ) {
   const offersRepository = getConnection().getRepository(Offer);
   const allOffers = await offersRepository.find({
-    relations: ["products"],
+    relations: ["products", "products.images"],
   });
 
   res.status(200).json({ data: allOffers });

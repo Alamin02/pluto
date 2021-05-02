@@ -28,7 +28,6 @@ function Offers() {
             <div key={offer.id}>
               <div style={{ marginBottom: "3rem" }}>
                 <Card>
-                  <div style={{ marginTop: "1rem" }}></div>
                   <Title level={2}>{offer.name}</Title>
                   <Text>{offer.description}</Text>
                 </Card>
@@ -39,6 +38,7 @@ function Offers() {
                       <Link to={`/products/${product.id}`}>
                         <ProductCard
                           title={product.name}
+                          src={product.images[0].path}
                           price={product.price}
                           discount={offer.discount}
                         />

@@ -13,15 +13,14 @@ import {
 
 import { authenticationMiddleware, imageUpload } from "../middleware";
 
-// Get all products list
+// Get all featured products list
 router.get("/", getAllFeaturedProductsController);
 
-// Create product
+// Create featured product
 router.post(
   "/",
   imageUpload.array("featuredProductImages", 4),
   authenticationMiddleware,
-
   [
     body("name").not().isEmpty().withMessage("Product name can not be empty"),
     body("price").not().isEmpty().withMessage("Product price can not be empty"),
@@ -42,10 +41,10 @@ router.post(
   createFeaturedProductController
 );
 
-// Get a particular product
+// Get a particular featured product
 router.get("/:featuredProductId", getFeaturedProductController);
 
-// Update product
+// Update featured product
 router.put(
   "/:featuredProductId",
   authenticationMiddleware,
@@ -64,9 +63,9 @@ router.put(
   updateFeaturedProductController
 );
 
-// Delete a product
+// Delete a featured product
 router.delete(
-  "/:featuredProductId",
+  "/:featuredProductId&:productId",
   authenticationMiddleware,
   deleteFeaturedProductController
 );

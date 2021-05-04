@@ -4,15 +4,12 @@ import {
   OneToMany,
   CreateDateColumn,
   Column,
+  OneToOne,
   ManyToOne,
+  JoinColumn,
 } from "typeorm";
 
-import {
-  FeaturedProductImage,
-  Offer,
-  OrderedProduct,
-  Category,
-} from "../entity";
+import { Product, FeaturedProductImage, Offer, Category } from "../entity";
 
 @Entity("featuredProducts")
 export class FeaturedProduct {
@@ -37,16 +34,21 @@ export class FeaturedProduct {
   )
   images!: FeaturedProductImage[];
 
-  @ManyToOne(() => Offer, (offer) => offer.products, { onDelete: "CASCADE" })
-  offer!: Offer;
-
-  @OneToMany(() => OrderedProduct, (orderedProduct) => orderedProduct.product)
-  orderedProducts!: OrderedProduct[];
-
-  @ManyToOne(() => Category, (category) => category.products, {
+  @ManyToOne(() => Category, (category) => category.featuredProducts, {
     onDelete: "CASCADE",
   })
   category!: Category;
+
+  @ManyToOne(() => Offer, (offer) => offer.featuredProducts, {
+    onDelete: "CASCADE",
+  })
+  offer!: Offer;
+
+  @OneToOne(() => Product, (product) => product.featuredProduct, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn()
+  product!: Product;
 
   @CreateDateColumn({
     type: "date",

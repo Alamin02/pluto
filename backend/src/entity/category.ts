@@ -2,13 +2,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  JoinTable,
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Product } from "./product";
-
-// import { Product } from "./product";
+import { Product, FeaturedProduct } from "../entity";
 
 @Entity("categories")
 export class Category {
@@ -31,13 +28,9 @@ export class Category {
   @OneToMany((type) => Product, (product) => product.category)
   products!: Product[];
 
-  //   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  //   createdAt!: Date;
-
-  //   @Column({
-  //     type: "timestamp",
-  //     default: () => "CURRENT_TIMESTAMP",
-  //     onUpdate: "CURRENT_TIMESTAMP",
-  //   })
-  //   updatedAt!: Date;
+  @OneToMany(
+    (type) => FeaturedProduct,
+    (featuredProduct) => featuredProduct.category
+  )
+  featuredProducts!: FeaturedProduct[];
 }

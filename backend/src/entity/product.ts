@@ -3,13 +3,18 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
-  JoinTable,
-  ManyToMany,
   CreateDateColumn,
   ManyToOne,
+  OneToOne,
 } from "typeorm";
 
-import { Category, ProductImage, OrderedProduct, Offer } from "../entity";
+import {
+  Category,
+  ProductImage,
+  OrderedProduct,
+  Offer,
+  FeaturedProduct,
+} from "../entity";
 
 @Entity("products")
 export class Product {
@@ -41,6 +46,15 @@ export class Product {
     onDelete: "CASCADE",
   })
   category!: Category;
+
+  @OneToOne(
+    () => FeaturedProduct,
+    (featuredProduct) => featuredProduct.product,
+    {
+      onDelete: "CASCADE",
+    }
+  )
+  featuredProduct!: FeaturedProduct;
 
   @CreateDateColumn({
     type: "date",

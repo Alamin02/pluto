@@ -48,9 +48,10 @@ export default function EditFeaturedProductModal({
   const [offerOptions, setOfferOptions] = useState([]);
   const [featuredProductImages, setFeaturedProductImages] = useState([]);
 
-  const deleteImage = (Id) => {
+  const deleteImage = (originalName, imageId, existingRecord) => {
+
     agent
-      .deleteFeaturedProductImage(Id)
+      .deleteFeaturedProductImage(originalName, imageId, existingRecord.product.id)
       .then((res) => res.json())
       .then(({ data }) => {
         refetch();
@@ -108,6 +109,7 @@ export default function EditFeaturedProductModal({
       });
 
       formData.append("imageId", existingRecord.id);
+      formData.append("productId", existingRecord.product.id);
 
       agent
         .createFeaturedProductImage(formData)
@@ -125,7 +127,7 @@ export default function EditFeaturedProductModal({
     <div>
       <Modal
         visible={visible}
-        title="Edit Product"
+        title="Edit Featured Product"
         okText="Save"
         forceRender={true}
         cancelText="Cancel"
@@ -254,7 +256,6 @@ export default function EditFeaturedProductModal({
 
           {/* image */}
           <Form.Item
-            label="Product Images"
             name="featuredProductImages"
             valuePropName="fileList"
             getValueFromEvent={normFile}
@@ -270,7 +271,7 @@ export default function EditFeaturedProductModal({
                       <p>{image.originalname}</p>
                     </div>
                     <CloseCircleOutlined
-                      onClick={() => deleteImage(image.id)}
+                      onClick={() => deleteImage(image.originalname, image.id, existingRecord)}
                       style={deleteButtonStyle}
                     />
                   </div>
@@ -287,7 +288,6 @@ export default function EditFeaturedProductModal({
               showUploadList={false}
               accept="image/*"
               multiple={true}
-
             >
               <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
             </Upload>

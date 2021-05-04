@@ -306,8 +306,8 @@ export const agent = {
     });
   },
   // delete featured product
-  deleteFeaturedProduct: (token, featuredProductId) => {
-    return fetch(`${baseUrl}/featured-products/${featuredProductId}`, {
+  deleteFeaturedProduct: (token, featuredProductId, productId) => {
+    return fetch(`${baseUrl}/featured-products/${featuredProductId}&${productId}`, {
       method: "delete",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -321,8 +321,8 @@ export const agent = {
       body: data,
     });
   },
-  deleteFeaturedProductImage: (imageId) => {
-    return fetch(`${baseUrl}/featured-products/images/${imageId}`, {
+  deleteFeaturedProductImage: (originalName, imageId, productId) => {
+    return fetch(`${baseUrl}/featured-products/images/${originalName}/${imageId}/${productId}`, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",

@@ -15,7 +15,7 @@ const layout = {
   },
 };
 
-export default function ProductForm({
+export default function CreateFeaturedProductModal({
   productId,
   visible,
   onCreate,
@@ -83,7 +83,7 @@ export default function ProductForm({
     <div>
       <Modal
         visible={visible}
-        title="Add User"
+        title="Add Featured Product"
         okText="Create"
         cancelText="Cancel"
         onCancel={onCancel}
@@ -117,6 +117,7 @@ export default function ProductForm({
                 .createFeaturedProduct(formData, token)
                 .then((res) => res.json())
                 .then(() => {
+                  console.log("i love you")
                   form.resetFields();
                   onCreate(values);
                 });
@@ -130,12 +131,6 @@ export default function ProductForm({
         <Form
           {...layout}
           form={form}
-          // form loads initial values from here
-          initialValues={
-            {
-              // productName: "Shirt",
-            }
-          }
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >

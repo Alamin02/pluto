@@ -31,13 +31,11 @@ const FeaturedProducts = () => {
       .getFeaturedProducts()
       .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data.featuredProducts)
         setFeaturedProductData(data.featuredProducts);
         if (selectedFeaturedProduct)
           setSelectedFeaturedProduct(
             data.featuredProducts.find((featuredProduct) => featuredProduct.id === selectedFeaturedProduct.id)
           );
-
       });
   }
 
@@ -57,9 +55,10 @@ const FeaturedProducts = () => {
     console.log(record)
   }
 
-  function handleDelete(Id) {
+  function handleDelete(record) {
+
     agent
-      .deleteFeaturedProduct(token, Id)
+      .deleteFeaturedProduct(token, record.id, record.product.id)
       .then((res) => res.json())
       .then(() => fetchFeaturedProducts())
       .then(() => message.info("Deleted successfully"));
@@ -85,7 +84,7 @@ const FeaturedProducts = () => {
         <Popconfirm
           placement="top"
           title="Sure to delete?"
-          onConfirm={() => handleDelete(record.id)}
+          onConfirm={() => handleDelete(record)}
           okText="Yes"
           cancelText="No"
         >
@@ -94,7 +93,7 @@ const FeaturedProducts = () => {
           </Button>
         </Popconfirm>
       </Space>
-    ),
+    )
   };
 
   return (

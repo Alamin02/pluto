@@ -10,14 +10,17 @@ import {
   Category,
   FeaturedProductImage,
   Order,
+  Product,
+  ProductImage,
 } from "../entity";
 
-// @GET - /api/v1/products
-// Get all products list
+// @GET - /api/v1/featured-products
+// Get all featured products list
 export async function getAllFeaturedProducts(
   req: express.Request,
   res: express.Response
 ) {
+  // get the repository from featured product entity
   const faeturedProductRepository = getConnection().getRepository(
     FeaturedProduct
   );
@@ -32,7 +35,7 @@ export async function getAllFeaturedProducts(
     featuredProductCount,
   ] = await faeturedProductRepository.findAndCount({
     select: ["id", "name", "description", "price", "summary", "createdAt"],
-    relations: ["category", "offer", "images"],
+    relations: ["category", "offer", "images", "product"],
     where: {
       name: Like(`%${search}%`),
     },
@@ -54,8 +57,8 @@ export async function getAllFeaturedProducts(
   });
 }
 
-// @POST - /api/v1/products
-// Create product
+// @POST - /api/v1/featured-products
+// Create featured product
 export async function createFeaturedProduct(
   req: express.Request,
   res: express.Response
@@ -77,38 +80,55 @@ export async function createFeaturedProduct(
   const { name, price, summary, description, offerId, categoryId } = req.body;
 
   try {
-    // get the repository from product entity
+    // get the repository from Product, FeaturedProduct entity
+    const productRepository = getConnection().getRepository(Product);
     const faeturedProductRepository = getConnection().getRepository(
       FeaturedProduct
     );
+
+    // get the repository from Category, Offer entity
     const categoryRepository = getConnection().getRepository(Category);
     const categoryCheck = await categoryRepository.findOne({
       id: categoryId,
     });
 
-    const offersRepository = getConnection().getRepository(Offer);
+    const offerRepository = getConnection().getRepository(Offer);
+    let offer;
+    if (offerId) {
+      offer = await offerRepository.findOne({ id: offerId });
+    }
 
+    // get the repository from ProductImage, FeaturedProductImage entity
     const featuredProductImageRepository = getConnection().getRepository(
       FeaturedProductImage
     );
-    let offer;
-    if (offerId) {
-      offer = await offersRepository.findOne({ id: offerId });
-    }
+    const productImageRepository = getConnection().getRepository(ProductImage);
 
     const createFeaturedProductImage = [];
+    const createProductImage = [];
     const files = req.files as Express.Multer.File[];
 
     if (files.length) {
       for (let i = 0; i < files.length; i++) {
         const featuredProductImage = new FeaturedProductImage();
+        const productImage = new ProductImage();
         featuredProductImage.path = files[i].path;
         featuredProductImage.originalname = files[i].originalname;
 
+        productImage.path = files[i].path;
+        productImage.originalname = files[i].originalname;
+
+        // save image in FeaturedProductImage entity
         const savedFeaturedProductImage = await featuredProductImageRepository.save(
           featuredProductImage
         );
         createFeaturedProductImage.push(savedFeaturedProductImage);
+
+        // save image in ProductImage entity
+        const savedProductImage = await productImageRepository.save(
+          productImage
+        );
+        createProductImage.push(savedProductImage);
       }
     } else {
       return res.json({ errors: [{ msg: "Image not found" }] });
@@ -120,15 +140,28 @@ export async function createFeaturedProduct(
     newFeaturedProduct.price = price;
     newFeaturedProduct.summary = summary;
     newFeaturedProduct.images = createFeaturedProductImage;
+
+    const newProduct = new Product(); // same as newProduct = productRepository.create();
+    newProduct.name = name;
+    newProduct.description = description;
+    newProduct.price = price;
+    newProduct.summary = summary;
+    newProduct.images = createProductImage;
+
     if (categoryCheck) {
       newFeaturedProduct.category = categoryId;
+      newProduct.category = categoryId;
     } else {
       res.status(400).json({ errors: [{ msg: "category not found" }] });
     }
 
     if (offer) {
       newFeaturedProduct.offer = offer;
+      newProduct.offer = offer;
     }
+
+    // save data to repository from request body
+    newFeaturedProduct.product = await productRepository.save(newProduct);
 
     // save data to repository from request body
     await faeturedProductRepository.save(newFeaturedProduct);
@@ -139,8 +172,8 @@ export async function createFeaturedProduct(
   res.json({ msg: "Featured Product created" });
 }
 
-// @GET - /api/v1/products/:productId
-// Get a particular product
+// @GET - /api/v1/featured-products/:featuredProductId
+// Get a particular  featured product
 export async function getFeaturedProduct(
   req: express.Request,
   res: express.Response
@@ -166,8 +199,8 @@ export async function getFeaturedProduct(
   res.json({ msg: "featured product found", data: findFeaturedProductById });
 }
 
-// @PUT - /api/v1/products/:Id
-// Update product
+// @PUT - /api/v1/featured-products/:featuredProductId
+// Update featured product
 export async function updateFeaturedProduct(
   req: express.Request,
   res: express.Response
@@ -182,14 +215,26 @@ export async function updateFeaturedProduct(
 
   const id = req.params.featuredProductId;
   const { name, price, summary, description, offerId, categoryId } = req.body;
-  const featuredProductsRepository = getConnection().getRepository(
-    FeaturedProduct
-  );
 
   try {
-    const findFeaturedProductById: any = await featuredProductsRepository.findOne(
-      { id }
+    // get the repository from FeaturedProduct entity
+    const featuredProductRepository = getConnection().getRepository(
+      FeaturedProduct
     );
+    // find featured product by id
+    const findFeaturedProductById: any = await featuredProductRepository.findOne(
+      { id },
+      { relations: ["images", "category", "offer", "product"] }
+    );
+
+    const existingProductId = findFeaturedProductById.product.id;
+    // get the repository from Product entity
+    const productRepository = getConnection().getRepository(Product);
+    // get product by id with the help of existing product id
+    const findProductById = await productRepository.findOneOrFail({
+      id: existingProductId,
+    });
+
     // offer repository
     const offersRepository = getConnection().getRepository(Offer);
     // find offer by id
@@ -201,26 +246,38 @@ export async function updateFeaturedProduct(
     const category = await categoriesRepository.findOne({ id: categoryId });
 
     const newFeaturedProduct = new FeaturedProduct();
+    const newProduct = new Product();
 
     newFeaturedProduct.name = name;
     newFeaturedProduct.description = description;
     newFeaturedProduct.price = price;
     newFeaturedProduct.summary = summary;
 
+    newProduct.name = name;
+    newProduct.description = description;
+    newProduct.price = price;
+    newProduct.summary = summary;
+
     if (offer) {
       newFeaturedProduct.offer = offer;
+      newProduct.offer = offer;
     }
 
     if (category) {
       newFeaturedProduct.category = category;
+      newProduct.category = category;
     }
 
-    featuredProductsRepository.merge(
+    await productRepository.merge(findProductById, newProduct);
+    // save data in product repository
+    newFeaturedProduct.product = await productRepository.save(findProductById);
+
+    featuredProductRepository.merge(
       findFeaturedProductById,
       newFeaturedProduct
     );
-
-    await featuredProductsRepository.save(findFeaturedProductById);
+    // save data in featured product repository
+    await featuredProductRepository.save(findFeaturedProductById);
   } catch (e) {
     return res
       .status(400)
@@ -230,8 +287,8 @@ export async function updateFeaturedProduct(
   res.json({ msg: "Featured Product updated" });
 }
 
-// @DELETE - /api/v1/products/:Id
-// Delete a product
+// @DELETE - /api/v1/featured-products/:featuredProductId&:productId
+// Delete a featured product
 export async function deleteFeaturedProduct(
   req: express.Request,
   res: express.Response
@@ -244,17 +301,29 @@ export async function deleteFeaturedProduct(
   //   return res.status(403).json({ errors: [{ msg: "not authorized" }] });
   // }
 
+  // collect featured product id
   const id = req.params.featuredProductId;
+  // collect associate product id
+  const productId = req.params.productId;
+
+  // get the repository from Product entity
+  const productRepository = getConnection().getRepository(Product);
+  // find product by id
+  const productById = await productRepository.findOne({ id: productId });
+
+  // get the repository from FeaturedProduct entity
   const featuredProductRepository = getConnection().getRepository(
     FeaturedProduct
   );
+  // find featured product by id
   const featuredProductToUpdate = await featuredProductRepository.findOne({
     id: id,
   });
 
-  if (featuredProductToUpdate) {
+  if (featuredProductToUpdate && productById) {
     try {
       await featuredProductRepository.delete({ id });
+      await productRepository.delete({ id: productId });
       res.json({ msg: "Featured Product deleted" });
     } catch (e) {
       res.status(400).json({ msg: e });

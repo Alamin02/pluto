@@ -34,7 +34,6 @@ const FeaturedProductDetails = () => {
   return (
     <MainContainer>
       <div style={{ marginTop: "20px" }}>
-        {/* <MainHeader name="product details" sub="home ⋅ shop ⋅ products" /> */}
         <HeaderSection headerText="product details" />
         <ProductView product={featuredProduct} />
       </div>

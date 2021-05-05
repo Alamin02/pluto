@@ -39,7 +39,7 @@ export default function FeaturedProducts() {
               return (
                 <Col span={12} key={featuredProduct.id}>
                   <div className={styles.firstFlexBoxTopImageContainer}>
-                    <Link to={`/featured-products/${featuredProduct.id}`}>
+                    <Link to={`/products/${featuredProduct.product.id}`}>
                       <img
                         className={classNames(
                           { [styles.firstFlexBoxImage]: screens },

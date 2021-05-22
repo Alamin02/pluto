@@ -134,7 +134,7 @@ export async function getProduct(req: express.Request, res: express.Response) {
     {
       id,
     },
-    { relations: ["images"] }
+    { relations: ["images", "offer"] }
   );
 
   if (!findProductById) {

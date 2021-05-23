@@ -12,10 +12,15 @@ function Cart() {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.cart.products);
 
+
   useEffect(() => {
     let price = 0;
     productList.forEach((product) => {
-      price += product.price * product.quantity;
+      if (product.offer) {
+        price += (Math.floor(product.price - (product.price * product.offer.discount) / 100)) * product.quantity;
+      } else {
+        price += product.price * product.quantity;
+      }
       localStorage.setItem("product", product)
     });
     setTotalPrice(price);
@@ -61,6 +66,7 @@ function Cart() {
             onRemove={handleRemoveProduct}
             description={item.description}
             quantity={item.quantity}
+            offer={item.offer ? item.offer.discount : 0}
           />
         ))}
         <div className={styles.bottomSection}>

@@ -15,8 +15,14 @@ function CartItem({
   onRemove,
   description,
   quantity,
+  offer
 }) {
   const screens = useBreakpoint();
+
+  let priceWithOffer;
+  if (offer > 0) {
+    priceWithOffer = Math.floor(price - (price * offer) / 100);
+  }
 
   return (
     <section>
@@ -76,14 +82,26 @@ function CartItem({
             </h1>
           </Link>
 
-          <div
-            className={classNames(
-              { [styles.priceOnSmallScreen]: screens },
-              { [styles.priceOnSmallScreenXs]: screens.xs }
-            )}
-          >
-            ৳&nbsp;{price * quantity}
-          </div>
+          {priceWithOffer ? (
+            <div
+              className={classNames(
+                { [styles.priceOnSmallScreen]: screens },
+                { [styles.priceOnSmallScreenXs]: screens.xs }
+              )}
+            >
+              ৳&nbsp;${priceWithOffer * quantity}
+            </div>
+          ) : (
+            <div
+              className={classNames(
+                { [styles.priceOnSmallScreen]: screens },
+                { [styles.priceOnSmallScreenXs]: screens.xs }
+              )}
+            >
+              ৳&nbsp;${price * quantity}
+            </div>
+          )}
+
           <div className={styles.description}>{description}</div>
           <div
             className={classNames(
@@ -95,17 +113,29 @@ function CartItem({
           </div>
         </div>
 
-        <div
-          className={classNames(
-            { [styles.priceOnBigScreen]: screens },
-            { [styles.priceOnBigScreenXs]: screens.xs }
-          )}
-        >
-          ৳&nbsp;{price * quantity}
-        </div>
+        {priceWithOffer ? (
+          <div
+            className={classNames(
+              { [styles.priceOnBigScreen]: screens },
+              { [styles.priceOnBigScreenXs]: screens.xs }
+            )}
+          >
+            ৳&nbsp;{priceWithOffer * quantity}
+          </div>
+        ) : (
+          <div
+            className={classNames(
+              { [styles.priceOnBigScreen]: screens },
+              { [styles.priceOnBigScreenXs]: screens.xs }
+            )}
+          >
+            ৳&nbsp;{price * quantity}
+          </div>
+        )}
+
       </div>
       <hr className={styles.cartHr} />
-    </section>
+    </section >
   );
 }
 

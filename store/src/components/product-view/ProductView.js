@@ -11,9 +11,9 @@ import Display from "./Display";
 function ProductView({ product }) {
   const { name, price, images, summary, description, offer } = product;
 
-  let offerPrice;
+  let priceWithOffer;
   if (product.offer) {
-    offerPrice = Math.floor(product.price - (product.price * product.offer.discount) / 100);
+    priceWithOffer = Math.floor(product.price - (product.price * product.offer.discount) / 100);
   }
 
   return (
@@ -29,7 +29,7 @@ function ProductView({ product }) {
             <Space size={20} direction="vertical">
               <div>
                 <h1>{name}</h1>
-                {offer ? <b>৳&nbsp;{offerPrice}</b> : <b>৳&nbsp;{price}</b>}
+                {offer ? <b>৳&nbsp;{priceWithOffer}</b> : <b>৳&nbsp;{price}</b>}
                 <p>{summary}</p>
               </div>
 

@@ -33,9 +33,9 @@
 
 .carousel-details-container {
   position: absolute;
-  left: 30%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  left: 3rem;
+  transform: translateY(-50%);
 }
 
 .carousel-title {
@@ -66,9 +66,9 @@
 
   .carousel-details-container {
     position: absolute;
-    left: 500px;
     top: 50%;
-    transform: translate(-50%, -50%);
+    left: 10rem;
+    transform: translateY(-50%);
   }
 
   .carousel-title {

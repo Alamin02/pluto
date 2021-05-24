@@ -17,6 +17,7 @@ import {
   categoryRouter,
   productImageRouter,
   userImageRouter,
+  settingRouter,
 } from "./route";
 
 const app = express();
@@ -37,6 +38,7 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
 app.use("/api/v1/images", productImageRouter);
 app.use("/api/v1/user-image", userImageRouter);
+app.use("/api/v1/setting", settingRouter);
 
 connectDatabase();
 
@@ -53,8 +55,7 @@ app.use(function (
   // render the error page
   if (err instanceof multer.MulterError) {
     res.status(400).json({
-      msg:
-        " For creating Product key name must be productImages and For creating Blog key name must be blogImage, and, only image file and maximum 4 images can be uploaded ",
+      msg: " For creating Product key name must be productImages and For creating Blog key name must be blogImage, and, only image file and maximum 4 images can be uploaded ",
     });
   } else {
     res.status(err.status || 500);

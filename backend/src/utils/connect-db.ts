@@ -11,7 +11,7 @@ import {
   Category,
   Address,
   UserImage,
-  Setting,
+  Config,
 } from "../entity";
 
 export function connectDatabase() {
@@ -29,7 +29,7 @@ export function connectDatabase() {
       OrderedProduct,
       Address,
       UserImage,
-      Setting,
+      Config,
     ],
     synchronize: true,
   });

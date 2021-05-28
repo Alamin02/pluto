@@ -274,4 +274,10 @@ export const agent = {
       },
     });
   },
+  config: (data) => {
+    return fetch(`${baseUrl}/config`, {
+      method: "post",
+      body: data,
+    });
+  },
 };

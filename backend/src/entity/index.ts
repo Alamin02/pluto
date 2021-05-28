@@ -8,4 +8,4 @@ export { Order } from "./order";
 export { OrderedProduct } from "./orderedProduct";
 export { Address } from "./address";
 export { UserImage } from "./userImage";
-export { Setting } from "./setting";
+export { Config } from "./config";

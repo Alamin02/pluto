@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity("settings")
-export class Setting {
+@Entity("configs")
+export class Config {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

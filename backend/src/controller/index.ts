@@ -69,4 +69,4 @@ export {
   createProductImage as createProductImageController,
 } from "./productImage";
 
-export { logoSetting as logoSettingController } from "./setting";
+export { logoConfig as logoConfigController } from "./config";

@@ -68,6 +68,12 @@ const sidebarInfo = [
     itemUrl: "/blogs",
     icon: <MessageOutlined />,
   },
+  {
+    id: 9,
+    itemName: "Configs",
+    itemUrl: "/configs",
+    icon: <MessageOutlined />,
+  },
 ];
 
 export default function Dashboard() {

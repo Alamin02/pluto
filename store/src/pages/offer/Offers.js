@@ -27,7 +27,7 @@ function Offers() {
               <div style={{ marginBottom: "3rem" }}>
                 <Card>
                   <Title level={2}>{offer.name}</Title>
-                  <Text>{offer.description}</Text>
+                  {/* <Text>{offer.description}</Text> */}
                 </Card>
                 <div style={{ marginBottom: "1rem" }}></div>
                 <Row gutter={[16, 16]}>

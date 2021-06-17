@@ -44,15 +44,14 @@ export default function Offers() {
 
   // close createOfferModal when offer created
   const handleCreateOfferModal = (values) => {
-    console.log(values)
     setVisible(false);
     fetchOffers();
   };
 
   // close editOfferModal after save
   const handleEditOfferModal = () => {
+    fetchOffers();
     setVisibleEditOffer(false);
-    //fetchOffers();
   };
 
   // edit offer

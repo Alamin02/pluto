@@ -76,7 +76,7 @@ export default function EditOfferModal({
 
   useEffect(() => {
     form.resetFields();
-  }, [existingRecord, form]);
+  }, [existingRecord, form, refetch]);
 
   return (
     <div>
@@ -94,17 +94,11 @@ export default function EditOfferModal({
               agent
                 .editOffer(values, token, existingRecord.id)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
-                    form.resetFields();
-                    onCreate(data);
-                    message.success(data.msg);
-                  } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
-                  }
+                .then(() => {
+                  refetch();
                 });
+              form.resetFields();
+              onCreate(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

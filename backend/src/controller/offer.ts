@@ -13,7 +13,7 @@ export async function getAllOffers(
   const offersRepository = getConnection().getRepository(Offer);
 
   const [offers, offerCount] = await offersRepository.findAndCount({
-    relations: ["products", "offerImage"],
+    relations: ["offerImage", "products"],
   });
 
   res.json({
@@ -101,8 +101,9 @@ export async function updateOffer(req: express.Request, res: express.Response) {
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
-      await offersRepository.update(offerId, newOffer);
-      res.status(200).json({ msg: "offer updated" });
+      offersRepository.merge(offerToUpdate, newOffer);
+      await offersRepository.save(offerToUpdate)
+
     } catch (e) {
       res.status(400).json({ errors: [{ msg: "offer name must be unique" }] });
     }
@@ -116,6 +117,7 @@ export async function updateOffer(req: express.Request, res: express.Response) {
       ],
     });
   }
+  res.status(200).json({ msg: "offer updated" });
 }
 // @DELETE /v1/api/offers/:offerId
 // delete a offer

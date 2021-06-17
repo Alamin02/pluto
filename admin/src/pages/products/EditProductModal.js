@@ -93,9 +93,12 @@ export default function EditProductModal({
           }
         });
 
-      agent.getOffers().then((data) => {
-        setOfferOptions(data);
-      });
+      agent
+        .getOffers()
+        .then(res => res.json())
+        .then(({ data }) => {
+          setOfferOptions(data.offers);
+        });
     }
   }, [existingRecord, form]);
 

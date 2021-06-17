@@ -50,7 +50,7 @@ export default function EditProductModal({
 
   const deleteImage = (productId) => {
     agent
-      .deleteimage(productId)
+      .deleteImage(productId)
       .then((res) => res.json())
       .then(({ data }) => {
         refetch();

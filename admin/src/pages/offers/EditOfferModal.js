@@ -1,13 +1,78 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Form, Input, message, Image, Upload, Button } from "antd";
+import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
+
+const imageStyle = {
+  display: "inline-block",
+  position: "relative",
+};
+
+const titleStyle = {
+  display: "inline-block",
+  position: "absolute",
+  top: "40%",
+  width: "300px",
+  margin: "0px 20px",
+};
+
+const deleteButtonStyle = {
+  cursor: "pointer",
+  position: "absolute",
+  marginLeft: "325px",
+  top: "40%",
+  fontSize: "25px",
+  color: "red",
+};
+
 export default function EditOfferModal({
   visible,
   onCreate,
   onCancel,
   existingRecord,
+  refetch
 }) {
   const [form] = Form.useForm();
+  const [offerImages, setOfferImages] = useState([]);
+
+  const deleteOfferImage = (offerImageId) => {
+    agent
+      .deleteOfferImage(offerImageId)
+      .then((res) => res.json())
+      .then(({ data }) =>
+        refetch())
+  };
+
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
+  const handleUpload = async (info) => {
+    const { status } = info.file;
+    if (status !== "uploading") {
+      const formData = new FormData();
+      offerImages.forEach((offerImage) => {
+        formData.append("offerImages", offerImage);
+      });
+
+      formData.append("offerId", existingRecord.id);
+
+      agent
+        .createOfferImage(formData)
+        .then((res) => res.json())
+        .then(() => refetch());
+    }
+    if (status === "done") {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
 
   useEffect(() => {
     form.resetFields();
@@ -91,6 +156,45 @@ export default function EditOfferModal({
             ]}
           >
             <Input.TextArea />
+          </Form.Item>
+          <Form.Item
+            label="Offer Images"
+            name="offerImages"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+            noStyle
+          >
+            {existingRecord &&
+              existingRecord.offerImage &&
+              existingRecord.offerImage.map((offerImage) => (
+                <div key={offerImage.id}>
+                  <div style={imageStyle}>
+                    <Image width={100} height={136} src={offerImage.path} />
+                    <div style={titleStyle}>
+                      <p>{offerImage.originalname}</p>
+                    </div>
+                    <CloseCircleOutlined
+                      onClick={() => deleteOfferImage(offerImage.id)}
+                      style={deleteButtonStyle}
+                    />
+                  </div>
+                </div>
+              ))}
+            <br />
+            <Upload
+              name="files"
+              onChange={handleUpload}
+              beforeUpload={(file, fileList) => {
+                setOfferImages(fileList);
+                return false;
+              }}
+              showUploadList={false}
+              accept="image/*"
+              multiple={true}
+
+            >
+              <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>

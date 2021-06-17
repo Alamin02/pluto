@@ -114,10 +114,6 @@ export const agent = {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
-      .then(({ data }) => {
-        return data;
-      });
   },
 
   editCategory: (categoryData, token, categoryId) => {
@@ -147,9 +143,8 @@ export const agent = {
       method: "post",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(offerData),
+      body: offerData,
     });
   },
 
@@ -255,7 +250,7 @@ export const agent = {
     });
   },
 
-  deleteimage: (imageId) => {
+  deleteImage: (imageId) => {
     return fetch(`${baseUrl}/images/${imageId}`, {
       method: "delete",
       headers: {
@@ -272,6 +267,24 @@ export const agent = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+    });
+  },
+
+  // offer Image 
+  deleteOfferImage: (offerImageId) => {
+    return fetch(`${baseUrl}/offer-image/${offerImageId}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  // create offer image 
+  createOfferImage: (data) => {
+    return fetch(`${baseUrl}/offer-image/`, {
+      method: "post",
+      body: data,
     });
   },
 };

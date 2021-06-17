@@ -9,7 +9,7 @@ import {
   deleteOfferController,
 } from "../controller";
 
-import { authenticationMiddleware } from "../middleware";
+import { authenticationMiddleware, imageUpload } from "../middleware";
 
 // get all offers
 router.get("/", getAllOffersController);
@@ -17,15 +17,16 @@ router.get("/", getAllOffersController);
 // create offer
 router.post(
   "/",
+  imageUpload.array("offerImages", 4),
+  authenticationMiddleware,
   [
     body("name").not().isEmpty().withMessage("Name must not be empty"),
-    body("discount").not().isEmpty().withMessage("price must not be empty"),
+    body("discount").not().isEmpty().withMessage("discount must not be empty"),
     body("description")
       .not()
       .isEmpty()
       .withMessage("description must not be empty"),
   ],
-  authenticationMiddleware,
   createOfferController
 );
 

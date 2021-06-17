@@ -68,3 +68,10 @@ export {
   deleteProductImage as deleteProductImageController,
   createProductImage as createProductImageController,
 } from "./productImage";
+
+export {
+  getAllOfferImages as getAllOfferImagesController,
+  createOfferImage as createOfferImageController,
+  updateOfferImage as updateOfferImageController,
+  deleteOfferImage as deleteOfferImageController
+} from "./offerImage"

@@ -2,7 +2,7 @@ import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 import accessControl from "../utils/access-control";
-import { Offer } from "../entity";
+import { Offer, OfferImage } from "../entity";
 
 // @GET /v1/api/offers
 // all offers
@@ -11,12 +11,19 @@ export async function getAllOffers(
   res: express.Response
 ) {
   const offersRepository = getConnection().getRepository(Offer);
-  const allOffers = await offersRepository.find({
-    relations: ["products", "products.images"],
+
+  const [offers, offerCount] = await offersRepository.findAndCount({
+    relations: ["products", "offerImage"],
   });
 
-  res.status(200).json({ data: allOffers });
+  res.json({
+    data: {
+      offers,
+      offerCount
+    }
+  });
 }
+
 
 // @POST /v1/api/offers
 // create offer
@@ -37,12 +44,32 @@ export async function createOffer(req: express.Request, res: express.Response) {
   const offersRepository = getConnection().getRepository(Offer);
   const previousEntry = await offersRepository.findOne({ name });
 
+  const offerImageRepository = getConnection().getRepository(OfferImage)
+  const createOfferImage = [];
+  const files = req.files as Express.Multer.File[];
+
+  if (files.length) {
+    for (let i = 0; i < files.length; i++) {
+      const offerImage = new OfferImage();
+      offerImage.path = files[i].path;
+      offerImage.originalname = files[i].originalname;
+
+      const savedProductImage = await offerImageRepository.save(
+        offerImage
+      );
+      createOfferImage.push(savedProductImage);
+    }
+  } else {
+    return res.json({ errors: [{ msg: "Image not found" }] });
+  }
+
   if (!previousEntry) {
     try {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
+      newOffer.offerImage = createOfferImage;
 
       await offersRepository.save(newOffer);
       res.status(200).json({ msg: "offer created" });

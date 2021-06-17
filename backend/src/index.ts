@@ -17,6 +17,7 @@ import {
   categoryRouter,
   productImageRouter,
   userImageRouter,
+  offerImageRouter
 } from "./route";
 
 const app = express();
@@ -35,8 +36,11 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
-app.use("/api/v1/images", productImageRouter);
+app.use("/api/v1/offer-image", offerImageRouter);
 app.use("/api/v1/user-image", userImageRouter);
+app.use("/api/v1/images", productImageRouter);
+
+
 
 connectDatabase();
 

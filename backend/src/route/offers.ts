@@ -4,6 +4,7 @@ const router = express.Router();
 
 import {
   getAllOffersController,
+  getSingleOfferController,
   createOfferController,
   updateOfferController,
   deleteOfferController,
@@ -29,6 +30,9 @@ router.post(
   ],
   createOfferController
 );
+
+// get all offers
+router.get("/:offerId", getSingleOfferController);
 
 // update offer
 router.put("/:offerId", authenticationMiddleware, updateOfferController);

@@ -24,6 +24,21 @@ export async function getAllOffers(
   });
 }
 
+// get a offer
+export async function getSingleOffer(
+  req: express.Request,
+  res: express.Response
+) {
+  const id = req.params.offerId;
+  const offersRepository = getConnection().getRepository(Offer)
+  const findByOffer = await offersRepository.findOne({ id: id }, { relations: ["products"] })
+
+  if (!findByOffer) {
+    res.status(400).json({ errors: [{ msg: "Offer not found" }] });
+  }
+  res.status(200).json({ msg: "offer found", data: findByOffer })
+}
+
 
 // @POST /v1/api/offers
 // create offer
@@ -119,6 +134,7 @@ export async function updateOffer(req: express.Request, res: express.Response) {
   }
   res.status(200).json({ msg: "offer updated" });
 }
+
 // @DELETE /v1/api/offers/:offerId
 // delete a offer
 export async function deleteOffer(req: express.Request, res: express.Response) {

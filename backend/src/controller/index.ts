@@ -40,6 +40,7 @@ export {
 
 export {
   getAllOffers as getAllOffersController,
+  getSingleOffer as getSingleOfferController,
   createOffer as createOfferController,
   updateOffer as updateOfferController,
   deleteOffer as deleteOfferController,

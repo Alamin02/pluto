@@ -15,41 +15,31 @@ function Offers() {
     agent
       .getOffers()
       .then((res) => res.json())
-      .then(({ data }) => setOffersData(data));
+      .then(({ data }) => {
+        console.log(data.offers)
+        setOffersData(data.offers)
+      })
   }, []);
 
   return (
     <MainContainer>
       <div style={{ marginTop: "1rem" }}>
-        {offersData.map((offer) => {
-          return (
-            <div key={offer.id}>
-              <div style={{ marginBottom: "3rem" }}>
-                <Card>
-                  <Title level={2}>{offer.name}</Title>
-                  {/* <Text>{offer.description}</Text> */}
-                </Card>
-                <div style={{ marginBottom: "1rem" }}></div>
-                <Row gutter={[16, 16]}>
-                  {offer.products.map((product) => (
-                    <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
-                      <Link to={`/products/${product.id}`}>
-                        <ProductCard
-                          title={product.name}
-                          src={product.images[0].path}
-                          price={product.price}
-                          discount={offer.discount}
-                        />
-                      </Link>
-                    </Col>
-                  ))}
-                </Row>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </MainContainer>
+        <Row gutter={[16, 16]}>
+          {offersData.map((offer) => (
+            <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={offer.id}>
+              {/* <Link to={`/products/${product.id}`}> */}
+              <ProductCard
+                title={offer.name}
+                src={offer.offerImage[0].path}
+                // price={product.price}
+                discount={offer.discount}
+              />
+              {/* </Link> */}
+            </Col>
+          ))}
+        </Row>
+      </div >
+    </MainContainer >
   );
 }
 

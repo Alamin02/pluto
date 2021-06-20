@@ -29,6 +29,7 @@ export const agent = {
     });
   },
 
+  // category
   getCategories: () => {
     return fetch(`${baseUrl}/category`, {
       method: "get",
@@ -37,6 +38,16 @@ export const agent = {
       },
     });
   },
+
+  getCategoryProducts: (categoryId) => {
+    return fetch(`${baseUrl}/category/${categoryId}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
   getMe: (token) => {
     return fetch(`${baseUrl}/users/me`, {
       headers: {
@@ -45,6 +56,7 @@ export const agent = {
       },
     });
   },
+
   getProfile: (token) => {
     return fetch(`${baseUrl}/users/profile`, {
       method: "get",

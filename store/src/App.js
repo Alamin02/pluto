@@ -15,6 +15,8 @@ import LoginPage from "./pages/auth/Login";
 import RegistrationPage from "./pages/auth/Registration";
 import ResetPasswordPage from "./pages/auth/ResetPassword";
 
+import CategoryProducts from "./pages/category/CategoryProducts";
+
 import Blog from "./pages/blog/Blog";
 import Blogs from "./pages/blog/Blogs";
 
@@ -40,6 +42,8 @@ function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/forgetPassword" component={ForgetPasswordPage} exact />
         <Route path="/resetPassword" component={ResetPasswordPage} exact />
+
+        <Route path="/category/:id" component={CategoryProducts} exact />
 
         <Route path="/blogs" component={Blogs} exact />
         <Route path="/blogs/:id" component={Blog} exact />

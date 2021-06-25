@@ -8,3 +8,5 @@ export { Order } from "./order";
 export { OrderedProduct } from "./orderedProduct";
 export { Address } from "./address";
 export { UserImage } from "./userImage";
+export { Carousel } from "./carousel";
+export { CarouselImage } from "./carouselImage";

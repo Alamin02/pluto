@@ -17,6 +17,8 @@ import {
   categoryRouter,
   productImageRouter,
   userImageRouter,
+  carouselController,
+  carouselImageController,
 } from "./route";
 
 const app = express();
@@ -37,6 +39,8 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/addresses", addressRouter);
 app.use("/api/v1/images", productImageRouter);
 app.use("/api/v1/user-image", userImageRouter);
+app.use("/api/v1/carousels", carouselController);
+app.use("/api/v1/carousel-image", carouselImageController);
 
 connectDatabase();
 
@@ -59,7 +63,7 @@ app.use(function (
   } else {
     res.status(err.status || 500);
 
-    res.json({ errors: [{ msg: "Someting went wrong" }] });
+    res.json({ errors: [{ msg: "Something went wrong" }] });
     res.json({ msg: err });
   }
 });

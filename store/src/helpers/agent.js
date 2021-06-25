@@ -136,4 +136,14 @@ export const agent = {
       body: JSON.stringify(addressData),
     });
   },
+
+  // carousel
+  getCarousels: () => {
+    return fetch(`${baseUrl}/carousels`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

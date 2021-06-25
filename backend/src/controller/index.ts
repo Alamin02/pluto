@@ -68,3 +68,11 @@ export {
   deleteProductImage as deleteProductImageController,
   createProductImage as createProductImageController,
 } from "./productImage";
+
+export {
+  createCarousel as createCarouselController,
+  getCarousels as getCarouselsController,
+  deleteCarousel as deleteCarouselController,
+} from "./carousel";
+
+export { createCarouselImage as createCarouselImageController } from "./carouselImage";

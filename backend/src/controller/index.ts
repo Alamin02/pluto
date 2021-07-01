@@ -1,7 +1,7 @@
 export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
-} from "./auth";
+} from "./auth.controller";
 
 export {
   getUsers as getUsersController,

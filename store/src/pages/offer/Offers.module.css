@@ -1,0 +1,13 @@
+.indivudialOfferSpace {
+  margin-bottom: 5em;
+}
+
+.offerImage {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.offerInfo {
+  margin: 1em 0;
+}

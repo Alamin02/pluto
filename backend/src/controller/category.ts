@@ -160,11 +160,14 @@ export async function getSingleCategory(
 
   const categoryRepository = getConnection().getRepository(Category);
 
-  const findCategoryById = await categoryRepository.findOne({ id });
+  const findCategoryById = await categoryRepository.findOne(
+    { id },
+    { relations: ["products", "products.images"] }
+  );
 
   if (!findCategoryById) {
     return res.status(400).json({ errors: [{ msg: "Category not found" }] });
   }
 
-  res.json({ msg: "category found", data: findCategoryById.name });
+  res.json({ msg: "category found", data: findCategoryById });
 }

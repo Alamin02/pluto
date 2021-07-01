@@ -13,14 +13,14 @@ export async function getAllOffers(
   const offersRepository = getConnection().getRepository(Offer);
 
   const [offers, offerCount] = await offersRepository.findAndCount({
-    relations: ["offerImage", "products"],
+    relations: ["offerImage", "products", "products.images"],
   });
 
   res.json({
     data: {
       offers,
-      offerCount
-    }
+      offerCount,
+    },
   });
 }
 
@@ -30,15 +30,17 @@ export async function getSingleOffer(
   res: express.Response
 ) {
   const id = req.params.offerId;
-  const offersRepository = getConnection().getRepository(Offer)
-  const findByOffer = await offersRepository.findOne({ id: id }, { relations: ["products"] })
+  const offersRepository = getConnection().getRepository(Offer);
+  const findByOffer = await offersRepository.findOne(
+    { id: id },
+    { relations: ["products"] }
+  );
 
   if (!findByOffer) {
     res.status(400).json({ errors: [{ msg: "Offer not found" }] });
   }
-  res.status(200).json({ msg: "offer found", data: findByOffer })
+  res.status(200).json({ msg: "offer found", data: findByOffer });
 }
-
 
 // @POST /v1/api/offers
 // create offer
@@ -59,7 +61,7 @@ export async function createOffer(req: express.Request, res: express.Response) {
   const offersRepository = getConnection().getRepository(Offer);
   const previousEntry = await offersRepository.findOne({ name });
 
-  const offerImageRepository = getConnection().getRepository(OfferImage)
+  const offerImageRepository = getConnection().getRepository(OfferImage);
   const createOfferImage = [];
   const files = req.files as Express.Multer.File[];
 
@@ -69,9 +71,7 @@ export async function createOffer(req: express.Request, res: express.Response) {
       offerImage.path = files[i].path;
       offerImage.originalname = files[i].originalname;
 
-      const savedProductImage = await offerImageRepository.save(
-        offerImage
-      );
+      const savedProductImage = await offerImageRepository.save(offerImage);
       createOfferImage.push(savedProductImage);
     }
   } else {
@@ -117,8 +117,7 @@ export async function updateOffer(req: express.Request, res: express.Response) {
       newOffer.discount = discount;
       newOffer.description = description;
       offersRepository.merge(offerToUpdate, newOffer);
-      await offersRepository.save(offerToUpdate)
-
+      await offersRepository.save(offerToUpdate);
     } catch (e) {
       res.status(400).json({ errors: [{ msg: "offer name must be unique" }] });
     }
@@ -126,8 +125,7 @@ export async function updateOffer(req: express.Request, res: express.Response) {
     res.status(400).json({
       errors: [
         {
-          msg:
-            "offer name must be unique or offer to update not found or invalid id",
+          msg: "offer name must be unique or offer to update not found or invalid id",
         },
       ],
     });

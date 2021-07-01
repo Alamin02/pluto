@@ -13,6 +13,7 @@ import {
   TagOutlined,
   MessageOutlined,
   EnvironmentOutlined,
+  PicCenterOutlined,
 } from "@ant-design/icons";
 
 import styles from "./Dashboard.module.css";
@@ -67,6 +68,12 @@ const sidebarInfo = [
     itemName: "Blogs",
     itemUrl: "/blogs",
     icon: <MessageOutlined />,
+  },
+  {
+    id: 9,
+    itemName: "Carousel",
+    itemUrl: "/carousel",
+    icon: <PicCenterOutlined rotate={90} />,
   },
 ];
 

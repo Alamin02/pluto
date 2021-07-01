@@ -7,18 +7,7 @@ import { connectDatabase } from "./utils/connect-db";
 
 const debug = require("debug")("app");
 
-import {
-  userRouter,
-  productRouter,
-  blogRouter,
-  offerRouter,
-  orderRouter,
-  addressRouter,
-  categoryRouter,
-  productImageRouter,
-  userImageRouter,
-  offerImageRouter
-} from "./route";
+import router from "./route";
 
 const app = express();
 
@@ -29,18 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routers
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/products", productRouter);
-app.use("/api/v1/offers", offerRouter);
-app.use("/api/v1/category", categoryRouter);
-app.use("/api/v1/blogs", blogRouter);
-app.use("/api/v1/orders", orderRouter);
-app.use("/api/v1/addresses", addressRouter);
-app.use("/api/v1/offer-image", offerImageRouter);
-app.use("/api/v1/user-image", userImageRouter);
-app.use("/api/v1/images", productImageRouter);
-
-
+app.use("/api/v1", router);
 
 connectDatabase();
 
@@ -57,13 +35,12 @@ app.use(function (
   // render the error page
   if (err instanceof multer.MulterError) {
     res.status(400).json({
-      msg:
-        " For creating Product key name must be productImages and For creating Blog key name must be blogImage, and, only image file and maximum 4 images can be uploaded ",
+      msg: " For creating Product key name must be productImages and For creating Blog key name must be blogImage, and, only image file and maximum 4 images can be uploaded ",
     });
   } else {
     res.status(err.status || 500);
 
-    res.json({ errors: [{ msg: "Someting went wrong" }] });
+    res.json({ errors: [{ msg: "Something went wrong" }] });
     res.json({ msg: err });
   }
 });

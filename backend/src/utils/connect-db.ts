@@ -11,7 +11,9 @@ import {
   Category,
   Address,
   UserImage,
-  OfferImage
+  OfferImage,
+  Carousel,
+  CarouselImage,
 } from "../entity";
 
 export function connectDatabase() {
@@ -29,7 +31,9 @@ export function connectDatabase() {
       OrderedProduct,
       Address,
       UserImage,
-      OfferImage
+      OfferImage,
+      Carousel,
+      CarouselImage,
     ],
     synchronize: true,
   });

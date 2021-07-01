@@ -29,6 +29,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
     "faker": "^5.4.0",
+    "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "minimist": "^1.2.5",
     "morgan": "^1.10.0",

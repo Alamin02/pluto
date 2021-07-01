@@ -1,7 +1,7 @@
 export {
   userLogin as userLoginController,
   userRegistration as userRegistrationController,
-} from "./auth";
+} from "./auth.controller";
 
 export {
   getUsers as getUsersController,
@@ -74,5 +74,13 @@ export {
   getAllOfferImages as getAllOfferImagesController,
   createOfferImage as createOfferImageController,
   updateOfferImage as updateOfferImageController,
-  deleteOfferImage as deleteOfferImageController
-} from "./offerImage"
+  deleteOfferImage as deleteOfferImageController,
+} from "./offerImage";
+
+export {
+  createCarousel as createCarouselController,
+  getCarousels as getCarouselsController,
+  deleteCarousel as deleteCarouselController,
+} from "./carousel";
+
+export { createCarouselImage as createCarouselImageController } from "./carouselImage";

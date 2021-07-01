@@ -9,3 +9,5 @@ export { OrderedProduct } from "./orderedProduct";
 export { Address } from "./address";
 export { UserImage } from "./userImage";
 export { OfferImage } from "./offerImage";
+export { Carousel } from "./carousel";
+export { CarouselImage } from "./carouselImage";

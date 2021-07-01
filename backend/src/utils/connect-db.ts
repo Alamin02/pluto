@@ -38,3 +38,5 @@ export function connectDatabase() {
     synchronize: true,
   });
 }
+
+// synchronize: true is important for high availability

@@ -11,3 +11,5 @@ export { UserImage } from "./userImage";
 export { OfferImage } from "./offerImage";
 export { Carousel } from "./carousel";
 export { CarouselImage } from "./carouselImage";
+
+// all entities in one file for easier managerment

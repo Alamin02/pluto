@@ -156,7 +156,7 @@ export const agent = {
     });
   },
 
-  // caegory
+  // category
   getCategoryProducts: (categoryId) => {
     return fetch(`${baseUrl}/category/${categoryId}`, {
       method: "get",

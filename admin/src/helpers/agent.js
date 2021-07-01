@@ -300,7 +300,7 @@ export const agent = {
     });
   },
 
-  // offer Image
+  // offer image
   createOfferImage: (data) => {
     return fetch(`${baseUrl}/offer-image/`, {
       method: "post",

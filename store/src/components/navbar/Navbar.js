@@ -176,7 +176,9 @@ function Navbar() {
                       {category.children.map((subCategory) => {
                         return (
                           <Menu.Item key={subCategory.id}>
-                            {subCategory.name}
+                            <Link to={`/category/${subCategory.id}`}>
+                              {subCategory.name}
+                            </Link>
                           </Menu.Item>
                         );
                       })}
@@ -185,7 +187,9 @@ function Navbar() {
                 } else {
                   return (
                     <Menu.Item key={category.id} className={styles.menuStyle}>
-                      {category.name}
+                      <Link to={`/category/${category.id}`}>
+                        {category.name}
+                      </Link>
                     </Menu.Item>
                   );
                 }

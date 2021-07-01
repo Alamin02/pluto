@@ -18,6 +18,8 @@ import ResetPasswordPage from "./pages/auth/ResetPassword";
 import Blog from "./pages/blog/Blog";
 import Blogs from "./pages/blog/Blogs";
 
+import CategoryProducts from "./pages/product/CategoryProducts";
+
 import Offers from "./pages/offer/Offers";
 
 import Cart from "./pages/order/Cart";
@@ -43,6 +45,8 @@ function App() {
 
         <Route path="/blogs" component={Blogs} exact />
         <Route path="/blogs/:id" component={Blog} exact />
+
+        <Route path="/category/:id" component={CategoryProducts} exact />
 
         <Route path="/offers" component={Offers} />
 

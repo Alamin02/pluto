@@ -155,4 +155,14 @@ export const agent = {
       },
     });
   },
+
+  // caegory
+  getCategoryProducts: (categoryId) => {
+    return fetch(`${baseUrl}/category/${categoryId}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
 };

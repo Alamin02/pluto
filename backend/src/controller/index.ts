@@ -28,7 +28,7 @@ export {
   updateSingleBlog as updateSingleBlogController,
   deleleBlogImage as deleleBlogImageController,
   deleteBlog as deleteBlogController,
-} from "./blog";
+} from "./blogs.controller";
 
 export {
   category as categoryController,

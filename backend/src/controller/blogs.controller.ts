@@ -1,6 +1,5 @@
 import express = require("express");
 import { getConnection } from "typeorm";
-import { validationResult } from "express-validator";
 
 import accessControl from "../utils/access-control";
 
@@ -12,21 +11,18 @@ export async function createBlog(req: express.Request, res: express.Response) {
   const permission = accessControl.can(res.locals.user.role).createAny("blog");
 
   if (!permission.granted)
-    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+    return res.status(403).json({ success: false, error: "Unauthorized" });
 
   // Validation result
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
+
   const { title, author, description } = req.body;
 
   // Save to database
   const blogRepository = getConnection().getRepository(Blog);
   const duplicateCheck = await blogRepository.findOne({ title });
 
-  if (!duplicateCheck) {
-    try {
+  try {
+    if (!duplicateCheck) {
       let imagePath;
       if (req.file) {
         imagePath = req.file.path;
@@ -41,14 +37,16 @@ export async function createBlog(req: express.Request, res: express.Response) {
       newBlog.path = imagePath;
 
       await blogRepository.save(newBlog);
-    } catch (err) {
-      res.json({ errors: err });
+    } else {
+      res.json({ success: false, error: "Blog already exists" });
+      return;
     }
-  } else {
-    res.json({ errors: [{ msg: "Blog already exists" }] });
+  } catch (err) {
+    res.json({ success: false, error: err });
+    return;
   }
 
-  res.json({ msg: "Blog created" });
+  res.json({ success: true, message: "Blog created" });
 }
 
 // @GET - /api/v1/blogs/
@@ -84,11 +82,11 @@ export async function getSingleBlog(
 ) {
   const id = req.params.blogId;
   const blogRepository = getConnection().getRepository(Blog);
-  const singleblog = await blogRepository.findOne({ id });
-  if (!singleblog) {
-    return res.status(400).json({ msg: "Blog is not found" });
+  const singleBlog = await blogRepository.findOne({ id });
+  if (!singleBlog) {
+    return res.status(400).json({ success: false, error: "Blog is not found" });
   }
-  res.json({ data: singleblog });
+  res.status(200).json({ data: singleBlog });
 }
 
 // @PUT - /api/v1/blogs/:blogId
@@ -97,43 +95,44 @@ export async function updateSingleBlog(
   req: express.Request,
   res: express.Response
 ) {
-  const permission = accessControl.can(res.locals.user.role).updateAny("blog");
-
-  if (!permission.granted)
-    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
-
-  // Validation result
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { title, author, description } = req.body;
-  const blogRepository = getConnection().getRepository(Blog);
   try {
-    let imagePath;
-    if (req.file) {
-      imagePath = req.file.path;
-    }
-    //  else {
-    //   imagePath = "";
-    // }
-    const newBlog = new Blog();
-    newBlog.title = title;
-    newBlog.author = author;
-    newBlog.description = description;
-    if (imagePath) {
-      newBlog.path = imagePath;
-    }
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .updateAny("blog");
 
-    await blogRepository.update({ id: req.params.blogId }, newBlog);
-  } catch (err) {
-    res.json({
-      errors: [{ msg: "Title must be unique, or Blog can not be  updated" }],
-    });
+    if (!permission.granted)
+      return res.status(403).json({ success: false, error: "Unauthorized" });
+
+    const { title, author, description } = req.body;
+    const blogRepository = getConnection().getRepository(Blog);
+    try {
+      let imagePath;
+      if (req.file) {
+        imagePath = req.file.path;
+      }
+      //  else {
+      //   imagePath = "";
+      // }
+      const newBlog = new Blog();
+      newBlog.title = title;
+      newBlog.author = author;
+      newBlog.description = description;
+      if (imagePath) {
+        newBlog.path = imagePath;
+      }
+
+      await blogRepository.update({ id: req.params.blogId }, newBlog);
+    } catch (err) {
+      res.json({
+        success: false,
+        error: "Title must be unique, or Blog can not be updated",
+      });
+    }
+  } catch (error) {
+    res.status(403).json({ success: false, error: "Internel error" });
+    return;
   }
-
-  res.json({ msg: "Blog is now updated" });
+  res.status(200).json({ success: true, message: "Blog is now updated" });
 }
 
 // @DELETE - /api/v1/blogs/blogImage/:blogId
@@ -151,9 +150,9 @@ export async function deleleBlogImage(
       findBlogById.path = "";
       blogRepository.save(findBlogById);
     }
-    res.json({ msg: "blogImage deleted" });
+    res.json({ success: true, message: "blogImage deleted" });
   } catch (err) {
-    res.json({ errors: [{ msg: "blog have no image" }] });
+    res.json({ success: false, error: "blog have no image" });
   }
 }
 // @DELETE - /api/v1/blogs/:blogId
@@ -167,12 +166,12 @@ export async function deleteBlog(req: express.Request, res: express.Response) {
       .deleteAny("blog");
 
     if (!permission.granted)
-      return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+      return res.status(403).json({ success: false, error: "Unauthorized" });
 
     if (await blogRepository.delete({ id })) {
-      return res.json({ msg: "delete successfully" });
+      return res.json({ success: true, message: "Delete successfully" });
     }
   } catch (err) {
-    res.json({ errors: [{ msg: "blog is not identified" }] });
+    res.json({ success: false, error: "Blog is not identified" });
   }
 }

@@ -31,12 +31,12 @@ export {
 } from "./blogs.controller";
 
 export {
-  category as categoryController,
+  getCategory as getCategoryController,
   createCategory as createCategoryController,
   updateCategory as updateCategoryController,
   deleteCategory as deleteCategoryController,
   getSingleCategory as getSingleCategoryController,
-} from "./category";
+} from "./category.controller";
 
 export {
   getAllOffers as getAllOffersController,

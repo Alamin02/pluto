@@ -11,6 +11,7 @@ import {
   Category,
   Address,
   UserImage,
+  OfferImage,
   Carousel,
   CarouselImage,
 } from "../entity";
@@ -30,9 +31,12 @@ export function connectDatabase() {
       OrderedProduct,
       Address,
       UserImage,
+      OfferImage,
       Carousel,
       CarouselImage,
     ],
     synchronize: true,
   });
 }
+
+// synchronize: true is important for high availability

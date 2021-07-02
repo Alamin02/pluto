@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { Product } from "../entity";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from "typeorm";
+import { Product, OfferImage } from "../entity";
 @Entity("offers")
 export class Offer {
   @PrimaryGeneratedColumn("uuid")
@@ -16,4 +16,8 @@ export class Offer {
 
   @OneToMany(() => Product, (product) => product.offer)
   products!: Product[];
+
+  @OneToMany(() => OfferImage, (offerImage) => offerImage.offer)
+  @JoinColumn()
+  offerImage!: OfferImage[];
 }

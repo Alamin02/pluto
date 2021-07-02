@@ -1,10 +1,39 @@
-import React from "react";
-import { Modal, Form, Input, message } from "antd";
-
+import React, { useState } from "react";
+import { Modal, Form, Input, message, Upload } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
 import { agent } from "../../helpers/agent";
 
 export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
+  const [offerImages, setOfferImages] = useState([]);
+
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const handleUpload = async (info) => {
+    const { status } = info.file;
+    if (status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    if (status === "done") {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
 
   return (
     <div>
@@ -19,8 +48,20 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
+              const formData = new FormData();
+
+              formData.append("name", values.name)
+              formData.append("discount", values.discount)
+              formData.append("description", values.description)
+
+              offerImages.forEach((offerImage) => {
+                formData.append("offerImages", offerImage);
+              });
+
+              console.log(formData)
+
               agent
-                .createOffer(values, token)
+                .createOffer(formData, token)
                 .then((res) => res.json())
                 .then((data) => {
                   if (!data.errors) {
@@ -42,9 +83,11 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
         <Form
           form={form}
           layout="vertical"
-          initialValues={{
-            modifier: "public",
-          }}
+          // initialValues={{
+          //   // modifier: "public",
+          // }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
           {/* offer name */}
           <Form.Item
@@ -85,6 +128,41 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
             ]}
           >
             <Input.TextArea />
+          </Form.Item>
+          <Form.Item label="Offer Image&nbsp;:" >
+            <Form.Item
+              name="offerImages"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: "Please input offer photo",
+                },
+              ]}
+            >
+              <Upload.Dragger
+                name="files"
+                onChange={handleUpload}
+                beforeUpload={(file, fileList) => {
+                  setOfferImages(fileList);
+                  return false;
+                }}
+                accept="image/*"
+                multiple={true}
+              >
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+                <p className="ant-upload-hint">
+                  Support for a single or bulk upload.
+                </p>
+              </Upload.Dragger>
+            </Form.Item>
           </Form.Item>
         </Form>
       </Modal>

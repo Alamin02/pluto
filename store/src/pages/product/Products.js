@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Row, Col, Badge, Pagination, Input, Select } from "antd";
+import { Row, Col, Pagination, Input, Select, Skeleton } from "antd";
 import qs from "query-string";
 
 import { agent } from "../../helpers/agent";
@@ -65,104 +65,94 @@ export default function Products() {
           setTotalProductsInfo(data);
           setProductsData(data.products);
         });
-    }
+    };
     fetchProducts();
   }, [currentPage, perPage, search, sort]);
 
   return (
     <div>
-      <MainHeader name="popular list" sub="home - shop - products" />
+      <MainHeader name="all products" sub="home - shop - products" />
       <MainContainer>
-        <ProductMenu />
-        <br />
-        <Row gutter={[16, 16]}>
-          <Col span={12}>
-            {/* sort menu */}
-            <span style={{ marginRight: "10px" }}>Sort By:</span>
-            <Select
-              defaultValue="createdAt"
-              style={{ width: 200 }}
-              onChange={onSort}
-            >
-              <Option value="createdAt">Product added</Option>
-              <Option value="name">Name</Option>
-              <Option value="price">Price</Option>
-            </Select>
-          </Col>
-          <Col span={12}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              {/* search bar */}
-              <Search
-                placeholder="Search products"
-                onSearch={onSearch}
-                enterButton
-                allowClear="true"
-                style={{ width: "300px" }}
-              />
-            </div>
-          </Col>
-        </Row>
-        <br />
-        <br />
+        {productsData.length ? (
+          <div>
+            <ProductMenu />
+            <br />
+            <Row gutter={[16, 16]}>
+              <Col span={12}>
+                {/* sort menu */}
+                <span style={{ marginRight: "10px" }}>Sort By:</span>
+                <Select
+                  defaultValue="createdAt"
+                  style={{ width: 200 }}
+                  onChange={onSort}
+                >
+                  <Option value="createdAt">Product added</Option>
+                  <Option value="name">Name</Option>
+                  <Option value="price">Price</Option>
+                </Select>
+              </Col>
+              <Col span={12}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  {/* search bar */}
+                  <Search
+                    placeholder="Search products"
+                    onSearch={onSearch}
+                    enterButton
+                    allowClear="true"
+                    style={{ width: "300px" }}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <br />
+            <br />
 
-        {/* all products list */}
-        <Row gutter={[16, 16]}>
-          {productsData.map((product) => {
-            if (product.offer) {
-              return (
-                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
-                  <Link to={`/products/${product.id}`}>
-                    <Badge.Ribbon
-                      color="red"
-                      text={product.offer.discount + ` % off`}
-                    >
+            {/* all products list */}
+            <Row gutter={[16, 16]}>
+              {productsData.map((product) => {
+                return (
+                  <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
+                    <Link to={`/products/${product.id}`}>
                       <CardItem
                         title={product.name}
                         src={product.images[0].path}
-                        price={Math.floor(
-                          product.price -
-                          (product.price * product.offer.discount) / 100
-                        )}
-                        discount={product.price}
+                        price={product.price}
+                        discount={product.offer && product.offer.discount}
                       />
-                    </Badge.Ribbon>
-                  </Link>
-                </Col>
-              );
-            } else {
-              return (
-                <Col xxl={6} xl={6} md={8} sm={12} xs={12} key={product.id}>
-                  <Link to={`/products/${product.id}`}>
-                    <CardItem
-                      title={product.name}
-                      src={product.images.length && product.images[0].path}
-                      price={product.price}
-                    />
-                  </Link>
-                </Col>
-              );
-            }
-          })}
-        </Row>
-        <Pagination
-          style={{ display: "flex", justifyContent: "center", margin: "50px" }}
-          showQuickJumper
-          defaultCurrent={1}
-          showSizeChanger={false}
-          current={currentPage}
-          onChange={onChange}
-          defaultPageSize={totalProductsInfo.perPage || 10}
-          pageSize={perPage || 10}
-          total={totalProductsInfo.productCount}
-          showTotal={(total, range) =>
-            `${range[0]} to ${range[1]} of ${total} Products`
-          }
-        />
+                    </Link>
+                  </Col>
+                );
+              })}
+            </Row>
+            <Pagination
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "50px",
+              }}
+              showQuickJumper
+              defaultCurrent={1}
+              showSizeChanger={false}
+              current={currentPage}
+              onChange={onChange}
+              defaultPageSize={totalProductsInfo.perPage || 10}
+              pageSize={perPage || 10}
+              total={totalProductsInfo.productCount}
+              showTotal={(total, range) =>
+                `${range[0]} to ${range[1]} of ${total} Products`
+              }
+            />
+          </div>
+        ) : (
+          <div style={{ marginTop: "1em" }}>
+            <Skeleton active />
+          </div>
+        )}
       </MainContainer>
     </div>
   );

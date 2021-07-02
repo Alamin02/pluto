@@ -137,9 +137,28 @@ export const agent = {
     });
   },
 
+  getOffers: () => {
+    return fetch(`${baseUrl}/offers`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
   // carousel
   getCarousels: () => {
     return fetch(`${baseUrl}/carousels`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  // category
+  getCategoryProducts: (categoryId) => {
+    return fetch(`${baseUrl}/category/${categoryId}`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",

@@ -24,11 +24,20 @@ export default function Offers() {
   const [visible, setVisible] = useState(false);
   const [visibleEditOffer, setVisibleEditOffer] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
+
   const fetchOffers = () => {
-    agent.getOffers().then((data) => {
-      setOfferData(data);
-    });
+    agent
+      .getOffers()
+      .then(res => res.json())
+      .then(({ data }) => {
+        setOfferData(data.offers);
+        if (selectedOffer)
+          setSelectedOffer(
+            data.offers.find((offer) => offer.id === selectedOffer.id)
+          );
+      });
   };
+
   useEffect(() => {
     fetchOffers();
   }, []);
@@ -38,17 +47,17 @@ export default function Offers() {
     setVisible(false);
     fetchOffers();
   };
+
   // close editOfferModal after save
   const handleEditOfferModal = () => {
-    setVisibleEditOffer(false);
     fetchOffers();
+    setVisibleEditOffer(false);
   };
 
   // edit offer
   const handleEdit = (record) => {
     setSelectedOffer(record);
     setVisibleEditOffer(true);
-    fetchOffers();
   };
 
   // delete offer
@@ -127,6 +136,7 @@ export default function Offers() {
           onCancel={() => {
             setVisibleEditOffer(false);
           }}
+          refetch={fetchOffers}
         />
         {/* table */}
         <Table

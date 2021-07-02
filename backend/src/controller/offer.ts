@@ -2,7 +2,7 @@ import express = require("express");
 import { getConnection } from "typeorm";
 import { validationResult } from "express-validator";
 import accessControl from "../utils/access-control";
-import { Offer } from "../entity";
+import { Offer, OfferImage } from "../entity";
 
 // @GET /v1/api/offers
 // all offers
@@ -11,9 +11,35 @@ export async function getAllOffers(
   res: express.Response
 ) {
   const offersRepository = getConnection().getRepository(Offer);
-  const allOffers = await offersRepository.find();
 
-  res.status(200).json({ data: allOffers });
+  const [offers, offerCount] = await offersRepository.findAndCount({
+    relations: ["offerImage", "products", "products.images"],
+  });
+
+  res.json({
+    data: {
+      offers,
+      offerCount,
+    },
+  });
+}
+
+// get a offer
+export async function getSingleOffer(
+  req: express.Request,
+  res: express.Response
+) {
+  const id = req.params.offerId;
+  const offersRepository = getConnection().getRepository(Offer);
+  const findByOffer = await offersRepository.findOne(
+    { id: id },
+    { relations: ["products"] }
+  );
+
+  if (!findByOffer) {
+    res.status(400).json({ errors: [{ msg: "Offer not found" }] });
+  }
+  res.status(200).json({ msg: "offer found", data: findByOffer });
 }
 
 // @POST /v1/api/offers
@@ -35,12 +61,30 @@ export async function createOffer(req: express.Request, res: express.Response) {
   const offersRepository = getConnection().getRepository(Offer);
   const previousEntry = await offersRepository.findOne({ name });
 
+  const offerImageRepository = getConnection().getRepository(OfferImage);
+  const createOfferImage = [];
+  const files = req.files as Express.Multer.File[];
+
+  if (files.length) {
+    for (let i = 0; i < files.length; i++) {
+      const offerImage = new OfferImage();
+      offerImage.path = files[i].path;
+      offerImage.originalname = files[i].originalname;
+
+      const savedProductImage = await offerImageRepository.save(offerImage);
+      createOfferImage.push(savedProductImage);
+    }
+  } else {
+    return res.json({ errors: [{ msg: "Image not found" }] });
+  }
+
   if (!previousEntry) {
     try {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
+      newOffer.offerImage = createOfferImage;
 
       await offersRepository.save(newOffer);
       res.status(200).json({ msg: "offer created" });
@@ -72,8 +116,8 @@ export async function updateOffer(req: express.Request, res: express.Response) {
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
-      await offersRepository.update(offerId, newOffer);
-      res.status(200).json({ msg: "offer updated" });
+      offersRepository.merge(offerToUpdate, newOffer);
+      await offersRepository.save(offerToUpdate);
     } catch (e) {
       res.status(400).json({ errors: [{ msg: "offer name must be unique" }] });
     }
@@ -81,13 +125,14 @@ export async function updateOffer(req: express.Request, res: express.Response) {
     res.status(400).json({
       errors: [
         {
-          msg:
-            "offer name must be unique or offer to update not found or invalid id",
+          msg: "offer name must be unique or offer to update not found or invalid id",
         },
       ],
     });
   }
+  res.status(200).json({ msg: "offer updated" });
 }
+
 // @DELETE /v1/api/offers/:offerId
 // delete a offer
 export async function deleteOffer(req: express.Request, res: express.Response) {

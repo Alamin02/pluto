@@ -50,7 +50,7 @@ export default function EditProductModal({
 
   const deleteImage = (productId) => {
     agent
-      .deleteimage(productId)
+      .deleteImage(productId)
       .then((res) => res.json())
       .then(({ data }) => {
         refetch();
@@ -93,9 +93,12 @@ export default function EditProductModal({
           }
         });
 
-      agent.getOffers().then((data) => {
-        setOfferOptions(data);
-      });
+      agent
+        .getOffers()
+        .then(res => res.json())
+        .then(({ data }) => {
+          setOfferOptions(data.offers);
+        });
     }
   }, [existingRecord, form]);
 

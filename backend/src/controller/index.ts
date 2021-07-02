@@ -40,6 +40,7 @@ export {
 
 export {
   getAllOffers as getAllOffersController,
+  getSingleOffer as getSingleOfferController,
   createOffer as createOfferController,
   updateOffer as updateOfferController,
   deleteOffer as deleteOfferController,
@@ -62,12 +63,20 @@ export {
 } from "./addresses";
 
 export { createUserImage as createUserImageController } from "./userImage";
+
 export {
   getAllProductsImages as getAllProductsImagesController,
   getSingleImage as getSingleImageController,
   deleteProductImage as deleteProductImageController,
   createProductImage as createProductImageController,
 } from "./productImage";
+
+export {
+  getAllOfferImages as getAllOfferImagesController,
+  createOfferImage as createOfferImageController,
+  updateOfferImage as updateOfferImageController,
+  deleteOfferImage as deleteOfferImageController,
+} from "./offerImage";
 
 export {
   createCarousel as createCarouselController,

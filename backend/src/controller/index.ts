@@ -44,7 +44,7 @@ export {
   createOffer as createOfferController,
   updateOffer as updateOfferController,
   deleteOffer as deleteOfferController,
-} from "./offer";
+} from "./offers.controller";
 
 export {
   createOrder as createOrderController,

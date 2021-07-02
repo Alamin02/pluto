@@ -1,6 +1,5 @@
 import express = require("express");
 import { getConnection } from "typeorm";
-import { validationResult } from "express-validator";
 import accessControl from "../utils/access-control";
 import { Offer, OfferImage } from "../entity";
 
@@ -47,13 +46,7 @@ export async function getSingleOffer(
 export async function createOffer(req: express.Request, res: express.Response) {
   const permission = accessControl.can(res.locals.user.role).createAny("offer");
   if (!permission.granted) {
-    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
-  }
-
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(403).json({ success: false, error: "Unauthorized" });
   }
 
   const { name, discount, description } = req.body;
@@ -75,11 +68,11 @@ export async function createOffer(req: express.Request, res: express.Response) {
       createOfferImage.push(savedProductImage);
     }
   } else {
-    return res.json({ errors: [{ msg: "Image not found" }] });
+    return res.json({ success: false, error: "Image not found" });
   }
 
-  if (!previousEntry) {
-    try {
+  try {
+    if (!previousEntry) {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
@@ -87,12 +80,13 @@ export async function createOffer(req: express.Request, res: express.Response) {
       newOffer.offerImage = createOfferImage;
 
       await offersRepository.save(newOffer);
-      res.status(200).json({ msg: "offer created" });
-    } catch (e) {
-      res.status(400).json({ errors: [{ msg: e }] });
+
+      res.status(200).json({ success: true, message: "Offer created" });
+    } else {
+      res.status(400).json({ success: false, error: "offer already exist" });
     }
-  } else {
-    res.status(400).json({ errors: [{ msg: "offer already exist" }] });
+  } catch (e) {
+    res.status(400).json({ success: false, error: e });
   }
 }
 
@@ -107,30 +101,31 @@ export async function updateOffer(req: express.Request, res: express.Response) {
 
   const permisson = accessControl.can(res.locals.user.role).updateAny("offer");
   if (!permisson.granted) {
-    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+    return res.status(403).json({ success: false, error: "Unauthorized" });
   }
 
-  if (offerToUpdate) {
-    try {
+  try {
+    if (offerToUpdate) {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
       offersRepository.merge(offerToUpdate, newOffer);
       await offersRepository.save(offerToUpdate);
-    } catch (e) {
-      res.status(400).json({ errors: [{ msg: "offer name must be unique" }] });
+
+      res.status(200).json({ success: true, message: "offer updated" });
+    } else {
+      res.status(400).json({
+        success: false,
+        error:
+          "offer name must be unique or offer to update not found or invalid id",
+      });
     }
-  } else {
-    res.status(400).json({
-      errors: [
-        {
-          msg: "offer name must be unique or offer to update not found or invalid id",
-        },
-      ],
-    });
+  } catch (e) {
+    res
+      .status(400)
+      .json({ success: false, error: "offer name must be unique" });
   }
-  res.status(200).json({ msg: "offer updated" });
 }
 
 // @DELETE /v1/api/offers/:offerId
@@ -138,22 +133,23 @@ export async function updateOffer(req: express.Request, res: express.Response) {
 export async function deleteOffer(req: express.Request, res: express.Response) {
   const permisson = accessControl.can(res.locals.user.role).deleteAny("offer");
   if (!permisson.granted) {
-    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
+    return res.status(403).json({ success: false, error: "Unauthorized" });
   }
 
   const offerId = req.params.offerId;
   const offersRepository = getConnection().getRepository(Offer);
   const offerToUpdate = await offersRepository.findOne({ id: offerId });
-  if (offerToUpdate) {
-    try {
+  try {
+    if (offerToUpdate) {
       await offersRepository.delete(offerId);
-      res.json({ msg: "offer deleted" });
-    } catch (e) {
-      res.status(400).json({ msg: e });
+      res.status(200).json({ success: true, message: "Offer deleted" });
+    } else {
+      res.status(400).json({
+        success: false,
+        error: "offer to delete not found or invalid id",
+      });
     }
-  } else {
-    res
-      .status(400)
-      .json({ errors: [{ msg: "offer to delete not found or invalid id" }] });
+  } catch (e) {
+    res.status(400).json({ success: false, error: e });
   }
 }

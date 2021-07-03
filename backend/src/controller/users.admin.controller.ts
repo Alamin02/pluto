@@ -11,10 +11,9 @@ export async function createUserAdmin(
   req: express.Request,
   res: express.Response
 ) {
-  const { name, email, password, phone, role, addresses } = req.body;
-  const hash = await bcrypt.hash(password, saltRounds);
-
   try {
+    const { name, email, password, phone, role, addresses } = req.body;
+    const hash = await bcrypt.hash(password, saltRounds);
     const userRepository = getConnection().getRepository(User);
 
     const findUserByEmail = await userRepository.findOne({ email });
@@ -66,13 +65,13 @@ export async function updateUserAdmin(
   req: express.Request,
   res: express.Response
 ) {
-  const userId = req.params.userId;
-  const { name, email, phone, role } = req.body;
-
-  const userRepository = getConnection().getRepository(User);
-  const findUserById = await userRepository.findOne({ id: userId });
-
   try {
+    const userId = req.params.userId;
+    const { name, email, phone, role } = req.body;
+
+    const userRepository = getConnection().getRepository(User);
+    const findUserById = await userRepository.findOne({ id: userId });
+
     if (findUserById) {
       const newUser = new User();
       newUser.name = name;

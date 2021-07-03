@@ -5,7 +5,7 @@ import accessControl from "../utils/access-control";
 
 import { Product, Offer, Category, ProductImage } from "../entity";
 
-// @GET - /api/v1/products
+// @GET - baseUrl/products
 // Get all products list
 export async function getAllProducts(
   req: express.Request,
@@ -57,17 +57,16 @@ export async function createProduct(
   req: express.Request,
   res: express.Response
 ) {
-  const permission = accessControl
-    .can(res.locals.user.role)
-    .createAny("product");
-
-  if (!permission.granted) {
-    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
-  }
-
-  const { name, price, summary, description, offerId, categoryId } = req.body;
-
   try {
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .createAny("product");
+
+    if (!permission.granted) {
+      return res.status(403).json({ success: false, error: "Not authorized" });
+    }
+
+    const { name, price, summary, description, offerId, categoryId } = req.body;
     const productsRepository = getConnection().getRepository(Product);
     const categoryRepository = getConnection().getRepository(Category);
     const offersRepository = getConnection().getRepository(Offer);
@@ -128,10 +127,11 @@ export async function createProduct(
 // @GET - /api/v1/products/:productId
 // Get a particular product
 export async function getProduct(req: express.Request, res: express.Response) {
-  const id = req.params.productId;
-
   try {
+    const id = req.params.productId;
+
     const productRepository = getConnection().getRepository(Product);
+
     const findProductById = await productRepository.findOne(
       { id },
       { relations: ["images"] }
@@ -163,26 +163,24 @@ export async function updateProduct(
   req: express.Request,
   res: express.Response
 ) {
-  const permission = accessControl
-    .can(res.locals.user.role)
-    .updateAny("product");
-
-  if (!permission.granted) {
-    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
-  }
-
-  const id = req.params.productId;
-  const { name, price, summary, description, offerId, categoryId } = req.body;
-  const productsRepository = getConnection().getRepository(Product);
-
   try {
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .updateAny("product");
+
+    if (!permission.granted) {
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    const id = req.params.productId;
+
+    const { name, price, summary, description, offerId, categoryId } = req.body;
+    const productsRepository = getConnection().getRepository(Product);
     const findProductById: any = await productsRepository.findOne({ id });
     const offersRepository = getConnection().getRepository(Offer);
     const categoriesRepository = getConnection().getRepository(Category);
-
     const offer = await offersRepository.findOne({ id: offerId });
     const category = await categoriesRepository.findOne({ id: categoryId });
-
     const newProduct = new Product();
 
     newProduct.name = name;
@@ -218,19 +216,19 @@ export async function deleteProduct(
   req: express.Request,
   res: express.Response
 ) {
-  const permission = accessControl
-    .can(res.locals.user.role)
-    .deleteAny("product");
-
-  if (!permission.granted) {
-    return res.status(403).json({ errors: [{ msg: "not authorized" }] });
-  }
-
-  const id = req.params.productId;
-  const productRepository = getConnection().getRepository(Product);
-  const productToUpdate = await productRepository.findOne({ id: id });
-
   try {
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .deleteAny("product");
+
+    if (!permission.granted) {
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    const id = req.params.productId;
+
+    const productRepository = getConnection().getRepository(Product);
+    const productToUpdate = await productRepository.findOne({ id: id });
     if (productToUpdate) {
       await productRepository.delete({ id });
       res.status(200).json({ success: true, message: "Product deleted!" });

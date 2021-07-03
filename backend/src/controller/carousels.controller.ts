@@ -9,9 +9,8 @@ export async function createCarousel(
   req: express.Request,
   res: express.Response
 ) {
-  const { title, summary, link } = req.body;
-
   try {
+    const { title, summary, link } = req.body;
     const carouselRepository = getConnection().getRepository(Carousel);
     const carouselImageRepository =
       getConnection().getRepository(CarouselImage);
@@ -78,11 +77,12 @@ export async function deleteCarousel(
   req: express.Request,
   res: express.Response
 ) {
-  const id = req.params.carouselId;
-  const carouselRepository = getConnection().getRepository(Carousel);
-  const findCarouselById = await carouselRepository.findOne({ id: id });
-
   try {
+    const id = req.params.carouselId;
+
+    const carouselRepository = getConnection().getRepository(Carousel);
+    const findCarouselById = await carouselRepository.findOne({ id: id });
+
     if (findCarouselById) {
       await carouselRepository.delete({ id });
       res.status(200).json({

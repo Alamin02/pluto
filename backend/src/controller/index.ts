@@ -19,7 +19,7 @@ export {
   getProduct as getProductController,
   updateProduct as updateProductController,
   deleteProduct as deleteProductController,
-} from "./products";
+} from "./products.controller";
 
 export {
   createBlog as createBlogController,

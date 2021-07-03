@@ -1,10 +1,9 @@
 import express = require("express");
 import { getConnection, Like } from "typeorm";
 
-import { validationResult } from "express-validator";
 import accessControl from "../utils/access-control";
 
-import { Product, Offer, Category, ProductImage, Order } from "../entity";
+import { Product, Offer, Category, ProductImage } from "../entity";
 
 // @GET - /api/v1/products
 // Get all products list
@@ -12,35 +11,44 @@ export async function getAllProducts(
   req: express.Request,
   res: express.Response
 ) {
-  const productRepository = getConnection().getRepository(Product);
+  try {
+    const productRepository = getConnection().getRepository(Product);
 
-  const page: number = parseInt(<string>req.query.page) || 1;
-  const perPage: number = parseInt(<string>req.query.perPage) || 12;
-  const search: string = <string>req.query.search || "";
-  const sort: string = <string>req.query.sort || "createdAt";
+    const page: number = parseInt(<string>req.query.page) || 1;
+    const perPage: number = parseInt(<string>req.query.perPage) || 12;
+    const search: string = <string>req.query.search || "";
+    const sort: string = <string>req.query.sort || "createdAt";
 
-  const [products, productCount] = await productRepository.findAndCount({
-    select: ["id", "name", "description", "price", "summary", "createdAt"],
-    relations: ["category", "offer", "images"],
-    where: {
-      name: Like(`%${search}%`),
-    },
-    order: {
-      [sort]: "ASC",
-    },
-    take: perPage,
-    skip: (page - 1) * perPage,
-  });
+    const [products, productCount] = await productRepository.findAndCount({
+      select: ["id", "name", "description", "price", "summary", "createdAt"],
+      relations: ["category", "offer", "images"],
+      where: {
+        name: Like(`%${search}%`),
+      },
+      order: {
+        [sort]: "ASC",
+      },
+      take: perPage,
+      skip: (page - 1) * perPage,
+    });
 
-  res.json({
-    data: {
-      products,
-      productCount,
-      currentPage: page,
-      maxPages: Math.ceil(productCount / perPage),
-      perPage,
-    },
-  });
+    res.status(200).json({
+      success: true,
+      data: {
+        products,
+        productCount,
+        currentPage: page,
+        maxPages: Math.ceil(productCount / perPage),
+        perPage,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong",
+    });
+  }
 }
 
 // @POST - /api/v1/products
@@ -57,31 +65,20 @@ export async function createProduct(
     return res.status(403).json({ errors: [{ msg: "not authorized" }] });
   }
 
-  // error validation
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
   const { name, price, summary, description, offerId, categoryId } = req.body;
 
   try {
-    // get the repository from product entity
     const productsRepository = getConnection().getRepository(Product);
     const categoryRepository = getConnection().getRepository(Category);
+    const offersRepository = getConnection().getRepository(Offer);
+    const productImageRepository = getConnection().getRepository(ProductImage);
+
     const categoryCheck = await categoryRepository.findOne({
       id: categoryId,
     });
+    const offerCheck = await offersRepository.findOne({ id: offerId });
 
-    const offersRepository = getConnection().getRepository(Offer);
-
-    const productImageRepository = getConnection().getRepository(ProductImage);
-    let offer;
-    if (offerId) {
-      offer = await offersRepository.findOne({ id: offerId });
-    }
-
-    const createProductImage = [];
+    const productImages = [];
     const files = req.files as Express.Multer.File[];
 
     if (files.length) {
@@ -93,35 +90,39 @@ export async function createProduct(
         const savedProductImage = await productImageRepository.save(
           productImage
         );
-        createProductImage.push(savedProductImage);
+        productImages.push(savedProductImage);
       }
     } else {
-      return res.json({ errors: [{ msg: "Image not found" }] });
+      return res.json({ success: false, error: "Image not found" });
     }
 
     const newProduct = new Product();
+
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
     newProduct.summary = summary;
-    newProduct.images = createProductImage;
+    newProduct.images = productImages;
+
     if (categoryCheck) {
       newProduct.category = categoryId;
     } else {
-      res.status(400).json({ errors: [{ msg: "category not found" }] });
+      res.status(400).json({ success: false, error: "Category not found" });
     }
 
-    if (offer) {
-      newProduct.offer = offer;
+    if (offerCheck) {
+      newProduct.offer = offerId;
+    } else {
+      res.status(400).json({ success: false, error: "Offer not found" });
     }
 
-    // save data to repository from request body
     await productsRepository.save(newProduct);
   } catch (e) {
-    res.status(400).json({ errors: [{ msg: e }] });
+    console.error(e);
+    res.status(500).json({ success: false, error: "Something went wrong" });
     return;
   }
-  res.json({ msg: "Product created" });
+  res.status(200).json({ success: true, message: "New product added!" });
 }
 
 // @GET - /api/v1/products/:productId
@@ -129,19 +130,31 @@ export async function createProduct(
 export async function getProduct(req: express.Request, res: express.Response) {
   const id = req.params.productId;
 
-  const productRepository = getConnection().getRepository(Product);
-  const findProductById = await productRepository.findOne(
-    {
-      id,
-    },
-    { relations: ["images"] }
-  );
+  try {
+    const productRepository = getConnection().getRepository(Product);
+    const findProductById = await productRepository.findOne(
+      { id },
+      { relations: ["images"] }
+    );
 
-  if (!findProductById) {
-    return res.status(400).json({ errors: [{ msg: "Product not found" }] });
+    if (!findProductById) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Product not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product found!",
+      data: findProductById,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong",
+    });
   }
-
-  res.json({ msg: "product found", data: findProductById });
 }
 
 // @PUT - /api/v1/products/:productId
@@ -164,14 +177,10 @@ export async function updateProduct(
 
   try {
     const findProductById: any = await productsRepository.findOne({ id });
-    // offer repository
     const offersRepository = getConnection().getRepository(Offer);
-    // find offer by id
-    const offer = await offersRepository.findOne({ id: offerId });
-
-    // categories repository
     const categoriesRepository = getConnection().getRepository(Category);
-    // find category by id
+
+    const offer = await offersRepository.findOne({ id: offerId });
     const category = await categoriesRepository.findOne({ id: categoryId });
 
     const newProduct = new Product();
@@ -193,12 +202,14 @@ export async function updateProduct(
 
     await productsRepository.save(findProductById);
   } catch (e) {
-    return res
-      .status(400)
-      .json({ errors: [{ msg: "Product could not be updated" }] });
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong",
+    });
   }
 
-  res.json({ msg: "Product updated" });
+  res.status(200).json({ success: true, message: "Product updated!" });
 }
 
 // @DELETE - /api/v1/products/:productId
@@ -219,16 +230,21 @@ export async function deleteProduct(
   const productRepository = getConnection().getRepository(Product);
   const productToUpdate = await productRepository.findOne({ id: id });
 
-  if (productToUpdate) {
-    try {
+  try {
+    if (productToUpdate) {
       await productRepository.delete({ id });
-      res.json({ msg: "Product deleted" });
-    } catch (e) {
-      res.status(400).json({ msg: e });
+      res.status(200).json({ success: true, message: "Product deleted!" });
+    } else {
+      res.status(400).json({
+        success: false,
+        error: "Product to delete not found or invalid id.",
+      });
     }
-  } else {
-    res
-      .status(400)
-      .json({ errors: [{ msg: "Product to delete not found or invalid id" }] });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong",
+    });
   }
 }

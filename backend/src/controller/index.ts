@@ -8,10 +8,8 @@ export {
   getUser as getUserController,
   deleteUser as deleteUserController,
   updateUserPassword as updateUserPasswordController,
-  updateUserAdminPanel as updateUserAdminPanelController,
-  updateUserFrontend as updateUserFrontendController,
-  getProfile as getProfileController,
-} from "./user";
+  updateUser as updateUserController,
+} from "./users.controller";
 
 export {
   createProduct as createProductController,
@@ -85,3 +83,8 @@ export {
 } from "./carousels.controller";
 
 export { createCarouselImage as createCarouselImageController } from "./carouselImage";
+
+export {
+  createUserAdmin as createUserAdminController,
+  updateUserAdmin as updateUserAdminController,
+} from "./users.admin.controller";

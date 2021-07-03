@@ -10,8 +10,9 @@ import orderRouter from "./orders";
 import addressRouter from "./addresses";
 import productImageRouter from "./productImages";
 import userImageRouter from "./userImages";
-import carouselController from "./carousels.route";
-import carouselImageController from "./carouselImages";
+import carouselRouter from "./carousels.route";
+import carouselImageRouter from "./carouselImages";
+import userAdminRouter from "./users.admin.route";
 
 const router = Router();
 
@@ -25,7 +26,8 @@ router.use("/orders", orderRouter);
 router.use("/addresses", addressRouter);
 router.use("/images", productImageRouter);
 router.use("/user-image", userImageRouter);
-router.use("/carousels", carouselController);
-router.use("/carousel-image", carouselImageController);
+router.use("/carousels", carouselRouter);
+router.use("/carousel-image", carouselImageRouter);
+router.use("/users/admin", userAdminRouter);
 
 export default router;

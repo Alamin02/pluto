@@ -18,12 +18,13 @@ export const authenticationMiddleware = (
   const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ success: false, error: "Unauthorized" });
   }
 
   jwt.verify(token, secret, async (err: any, user: any) => {
     debug(err);
-    if (err) return res.status(401).json({ error: "Unauthorized" });
+    if (err)
+      return res.status(401).json({ success: false, error: "Unauthorized" });
 
     const userRepository = getConnection().getRepository(User);
 
@@ -33,7 +34,7 @@ export const authenticationMiddleware = (
     );
 
     if (!userRecord) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ success: false, error: "Unauthorized" });
     }
 
     res.locals.user = userRecord;

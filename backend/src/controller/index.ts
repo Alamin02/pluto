@@ -28,15 +28,15 @@ export {
   updateSingleBlog as updateSingleBlogController,
   deleleBlogImage as deleleBlogImageController,
   deleteBlog as deleteBlogController,
-} from "./blog";
+} from "./blogs.controller";
 
 export {
-  category as categoryController,
+  getCategory as getCategoryController,
   createCategory as createCategoryController,
   updateCategory as updateCategoryController,
   deleteCategory as deleteCategoryController,
   getSingleCategory as getSingleCategoryController,
-} from "./category";
+} from "./category.controller";
 
 export {
   getAllOffers as getAllOffersController,
@@ -44,7 +44,7 @@ export {
   createOffer as createOfferController,
   updateOffer as updateOfferController,
   deleteOffer as deleteOfferController,
-} from "./offer";
+} from "./offers.controller";
 
 export {
   createOrder as createOrderController,

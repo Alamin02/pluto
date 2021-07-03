@@ -99,7 +99,7 @@ export async function userRegistration(
     }
     // Generating a token
     const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
-
+   
     res.json({ success: true, message: "User created!", token: token });
   } catch (e) {
     console.error(e);

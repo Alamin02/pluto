@@ -20,7 +20,11 @@ import {
 categoryRouter
   .route("/")
   .get(getCategoryController)
-  .post(validationMiddleware(createCategorySchema), createCategoryController);
+  .post(
+    authenticationMiddleware,
+    validationMiddleware(createCategorySchema),
+    createCategoryController
+  );
 
 // get a single category
 // update a category

@@ -5,16 +5,20 @@ import { Category } from "../entity";
 
 // @GET /v1/api/category/
 export async function getCategory(req: express.Request, res: express.Response) {
-  const categoryRepository = getConnection().getRepository(Category);
+  try {
+    const categoryRepository = getConnection().getRepository(Category);
 
-  const categoryTrees = await categoryRepository.find({
-    relations: ["children"],
-    where: { parent: IsNull() },
-  });
-  if (categoryTrees.length) {
-    res.status(200).json({ data: categoryTrees });
-  } else {
-    res.status(400).json({ success: false, error: "No category created" });
+    const categoryTrees = await categoryRepository.find({
+      relations: ["children"],
+      where: { parent: IsNull() },
+    });
+    if (categoryTrees.length) {
+      res.status(200).json({ data: categoryTrees });
+    } else {
+      res.status(400).json({ success: false, error: "No category created" });
+    }
+  } catch (error) {
+    res.status(500).json("Something went wrong");
   }
 }
 
@@ -23,60 +27,64 @@ export async function createCategory(
   req: express.Request,
   res: express.Response
 ) {
-  const permission = accessControl
-    .can(res.locals.user.role)
-    .createAny("category");
+  try {
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .createAny("category");
 
-  if (!permission.granted) {
-    return res.status(403).json({ success: false, error: "Unauthorized" });
-  }
-
-  const { name, parentId } = req.body;
-  const categoryRepository = getConnection().getRepository(Category);
-
-  if (!parentId) {
-    const checkCategory = await categoryRepository.findOne({ name });
-    if (!checkCategory) {
-      const newCategory = new Category();
-      newCategory.name = name;
-      const data = await categoryRepository.save(newCategory);
-      res.status(201).json({ data: data });
-    } else {
-      res
-        .status(400)
-        .json({ success: false, error: "Category already exists" });
+    if (!permission.granted) {
+      return res.status(403).json({ success: false, error: "Unauthorized" });
     }
-  } else {
-    const checkDuplicate = await categoryRepository.find({
-      where: {
-        name,
-        parent: {
-          id: parentId,
-        },
-      },
-    });
-    const checkParent = await categoryRepository.find({ id: parentId });
 
-    if (!checkDuplicate.length) {
-      const newCategory = new Category();
-      newCategory.name = name;
+    const { name, parentId } = req.body;
+    const categoryRepository = getConnection().getRepository(Category);
 
-      if (checkParent.length) {
-        newCategory.parent = parentId;
+    if (!parentId) {
+      const checkCategory = await categoryRepository.findOne({ name });
+      if (!checkCategory) {
+        const newCategory = new Category();
+        newCategory.name = name;
         const data = await categoryRepository.save(newCategory);
-        res.json({ data: data });
+        res.status(201).json({ data: data });
+      } else {
+        res
+          .status(400)
+          .json({ success: false, error: "Category already exists" });
+      }
+    } else {
+      const checkDuplicate = await categoryRepository.find({
+        where: {
+          name,
+          parent: {
+            id: parentId,
+          },
+        },
+      });
+      const checkParent = await categoryRepository.find({ id: parentId });
+
+      if (!checkDuplicate.length) {
+        const newCategory = new Category();
+        newCategory.name = name;
+
+        if (checkParent.length) {
+          newCategory.parent = parentId;
+          const data = await categoryRepository.save(newCategory);
+          res.json({ data: data });
+        } else {
+          res.status(400).json({
+            success: false,
+            error: "Invalid parentId or parent not found",
+          });
+        }
       } else {
         res.status(400).json({
           success: false,
-          error: "Invalid parentId or parent not found",
+          error: "Sub category already exists in parent",
         });
       }
-    } else {
-      res.status(400).json({
-        success: false,
-        error: "Sub category already exists in parent",
-      });
     }
+  } catch (error) {
+    res.status(500).json("Something went wrong");
   }
 }
 
@@ -85,47 +93,53 @@ export async function updateCategory(
   req: express.Request,
   res: express.Response
 ) {
-  const permission = accessControl
-    .can(res.locals.user.role)
-    .updateAny("category");
+  try {
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .updateAny("category");
 
-  if (!permission.granted) {
-    return res.status(403).json({ success: false, error: "Unauthorized" });
-  }
-
-  const categoryId = req.params.categoryId;
-  const { name, parentId } = req.body;
-
-  const categoryRepository = getConnection().getRepository(Category);
-  const checkCategory = await categoryRepository.findOne({ id: categoryId });
-  if (!parentId) {
-    if (checkCategory) {
-      const newCategory = new Category();
-      newCategory.name = name;
-      await categoryRepository.update(categoryId, newCategory);
-      res.json({ success: true, message: "Category updated" });
-    } else {
-      res.status(400).json({ success: false, error: "Invalid categoryId" });
+    if (!permission.granted) {
+      return res.status(403).json({ success: false, error: "Unauthorized" });
     }
-  } else {
-    const checkParent = await categoryRepository.findOne({ id: parentId });
 
-    if (checkCategory) {
-      const newCategory = new Category();
-      newCategory.name = name;
-      if (checkParent) {
-        newCategory.parent = parentId;
+    const categoryId = req.params.categoryId;
+    const { name, parentId } = req.body;
+
+    const categoryRepository = getConnection().getRepository(Category);
+    const checkCategory = await categoryRepository.findOne({ id: categoryId });
+    if (!parentId) {
+      if (checkCategory) {
+        const newCategory = new Category();
+        newCategory.name = name;
         await categoryRepository.update(categoryId, newCategory);
-        res.json({ success: false, error: "Sub-category updated" });
+        res.json({ success: true, message: "Category updated" });
       } else {
-        res.status(400).json({
-          success: false,
-          error: "Invalid parentId or parent not found",
-        });
+        res.status(400).json({ success: false, error: "Invalid categoryId" });
       }
     } else {
-      res.status(400).json({ success: false, error: "Invalid subCategoryId" });
+      const checkParent = await categoryRepository.findOne({ id: parentId });
+
+      if (checkCategory) {
+        const newCategory = new Category();
+        newCategory.name = name;
+        if (checkParent) {
+          newCategory.parent = parentId;
+          await categoryRepository.update(categoryId, newCategory);
+          res.json({ success: false, error: "Sub-category updated" });
+        } else {
+          res.status(400).json({
+            success: false,
+            error: "Invalid parentId or parent not found",
+          });
+        }
+      } else {
+        res
+          .status(400)
+          .json({ success: false, error: "Invalid subCategoryId" });
+      }
     }
+  } catch (error) {
+    res.status(500).json("Something went wrong");
   }
 }
 
@@ -134,26 +148,26 @@ export async function getSingleCategory(
   req: express.Request,
   res: express.Response
 ) {
-  const id = req.params.categoryId;
+  try {
+    const id = req.params.categoryId;
 
-  const categoryRepository = getConnection().getRepository(Category);
+    const categoryRepository = getConnection().getRepository(Category);
 
-  const findCategoryById = await categoryRepository.findOne(
-    { id },
-    { relations: ["products", "products.images"] }
-  );
+    const findCategoryById = await categoryRepository.findOne(
+      { id },
+      { relations: ["products", "products.images"] }
+    );
 
-  if (!findCategoryById) {
-    return res
-      .status(400)
-      .json({ success: false, error: "Category not found" });
+    if (!findCategoryById) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Category not found" });
+    }
+
+    res.json({ data: findCategoryById });
+  } catch (error) {
+    res.status(500).json("Something went wrong");
   }
-
-  res.json({
-    success: true,
-    message: "category found",
-    data: findCategoryById,
-  });
 }
 
 // @Delete /v1/api/category/:categoryId
@@ -161,21 +175,25 @@ export async function deleteCategory(
   req: express.Request,
   res: express.Response
 ) {
-  const permission = accessControl
-    .can(res.locals.user.role)
-    .deleteAny("category");
+  try {
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .deleteAny("category");
 
-  if (!permission.granted) {
-    return res.status(403).json({ success: false, error: "Unauthorized" });
-  }
+    if (!permission.granted) {
+      return res.status(403).json({ success: false, error: "Unauthorized" });
+    }
 
-  const categoryId = req.params.categoryId;
-  const categoryRepository = getConnection().getRepository(Category);
-  const categoryCheck = await categoryRepository.findOne({ id: categoryId });
-  if (categoryCheck) {
-    await categoryRepository.delete(categoryId);
-    res.json({ success: true, message: "category deleted" });
-  } else {
-    res.status(400).json({ success: false, error: "Invalid categoryId" });
+    const categoryId = req.params.categoryId;
+    const categoryRepository = getConnection().getRepository(Category);
+    const categoryCheck = await categoryRepository.findOne({ id: categoryId });
+    if (categoryCheck) {
+      await categoryRepository.delete(categoryId);
+      res.json({ success: true, message: "category deleted" });
+    } else {
+      res.status(400).json({ success: false, error: "Invalid categoryId" });
+    }
+  } catch (error) {
+    res.status(500).json("Something went wrong");
   }
 }

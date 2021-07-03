@@ -1,62 +1,44 @@
-import express = require("express");
-import { body } from "express-validator";
-
+import { Router } from "express";
 import { authenticationMiddleware, validationMiddleware } from "../middleware";
-
+import {
+  updateUserSchema,
+  updateUserPasswordSchema,
+} from "../validators/users.validator";
 import {
   getUsersController,
   getUserController,
-  updateUserAdminPanelController,
-  deleteUserController,
+  updateUserController,
   updateUserPasswordController,
-  updateUserFrontendController,
-  getProfileController,
+  deleteUserController,
 } from "../controller";
 
-const userRouter = express.Router();
+const userRouter = Router();
 
 userRouter
   .route("/")
-  // @GET - /api/v1/users/
-  .get(getUsersController);
+  // @GET - baseUrl/users
+  .get(authenticationMiddleware, getUsersController);
 
-// @PUT - /api/v1/users/:userId
-userRouter.put(
-  "/update/:userId",
-  [
-    body("name").not().isEmpty().withMessage("Name must not be empty"),
-    body("email").isEmail().withMessage("Invalid Email address"),
-  ],
-  authenticationMiddleware,
-  updateUserFrontendController
-);
+userRouter
+  .route("/:userId")
+  // @GET - baseUrl/users/:userId
+  .get(authenticationMiddleware, getUserController)
+  // @PUT - baseUrl/users/:userId
+  .put(
+    validationMiddleware(updateUserSchema),
+    authenticationMiddleware,
+    updateUserController
+  )
+  // @DELETE - baseUrl/users/:userId
+  .delete(authenticationMiddleware, deleteUserController);
 
-// @PUT - /api/v1/users/:userId
-userRouter.put(
-  "/admin/:userId",
-  [
-    body("name").not().isEmpty().withMessage("Name must not be empty"),
-    body("email").isEmail().withMessage("Invalid Email address"),
-  ],
-  authenticationMiddleware,
-  updateUserAdminPanelController
-);
-
-// @GET - /api/v1/users/
-userRouter.get("/", getUsersController);
-
-userRouter.get("/profile", authenticationMiddleware, getProfileController);
-
-// @GET - /api/v1/user/
-userRouter.get(
-  "/:\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b",
-  getUserController
-);
-
-// @PUT - /api/v1/users/
-userRouter.put("/:userId", updateUserPasswordController);
-
-// @DELETE - /api/v1/users/:userId
-userRouter.delete("/:userId", authenticationMiddleware, deleteUserController);
+userRouter
+  // @PUT - baseUrl/users/:userId/password
+  .route("/:userId/password")
+  .put(
+    validationMiddleware(updateUserPasswordSchema),
+    authenticationMiddleware,
+    updateUserPasswordController
+  );
 
 export default userRouter;

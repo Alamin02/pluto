@@ -1,5 +1,11 @@
 import Joi from "joi";
 
-const userCreateSchema = Joi.object({});
+export const updateUserSchema = Joi.object({
+  name: Joi.string().min(3).max(20),
+  email: Joi.string().email(),
+  phone: Joi.string(),
+}).options({ allowUnknown: true });
 
-const userEditValidator = {};
+export const updateUserPasswordSchema = Joi.object({
+  password: Joi.string(),
+});

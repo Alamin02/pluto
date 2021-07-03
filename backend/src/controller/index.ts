@@ -82,6 +82,6 @@ export {
   createCarousel as createCarouselController,
   getCarousels as getCarouselsController,
   deleteCarousel as deleteCarouselController,
-} from "./carousel";
+} from "./carousels.controller";
 
 export { createCarouselImage as createCarouselImageController } from "./carouselImage";

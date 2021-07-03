@@ -1,28 +1,20 @@
 import express = require("express");
 import { getConnection } from "typeorm";
 
-import { validationResult } from "express-validator";
-
 import { Carousel, CarouselImage } from "../entity";
 
-// @POST - /carousels
+// @POST - baseUrl/carousels
 // Create carousel
 export async function createCarousel(
   req: express.Request,
   res: express.Response
 ) {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
   const { title, summary, link } = req.body;
 
   try {
     const carouselRepository = getConnection().getRepository(Carousel);
-    const carouselImageRepository = getConnection().getRepository(
-      CarouselImage
-    );
+    const carouselImageRepository =
+      getConnection().getRepository(CarouselImage);
 
     const file = req.file as Express.Multer.File;
 
@@ -40,31 +32,47 @@ export async function createCarousel(
 
     await carouselRepository.save(newCarousel);
   } catch (e) {
-    res.status(400).json({
-      errors: [{ msg: "Carousel could not be created" }, { error: e }],
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong",
     });
     return;
   }
-  res.json({ msg: "Carousel created" });
+  res.status(200).json({
+    success: true,
+    message: "Carousel created!",
+  });
 }
 
-// @GET - /carousels
+// @GET - baseUrl/carousels
 // Get all carousels
 export async function getCarousels(
   req: express.Request,
   res: express.Response
 ) {
-  const carouselRepository = getConnection().getRepository(Carousel);
+  try {
+    const carouselRepository = getConnection().getRepository(Carousel);
 
-  const carousels = await carouselRepository.find({
-    select: ["id", "title", "summary", "link"],
-    relations: ["image"],
-  });
+    const carousels = await carouselRepository.find({
+      select: ["id", "title", "summary", "link"],
+      relations: ["image"],
+    });
 
-  res.json({ data: carousels });
+    res.status(200).json({
+      success: true,
+      data: carousels,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong",
+    });
+  }
 }
 
-// @DELETE - /carousels/:carouselId
+// @DELETE - baseUrl/carousels/:carouselId
 // delete a carousel
 export async function deleteCarousel(
   req: express.Request,
@@ -74,16 +82,24 @@ export async function deleteCarousel(
   const carouselRepository = getConnection().getRepository(Carousel);
   const findCarouselById = await carouselRepository.findOne({ id: id });
 
-  if (findCarouselById) {
-    try {
+  try {
+    if (findCarouselById) {
       await carouselRepository.delete({ id });
-      res.json({ msg: "Carousel deleted" });
-    } catch (e) {
-      res.status(400).json({ msg: e });
+      res.status(200).json({
+        success: true,
+        message: "Carousel deleted",
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        error: "Carousel to delete not found or invalid id",
+      });
     }
-  } else {
-    res.status(400).json({
-      errors: [{ msg: "Carousel to delete not found or invalid id" }],
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong",
     });
   }
 }

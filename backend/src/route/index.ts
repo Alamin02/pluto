@@ -10,7 +10,7 @@ import orderRouter from "./orders";
 import addressRouter from "./addresses";
 import productImageRouter from "./productImages";
 import userImageRouter from "./userImages";
-import carouselController from "./carousels";
+import carouselController from "./carousels.route";
 import carouselImageController from "./carouselImages";
 
 const router = Router();

@@ -7,7 +7,7 @@ import offersRouter from "./offers.route";
 import blogRouter from "./blogs.route";
 import categoryRouter from "./category.route";
 import orderRouter from "./orders";
-import addressRouter from "./addresses";
+import addressRouter from "./addresses.route";
 import productImageRouter from "./productImages";
 import userImageRouter from "./userImages";
 import carouselRouter from "./carousels.route";

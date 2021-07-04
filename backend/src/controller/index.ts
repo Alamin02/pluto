@@ -58,7 +58,7 @@ export {
   getAddress as getAddressController,
   updateAddress as updateAddressController,
   deleteAddress as deleteAddressController,
-} from "./addresses";
+} from "./addresses.controller";
 
 export { createUserImage as createUserImageController } from "./userImage";
 

@@ -50,7 +50,7 @@ export {
   getSingleOrder as getSingleOrderController,
   updateSingleOrder as updateSingleOrderController,
   deleteOrder as deleteOrderController,
-} from "./order";
+} from "./orders.controller";
 
 export {
   createAddress as createAddressController,

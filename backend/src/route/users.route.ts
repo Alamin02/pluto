@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { authenticationMiddleware, validationMiddleware } from "../middleware";
 import {
+  createUserSchema,
   updateUserSchema,
   updateUserPasswordSchema,
 } from "../validators/users.validator";
 import {
+  createUserController,
   getUsersController,
   getUserController,
   updateUserController,
@@ -17,7 +19,8 @@ const userRouter = Router();
 userRouter
   .route("/")
   // @GET - baseUrl/users
-  .get(authenticationMiddleware, getUsersController);
+  .get(authenticationMiddleware, getUsersController)
+  .post(validationMiddleware(createUserSchema), createUserController);
 
 userRouter
   .route("/:userId")

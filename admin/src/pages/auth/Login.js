@@ -1,22 +1,20 @@
 import React from "react";
 import { Form, Input, Button, Checkbox, Card, message } from "antd";
+import { logIn } from "../../client/auth.client";
 
 export const Login = () => {
   const onFinish = (values) => {
-    fetch("http://localhost:4000/api/v1/users/login", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
+    logIn(values)
       .then((res) => res.json())
-      .then(({ token }) => {
-        if (token) {
+      .then((res) => {
+        const { token, success, error } = res;
+        if (token && success) {
           localStorage.setItem("token", token);
+          message.success(res.message);
           window.location.reload();
         } else {
-          message.error("Could not login, check credentials");
+          // message.error("Could not login, check credentials");
+          message.error(error);
         }
       });
   };

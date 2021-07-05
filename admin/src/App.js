@@ -7,7 +7,7 @@ import Login from "./pages/auth/Login";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/dashboard/Dashboard";
 
-import { agent } from "./helpers/agent";
+import { getMe } from "./client/auth.client";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -15,8 +15,7 @@ function App() {
 
   useEffect(() => {
     if (token)
-      agent
-        .getMe(token)
+      getMe(token)
         .then((res) => res.json())
         .then(({ data, error }) => {
           if (error) {

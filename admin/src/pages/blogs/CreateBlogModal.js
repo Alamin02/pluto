@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input, message, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
+import { createBlog } from "../../client/blogs.client";
 
 export default function CreateBlogModal({ visible, onCreate, onCancel }) {
   const [blogImage, setBlogImage] = useState();
@@ -48,18 +48,16 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
               formData.append("description", values.description);
               formData.append("blogImage", blogImage);
 
-              agent
-                .createBlog(formData, token)
+              createBlog(formData, token)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
+                .then((res) => {
+                  const { success, error } = res;
+                  if (success) {
                     form.resetFields();
-                    onCreate(data);
-                    message.success(data.msg);
+                    onCreate();
+                    message.success(res.message);
                   } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
+                    message.error(error);
                   }
                 });
             })

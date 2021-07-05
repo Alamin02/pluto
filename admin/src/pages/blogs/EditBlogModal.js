@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, message, Image, Upload } from "antd";
 import { CloseCircleOutlined, InboxOutlined } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
+import { editBlog, deleteBlogImage } from "../../client/blogs.client";
 
 const imageStyle = {
   display: "inline-block",
@@ -41,8 +41,7 @@ export default function EditBlogModal({
   const warning = "";
 
   const deleteImage = (e) => {
-    agent
-      .deleteBlogImage(existingRecord.id)
+    deleteBlogImage(existingRecord.id)
       .then((res) => res.json())
       .then(({ msg }) => {
         console.log(msg);
@@ -79,18 +78,16 @@ export default function EditBlogModal({
               formData.append("description", values.description);
               formData.append("blogImage", blogImage);
 
-              agent
-                .editBlog(formData, token, existingRecord.id)
+              editBlog(formData, token, existingRecord.id)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
+                .then((res) => {
+                  const { success, error } = res;
+                  if (success) {
                     form.resetFields();
-                    onCreate(data);
-                    message.success(data.msg);
+                    onCreate();
+                    message.success(res.message);
                   } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
+                    message.error(error);
                   }
                 });
             })
@@ -172,12 +169,12 @@ export default function EditBlogModal({
               valuePropName="fileList"
               getValueFromEvent={normFile}
               noStyle
-            // rules={[
-            //   {
-            //     required: true,
-            //     message: "Please input blogImage",
-            //   },
-            // ]}
+              // rules={[
+              //   {
+              //     required: true,
+              //     message: "Please input blogImage",
+              //   },
+              // ]}
             >
               <Upload.Dragger
                 name="files"

@@ -26,7 +26,7 @@ export async function getUsers(req: express.Request, res: express.Response) {
   }
 }
 
-// @GET - baseUrl/user
+// @GET - baseUrl/users/:userId
 export async function getUser(req: express.Request, res: express.Response) {
   const id = req.params.userId;
 
@@ -55,13 +55,64 @@ export async function getUser(req: express.Request, res: express.Response) {
   }
 }
 
+// @POST - baseUrl/users
+export async function createUser(req: express.Request, res: express.Response) {
+  try {
+    const { name, email, password, phone, role, addresses } = req.body;
+    const hash = await bcrypt.hash(password, saltRounds);
+    const userRepository = getConnection().getRepository(User);
+
+    const findUserByEmail = await userRepository.findOne({ email });
+
+    if (findUserByEmail) {
+      res.status(400).json({
+        success: false,
+        error: "User already exists!",
+      });
+    }
+
+    // Create a new user
+    try {
+      const userRepository = getConnection().getRepository(User);
+      const newUser = new User();
+
+      newUser.name = name;
+      newUser.email = email;
+      newUser.phone = phone;
+      newUser.role = role;
+      newUser.password = hash;
+
+      if (addresses) {
+        newUser.addresses = addresses;
+      }
+
+      await userRepository.save(newUser);
+    } catch (e) {
+      console.error(e);
+      return res
+        .status(400)
+        .json({ success: false, error: "New user could not be added" });
+    }
+    res.status(200).json({
+      success: true,
+      message: "New user added.",
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong!",
+    });
+  }
+}
+
 // update user
 // @PUT baseUrl/users/:userId
 export async function updateUser(req: express.Request, res: express.Response) {
   const userId = req.params.userId;
 
   try {
-    const { name, email, phone } = req.body;
+    const { name, email, phone, role } = req.body;
     const userRepository = getConnection().getRepository(User);
     const findUserById = await userRepository.findOne({ id: userId });
 
@@ -79,6 +130,10 @@ export async function updateUser(req: express.Request, res: express.Response) {
           success: false,
           error: "User with this name already exists",
         });
+      }
+
+      if (role) {
+        newUser.role = role;
       }
 
       // if (findUserById.email !== email) {
@@ -167,7 +222,7 @@ export async function updateUserPassword(
   }
 }
 
-// @DELETE baseUrl/users/:userId
+// @DELETE - baseUrl/users/:userId
 export async function deleteUser(req: express.Request, res: express.Response) {
   const userId = req.params.userId;
 

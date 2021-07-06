@@ -37,6 +37,6 @@ categoryRouter
     validationMiddleware(updateCategorySchema),
     updateCategoryController
   )
-  .delete(deleteCategoryController);
+  .delete(authenticationMiddleware, deleteCategoryController);
 
 export default categoryRouter;

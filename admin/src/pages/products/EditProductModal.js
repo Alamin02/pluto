@@ -82,7 +82,7 @@ export default function EditProductModal({
               .filter((entry) => entry.children !== null)
               .map((entry) => {
                 const childrenList = [];
-
+                
                 for (const child of entry.children) {
                   childrenList.push({
                     id: child.id,
@@ -233,7 +233,7 @@ export default function EditProductModal({
             initialValue={
               existingRecord &&
               existingRecord.category &&
-              existingRecord.category.id
+              existingRecord.category.name
             }
           >
             {existingRecord && (

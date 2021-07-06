@@ -112,12 +112,11 @@ export default function ProductForm({
 
               createProduct(formData, token)
                 .then((res) => res.json())
-                .then((res) => {
-                  const { success, error } = res;
+                .then(({ success, message: msg, error }) => {
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(res.message);
+                    message.success(msg);
                   } else {
                     message.error(error);
                   }

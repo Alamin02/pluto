@@ -16,10 +16,10 @@ export async function getUsers(req: express.Request, res: express.Response) {
       relations: ["addresses", "image"],
     });
 
-    res.json({ success: true, data: users });
+    return res.status(200).json({ success: true, data: users });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });
@@ -45,10 +45,10 @@ export async function getUser(req: express.Request, res: express.Response) {
       });
     }
 
-    res.json({ success: true, data: findUserById });
+    return res.status(200).json({ success: true, data: findUserById });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });
@@ -65,7 +65,7 @@ export async function createUser(req: express.Request, res: express.Response) {
     const findUserByEmail = await userRepository.findOne({ email });
 
     if (findUserByEmail) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: "User already exists!",
       });
@@ -93,13 +93,13 @@ export async function createUser(req: express.Request, res: express.Response) {
         .status(400)
         .json({ success: false, error: "New user could not be added" });
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "New user added.",
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });
@@ -115,6 +115,7 @@ export async function updateUser(req: express.Request, res: express.Response) {
     const { name, email, phone, role } = req.body;
     const userRepository = getConnection().getRepository(User);
     const findUserById = await userRepository.findOne({ id: userId });
+    const duplicate = await userRepository.findOne({ email });
 
     const newUser = new User();
 
@@ -123,33 +124,18 @@ export async function updateUser(req: express.Request, res: express.Response) {
         newUser.name = name;
       }
 
-      if (findUserById.email !== email) {
-        newUser.email = email;
-      } else {
+      if (duplicate && duplicate.id !== userId) {
         return res.status(400).json({
           success: false,
-          error: "User with this name already exists",
+          error: "User with this email already exists!",
         });
+      } else {
+        newUser.email = email;
       }
 
       if (role) {
         newUser.role = role;
       }
-
-      // if (findUserById.email !== email) {
-      //   const findUserByEmail = await userRepository.findOne({ email });
-      //   if (!findUserByEmail) {
-      //     newUser.email = email;
-      //   } else {
-      //     return res
-      //       .status(400).json({
-      //         success: false,
-      //         error: "User with this name already exists",
-      //       });
-      //   }
-      // } else {
-      //   newUser.email = email;
-      // }
 
       if (phone) {
         newUser.phone = phone;
@@ -170,7 +156,7 @@ export async function updateUser(req: express.Request, res: express.Response) {
     }
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });
@@ -203,7 +189,7 @@ export async function updateUserPassword(
         await userRepository.update(userId, newUser);
         return res.json({
           success: true,
-          message: "Password successfully updated.",
+          message: "Password successfully updated!",
         });
       } else {
         return res.json({
@@ -215,7 +201,7 @@ export async function updateUserPassword(
     }
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
@@ -234,14 +220,14 @@ export async function deleteUser(req: express.Request, res: express.Response) {
       await userRepository.delete(userId);
       res.json({ success: true, message: "User deleted!" });
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: "User could not be deleted!",
       });
     }
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Space, Button, Row, Col, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { agent } from "../../helpers/agent";
+import { getOrders } from "../../client/order.client";
 import { columns } from "./orderTableColumns";
 
 const { Title } = Typography;
@@ -12,8 +12,7 @@ export default function Orders() {
 
   useEffect(() => {
     if (token)
-      agent
-        .getOrders(token)
+      getOrders(token)
         .then((res) => res.json())
         .then(({ data }) => setOrderData(data.orders));
   }, [token]);

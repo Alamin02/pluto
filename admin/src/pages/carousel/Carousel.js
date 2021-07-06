@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Typography, Space, Popconfirm, message } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
+import { getCarousels, deleteCarousel } from "../../client/carousels.cient";
 import { columns } from "./carouselTableColumns";
 import CreateCarouselModal from "./CreateCarouselModal";
 
@@ -12,6 +12,16 @@ export default function Carousel() {
   const [visible, setVisible] = useState(false);
   const [carouselData, setCarouselData] = useState([]);
 
+  const fetchCarousels = () => {
+    getCarousels()
+      .then((res) => res.json())
+      .then(({ data }) => setCarouselData(data));
+  };
+
+  useEffect(() => {
+    fetchCarousels();
+  }, []);
+
   const onCreate = () => {
     fetchCarousels();
     setVisible(false);
@@ -20,31 +30,18 @@ export default function Carousel() {
   function confirmDelete(carouselId) {
     const token = localStorage.getItem("token");
 
-    agent
-      .deleteCarousel(token, carouselId)
+    deleteCarousel(token, carouselId)
       .then((res) => res.json())
       .then((res) => {
-        if (res.errors) {
-          for (let error of res.errors) {
-            message.error(error.msg);
-          }
+        const { success, error } = res;
+        if (success) {
+          message.success(res.message);
         } else {
-          message.success("Successfully deleted");
+          message.error(error);
         }
       })
       .then(() => fetchCarousels());
   }
-
-  const fetchCarousels = () => {
-    agent
-      .getCarousels()
-      .then((res) => res.json())
-      .then(({ data }) => setCarouselData(data));
-  };
-
-  useEffect(() => {
-    fetchCarousels();
-  }, []);
 
   const actionColumn = {
     title: "Action",

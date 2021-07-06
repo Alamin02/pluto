@@ -27,7 +27,7 @@ carouselRouter
   );
 
 carouselRouter
-  .route(":/carouselId")
+  .route("/:carouselId")
   .delete(authenticationMiddleware, deleteCarouselController);
 
 export default carouselRouter;

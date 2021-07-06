@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Upload } from "antd";
+import { Modal, Form, Input, Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
+import { createCarousel } from "../../client/carousels.cient";
 
 const layout = {
   labelCol: {
@@ -43,12 +43,17 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
               formData.append("summary", values.summary);
               formData.append("carouselImage", carouselImage);
 
-              agent
-                .createCarousel(formData, token)
+              createCarousel(formData, token)
                 .then((res) => res.json())
-                .then(() => {
-                  form.resetFields();
-                  onCreate(values);
+                .then((res) => {
+                  const { success, error } = res;
+                  if (success) {
+                    message.success(res.message);
+                    form.resetFields();
+                    onCreate(values);
+                  } else {
+                    message.error(error);
+                  }
                 });
             })
 

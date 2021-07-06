@@ -94,18 +94,16 @@ export default function EditOfferModal({
             .then((values) => {
               editOffer(values, token, existingRecord.id)
                 .then((res) => res.json())
-                .then((res) => {
-                  console.log(values);
-                  const { success, error } = res;
+                .then(({ success, message: msg, error }) => {
                   if (success) {
-                    message.success(res.message);
+                    message.success(msg);
                     refetch();
+                    form.resetFields();
+                    onCreate(values);
                   } else {
                     message.error(error);
                   }
                 });
-              form.resetFields();
-              onCreate(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

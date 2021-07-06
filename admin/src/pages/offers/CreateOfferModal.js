@@ -58,16 +58,13 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
                 formData.append("offerImages", offerImage);
               });
 
-              console.log(formData);
-
               createOffer(formData, token)
                 .then((res) => res.json())
-                .then((res) => {
-                  const { success, error } = res;
+                .then(({ success, message: msg, error }) => {
                   if (success) {
                     form.resetFields();
-                    onCreate(res);
-                    message.success(res.message);
+                    onCreate(values);
+                    message.success(msg);
                   } else {
                     message.error(error);
                   }

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Upload, Cascader, message, Select } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
+import { createProduct } from "../../client/products.client";
+import { getOffers } from "../../client/offers.client";
+import { getCategories } from "../../client/category.client";
 
 const { Option } = Select;
 
@@ -26,22 +28,14 @@ export default function ProductForm({
   const [offerOptions, setOfferOptions] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/v1/category", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    getCategories()
       .then((res) => res.json())
       .then(({ data }) => {
         setCategoryOptions(data);
       });
 
-    agent
-      .getOffers()
-      .then(res => res.json())
+    getOffers()
+      .then((res) => res.json())
       .then(({ data }) => {
         setOfferOptions(data.offers);
       });
@@ -116,12 +110,17 @@ export default function ProductForm({
                 formData.append("productImages", productImage);
               });
 
-              agent
-                .createProduct(formData, token)
+              createProduct(formData, token)
                 .then((res) => res.json())
-                .then(() => {
-                  form.resetFields();
-                  onCreate(values);
+                .then((res) => {
+                  const { success, error } = res;
+                  if (success) {
+                    form.resetFields();
+                    onCreate(values);
+                    message.success(res.message);
+                  } else {
+                    message.error(error);
+                  }
                 });
             })
 

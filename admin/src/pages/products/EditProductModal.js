@@ -10,7 +10,13 @@ import {
   message,
 } from "antd";
 import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { agent } from "../../helpers/agent";
+import {
+  editProduct,
+  createProductImage,
+  deleteProductImage,
+} from "../../client/products.client";
+import { getCategories } from "../../client/category.client";
+import { getOffers } from "../../client/offers.client";
 
 const { Option } = Select;
 
@@ -49,8 +55,7 @@ export default function EditProductModal({
   const [productImages, setProductImages] = useState([]);
 
   const deleteImage = (productId) => {
-    agent
-      .deleteImage(productId)
+    deleteProductImage(productId)
       .then((res) => res.json())
       .then(({ data }) => {
         refetch();
@@ -69,8 +74,7 @@ export default function EditProductModal({
   useEffect(() => {
     form.resetFields();
     if (existingRecord) {
-      agent
-        .getCategories()
+      getCategories()
         .then((res) => res.json())
         .then(({ data }) => {
           if (data) {
@@ -93,9 +97,8 @@ export default function EditProductModal({
           }
         });
 
-      agent
-        .getOffers()
-        .then(res => res.json())
+      getOffers()
+        .then((res) => res.json())
         .then(({ data }) => {
           setOfferOptions(data.offers);
         });
@@ -112,8 +115,7 @@ export default function EditProductModal({
 
       formData.append("productId", existingRecord.id);
 
-      agent
-        .createProductImage(formData)
+      createProductImage(formData)
         .then((res) => console.log(res))
         .then(() => refetch());
     }
@@ -138,15 +140,19 @@ export default function EditProductModal({
           form
             .validateFields()
             .then((values) => {
-              agent
-                .editProduct(existingRecord.id, values, token)
+              editProduct(existingRecord.id, values, token)
                 .then((res) => res.json())
-                .then(() => {
-                  refetch();
+                .then((res) => {
+                  const { success, error } = res;
+                  if (success) {
+                    form.resetFields();
+                    onCreate(values);
+                    message.success(res.message);
+                    refetch();
+                  } else {
+                    message.error(error);
+                  }
                 });
-
-              form.resetFields();
-              onCreate(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);
@@ -225,7 +231,11 @@ export default function EditProductModal({
               },
             ]}
             name="categoryId"
-            initialValue={existingRecord && existingRecord.category && existingRecord.category.id}
+            initialValue={
+              existingRecord &&
+              existingRecord.category &&
+              existingRecord.category.id
+            }
           >
             {existingRecord && (
               <Select>
@@ -242,7 +252,9 @@ export default function EditProductModal({
           <Form.Item
             label="Offer"
             name="offerId"
-            initialValue={existingRecord && existingRecord.offer && existingRecord.offer.id}
+            initialValue={
+              existingRecord && existingRecord.offer && existingRecord.offer.id
+            }
           >
             {existingRecord && (
               <Select>
@@ -290,7 +302,6 @@ export default function EditProductModal({
               showUploadList={false}
               accept="image/*"
               multiple={true}
-
             >
               <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
             </Upload>

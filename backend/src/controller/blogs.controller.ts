@@ -43,10 +43,13 @@ export async function createBlog(req: express.Request, res: express.Response) {
     } else {
       return res
         .status(400)
-        .json({ success: false, error: "Blog title already exists" });
+        .json({
+          success: false,
+          error: "Blog with this title already exists!",
+        });
     }
   } catch (err) {
-    return res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }
 
@@ -76,7 +79,7 @@ export async function getAllBlogs(req: express.Request, res: express.Response) {
       },
     });
   } catch (error) {
-    return res.status(500).json("Something went wrong ");
+    return res.status(500).json("Something went wrong! ");
   }
 }
 
@@ -93,11 +96,11 @@ export async function getSingleBlog(
     if (!singleBlog) {
       return res
         .status(400)
-        .json({ success: false, error: "Blog is not found" });
+        .json({ success: false, error: "Blog is not found!" });
     }
     return res.status(200).json({ success: true, data: singleBlog });
   } catch (error) {
-    return res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }
 
@@ -123,9 +126,10 @@ export async function updateSingleBlog(
 
     if (blogCheck) {
       if (duplicate && duplicate.id !== blogId) {
-        return res
-          .status(400)
-          .json({ success: false, error: "Blog title already exists" });
+        return res.status(400).json({
+          success: false,
+          error: "Blog with this title already exists!",
+        });
       }
       let imagePath;
       if (req.file) {
@@ -145,14 +149,14 @@ export async function updateSingleBlog(
       await blogRepository.update({ id: blogId }, newBlog);
       return res
         .status(200)
-        .json({ success: true, message: "Blog is now updated" });
+        .json({ success: true, message: "Blog is now updated!" });
     } else {
       return res
         .status(400)
-        .json({ success: false, error: "Invalid blogId or blog deleted" });
+        .json({ success: false, error: "Invalid blogId or blog deleted!" });
     }
   } catch (error) {
-    return res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }
 
@@ -173,11 +177,11 @@ export async function deleleBlogImage(
     }
     return res
       .status(200)
-      .json({ success: true, message: "blogImage deleted" });
+      .json({ success: true, message: "blogImage deleted!" });
   } catch (error) {
     return res
       .status(500)
-      .json({ success: false, error: "blog have no image" });
+      .json({ success: false, error: "blog have no image!" });
   }
 }
 // @DELETE - /api/v1/blogs/:blogId
@@ -197,16 +201,14 @@ export async function deleteBlog(req: express.Request, res: express.Response) {
 
     if (blogCheck) {
       await blogRepository.delete({ id: blogId });
-      return res
-        .status(200)
-        .json({ success: true, message: "Delete successfully" });
+      return res.status(200).json({ success: true, message: "Blog deleted!" });
     } else {
       return res.status(400).json({
         success: false,
-        error: "Invalid blogId or blog already deleted",
+        error: "Invalid blogId or blog already deleted!",
       });
     }
   } catch (error) {
-    return res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }

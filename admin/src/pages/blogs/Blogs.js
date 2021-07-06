@@ -10,7 +10,10 @@ import {
   Col,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { agent } from "../../helpers/agent";
+import {
+  getBlogs,
+  deleteBlog,
+} from "../../client/blogs.client";
 import CreateBlogModal from "./CreateBlogModal";
 import EditBlogModal from "./EditBlogModal";
 import { Columns } from "./BlogTableColumns";
@@ -23,13 +26,13 @@ export default function Blogs() {
   const [blogToEditVisible, setBlogToEditVisible] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
   const fetchBlogs = () => {
-    agent.getBlogs().then((data) => {
+    getBlogs().then((data) => {
       setBlogData(data);
     });
   };
 
   // close createBlogModal
-  const handleCreateBlogModal = (values) => {
+  const handleCreateBlogModal = () => {
     setVisible(false);
     fetchBlogs();
   };
@@ -54,16 +57,15 @@ export default function Blogs() {
   // delete blog
   function handleDelete(blogId) {
     const token = localStorage.getItem("token");
-    agent
-      .deleteBlog(token, blogId)
+
+    deleteBlog(token, blogId)
       .then((res) => res.json())
       .then((res) => {
-        if (res.errors) {
-          for (let error of res.errors) {
-            message.error(error.msg);
-          }
+        const { success, error } = res;
+        if (success) {
+          message.success(res.message);
         } else {
-          message.success("Successfully deleted");
+          message.error(error);
         }
       })
       .then(() => fetchBlogs());

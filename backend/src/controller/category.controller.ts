@@ -45,7 +45,11 @@ export async function createCategory(
         const newCategory = new Category();
         newCategory.name = name;
         const data = await categoryRepository.save(newCategory);
-        res.status(201).json({ data: data });
+        res.status(201).json({
+          success: true,
+          message: "Category created successfully",
+          data,
+        });
       } else {
         res
           .status(400)
@@ -69,7 +73,11 @@ export async function createCategory(
         if (checkParent.length) {
           newCategory.parent = parentId;
           const data = await categoryRepository.save(newCategory);
-          res.json({ data: data });
+          res.status(201).json({
+            success: true,
+            message: "Category created successfully",
+            data,
+          });
         } else {
           res.status(400).json({
             success: false,

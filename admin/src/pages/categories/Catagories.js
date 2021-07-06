@@ -10,8 +10,7 @@ import {
   Typography,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-
-import { agent } from "../../helpers/agent";
+import { getCategories, deleteCategory } from "../../client/category.client";
 import { columns } from "./categoryTableColumns";
 import CreateCategoryModal from "./CreateCategoryModal";
 import EditCategoryModal from "./EditCategoryModal";
@@ -27,8 +26,7 @@ export default function Catagories() {
   const token = localStorage.getItem("token");
 
   function fetchCategories() {
-    agent
-      .getCategories()
+    getCategories()
       .then((res) => res.json())
       .then(({ data }) => {
         setCategoryData(data);
@@ -51,16 +49,14 @@ export default function Catagories() {
   }
 
   function handleDelete(categoryId) {
-    agent
-      .deleteCategory(token, categoryId)
+    deleteCategory(token, categoryId)
       .then((res) => res.json())
       .then((res) => {
-        if (res.errors) {
-          for (let error of res.errors) {
-            message.error(error.msg);
-          }
+        const { success, error } = res;
+        if (success) {
+          message.success(res.message);
         } else {
-          message.info("Category deleted successfully");
+          message.error(error);
         }
       })
       .then(() => fetchCategories());

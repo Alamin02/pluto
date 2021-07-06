@@ -1,14 +1,5 @@
 const baseUrl = "http://localhost:4000/api/v1";
 
-export const getMe = async (token) => {
-  return fetch(`${baseUrl}/users/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-};
-
 export const createUser = async (userData, token) => {
   return fetch(`${baseUrl}/users/register`, {
     method: "post",

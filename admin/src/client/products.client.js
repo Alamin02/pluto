@@ -58,7 +58,7 @@ export const createProductImage = async (data) => {
   });
 };
 
-export const deleteImage = async (imageId) => {
+export const deleteProductImage = async (imageId) => {
   return fetch(`${baseUrl}/images/${imageId}`, {
     method: "delete",
     headers: {

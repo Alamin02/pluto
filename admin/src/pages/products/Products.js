@@ -17,7 +17,7 @@ import qs from "query-string";
 import { columns } from "./productTableColumn";
 import CreateProductModal from "./CreateProductModal";
 import EditProductModal from "./EditProductModal";
-import { agent } from "../../helpers/agent";
+import { getProducts, deleteProduct } from "../../client/products.client";
 
 const { Title } = Typography;
 const deleteMessage = "Sure to delete?";
@@ -43,8 +43,7 @@ export default function Products() {
       sort,
     });
 
-    agent
-      .getProducts(queryString)
+    getProducts(queryString)
       .then((res) => res.json())
       .then(({ data }) => {
         console.log(data.productCount);
@@ -85,21 +84,18 @@ export default function Products() {
   function confirmDelete(productId) {
     console.log(productId);
     const token = localStorage.getItem("token");
-    agent
-      .deleteProduct(productId, token)
+    deleteProduct(productId, token)
       .then((res) => res.json())
       .then((res) => {
-        if (res.errors) {
-          for (let error of res.errors) {
-            message.error(error.msg);
-          }
+        const { success, error } = res;
+        if (success) {
+          message.success(res.message);
         } else {
-          message.success("Successfully deleted");
+          message.error(error);
         }
       })
       .then(() => fetchProducts());
   }
-
 
   useEffect(() => {
     const fetchProducts = () => {
@@ -107,11 +103,9 @@ export default function Products() {
         page: currentPage,
         perPage,
         sort,
-
       });
 
-      agent
-        .getProducts(queryString)
+      getProducts(queryString)
         .then((res) => res.json())
         .then(({ data }) => {
           console.log(data.productCount);

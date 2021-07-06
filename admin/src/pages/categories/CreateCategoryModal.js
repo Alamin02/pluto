@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, message } from "antd";
 
-import { agent } from "../../helpers/agent";
+import { getCategories, createCategory } from "../../client/category.client";
 
 const { Option } = Select;
 
@@ -11,8 +11,7 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   function fetchCategories() {
-    agent
-      .getCategories()
+    getCategories()
       .then((res) => res.json())
       .then(({ data }) => {
         setCategoryOptions(data);
@@ -37,19 +36,17 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
-              agent
-                .createCategory(values, token)
+              createCategory(values, token)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
-                    message.success("Category added successfully");
+                .then((res) => {
+                  const { success, error } = res;
 
+                  if (success) {
                     form.resetFields();
                     onCreate(values);
+                    message.success(res.message);
                   } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
+                    message.error(error);
                   }
                 });
             })

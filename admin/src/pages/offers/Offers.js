@@ -10,7 +10,7 @@ import {
   message,
 } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { agent } from "../../helpers/agent";
+import { getOffers, deleteOffer } from "../../client/offers.client";
 import CreateOfferModal from "./CreateOfferModal";
 import EditOfferModal from "./EditOfferModal";
 import { columns } from "./offerTableColumns";
@@ -26,9 +26,8 @@ export default function Offers() {
   const [selectedOffer, setSelectedOffer] = useState(null);
 
   const fetchOffers = () => {
-    agent
-      .getOffers()
-      .then(res => res.json())
+    getOffers()
+      .then((res) => res.json())
       .then(({ data }) => {
         setOfferData(data.offers);
         if (selectedOffer)
@@ -63,16 +62,14 @@ export default function Offers() {
   // delete offer
   function handleDelete(offerId) {
     const token = localStorage.getItem("token");
-    agent
-      .deleteOffer(token, offerId)
+    deleteOffer(token, offerId)
       .then((res) => res.json())
       .then((res) => {
-        if (res.errors) {
-          for (let error of res.errors) {
-            message.error(error.msg);
-          }
+        const { success, error } = res;
+        if (success) {
+          message.success(res.message);
         } else {
-          message.success("Successfully deleted");
+          message.error(error);
         }
       })
       .then(() => fetchOffers());

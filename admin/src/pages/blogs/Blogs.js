@@ -10,10 +10,7 @@ import {
   Col,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  getBlogs,
-  deleteBlog,
-} from "../../client/blogs.client";
+import { getBlogs, deleteBlog } from "../../client/blogs.client";
 import CreateBlogModal from "./CreateBlogModal";
 import EditBlogModal from "./EditBlogModal";
 import { Columns } from "./BlogTableColumns";
@@ -60,10 +57,9 @@ export default function Blogs() {
 
     deleteBlog(token, blogId)
       .then((res) => res.json())
-      .then((res) => {
-        const { success, error } = res;
+      .then(({ success, message: msg, error }) => {
         if (success) {
-          message.success(res.message);
+          message.success(msg);
         } else {
           message.error(error);
         }

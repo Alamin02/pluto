@@ -80,12 +80,11 @@ export default function EditBlogModal({
 
               editBlog(formData, token, existingRecord.id)
                 .then((res) => res.json())
-                .then((res) => {
-                  const { success, error } = res;
+                .then(({ success, message: msg, error }) => {
                   if (success) {
                     form.resetFields();
                     onCreate();
-                    message.success(res.message);
+                    message.success(msg);
                   } else {
                     message.error(error);
                   }

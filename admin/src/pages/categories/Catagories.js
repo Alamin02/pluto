@@ -51,10 +51,9 @@ export default function Catagories() {
   function handleDelete(categoryId) {
     deleteCategory(token, categoryId)
       .then((res) => res.json())
-      .then((res) => {
-        const { success, error } = res;
+      .then(({ success, message: msg, error }) => {
         if (success) {
-          message.success(res.message);
+          message.success(msg);
         } else {
           message.error(error);
         }

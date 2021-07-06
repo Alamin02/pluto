@@ -31,11 +31,9 @@ export default function EditCategoryModal({
             .then((values) => {
               editCategory(values, token, currentCategory.id)
                 .then((res) => res.json())
-                .then((res) => {
-                  const { success, error } = res;
+                .then(({ success, message: msg, error }) => {
                   if (success) {
-                    message.success(res.message);
-
+                    message.success(msg);
                     form.resetFields();
                     onCreate(values);
                   } else {

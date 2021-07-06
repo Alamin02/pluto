@@ -38,13 +38,11 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
             .then((values) => {
               createCategory(values, token)
                 .then((res) => res.json())
-                .then((res) => {
-                  const { success, error } = res;
-
+                .then(({ success, message: msg, error }) => {
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(res.message);
+                    message.success(msg);
                   } else {
                     message.error(error);
                   }

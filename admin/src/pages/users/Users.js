@@ -11,7 +11,7 @@ import {
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
+import { getUsers, deleteUser } from "../../client/users.client";
 import { columns } from "./userTableColumns";
 import CreateUserModal from "./CreateUserModal";
 import EditUserModal from "./EditUserModal";
@@ -27,8 +27,7 @@ const Users = () => {
   const token = localStorage.getItem("token");
 
   function fetchUsers() {
-    agent
-      .getUsers()
+    getUsers(token)
       .then((res) => res.json())
       .then(({ data }) => {
         setUserData(data);
@@ -51,11 +50,16 @@ const Users = () => {
   }
 
   function handleDelete(userId) {
-    agent
-      .deleteUser(token, userId)
+    deleteUser(token, userId)
       .then((res) => res.json())
-      .then(() => fetchUsers())
-      .then(() => message.info("User deleted successfully"));
+      .then(({ success, message: msg, error }) => {
+        if (success) {
+          message.success(msg);
+          fetchUsers();
+        } else {
+          message.error(error);
+        }
+      });
   }
 
   useEffect(() => {

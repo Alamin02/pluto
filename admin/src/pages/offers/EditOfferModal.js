@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, message, Image, Upload, Button } from "antd";
 import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { agent } from "../../helpers/agent";
+import {
+  editOffer,
+  deleteOfferImage as deleteOfferImages,
+  createOfferImage,
+} from "../../client/offers.client";
 
 const imageStyle = {
   display: "inline-block",
@@ -30,17 +34,15 @@ export default function EditOfferModal({
   onCreate,
   onCancel,
   existingRecord,
-  refetch
+  refetch,
 }) {
   const [form] = Form.useForm();
   const [offerImages, setOfferImages] = useState([]);
 
   const deleteOfferImage = (offerImageId) => {
-    agent
-      .deleteOfferImage(offerImageId)
+    deleteOfferImages(offerImageId)
       .then((res) => res.json())
-      .then(({ data }) =>
-        refetch())
+      .then(({ data }) => refetch());
   };
 
   const normFile = (e) => {
@@ -62,8 +64,7 @@ export default function EditOfferModal({
 
       formData.append("offerId", existingRecord.id);
 
-      agent
-        .createOfferImage(formData)
+      createOfferImage(formData)
         .then((res) => res.json())
         .then(() => refetch());
     }
@@ -91,11 +92,17 @@ export default function EditOfferModal({
           form
             .validateFields()
             .then((values) => {
-              agent
-                .editOffer(values, token, existingRecord.id)
+              editOffer(values, token, existingRecord.id)
                 .then((res) => res.json())
-                .then(() => {
-                  refetch();
+                .then((res) => {
+                  console.log(values);
+                  const { success, error } = res;
+                  if (success) {
+                    message.success(res.message);
+                    refetch();
+                  } else {
+                    message.error(error);
+                  }
                 });
               form.resetFields();
               onCreate(values);
@@ -185,7 +192,6 @@ export default function EditOfferModal({
               showUploadList={false}
               accept="image/*"
               multiple={true}
-
             >
               <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
             </Upload>

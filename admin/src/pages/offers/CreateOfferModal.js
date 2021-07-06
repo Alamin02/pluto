@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, message, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import { agent } from "../../helpers/agent";
+import { createOffer } from "../../client/offers.client";
 
 export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
@@ -50,28 +50,26 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
             .then((values) => {
               const formData = new FormData();
 
-              formData.append("name", values.name)
-              formData.append("discount", values.discount)
-              formData.append("description", values.description)
+              formData.append("name", values.name);
+              formData.append("discount", values.discount);
+              formData.append("description", values.description);
 
               offerImages.forEach((offerImage) => {
                 formData.append("offerImages", offerImage);
               });
 
-              console.log(formData)
+              console.log(formData);
 
-              agent
-                .createOffer(formData, token)
+              createOffer(formData, token)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
+                .then((res) => {
+                  const { success, error } = res;
+                  if (success) {
                     form.resetFields();
-                    onCreate(data);
-                    message.success(data.msg);
+                    onCreate(res);
+                    message.success(res.message);
                   } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
+                    message.error(error);
                   }
                 });
             })
@@ -129,7 +127,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
           >
             <Input.TextArea />
           </Form.Item>
-          <Form.Item label="Offer Image&nbsp;:" >
+          <Form.Item label="Offer Image&nbsp;:">
             <Form.Item
               name="offerImages"
               valuePropName="fileList"

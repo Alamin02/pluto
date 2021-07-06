@@ -72,56 +72,65 @@ export async function createProduct(
     const offersRepository = getConnection().getRepository(Offer);
     const productImageRepository = getConnection().getRepository(ProductImage);
 
-    const categoryCheck = await categoryRepository.findOne({
-      id: categoryId,
-    });
-    const offerCheck = await offersRepository.findOne({ id: offerId });
+    const previousEntry = await productsRepository.findOne({ name: name });
 
-    const productImages = [];
-    const files = req.files as Express.Multer.File[];
+    if (!previousEntry) {
+      const categoryCheck = await categoryRepository.findOne({
+        id: categoryId,
+      });
 
-    if (files.length) {
-      for (let i = 0; i < files.length; i++) {
-        const productImage = new ProductImage();
-        productImage.path = files[i].path;
-        productImage.originalname = files[i].originalname;
+      const productImages = [];
+      const files = req.files as Express.Multer.File[];
 
-        const savedProductImage = await productImageRepository.save(
-          productImage
-        );
-        productImages.push(savedProductImage);
+      if (files.length) {
+        for (let i = 0; i < files.length; i++) {
+          const productImage = new ProductImage();
+          productImage.path = files[i].path;
+          productImage.originalname = files[i].originalname;
+
+          const savedProductImage = await productImageRepository.save(
+            productImage
+          );
+          productImages.push(savedProductImage);
+        }
+      } else {
+        return res.json({ success: false, error: "Image not found" });
       }
+
+      const newProduct = new Product();
+
+      newProduct.name = name;
+      newProduct.description = description;
+      newProduct.price = price;
+      newProduct.summary = summary;
+      newProduct.images = productImages;
+
+      if (categoryCheck) {
+        newProduct.category = categoryId;
+      } else {
+        res.status(400).json({ success: false, error: "Category not found" });
+      }
+
+      const offerCheck = await offersRepository.findOne({ id: offerId });
+      if (offerCheck) {
+        newProduct.offer = offerId;
+      } else if (offerId != "undefined") {
+        return res
+          .status(400)
+          .json({ success: false, error: "Offer not found" });
+      }
+
+      await productsRepository.save(newProduct);
+      res.status(200).json({ success: true, message: "New product added!" });
     } else {
-      return res.json({ success: false, error: "Image not found" });
+      res.status(400).json({ success: false, error: "Product already exists" });
     }
-
-    const newProduct = new Product();
-
-    newProduct.name = name;
-    newProduct.description = description;
-    newProduct.price = price;
-    newProduct.summary = summary;
-    newProduct.images = productImages;
-
-    if (categoryCheck) {
-      newProduct.category = categoryId;
-    } else {
-      res.status(400).json({ success: false, error: "Category not found" });
-    }
-
-    if (offerCheck) {
-      newProduct.offer = offerId;
-    } else {
-      res.status(400).json({ success: false, error: "Offer not found" });
-    }
-
-    await productsRepository.save(newProduct);
   } catch (e) {
-    console.error(e);
+    // console.error(e);
+
     res.status(500).json({ success: false, error: "Something went wrong" });
     return;
   }
-  res.status(200).json({ success: true, message: "New product added!" });
 }
 
 // @GET - /api/v1/products/:productId

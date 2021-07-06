@@ -6,14 +6,12 @@ export const Login = () => {
   const onFinish = (values) => {
     logIn(values)
       .then((res) => res.json())
-      .then((res) => {
-        const { token, success, error } = res;
+      .then(({ token, success, message: msg, error }) => {
         if (token && success) {
           localStorage.setItem("token", token);
-          message.success(res.message);
+          message.success(msg);
           window.location.reload();
         } else {
-          // message.error("Could not login, check credentials");
           message.error(error);
         }
       });

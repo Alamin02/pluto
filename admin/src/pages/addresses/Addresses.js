@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Space, Button, Row, Col, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
+import { getAddresses } from "../../client/address.client";
 import { columns } from "./addressTableColumns";
 
 const { Title } = Typography;
@@ -12,8 +12,7 @@ export default function Addresses() {
   const [addressData, setAddressData] = useState([]);
 
   const fetchOrders = (token) => {
-    agent
-      .getAddresses(token)
+    getAddresses(token)
       .then((res) => res.json())
       .then(({ data }) => {
         setAddressData(data);

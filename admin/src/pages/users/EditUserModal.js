@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Input, message } from "antd";
 
-import { agent } from "../../helpers/agent";
+import { editUser } from "../../client/users.client";
 
 export default function EditCategoryModal({
   visible,
@@ -29,20 +29,17 @@ export default function EditCategoryModal({
           form
             .validateFields()
             .then((values) => {
-              agent
-                .editUser(values, token, currentUser.id)
+              editUser(values, token, currentUser.id)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
-                    message.success("User updated successfully");
+                .then(({ success, message: msg, error }) => {
+                  if (success) {
+                    message.success(msg);
+                    form.resetFields();
+                    onCreate(values);
                   } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
+                    message.error(error);
                   }
                 });
-              form.resetFields();
-              onCreate(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

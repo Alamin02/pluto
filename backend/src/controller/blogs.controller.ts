@@ -104,24 +104,37 @@ export async function updateSingleBlog(
       return res.status(403).json({ success: false, error: "Not authorized" });
 
     const { title, author, description } = req.body;
+    const blogId = req.params.blogId;
     const blogRepository = getConnection().getRepository(Blog);
+    const blogCheck = await blogRepository.findOne({ id: blogId });
+    const duplicateCheck = await blogRepository.findOne({ title });
 
-    let imagePath;
-    if (req.file) {
-      imagePath = req.file.path;
-    }
-    //  else {
-    //   imagePath = "";
-    // }
-    const newBlog = new Blog();
-    newBlog.title = title;
-    newBlog.author = author;
-    newBlog.description = description;
-    if (imagePath) {
-      newBlog.path = imagePath;
-    }
+    if (blogCheck) {
+      if (!duplicateCheck) {
+        let imagePath;
+        if (req.file) {
+          imagePath = req.file.path;
+        }
+        //  else {
+        //   imagePath = "";
+        // }
+        const newBlog = new Blog();
+        newBlog.title = title;
+        newBlog.author = author;
+        newBlog.description = description;
+        if (imagePath) {
+          newBlog.path = imagePath;
+        }
 
-    await blogRepository.update({ id: req.params.blogId }, newBlog);
+        await blogRepository.update({ id: blogId }, newBlog);
+      } else {
+        res.status(400).json({ success: false, error: "Blog already exists" });
+      }
+    } else {
+      res
+        .status(400)
+        .json({ success: false, error: "Invalid blogId or blog deleted" });
+    }
   } catch (error) {
     res.status(500).json("Something went wrong");
     return;

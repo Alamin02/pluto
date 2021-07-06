@@ -82,7 +82,7 @@ export default function EditProductModal({
               .filter((entry) => entry.children !== null)
               .map((entry) => {
                 const childrenList = [];
-
+                
                 for (const child of entry.children) {
                   childrenList.push({
                     id: child.id,
@@ -142,12 +142,11 @@ export default function EditProductModal({
             .then((values) => {
               editProduct(existingRecord.id, values, token)
                 .then((res) => res.json())
-                .then((res) => {
-                  const { success, error } = res;
+                .then(({ success, message: msg, error }) => {
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(res.message);
+                    message.success(msg);
                     refetch();
                   } else {
                     message.error(error);
@@ -234,7 +233,7 @@ export default function EditProductModal({
             initialValue={
               existingRecord &&
               existingRecord.category &&
-              existingRecord.category.id
+              existingRecord.category.name
             }
           >
             {existingRecord && (

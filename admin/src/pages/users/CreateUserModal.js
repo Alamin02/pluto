@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Form, Input, message, Select } from "antd";
 
-import { agent } from "../../helpers/agent";
+import { createUser } from "../../client/users.client";
 const { Option } = Select;
 export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
@@ -20,24 +20,17 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
-              agent
-                .createUser(values, token)
+              createUser(values, token)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
-                    message.success("New user added successfully");
-
+                .then(({ success, message: msg, error }) => {
+                  if (success) {
+                    message.success(msg);
                     form.resetFields();
                     onCreate(values);
                   } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
+                    message.error(error);
                   }
                 });
-
-              form.resetFields();
-              onCreate(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);

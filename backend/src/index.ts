@@ -38,10 +38,9 @@ app.use(function (
       msg: " For creating Product key name must be productImages and For creating Blog key name must be blogImage, and, only image file and maximum 4 images can be uploaded ",
     });
   } else {
-    res.status(err.status || 500);
-
-    res.json({ errors: [{ msg: "Something went wrong" }] });
-    res.json({ msg: err });
+    res
+      .status(err.status || 500)
+      .json({ success: false, error: "Something went wrong" });
   }
 });
 

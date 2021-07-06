@@ -45,10 +45,9 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
 
               createCarousel(formData, token)
                 .then((res) => res.json())
-                .then((res) => {
-                  const { success, error } = res;
+                .then(({ success, message: msg, error }) => {
                   if (success) {
-                    message.success(res.message);
+                    message.success(msg);
                     form.resetFields();
                     onCreate(values);
                   } else {

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Input, message } from "antd";
 
-import { agent } from "../../helpers/agent";
+import { editCategory } from "../../client/category.client";
 
 export default function EditCategoryModal({
   visible,
@@ -29,19 +29,17 @@ export default function EditCategoryModal({
           form
             .validateFields()
             .then((values) => {
-              agent
-                .editCategory(values, token, currentCategory.id)
+              editCategory(values, token, currentCategory.id)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
-                    message.success("Category updated successfully");
+                .then((res) => {
+                  const { success, error } = res;
+                  if (success) {
+                    message.success(res.message);
 
                     form.resetFields();
                     onCreate(values);
                   } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
+                    message.error(error);
                   }
                 });
             })

@@ -15,9 +15,13 @@ function CartItem({
   onRemove,
   description,
   quantity,
+  offer,
 }) {
   const screens = useBreakpoint();
-
+  let offerPrice;
+  if (offer) {
+    offerPrice = Math.floor(price - (price * offer.discount) / 100);
+  }
   return (
     <section>
       <div
@@ -76,14 +80,6 @@ function CartItem({
             </h1>
           </Link>
 
-          <div
-            className={classNames(
-              { [styles.priceOnSmallScreen]: screens },
-              { [styles.priceOnSmallScreenXs]: screens.xs }
-            )}
-          >
-            ৳&nbsp;{price * quantity}
-          </div>
           <div className={styles.description}>{description}</div>
           <div
             className={classNames(
@@ -101,7 +97,8 @@ function CartItem({
             { [styles.priceOnBigScreenXs]: screens.xs }
           )}
         >
-          ৳&nbsp;{price * quantity}
+          <span className={styles.currencySign}> ৳ </span>
+          {offer ? offerPrice * quantity : price * quantity}
         </div>
       </div>
       <hr className={styles.cartHr} />

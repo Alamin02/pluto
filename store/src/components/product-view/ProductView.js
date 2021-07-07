@@ -9,7 +9,12 @@ import AddToCart from "./AddToCart";
 import Display from "./Display";
 
 function ProductView({ product }) {
-  const { name, price, images, summary, description } = product;
+  const { name, offer, price, images, summary, description } = product;
+
+  let offerPrice;
+  if (offer) {
+    offerPrice = Math.floor(price - (price * offer.discount) / 100);
+  }
 
   return (
     <div className={styles.container}>
@@ -24,7 +29,10 @@ function ProductView({ product }) {
             <Space size={20} direction="vertical">
               <div>
                 <h1>{name}</h1>
-                <b>৳&nbsp;{price}</b>
+                <p className={styles.priceStyled}>
+                  <span className={styles.currencySign}>৳</span>
+                  {offer ? offerPrice : price}
+                </p>
                 <p>{summary}</p>
               </div>
 

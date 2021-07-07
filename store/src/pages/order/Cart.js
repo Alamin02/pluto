@@ -14,13 +14,19 @@ function Cart() {
 
   useEffect(() => {
     let price = 0;
+    let offerPrice;
     productList.forEach((product) => {
       price += product.price * product.quantity;
-      localStorage.setItem("product", product)
+      localStorage.setItem("product", product);
+      if (product.offer) {
+        offerPrice = Math.floor(price - (price * product.offer.discount) / 100);
+        setTotalPrice(offerPrice);
+      } else {
+        setTotalPrice(price);
+      }
     });
-    setTotalPrice(price);
-    localStorage.setItem("productList", JSON.stringify(productList))
 
+    localStorage.setItem("productList", JSON.stringify(productList));
   }, [productList, totalPrice, setTotalPrice]);
 
   const handleRemoveProduct = (id) => {
@@ -61,10 +67,11 @@ function Cart() {
             onRemove={handleRemoveProduct}
             description={item.description}
             quantity={item.quantity}
+            offer={item.offer}
           />
         ))}
         <div className={styles.bottomSection}>
-          <div>&nbsp;</div>
+          {/* <div>&nbsp;</div> */}
           <div>
             <p className={styles.totalPriceSection}>
               Total Price: {totalPrice} BDT

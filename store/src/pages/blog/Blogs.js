@@ -13,7 +13,7 @@ export default function Blogs() {
   const query = qs.parse(window.location.search);
 
   const [blogData, setBlogData] = useState([]);
-  const [totalBlog, setTotalBlog] = useState("");
+  const [totalBlogInfo, setTotalBlogInfo] = useState("");
   const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
   const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 4);
   const [search, setSearch] = useState("");
@@ -38,7 +38,7 @@ export default function Blogs() {
       .then((res) => res.json())
       .then(({ data }) => {
         setBlogData(data.blogs);
-        setTotalBlog(data);
+        setTotalBlogInfo(data);
         // console.log(data);
       });
   };
@@ -79,9 +79,9 @@ export default function Blogs() {
                 showSizeChanger={false}
                 current={currentPage}
                 onChange={onChange}
-                defaultPageSize={totalBlog.perPage || 4}
+                defaultPageSize={totalBlogInfo.perPage || 4}
                 pageSize={perPage || 4}
-                total={totalBlog.blogCount}
+                total={totalBlogInfo.blogCount}
                 showTotal={(total, range) =>
                   `${range[0]} to ${range[1]} of ${total} Blogs`
                 }

@@ -32,7 +32,7 @@ export async function getAllProducts(
       skip: (page - 1) * perPage,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: {
         products,
@@ -44,7 +44,7 @@ export async function getAllProducts(
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
@@ -108,7 +108,9 @@ export async function createProduct(
       if (categoryCheck) {
         newProduct.category = categoryId;
       } else {
-        res.status(400).json({ success: false, error: "Category not found" });
+        return res
+          .status(400)
+          .json({ success: false, error: "Category not found!" });
       }
 
       const offerCheck = await offersRepository.findOne({ id: offerId });
@@ -121,15 +123,20 @@ export async function createProduct(
       }
 
       await productsRepository.save(newProduct);
-      res.status(200).json({ success: true, message: "New product added!" });
+      return res
+        .status(200)
+        .json({ success: true, message: "New product added!" });
     } else {
-      res.status(400).json({ success: false, error: "Product already exists" });
+      return res
+        .status(400)
+        .json({ success: false, error: "Product already exists" });
     }
   } catch (e) {
     // console.error(e);
 
-    res.status(500).json({ success: false, error: "Something went wrong" });
-    return;
+    return res
+      .status(500)
+      .json({ success: false, error: "Something went wrong" });
   }
 }
 
@@ -149,19 +156,19 @@ export async function getProduct(req: express.Request, res: express.Response) {
     if (!findProductById) {
       return res
         .status(400)
-        .json({ success: false, error: "Product not found" });
+        .json({ success: false, error: "Product not found!" });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Product found!",
       data: findProductById,
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      error: "Something went wrong",
+      error: "Something went wrong!",
     });
   }
 }
@@ -190,33 +197,48 @@ export async function updateProduct(
     const categoriesRepository = getConnection().getRepository(Category);
     const offer = await offersRepository.findOne({ id: offerId });
     const category = await categoriesRepository.findOne({ id: categoryId });
-    const newProduct = new Product();
+    const duplicate = await productsRepository.findOne({ name });
 
-    newProduct.name = name;
-    newProduct.description = description;
-    newProduct.price = price;
-    newProduct.summary = summary;
+    if (findProductById) {
+      if (duplicate && duplicate.id !== id) {
+        return res.status(400).json({
+          success: false,
+          error: "Product with this title already exists!",
+        });
+      }
+      const newProduct = new Product();
 
-    if (offer) {
-      newProduct.offer = offer;
+      newProduct.name = name;
+      newProduct.description = description;
+      newProduct.price = price;
+      newProduct.summary = summary;
+
+      if (offer) {
+        newProduct.offer = offer;
+      }
+
+      if (category) {
+        newProduct.category = category;
+      }
+
+      productsRepository.merge(findProductById, newProduct);
+
+      await productsRepository.save(findProductById);
+      return res
+        .status(200)
+        .json({ success: true, message: "Product updated!" });
+    } else {
+      return res
+        .status(200)
+        .json({ success: false, error: "Invalid productId" });
     }
-
-    if (category) {
-      newProduct.category = category;
-    }
-
-    productsRepository.merge(findProductById, newProduct);
-
-    await productsRepository.save(findProductById);
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
   }
-
-  res.status(200).json({ success: true, message: "Product updated!" });
 }
 
 // @DELETE - /api/v1/products/:productId
@@ -237,19 +259,21 @@ export async function deleteProduct(
     const id = req.params.productId;
 
     const productRepository = getConnection().getRepository(Product);
-    const productToUpdate = await productRepository.findOne({ id: id });
-    if (productToUpdate) {
+    const productToDelete = await productRepository.findOne({ id: id });
+    if (productToDelete) {
       await productRepository.delete({ id });
-      res.status(200).json({ success: true, message: "Product deleted!" });
+      return res
+        .status(200)
+        .json({ success: true, message: "Product deleted!" });
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: "Product to delete not found or invalid id.",
       });
     }
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });

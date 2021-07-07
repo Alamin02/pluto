@@ -1,18 +1,97 @@
-import React from "react";
-
-import BlogList from "../../components/blogs/BlogList";
-import BreadCrumb from "../../components/blogs/BreadCrumb";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import qs from "query-string";
+import { Row, Col, Pagination, Skeleton } from "antd";
+import styles from "../../components/blogs/BlogList.module.css";
+import BlogCard from "../../components/blogs/BlogCard";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import MainContainer from "../../components/layout/MainContainer";
+import { getBlogs } from "../../client/blogs.client";
 
 export default function Blogs() {
+  const history = useHistory();
+  const query = qs.parse(window.location.search);
+
+  const [blogData, setBlogData] = useState([]);
+  const [totalBlog, setTotalBlog] = useState("");
+  const [currentPage, setCurrentPage] = useState(parseInt(query.page) || 1);
+  const [perPage, setPerPage] = useState(parseInt(query.pageSize) || 4);
+  const [search, setSearch] = useState("");
+
+  function onChange(page, pageSize) {
+    setCurrentPage(page);
+    setPerPage(pageSize);
+
+    history.push({
+      search: `?page=${page}`,
+    });
+  }
+
+  const fetchBlogs = () => {
+    const queryString = qs.stringify({
+      page: currentPage,
+      perPage,
+      search,
+    });
+
+    getBlogs(queryString)
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setBlogData(data.blogs);
+        setTotalBlog(data);
+        // console.log(data);
+      });
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [currentPage, perPage]);
   return (
     <>
       <MainContainer>
         <div style={{ marginTop: "1rem" }}>
           <HeaderSection headerText="Latest news" />
-          <BlogList />
-          <BreadCrumb />
+          {blogData.length ? (
+            <div className={styles.container}>
+              <Row gutter={[32, 32]}>
+                {blogData.map((blog) => (
+                  <Col key={blog.id} sm={24} md={12} lg={12}>
+                    <BlogCard
+                      id={blog.id}
+                      imageSrc={blog.path}
+                      title={blog.title}
+                      description={blog.description}
+                      date={new Date().toDateString()}
+                      author={blog.author}
+                      category={""}
+                    />
+                  </Col>
+                ))}
+              </Row>
+              <Pagination
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "50px",
+                }}
+                showQuickJumper
+                defaultCurrent={1}
+                showSizeChanger={false}
+                current={currentPage}
+                onChange={onChange}
+                defaultPageSize={totalBlog.perPage || 4}
+                pageSize={perPage || 4}
+                total={totalBlog.blogCount}
+                showTotal={(total, range) =>
+                  `${range[0]} to ${range[1]} of ${total} Blogs`
+                }
+              />
+            </div>
+          ) : (
+            <div style={{ marginTop: "1em" }}>
+              <Skeleton active />
+            </div>
+          )}
         </div>
       </MainContainer>
     </>

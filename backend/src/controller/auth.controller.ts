@@ -41,10 +41,10 @@ export async function userLogin(req: express.Request, res: express.Response) {
     // Generating a token
     const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
 
-    res.json({ success: true, message: "Login successful!", token });
+    return res.json({ success: true, message: "Login successful!", token });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
@@ -66,7 +66,7 @@ export async function userRegistration(
     const previousEntry = await userRepository.findOne({ email });
 
     if (previousEntry) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: "User already exists",
       });
@@ -88,18 +88,23 @@ export async function userRegistration(
       }
 
       await userRepository.save(newUser);
+
+      // Generating a token
+      const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
+      return res.json({
+        success: true,
+        message: "New account created!",
+        token: token,
+      });
     } catch (e) {
       console.error(e);
       return res
         .status(400)
         .json({ success: false, error: "New account could not be created" });
     }
-    // Generating a token
-    const token = jwt.sign({ email }, secret, { expiresIn: "10h" });
-    res.json({ success: true, message: "New account created!", token: token });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });

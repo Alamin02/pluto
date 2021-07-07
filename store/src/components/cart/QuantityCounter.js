@@ -13,7 +13,7 @@ function QuantityCounter({ value, productId }) {
   };
 
   const handleRemoveProduct = () => {
-    if (value > 0)
+    if (value > 1)
       dispatch({
         type: "cart/updateQuantity",
         payload: { productId, quantity: value - 1 },

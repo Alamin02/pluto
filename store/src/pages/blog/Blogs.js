@@ -39,7 +39,6 @@ export default function Blogs() {
       .then(({ data }) => {
         setBlogData(data.blogs);
         setTotalBlogInfo(data);
-        // console.log(data);
       });
   };
 

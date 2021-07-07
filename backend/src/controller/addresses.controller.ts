@@ -27,10 +27,10 @@ export async function getAllAddresses(
           }),
     });
 
-    res.status(200).json({ success: true, data: addresses });
+    return res.status(200).json({ success: true, data: addresses });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });
@@ -58,14 +58,15 @@ export async function createAddress(
     // save data to repository from request body
     await addressRepository.save(newAddress);
 
-    res.status(200).json({ success: true, message: "New address added" });
+    return res
+      .status(200)
+      .json({ success: true, message: "New address added!" });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
-    return;
   }
 }
 
@@ -84,12 +85,14 @@ export async function getAddress(req: express.Request, res: express.Response) {
     }
 
     // Save to database
-    res
-      .status(200)
-      .json({ success: true, message: "Address found", data: findAddressById });
+    return res.status(200).json({
+      success: true,
+      message: "Address found!",
+      data: findAddressById,
+    });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
@@ -123,10 +126,10 @@ export async function updateAddress(
     newAddress.user = res.locals.user.id;
 
     await addressRepository.update({ id: req.params.addressId }, newAddress);
-    res.status(200).json({ success: true, message: "Address updated" });
+    return res.status(200).json({ success: true, message: "Address updated" });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
@@ -147,7 +150,9 @@ export async function deleteAddress(
 
     if (findAddressById) {
       await addressRepository.delete(addressId);
-      res.status(200).json({ success: true, message: "Address deleted" });
+      return res
+        .status(200)
+        .json({ success: true, message: "Address deleted" });
     } else {
       res.status(400).json({
         success: false,
@@ -156,7 +161,7 @@ export async function deleteAddress(
     }
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });

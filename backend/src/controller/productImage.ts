@@ -15,7 +15,6 @@ export async function createProductImage(
 
   const createProductImage = [];
   const files = req.files as Express.Multer.File[];
-  console.log(files);
 
   if (files.length && product) {
     for (let i = 0; i < files.length; i++) {
@@ -28,9 +27,13 @@ export async function createProductImage(
       createProductImage.push(savedProductImage);
     }
 
-    res.json({ msg: "Image added" });
+    return res
+      .status(200)
+      .json({ success: true, message: "ProductImage added!" });
   } else {
-    return res.status(400).json({ errors: [{ msg: "Image not found" }] });
+    return res
+      .status(400)
+      .json({ success: false, error: "ProductImage not found!" });
   }
 }
 
@@ -42,7 +45,7 @@ export async function getAllProductsImages(
 ) {
   const productImageRepository = getConnection().getRepository(ProductImage);
   const allProductsImages = await productImageRepository.find();
-  res.status(200).json({ data: allProductsImages });
+  return res.status(200).json({ success: true, data: allProductsImages });
 }
 
 // Get a particular product image
@@ -57,10 +60,16 @@ export async function getSingleImage(
   const findImageById = await productImageRepository.findOne({ id });
 
   if (!findImageById) {
-    return res.status(400).json({ errors: [{ msg: "Image not found" }] });
+    return res
+      .status(400)
+      .json({ success: false, error: "ProductImage not found!" });
   }
 
-  res.json({ msg: "Image found", data: findImageById });
+  return res.status(200).json({
+    success: true,
+    message: "ProductImage found!",
+    data: findImageById,
+  });
 }
 
 // @DELETE /v1/api/images/:imageId
@@ -69,19 +78,22 @@ export async function deleteProductImage(
   req: express.Request,
   res: express.Response
 ) {
-  const Id = req.params.imageId;
-  const productImageRepository = getConnection().getRepository(ProductImage);
-  const imageToUpdate = await productImageRepository.findOne({ id: Id });
-  if (imageToUpdate) {
-    try {
+  try {
+    const Id = req.params.imageId;
+    const productImageRepository = getConnection().getRepository(ProductImage);
+    const imageToUpdate = await productImageRepository.findOne({ id: Id });
+    if (imageToUpdate) {
       await productImageRepository.delete(Id);
-      res.json({ msg: "image deleted" });
-    } catch (e) {
-      res.status(400).json({ msg: e });
+      return res
+        .status(200)
+        .json({ success: true, message: "ProductImage deleted!" });
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid productImageId!",
+      });
     }
-  } else {
-    res.status(400).json({
-      errors: [{ msg: "Product image to delete not found or invalid id" }],
-    });
+  } catch (error) {
+    return res.status(400).json("Something went wrong");
   }
 }

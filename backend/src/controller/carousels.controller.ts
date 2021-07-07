@@ -14,34 +14,40 @@ export async function createCarousel(
     const carouselRepository = getConnection().getRepository(Carousel);
     const carouselImageRepository =
       getConnection().getRepository(CarouselImage);
+    const duplicate = await carouselRepository.findOne({ title });
+    if (!duplicate) {
+      const file = req.file as Express.Multer.File;
 
-    const file = req.file as Express.Multer.File;
+      const carouselImage = new CarouselImage();
+      carouselImage.path = file.path;
+      carouselImage.originalName = file.originalname;
 
-    const carouselImage = new CarouselImage();
-    carouselImage.path = file.path;
-    carouselImage.originalName = file.originalname;
+      await carouselImageRepository.save(carouselImage);
 
-    await carouselImageRepository.save(carouselImage);
+      const newCarousel = new Carousel();
+      newCarousel.title = title;
+      newCarousel.summary = summary;
+      newCarousel.link = link || "#";
+      newCarousel.image = carouselImage;
 
-    const newCarousel = new Carousel();
-    newCarousel.title = title;
-    newCarousel.summary = summary;
-    newCarousel.link = link || "#";
-    newCarousel.image = carouselImage;
-
-    await carouselRepository.save(newCarousel);
+      await carouselRepository.save(newCarousel);
+      return res.status(200).json({
+        success: true,
+        message: "Carousel created!",
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: "Carousel with this title already exists!",
+      });
+    }
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
-    return;
   }
-  res.status(200).json({
-    success: true,
-    message: "Carousel created!",
-  });
 }
 
 // @GET - baseUrl/carousels
@@ -58,13 +64,13 @@ export async function getCarousels(
       relations: ["image"],
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: carousels,
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong",
     });
@@ -85,21 +91,21 @@ export async function deleteCarousel(
 
     if (findCarouselById) {
       await carouselRepository.delete({ id });
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        message: "Carousel deleted",
+        message: "Carousel deleted!",
       });
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
-        error: "Carousel to delete not found or invalid id",
+        error: "Carousel to delete not found or invalid id!",
       });
     }
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      error: "Something went wrong",
+      error: "Something went wrong!",
     });
   }
 }

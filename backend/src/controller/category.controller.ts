@@ -13,12 +13,14 @@ export async function getCategory(req: express.Request, res: express.Response) {
       where: { parent: IsNull() },
     });
     if (categoryTrees.length) {
-      res.status(200).json({ data: categoryTrees });
+      return res.status(200).json({ success: true, data: categoryTrees });
     } else {
-      res.status(400).json({ success: false, error: "No category created" });
+      return res
+        .status(400)
+        .json({ success: false, error: "No category created !" });
     }
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }
 
@@ -45,13 +47,13 @@ export async function createCategory(
         const newCategory = new Category();
         newCategory.name = name;
         const data = await categoryRepository.save(newCategory);
-        res.status(201).json({
+        return res.status(201).json({
           success: true,
-          message: "Category created successfully",
+          message: "New category added!",
           data,
         });
       } else {
-        res
+        return res
           .status(400)
           .json({ success: false, error: "Category already exists" });
       }
@@ -73,26 +75,26 @@ export async function createCategory(
         if (checkParent.length) {
           newCategory.parent = parentId;
           const data = await categoryRepository.save(newCategory);
-          res.status(201).json({
+          return res.status(201).json({
             success: true,
-            message: "Category created successfully",
+            message: "New category added!",
             data,
           });
         } else {
-          res.status(400).json({
+          return res.status(400).json({
             success: false,
-            error: "Invalid parentId or parent not found",
+            error: "Invalid parentId or parent not found!",
           });
         }
       } else {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
-          error: "Sub category already exists in parent",
+          error: "Sub category already exists in parent!",
         });
       }
     }
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong");
   }
 }
 
@@ -120,9 +122,11 @@ export async function updateCategory(
         const newCategory = new Category();
         newCategory.name = name;
         await categoryRepository.update(categoryId, newCategory);
-        res.json({ success: true, message: "Category updated" });
+        return res.json({ success: true, message: "Category updated!" });
       } else {
-        res.status(400).json({ success: false, error: "Invalid categoryId" });
+        return res
+          .status(400)
+          .json({ success: false, error: "Invalid categoryId!" });
       }
     } else {
       const checkParent = await categoryRepository.findOne({ id: parentId });
@@ -133,21 +137,21 @@ export async function updateCategory(
         if (checkParent) {
           newCategory.parent = parentId;
           await categoryRepository.update(categoryId, newCategory);
-          res.json({ success: false, error: "Sub-category updated" });
+          return res.json({ success: false, error: "Sub-category updated!" });
         } else {
-          res.status(400).json({
+          return res.status(400).json({
             success: false,
-            error: "Invalid parentId or parent not found",
+            error: "Invalid parentId or parent not found!",
           });
         }
       } else {
-        res
+        return res
           .status(400)
-          .json({ success: false, error: "Invalid subCategoryId" });
+          .json({ success: false, error: "Invalid subCategoryId!" });
       }
     }
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }
 
@@ -169,12 +173,12 @@ export async function getSingleCategory(
     if (!findCategoryById) {
       return res
         .status(400)
-        .json({ success: false, error: "Category not found" });
+        .json({ success: false, error: "Category not found!" });
     }
 
-    res.json({ data: findCategoryById });
+    return res.json({ success: false, data: findCategoryById });
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }
 
@@ -197,11 +201,13 @@ export async function deleteCategory(
     const categoryCheck = await categoryRepository.findOne({ id: categoryId });
     if (categoryCheck) {
       await categoryRepository.delete(categoryId);
-      res.json({ success: true, message: "category deleted" });
+      return res.json({ success: true, message: "category deleted!" });
     } else {
-      res.status(400).json({ success: false, error: "Invalid categoryId" });
+      return res
+        .status(400)
+        .json({ success: false, error: "Invalid categoryId!" });
     }
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }

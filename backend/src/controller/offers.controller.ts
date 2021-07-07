@@ -16,14 +16,15 @@ export async function getAllOffers(
       relations: ["offerImage", "products", "products.images"],
     });
 
-    res.json({
+    return res.status(200).json({
+      success: false,
       data: {
         offers,
         offerCount,
       },
     });
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong!");
   }
 }
 
@@ -41,11 +42,13 @@ export async function getSingleOffer(
     );
 
     if (!findByOffer) {
-      res.status(400).json({ errors: [{ msg: "Offer not found" }] });
+      return res.status(400).json({ success: false, error: "Offer not found" });
     }
-    res.status(200).json({ msg: "offer found", data: findByOffer });
+    return res
+      .status(200)
+      .json({ success: true, message: "Offer found!", data: findByOffer });
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong");
   }
 }
 
@@ -53,12 +56,12 @@ export async function getSingleOffer(
 // create offer
 export async function createOffer(req: express.Request, res: express.Response) {
   try {
-    // const permission = accessControl
-    //   .can(res.locals.user.role)
-    //   .createAny("offer");
-    // if (!permission.granted) {
-    //   return res.status(403).json({ success: false, error: "Unauthorized" });
-    // }
+    const permission = accessControl
+      .can(res.locals.user.role)
+      .createAny("offer");
+    if (!permission.granted) {
+      return res.status(403).json({ success: false, error: "Unauthorized" });
+    }
 
     const { name, discount, description } = req.body;
 
@@ -79,7 +82,7 @@ export async function createOffer(req: express.Request, res: express.Response) {
         createOfferImage.push(savedProductImage);
       }
     } else {
-      return res.json({ success: false, error: "Image not found" });
+      return res.json({ success: false, error: "OfferImage not found!" });
     }
 
     if (!previousEntry) {
@@ -91,13 +94,14 @@ export async function createOffer(req: express.Request, res: express.Response) {
 
       await offersRepository.save(newOffer);
 
-      res.status(201).json({ success: true, message: "Offer created" });
+      return res.status(201).json({ success: true, message: "Offer created!" });
     } else {
-      res.status(400).json({ success: false, error: "offer already exist" });
+      return res
+        .status(400)
+        .json({ success: false, error: "Offer already exists!" });
     }
   } catch (error) {
-    res.status(500).json("Something went wrong");
-    console.log(error);
+    return res.status(500).json("Something went wrong");
   }
 }
 
@@ -105,20 +109,27 @@ export async function createOffer(req: express.Request, res: express.Response) {
 // update a offer
 export async function updateOffer(req: express.Request, res: express.Response) {
   try {
+    const permisson = accessControl
+      .can(res.locals.user.role)
+      .updateAny("offer");
+    if (!permisson.granted) {
+      return res.status(403).json({ success: false, error: "Unauthorized" });
+    }
+
     const offerId = req.params.offerId;
     const { name, discount, description } = req.body;
 
     const offersRepository = getConnection().getRepository(Offer);
     const offerToUpdate = await offersRepository.findOne({ id: offerId });
-
-    // const permisson = accessControl
-    //   .can(res.locals.user.role)
-    //   .updateAny("offer");
-    // if (!permisson.granted) {
-    //   return res.status(403).json({ success: false, error: "Unauthorized" });
-    // }
+    const duplicate = await offersRepository.findOne({ name });
 
     if (offerToUpdate) {
+      if (duplicate && duplicate.id !== offerId) {
+        return res.status(400).json({
+          successs: false,
+          error: "Offer with this name already exists!",
+        });
+      }
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
@@ -126,16 +137,15 @@ export async function updateOffer(req: express.Request, res: express.Response) {
       offersRepository.merge(offerToUpdate, newOffer);
       await offersRepository.save(offerToUpdate);
 
-      res.status(201).json({ success: true, message: "offer updated" });
+      return res.status(201).json({ success: true, message: "Offer updated!" });
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
-        error:
-          "offer name must be unique or offer to update not found or invalid id",
+        error: "Invalid offerId!",
       });
     }
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    res.status(500).json("Something went wrong!");
   }
 }
 
@@ -143,12 +153,12 @@ export async function updateOffer(req: express.Request, res: express.Response) {
 // delete a offer
 export async function deleteOffer(req: express.Request, res: express.Response) {
   try {
-    // const permisson = accessControl
-    //   .can(res.locals.user.role)
-    //   .deleteAny("offer");
-    // if (!permisson.granted) {
-    //   return res.status(403).json({ success: false, error: "Unauthorized" });
-    // }
+    const permisson = accessControl
+      .can(res.locals.user.role)
+      .deleteAny("offer");
+    if (!permisson.granted) {
+      return res.status(403).json({ success: false, error: "Unauthorized" });
+    }
 
     const offerId = req.params.offerId;
     const offersRepository = getConnection().getRepository(Offer);
@@ -156,14 +166,14 @@ export async function deleteOffer(req: express.Request, res: express.Response) {
 
     if (offerToUpdate) {
       await offersRepository.delete(offerId);
-      res.status(200).json({ success: true, message: "Offer deleted" });
+      return res.status(200).json({ success: true, message: "Offer deleted!" });
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
-        error: "offer to delete not found or invalid id",
+        error: "Invalid offerId!",
       });
     }
   } catch (error) {
-    res.status(500).json("Something went wrong");
+    res.status(500).json("Something went wrong!");
   }
 }

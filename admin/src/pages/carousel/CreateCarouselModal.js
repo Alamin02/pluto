@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
-import { createCarousel } from "../../client/carousels.cient";
+import { createCarousel } from "../../client/carousels.client";
 
 const layout = {
   labelCol: {

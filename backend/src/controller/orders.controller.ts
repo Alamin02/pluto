@@ -33,7 +33,9 @@ export async function createOrder(req: express.Request, res: express.Response) {
     newOrder.address = address;
 
     await orderRepository.save(newOrder);
-    res.status(200).json({ success: true, message: "New order created!" });
+    return res
+      .status(200)
+      .json({ success: true, message: "New order created!" });
   } catch (e) {
     return res.status(500).json({
       success: false,
@@ -76,7 +78,7 @@ export async function getAllOrders(
       skip: (page - 1) * perPage,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: {
         orders,
@@ -88,7 +90,7 @@ export async function getAllOrders(
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });
@@ -113,10 +115,10 @@ export async function getSingleOrder(
     if (!singleOrder) {
       return res.status(400).json({ success: false, error: "Order not found" });
     }
-    res.status(200).json({ success: true, data: singleOrder });
+    return res.status(200).json({ success: true, data: singleOrder });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });
@@ -159,10 +161,12 @@ export async function updateSingleOrder(
 
     const findOrderById: any = await orderRepository.findOne({ id });
     await orderRepository.update(findOrderById, newOrder);
-    res.status(200).json({ success: true, message: "Order is now updated" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Order is now updated!" });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });
@@ -183,7 +187,7 @@ export async function deleteOrder(req: express.Request, res: express.Response) {
     }
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Something went wrong!",
     });

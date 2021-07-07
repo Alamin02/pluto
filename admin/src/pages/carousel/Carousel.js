@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Typography, Space, Popconfirm, message } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
-import { getCarousels, deleteCarousel } from "../../client/carousels.cient";
+import { getCarousels, deleteCarousel } from "../../client/carousels.client";
 import { columns } from "./carouselTableColumns";
 import CreateCarouselModal from "./CreateCarouselModal";
 

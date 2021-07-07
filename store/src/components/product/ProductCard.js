@@ -1,4 +1,5 @@
 import { Card, Badge } from "antd";
+import styles from "./ProductCard.module.css";
 
 const { Meta } = Card;
 
@@ -30,13 +31,11 @@ const CardItem = ({ title, src, price, discount }) => {
         >
           <Meta style={productTitleStyle} title={title} />
           <p style={priceStyle}>
-            <strike style={{ color: "gray", marginRight: "10px" }}>
-              {price}
-            </strike>
-            <span style={{ fontSize: "1.5rem", marginRight: "4px" }}>
+            <strike className={styles.deletePrice}>{price}</strike>
+            <span className={styles.priceHighlight}>
               {Math.floor(price - (price * discount) / 100)}
+              <span className={styles.currencySign}>৳</span>
             </span>
-            <sup>৳</sup>
           </p>
         </Card>
       </Badge.Ribbon>
@@ -50,10 +49,10 @@ const CardItem = ({ title, src, price, discount }) => {
       >
         <Meta style={productTitleStyle} title={title} />
         <p style={priceStyle}>
-          <span style={{ fontSize: "1.5rem", marginRight: "4px" }}>
+          <span className={styles.priceHighlight}>
             {price}
+            <span className={styles.currencySign}>৳</span>
           </span>
-          <sup>৳</sup>
         </p>
       </Card>
     );

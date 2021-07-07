@@ -29,7 +29,10 @@ function ProductView({ product }) {
             <Space size={20} direction="vertical">
               <div>
                 <h1>{name}</h1>
-                <b>৳{offer ? offerPrice : price}</b>
+                <p className={styles.priceStyled}>
+                  <span className={styles.currencySign}>৳</span>
+                  {offer ? offerPrice : price}
+                </p>
                 <p>{summary}</p>
               </div>
 

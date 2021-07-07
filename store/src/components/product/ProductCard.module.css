@@ -1,0 +1,13 @@
+.currencySign {
+  margin-left: 5px;
+}
+
+.deletePrice {
+  color: gray;
+  margin-right: 10px;
+}
+.priceHighlight {
+  font-size: 1.5rem;
+  margin-right: 4px;
+}
+

@@ -97,7 +97,8 @@ function CartItem({
             { [styles.priceOnBigScreenXs]: screens.xs }
           )}
         >
-          ৳{offer ? offerPrice * quantity : price * quantity}
+          <span className={styles.currencySign}> ৳ </span>
+          {offer ? offerPrice * quantity : price * quantity}
         </div>
       </div>
       <hr className={styles.cartHr} />

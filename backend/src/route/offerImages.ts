@@ -18,6 +18,20 @@ router.post("/",
   imageUpload.array("offerImages", 4),
   createOfferImageController)
 
+router.post("/test",
+  imageUpload.array("offerImages", 4),
+  (req, res) => {
+
+    const files = req.files as Express.Multer.File[];
+
+    return res.json({
+      success: true,
+      data: files,
+    });
+
+  })
+
+
 // update offer Image
 //PUT /api/v1/offer-image/:offerImageId
 router.put("/:offerImageId", updateOfferImageController)

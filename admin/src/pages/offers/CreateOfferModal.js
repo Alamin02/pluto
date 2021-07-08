@@ -13,6 +13,8 @@ export default function CreateOfferModal({
   const [uploadOfferImages, setUploadOfferImages] = useState([]);
   const [offerImages, setOfferImages] = useState([]);
 
+  const [images, setImages] = useState([]);
+
   const normFile = (e) => {
     console.log("Upload event:", e);
     if (Array.isArray(e)) {
@@ -197,6 +199,30 @@ export default function CreateOfferModal({
             <Button icon={<UploadOutlined />}> add offer Images</Button>
           </Upload>
           {/* </Form.Item> */}
+
+          {
+            images.map(image => <p>{image.path}</p>)
+          }
+
+          <Upload
+            name="offerImages"
+            action="http://localhost:4000/api/v1/offer-image/test"
+            onChange={
+              (info) => {
+                console.log(info)
+                console.log(info.file.response)
+                const {response} = info.file;
+                if (response) {
+                  if (response.success) {
+                    setImages([...images, ...response.data])
+                  }
+                }
+              }
+            }
+            showUploadList={false}
+          >
+            <Button icon={<UploadOutlined />}>Add offer Images</Button>
+          </Upload>
         </Form>
       </Modal>
     </div>

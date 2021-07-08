@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import BlogDetails from "../../components/blogs/BlogDetails";
-import Error404 from "../../components/error-404/Error404";
+import Error404 from "../error-404/Error404";
 import MainContainer from "../../components/layout/MainContainer";
 import { getBlogs } from "../../client/blogs.client";
 export default function Blog() {

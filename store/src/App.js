@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import ContactUs from "./pages/ContactUs";
-import Error404 from "./components/error-404/Error404";
+import Error404 from "./pages/error-404/Error404";
 
 import ForgetPasswordPage from "./pages/auth/ForgetPassword";
 import LoginPage from "./pages/auth/Login";

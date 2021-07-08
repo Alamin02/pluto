@@ -10,7 +10,7 @@ import userInfo from "../../components/user-profile/userInfo";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
 import Section from "../../components/styled-components/Section";
-import AddressUserProfile from "../../components/address/AddressUserProfile";
+import Address from "../../components/address/Address";
 
 const { useBreakpoint } = Grid;
 
@@ -149,7 +149,7 @@ function UserProfile() {
       <section className={styles.emptySpace}></section>
 
       <Section heading="Your shipping addresses">
-        <AddressUserProfile />
+        <Address />
       </Section>
 
       <section className={styles.buttonSection}>

@@ -24,20 +24,23 @@ export async function createOfferImage(
     const createOfferImage = [];
     const files = req.files as Express.Multer.File[];
 
-    if (files.length && offer) {
+    // if (files.length && offer) {
+    if (files.length) {
       for (let i = 0; i < files.length; i++) {
         const offerImage = new OfferImage();
         offerImage.path = files[i].path;
         offerImage.originalname = files[i].originalname;
-        offerImage.offer = offer;
+        // offerImage.offer = offer;
 
         const savedOfferImage = await offerImageRepository.save(offerImage);
         createOfferImage.push(savedOfferImage);
       }
 
-      return res
-        .status(200)
-        .json({ success: true, message: "OfferImage added!" });
+      return res.status(200).json({
+        success: true,
+        message: "OfferImage added!",
+        data: createOfferImage,
+      });
     } else {
       return res
         .status(400)

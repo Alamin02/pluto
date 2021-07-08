@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, message, Upload } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
-import { createOffer } from "../../client/offers.client";
+import { Modal, Form, Input, message, Upload, Button } from "antd";
+import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
+import { createOffer, createOfferImage } from "../../client/offers.client";
 
-export default function CreateOfferModal({ visible, onCreate, onCancel }) {
+export default function CreateOfferModal({
+  visible,
+  onCreate,
+  onCancel,
+  refetch,
+}) {
   const [form] = Form.useForm();
+  const [uploadOfferImages, setUploadOfferImages] = useState([]);
   const [offerImages, setOfferImages] = useState([]);
 
   const normFile = (e) => {
@@ -26,7 +32,24 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const handleUpload = async (info) => {
     const { status } = info.file;
     if (status !== "uploading") {
-      console.log(info.file, info.fileList);
+      // console.log(info.file, info.fileList);
+      console.log(info.file);
+      const formData = new FormData();
+      uploadOfferImages.forEach((offerImage) => {
+        formData.append("offerImages", offerImage);
+      });
+
+      createOfferImage(formData)
+        .then((res) => res.json())
+        .then(({ data, success, message: msg, error }) => {
+          if (success) {
+            message.success(msg);
+            setOfferImages(data);
+          } else {
+            message.error(error);
+          }
+        })
+        .then(() => refetch());
     }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
@@ -53,11 +76,11 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
               formData.append("name", values.name);
               formData.append("discount", values.discount);
               formData.append("description", values.description);
-
               offerImages.forEach((offerImage) => {
                 formData.append("offerImages", offerImage);
               });
 
+              // createOffer(formData, token)
               createOffer(formData, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
@@ -124,7 +147,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
           >
             <Input.TextArea />
           </Form.Item>
-          <Form.Item label="Offer Image&nbsp;:">
+          {/* <Form.Item label="Offer Image&nbsp;:">
             <Form.Item
               name="offerImages"
               valuePropName="fileList"
@@ -158,7 +181,22 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
                 </p>
               </Upload.Dragger>
             </Form.Item>
-          </Form.Item>
+          </Form.Item> */}
+          {/* <Form.Item> */}
+          <Upload
+            name="files"
+            onChange={handleUpload}
+            beforeUpload={(file, fileList) => {
+              setUploadOfferImages(fileList);
+              return false;
+            }}
+            // showUploadList={false}
+
+            accept="image/*"
+          >
+            <Button icon={<UploadOutlined />}> add offer Images</Button>
+          </Upload>
+          {/* </Form.Item> */}
         </Form>
       </Modal>
     </div>

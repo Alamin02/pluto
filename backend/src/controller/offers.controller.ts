@@ -2,6 +2,7 @@ import express = require("express");
 import { getConnection } from "typeorm";
 import accessControl from "../utils/access-control";
 import { Offer, OfferImage } from "../entity";
+import { JsonWebTokenError } from "jsonwebtoken";
 
 // @GET /v1/api/offers
 // all offers
@@ -63,34 +64,36 @@ export async function createOffer(req: express.Request, res: express.Response) {
       return res.status(403).json({ success: false, error: "Unauthorized" });
     }
 
-    const { name, discount, description } = req.body;
+    const { name, discount, description, offerImages } = req.body;
 
     const offersRepository = getConnection().getRepository(Offer);
     const previousEntry = await offersRepository.findOne({ name });
+    console.log("offer", offerImages);
+    console.log(req.body);
+    // const offerImageRepository = getConnection().getRepository(OfferImage);
 
-    const offerImageRepository = getConnection().getRepository(OfferImage);
-    const createOfferImage = [];
-    const files = req.files as Express.Multer.File[];
+    // const createOfferImage = offerImages;
+    // const files = req.files as Express.Multer.File[];
 
-    if (files && files.length) {
-      for (let i = 0; i < files.length; i++) {
-        const offerImage = new OfferImage();
-        offerImage.path = files[i].path;
-        offerImage.originalname = files[i].originalname;
+    // if (files && files.length) {
+    //   for (let i = 0; i < files.length; i++) {
+    //     const offerImage = new OfferImage();
+    //     offerImage.path = files[i].path;
+    //     offerImage.originalname = files[i].originalname;
 
-        const savedProductImage = await offerImageRepository.save(offerImage);
-        createOfferImage.push(savedProductImage);
-      }
-    } else {
-      return res.json({ success: false, error: "OfferImage not found!" });
-    }
+    //     const savedProductImage = await offerImageRepository.save(offerImage);
+    //     createOfferImage.push(savedProductImage);
+    //   }
+    // } else {
+    //   return res.json({ success: false, error: "OfferImage not found!" });
+    // }
 
     if (!previousEntry) {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
-      newOffer.offerImage = createOfferImage;
+      // newOffer.offerImage = createOfferImage;
 
       await offersRepository.save(newOffer);
 
@@ -101,6 +104,7 @@ export async function createOffer(req: express.Request, res: express.Response) {
         .json({ success: false, error: "Offer already exists!" });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json("Something went wrong");
   }
 }

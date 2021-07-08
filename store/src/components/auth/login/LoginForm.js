@@ -5,8 +5,8 @@ import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import styles from "./LoginForm.module.css";
-import MainContainer from "../layout/MainContainer";
-import HeaderSection from "../styled-components/HeaderSection";
+import MainContainer from "../../layout/MainContainer";
+import HeaderSection from "../../styled-components/HeaderSection";
 
 const Login = () => {
   let history = useHistory();

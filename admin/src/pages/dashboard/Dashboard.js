@@ -14,6 +14,7 @@ import {
   MessageOutlined,
   EnvironmentOutlined,
   PicCenterOutlined,
+  FileImageOutlined,
 } from "@ant-design/icons";
 
 import styles from "./Dashboard.module.css";
@@ -74,6 +75,12 @@ const sidebarInfo = [
     itemName: "Carousel",
     itemUrl: "/carousel",
     icon: <PicCenterOutlined rotate={90} />,
+  },
+  {
+    id: 10,
+    itemName: "Featured Products",
+    itemUrl: "/featured-products",
+    icon: <FileImageOutlined />,
   },
 ];
 

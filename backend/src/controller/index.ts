@@ -84,3 +84,9 @@ export {
 } from "./carousels.controller";
 
 export { createCarouselImage as createCarouselImageController } from "./carouselImage";
+
+export {
+  createFeaturedProduct as createFeaturedProductController,
+  getFeaturedProducts as getFeaturedProductsController,
+  deleteFeaturedProduct as deleteFeaturedProductController,
+} from "./featuredProducts.controller";

@@ -14,6 +14,8 @@ import {
   OfferImage,
   Carousel,
   CarouselImage,
+  FeaturedProduct,
+  FeaturedProductImage,
 } from "../entity";
 
 export function connectDatabase() {
@@ -34,6 +36,8 @@ export function connectDatabase() {
       OfferImage,
       Carousel,
       CarouselImage,
+      FeaturedProduct,
+      FeaturedProductImage,
     ],
     synchronize: true,
   });

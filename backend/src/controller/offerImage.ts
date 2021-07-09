@@ -8,10 +8,15 @@ export async function getAllOfferImages(
   res: express.Response
 ) {
   // write function
+  const offerRepository = getConnection().getRepository(OfferImage);
+  const offerImages = await offerRepository.find();
+  res.status(200).json({
+    data: offerImages,
+  });
 }
 
 // create offer Image
-export async function createOfferImage(
+export async function CreateOfferImageEditModal(
   req: express.Request,
   res: express.Response
 ) {
@@ -24,13 +29,12 @@ export async function createOfferImage(
     const createOfferImage = [];
     const files = req.files as Express.Multer.File[];
 
-    // if (files.length && offer) {
-    if (files.length) {
+    if (files.length && offer) {
       for (let i = 0; i < files.length; i++) {
         const offerImage = new OfferImage();
         offerImage.path = files[i].path;
         offerImage.originalname = files[i].originalname;
-        // offerImage.offer = offer;
+        offerImage.offer = offer;
 
         const savedOfferImage = await offerImageRepository.save(offerImage);
         createOfferImage.push(savedOfferImage);
@@ -50,7 +54,40 @@ export async function createOfferImage(
     return res.status(500).json("Something went wrong!");
   }
 }
+export async function createOfferImages(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const offerImageRepository = getConnection().getRepository(OfferImage);
 
+    const createOfferImage = [];
+    const files = req.files as Express.Multer.File[];
+
+    if (files.length) {
+      for (let i = 0; i < files.length; i++) {
+        const offerImage = new OfferImage();
+        offerImage.path = files[i].path;
+        offerImage.originalname = files[i].originalname;
+
+        const savedOfferImage = await offerImageRepository.save(offerImage);
+        createOfferImage.push(savedOfferImage);
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "OfferImage added!",
+        data: createOfferImage,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, error: "OfferImage not found!" });
+    }
+  } catch (error) {
+    return res.status(500).json("Something went wrong!");
+  }
+}
 // update offer Image
 export async function updateOfferImage(
   req: express.Request,
@@ -68,7 +105,7 @@ export async function deleteOfferImage(
     const imageToUpdate = await offerImageRepository.findOne({ id: Id });
     if (imageToUpdate) {
       try {
-        await offerImageRepository.delete(Id);
+        await offerImageRepository.delete(imageToUpdate);
         res.status(200).json({ success: true, message: "OfferImage deleted!" });
       } catch (e) {
         return res.status(500).json("something went wrong");

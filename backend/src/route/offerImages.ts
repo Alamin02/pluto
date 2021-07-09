@@ -1,44 +1,38 @@
-import express = require("express")
-const router = express.Router()
+import express = require("express");
+const router = express.Router();
 import {
   getAllOfferImagesController,
   createOfferImageController,
   updateOfferImageController,
-  deleteOfferImageController
-} from "../controller"
+  deleteOfferImageController,
+  CreateOfferImageEditModalController,
+} from "../controller";
 import { authenticationMiddleware, imageUpload } from "../middleware";
 
 // get offer Images
 //GET /api/v1/offer-image/
-router.get("/", getAllOfferImagesController)
+router.get("/", getAllOfferImagesController);
 
 // create offer Image
 //POST /api/v1/offer-image/
-router.post("/",
+router.post(
+  "/edit",
   imageUpload.array("offerImages", 4),
-  createOfferImageController)
+  CreateOfferImageEditModalController
+);
 
-router.post("/test",
+router.post(
+  "/",
   imageUpload.array("offerImages", 4),
-  (req, res) => {
-
-    const files = req.files as Express.Multer.File[];
-
-    return res.json({
-      success: true,
-      data: files,
-    });
-
-  })
-
+  createOfferImageController
+);
 
 // update offer Image
 //PUT /api/v1/offer-image/:offerImageId
-router.put("/:offerImageId", updateOfferImageController)
+router.put("/:offerImageId", updateOfferImageController);
 
 // delete offer Image
 //DELETE /api/v1/offer/image/:offerImageId
-router.delete("/:offerImageId", deleteOfferImageController)
+router.delete("/:offerImageId", deleteOfferImageController);
 
 export default router;
-

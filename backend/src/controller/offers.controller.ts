@@ -64,36 +64,25 @@ export async function createOffer(req: express.Request, res: express.Response) {
       return res.status(403).json({ success: false, error: "Unauthorized" });
     }
 
-    const { name, discount, description, offerImages } = req.body;
+    const { name, discount, description, photoId } = req.body;
 
     const offersRepository = getConnection().getRepository(Offer);
     const previousEntry = await offersRepository.findOne({ name });
-    console.log("offer", offerImages);
-    console.log(req.body);
-    // const offerImageRepository = getConnection().getRepository(OfferImage);
 
-    // const createOfferImage = offerImages;
-    // const files = req.files as Express.Multer.File[];
-
-    // if (files && files.length) {
-    //   for (let i = 0; i < files.length; i++) {
-    //     const offerImage = new OfferImage();
-    //     offerImage.path = files[i].path;
-    //     offerImage.originalname = files[i].originalname;
-
-    //     const savedProductImage = await offerImageRepository.save(offerImage);
-    //     createOfferImage.push(savedProductImage);
-    //   }
-    // } else {
-    //   return res.json({ success: false, error: "OfferImage not found!" });
-    // }
+    const offerImageRepository = getConnection().getRepository(OfferImage);
+    const findOfferImageById = await offerImageRepository.findOne({
+      id: photoId,
+    });
 
     if (!previousEntry) {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
-      // newOffer.offerImage = createOfferImage;
+
+      if (findOfferImageById) {
+        newOffer.offerImage = [findOfferImageById];
+      }
 
       await offersRepository.save(newOffer);
 

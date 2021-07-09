@@ -1,7 +1,33 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, message, Upload, Button } from "antd";
-import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
-import { createOffer, createOfferImage } from "../../client/offers.client";
+import { Modal, Form, Input, message, Upload, Button, Spin, Image } from "antd";
+import {
+  InboxOutlined,
+  UploadOutlined,
+  LoadingOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
+import { createOffer, deleteOfferImage } from "../../client/offers.client";
+const imageStyle = {
+  display: "inline-block",
+  position: "relative",
+};
+
+const titleStyle = {
+  display: "inline-block",
+  position: "absolute",
+  top: "40%",
+  width: "300px",
+  margin: "0px 20px",
+};
+
+const deleteButtonStyle = {
+  cursor: "pointer",
+  position: "absolute",
+  marginLeft: "325px",
+  top: "40%",
+  fontSize: "25px",
+  color: "red",
+};
 
 export default function CreateOfferModal({
   visible,
@@ -10,18 +36,9 @@ export default function CreateOfferModal({
   refetch,
 }) {
   const [form] = Form.useForm();
-  const [uploadOfferImages, setUploadOfferImages] = useState([]);
-  const [offerImages, setOfferImages] = useState([]);
 
   const [images, setImages] = useState([]);
-
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
+  const [uploadSpinner, setUploadSpinner] = useState(false);
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -30,32 +47,27 @@ export default function CreateOfferModal({
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  const handleImages = () => {
+    setImages([]);
+  };
 
   const handleUpload = async (info) => {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      // console.log(info.file, info.fileList);
-      console.log(info.file);
-      const formData = new FormData();
-      uploadOfferImages.forEach((offerImage) => {
-        formData.append("offerImages", offerImage);
-      });
+    const { response } = info.file;
 
-      createOfferImage(formData)
-        .then((res) => res.json())
-        .then(({ data, success, message: msg, error }) => {
-          if (success) {
-            message.success(msg);
-            setOfferImages(data);
-          } else {
-            message.error(error);
-          }
-        })
-        .then(() => refetch());
+    if (response) {
+      if (response.success) {
+        setImages([...images, ...response.data]);
+      }
+    }
+    const { status } = info.file;
+    if (status == "uploading") {
+      setUploadSpinner(true);
     }
     if (status === "done") {
+      setUploadSpinner(false);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
+      setUploadSpinner(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
@@ -67,23 +79,27 @@ export default function CreateOfferModal({
         title="Add offer"
         okText="Create"
         cancelText="Cancel"
-        onCancel={onCancel}
+        onCancel={() => {
+          onCancel();
+          handleImages();
+        }}
         onOk={() => {
           const token = localStorage.getItem("token");
           form
             .validateFields()
             .then((values) => {
-              const formData = new FormData();
-
-              formData.append("name", values.name);
-              formData.append("discount", values.discount);
-              formData.append("description", values.description);
-              offerImages.forEach((offerImage) => {
-                formData.append("offerImages", offerImage);
-              });
-
               // createOffer(formData, token)
-              createOffer(formData, token)
+              let newValues;
+              {
+                images.map((image) => {
+                  newValues = {
+                    ...values,
+                    photoId: image.id,
+                  };
+                });
+              }
+
+              createOffer(newValues, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   if (success) {
@@ -98,6 +114,7 @@ export default function CreateOfferModal({
             .catch((info) => {
               console.log("Validate Failed");
             });
+          handleImages();
         }}
       >
         <Form
@@ -122,7 +139,6 @@ export default function CreateOfferModal({
           >
             <Input />
           </Form.Item>
-
           {/* discount */}
           <Form.Item
             name="discount"
@@ -149,80 +165,39 @@ export default function CreateOfferModal({
           >
             <Input.TextArea />
           </Form.Item>
-          {/* <Form.Item label="Offer Image&nbsp;:">
-            <Form.Item
+
+          {images &&
+            images.map((offerImage) => (
+              <div key={offerImage.id}>
+                {console.log("offerImage", offerImage)}
+                <div style={imageStyle}>
+                  <Image width={100} height={136} src={offerImage.path} />
+                  <div style={titleStyle}>
+                    <p>{offerImage.originalname}</p>
+                  </div>
+                  <CloseCircleOutlined
+                    onClick={() => deleteOfferImage(offerImage.id)}
+                    style={deleteButtonStyle}
+                  />
+                </div>
+              </div>
+            ))}
+          {!uploadSpinner ? (
+            <Upload
               name="offerImages"
-              valuePropName="fileList"
-              getValueFromEvent={normFile}
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: "Please input offer photo",
-                },
-              ]}
+              action="http://localhost:4000/api/v1/offer-image"
+              onChange={handleUpload}
+              showUploadList={false}
+              accept="image/*"
+              multiple={true}
             >
-              <Upload.Dragger
-                name="files"
-                onChange={handleUpload}
-                beforeUpload={(file, fileList) => {
-                  setOfferImages(fileList);
-                  return false;
-                }}
-                accept="image/*"
-                multiple={true}
-              >
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">
-                  Click or drag file to this area to upload
-                </p>
-                <p className="ant-upload-hint">
-                  Support for a single or bulk upload.
-                </p>
-              </Upload.Dragger>
-            </Form.Item>
-          </Form.Item> */}
-          {/* <Form.Item> */}
-          <Upload
-            name="files"
-            onChange={handleUpload}
-            beforeUpload={(file, fileList) => {
-              setUploadOfferImages(fileList);
-              return false;
-            }}
-            // showUploadList={false}
-
-            accept="image/*"
-          >
-            <Button icon={<UploadOutlined />}> add offer Images</Button>
-          </Upload>
-          {/* </Form.Item> */}
-
-          {
-            images.map(image => <p>{image.path}</p>)
-          }
-
-          <Upload
-            name="offerImages"
-            action="http://localhost:4000/api/v1/offer-image/test"
-            onChange={
-              (info) => {
-                console.log(info)
-                console.log(info.file.response)
-                const {response} = info.file;
-                if (response) {
-                  if (response.success) {
-                    setImages([...images, ...response.data])
-                  }
-                }
-              }
-            }
-            showUploadList={false}
-          >
-            <Button icon={<UploadOutlined />}>Add offer Images</Button>
-          </Upload>
+              <Button icon={<UploadOutlined />}>Add offer Images</Button>
+            </Upload>
+          ) : (
+            <span>
+              <Spin indicator={<LoadingOutlined />} /> Uploading...
+            </span>
+          )}
         </Form>
       </Modal>
     </div>

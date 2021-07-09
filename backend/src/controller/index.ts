@@ -72,7 +72,8 @@ export {
 
 export {
   getAllOfferImages as getAllOfferImagesController,
-  createOfferImage as createOfferImageController,
+  CreateOfferImageEditModal as CreateOfferImageEditModalController,
+  createOfferImages as createOfferImageController,
   updateOfferImage as updateOfferImageController,
   deleteOfferImage as deleteOfferImageController,
 } from "./offerImage";

@@ -88,16 +88,7 @@ export default function CreateOfferModal({
           form
             .validateFields()
             .then((values) => {
-              // createOffer(formData, token)
-              let newValues;
-              {
-                images.map((image) => {
-                  newValues = {
-                    ...values,
-                    photoId: image.id,
-                  };
-                });
-              }
+              const newValues = { ...values, images };
 
               createOffer(newValues, token)
                 .then((res) => res.json())
@@ -169,12 +160,12 @@ export default function CreateOfferModal({
           {images &&
             images.map((offerImage) => (
               <div key={offerImage.id}>
-                {console.log("offerImage", offerImage)}
                 <div style={imageStyle}>
                   <Image width={100} height={136} src={offerImage.path} />
                   <div style={titleStyle}>
                     <p>{offerImage.originalname}</p>
                   </div>
+
                   <CloseCircleOutlined
                     onClick={() => deleteOfferImage(offerImage.id)}
                     style={deleteButtonStyle}

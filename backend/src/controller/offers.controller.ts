@@ -64,25 +64,17 @@ export async function createOffer(req: express.Request, res: express.Response) {
       return res.status(403).json({ success: false, error: "Unauthorized" });
     }
 
-    const { name, discount, description, photoId } = req.body;
+    const { name, discount, description, images } = req.body;
 
     const offersRepository = getConnection().getRepository(Offer);
     const previousEntry = await offersRepository.findOne({ name });
-
-    const offerImageRepository = getConnection().getRepository(OfferImage);
-    const findOfferImageById = await offerImageRepository.findOne({
-      id: photoId,
-    });
 
     if (!previousEntry) {
       const newOffer = new Offer();
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
-
-      if (findOfferImageById) {
-        newOffer.offerImage = [findOfferImageById];
-      }
+      newOffer.offerImage = images;
 
       await offersRepository.save(newOffer);
 

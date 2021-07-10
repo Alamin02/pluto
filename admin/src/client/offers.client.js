@@ -42,7 +42,7 @@ export const deleteOffer = async (token, offerId) => {
 };
 
 export const createOfferImage = async (data) => {
-  return fetch(`${baseUrl}/offer-image/edit`, {
+  return fetch(`${baseUrl}/offer-image`, {
     method: "post",
     body: data,
   });

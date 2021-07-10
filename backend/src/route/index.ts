@@ -4,7 +4,7 @@ import authRouter from "./auth.route";
 import userRouter from "./users.route";
 import productRouter from "./products.route";
 import offersRouter from "./offers.route";
-import offerImageRouter from "./offerImages";
+import offerImageRouter from "./offerImages.route";
 import blogRouter from "./blogs.route";
 import categoryRouter from "./category.route";
 import orderRouter from "./orders.route";

@@ -5,21 +5,18 @@ import { Row, Col, Typography, Skeleton } from "antd";
 import ProductCard from "../../components/product/ProductCard";
 import MainContainer from "../../components/layout/MainContainer";
 import HeaderSection from "../../components/styled-components/HeaderSection";
-import { agent } from "../../helpers/agent";
+import { getOffers } from "../../client/offers.client";
 import styles from "./Offers.module.css";
 
 const { Title, Text } = Typography;
 
 function Offers() {
   const [offersData, setOffersData] = useState([]);
-  console.log(offersData);
 
   useEffect(() => {
-    agent
-      .getOffers()
+    getOffers()
       .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data.offers);
         setOffersData(data.offers);
       });
   }, []);

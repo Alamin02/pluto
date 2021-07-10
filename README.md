@@ -1,14 +1,12 @@
 <div align="center">
-  <a href="https://github.com/Alamin02/pluto/">
-    <h1>Pluto</h1>
-  </a>
+  <h1>Pluto</h1>
 
 A lightweight eCommerce application (not the dwarf planet).
 
-[![GitHub issues](https://img.shields.io/github/issues/Alamin02/pluto?style=flat-square)](https://github.com/Alamin02/pluto/issues)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/Alamin02/pluto?style=flat-square)
-[![GitHub stars](https://img.shields.io/github/stars/Alamin02/pluto?style=flat-square)](https://github.com/Alamin02/pluto/stargazers)
-![GitHub contributors](https://img.shields.io/github/contributors/Alamin02/pluto?style=flat-square)
+[![GitHub issues](https://img.shields.io/github/issues/Alamin02/pluto)](https://github.com/Alamin02/pluto/issues)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Alamin02/pluto)
+[![GitHub stars](https://img.shields.io/github/stars/Alamin02/pluto)](https://github.com/Alamin02/pluto/stargazers)
+![GitHub contributors](https://img.shields.io/github/contributors/Alamin02/pluto)
 
 </div>
 
@@ -41,12 +39,14 @@ _Screenshots will be added prior to first release_
 
 ## Development
 
-Prerequisites:
+### Prerequisites:
 
 - [Node.js]() v12.0+
 - [Yarn]() v1.22.0+
 
-The below commands can be used to install the dependencies & run it locally:
+### Install & development:
+
+_⚠️ Using `yarn` instead of `npm` is advised._
 
 ```sh
 # Clone repository
@@ -57,58 +57,27 @@ cd pluto
 
 # Install dependencies
 yarn
-
-# Start the pluto store server
-yarn start:frontend
 ```
 
-In browser at `http://localhost:3000/` the `frontend` of `Pluto` will open.
-Since there's no server to serve data from `backend`, no products will be shown yet.
-
-Before starting the backend, first go to **backend** folder and create a `.env` file with the configs like shown in `.env.example`. For storing images you need a `Cloudinary` account. After creating an account in [cloudinary](https://cloudinary.com/users/register/free), go to [cloudinary console](https://cloudinary.com/console) and there you will find `cloudinary` related configs there.
+Create a `.env.local` file similar to [`.env.example`](https://github.com/Alamin02/pluto/blob/master/.env.example). Get [cloudinary](https://cloudinary.com) related config from [cloudinary console](https://cloudinary.com/console).
 
 ```sh
-# JWT
-JWT_SECRET=
-
-# Cloudinary
-CLOUD_NAME=
-API_KEY=
-API_SECRET=
-```
-
-To get started fast with mock data, run the following commands to start the **backend** server:
-
-```sh
-# Start the pluto backend server
+# Start the backend server
 yarn start:backend
 
-# Seed products data
-yarn seed:products
-```
+# Start the store(client end) server
+yarn start:store
 
-In browser at `http://localhost:3000/` refresh the page to see the products.
-
-All the data served to `Pluto` store can be managed via `admin` panel. Run the following commands to start admin panel:
-
-```sh
-# Start the pluto admin server
+# Start the admin server
 yarn start:admin
-
-# Would you like to run the app on another port instead? » (Y/n)
-y
 ```
 
-To log in to the admin panel run the following command to generate admin credentials.
+Run the following command to generate credentials for admin panel login. Replace `test_email@example.com` and `test_password` with your preferred email and password.
 
 ```sh
-# Create admin account from command line
-yarn create:admin --email=test_email@email.com --password=test_password
+# Create admin account
+yarn create:admin --email=test_email@example.com --password=test_password
 ```
-
-Replace `test_email@email.com` and `test_password` with your preferred email and password. Use these credentials to log in to the `admin` panel.
-
-_⚠️ Using `yarn` instead of `npm` is advised_
 
 ## Contributors
 
@@ -156,4 +125,4 @@ Wali Ullah
 
 ## License
 
-_License will be added prior to first release_
+[GPL-3.0 License](./LICENSE)

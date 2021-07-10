@@ -1,11 +1,28 @@
-import { Tag } from "antd";
+import { Tag, Tooltip, message } from "antd";
+
+const tooltipText = <span>Click to copy product Id</span>;
+
+const copySuccessfulMessage = () => {
+  message.success("Product id has been copied to the clipboard", 5);
+};
+
 export const columns = [
   {
-    title: "Id",
+    title: "Id (Click to copy Id)",
     dataIndex: "id",
     key: "id",
     ellipsis: true,
-    render: (id) => <span>{id}</span>,
+    render: (id) => (
+      <Tooltip placement="topLeft" title={tooltipText}>
+        <span
+          onClick={() => {
+            navigator.clipboard.writeText(id).then(copySuccessfulMessage());
+          }}
+        >
+          {id}
+        </span>
+      </Tooltip>
+    ),
   },
   {
     title: "Product Added",

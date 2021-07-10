@@ -2,8 +2,8 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Form, Input, Checkbox, Button, Typography, message } from "antd";
 
-import MainContainer from "../layout/MainContainer";
-import HeaderSection from "../styled-components/HeaderSection";
+import MainContainer from "../../layout/MainContainer";
+import HeaderSection from "../../styled-components/HeaderSection";
 import styles from "./RegistrationForm.module.css";
 
 const { Link } = Typography;

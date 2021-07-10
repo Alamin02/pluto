@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Form, Input, Button } from "antd";
 
 import styles from "./ForgetPasswordForm.module.css";
-import Heading from "../heading/Heading";
+import Heading from "../../heading/Heading";
 
 const ForgetPasswordForm = () => {
   return (

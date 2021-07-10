@@ -1,7 +1,7 @@
 import { Form, Input, Button, message } from "antd";
 import styles from "./ResetPasswordForm.module.css";
-import Section from "../styled-components/Section";
-import { agent } from "../../helpers/agent";
+import Section from "../../styled-components/Section";
+import { agent } from "../../../helpers/agent";
 
 const ResetPasswordForm = ({ id }) => {
   const [form] = Form.useForm();

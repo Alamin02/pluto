@@ -1,124 +1,113 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Grid } from "antd";
+import { Grid, Skeleton } from "antd";
 import classNames from "classnames";
 import styles from "./FeaturedProducts.module.css";
 
 import MainContainer from "../layout/MainContainer";
 import HeaderSection from "../styled-components/HeaderSection";
-import featuredProductsInfo from "./featuredProductsInfo";
+
+import { getFeaturedProducts } from "../../client/featuredProducts.client";
 
 const { useBreakpoint } = Grid;
 
 export default function FeaturedProducts() {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    getFeaturedProducts().then((res) =>
+      res.json().then(({ data }) => setFeaturedProducts(data))
+    );
+  }, []);
+
+  console.log(featuredProducts[0]);
+
   const screens = useBreakpoint();
 
   return (
     <MainContainer>
-      <div style={{ marginTop: "2rem" }}>
+      <div className={styles.headerMargin}>
         <HeaderSection headerText="featured products" />
-        {/* flexbox start */}
-        <section
-          className={classNames(
-            { [styles.flexContainer]: screens },
-            { [styles.flexContainerXs]: screens.xs }
-          )}
-        >
-          {/* 1st flexbox container */}
-          <section
-            className={classNames(
-              { [styles.firstFlexBoxContainer]: screens },
-              { [styles.firstFlexBoxContainerXs]: screens.xs }
-            )}
-          >
-            {/* top image of 1st flexbox container */}
-            <div className={styles.firstFlexBoxTopImageContainer}>
-              <Link to={featuredProductsInfo.image1Url}>
-                <img
-                  className={classNames(
-                    { [styles.firstFlexBoxImage]: screens },
-                    { [styles.firstFlexBoxImageXs]: screens.xs }
-                  )}
-                  src={featuredProductsInfo.image1Src}
-                  alt={featuredProductsInfo.image1Title}
-                />
-                <div
-                  className={classNames(
-                    { [styles.imageTitle]: screens },
-                    { [styles.imageTitleXs]: screens.xs }
-                  )}
-                >
-                  {featuredProductsInfo.image1Title}
-                </div>
-              </Link>
-            </div>
-
-            {/* bottom image of 1st flexbox container */}
+      </div>
+      {featuredProducts.length ? (
+        <section>
+          {/* first row */}
+          {featuredProducts[0] && (
             <div
               className={classNames(
-                { [styles.firstFlexBoxBottomImageContainer]: screens },
-                { [styles.firstFlexBoxBottomImageContainerXs]: screens.xs }
+                { [styles.rowContainer]: screens },
+                { [styles.rowContainerXs]: screens.xs }
               )}
             >
-              <Link to={featuredProductsInfo.image2Url}>
-                <img
-                  className={classNames(
-                    { [styles.firstFlexBoxImage]: screens },
-                    { [styles.firstFlexBoxImageXs]: screens.xs }
-                  )}
-                  src={featuredProductsInfo.image2Src}
-                  alt={featuredProductsInfo.image2Title}
-                />
-                <div
-                  className={classNames(
-                    { [styles.imageTitle]: screens },
-                    { [styles.imageTitleXs]: screens.xs }
-                  )}
-                >
-                  {featuredProductsInfo.image2Title}
-                </div>
-              </Link>
-            </div>
-          </section>
-
-          {/* 2nd flexbox container */}
-          <section
-            className={classNames(
-              { [styles.secondFlexBoxContainer]: screens },
-              { [styles.secondFlexBoxContainerXs]: screens.xs }
-            )}
-          >
-            {/* horizontal 3rd image */}
-            <Link to={featuredProductsInfo.image3Url}>
-              <img
-                className={classNames(
-                  { [styles.secondFlexBoxImageH]: screens },
-                  { [styles.secondFlexBoxImageHXs]: screens.xs }
-                )}
-                src={featuredProductsInfo.image3HSrc}
-                alt={featuredProductsInfo.image3Title}
-              />
-              {/* vertical 3rd image */}
-              <img
-                className={classNames(
-                  { [styles.secondFlexBoxImageV]: screens },
-                  { [styles.secondFlexBoxImageVXs]: screens.xs }
-                )}
-                src={featuredProductsInfo.image3VSrc}
-                alt={featuredProductsInfo.image3Title}
-              />
-              <div
-                className={classNames(
-                  { [styles.imageTitle]: screens },
-                  { [styles.imageTitleXs]: screens.xs }
-                )}
-              >
-                {featuredProductsInfo.image3Title}
+              {/* first row, first image */}
+              <div className={styles.featuredProductContainer}>
+                <Link to={`/products/${featuredProducts[0].productId}`}>
+                  <img
+                    className={styles.imageStyle}
+                    src={featuredProducts[0].image.path}
+                    alt={featuredProducts[0].title}
+                  />
+                  <p className={styles.titleStyle}>
+                    {featuredProducts[0].title}
+                  </p>
+                </Link>
               </div>
-            </Link>
-          </section>
+              {/* first row, second image */}
+              <div className={styles.featuredProductContainer}>
+                <Link to={`/products/${featuredProducts[1].productId}`}>
+                  <img
+                    className={styles.imageStyle}
+                    src={featuredProducts[1].image.path}
+                    alt={featuredProducts[1].title}
+                  />
+                  <p className={styles.titleStyle}>
+                    {featuredProducts[0].title}
+                  </p>
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* second row */}
+          {featuredProducts[1] && (
+            <div
+              className={classNames(
+                { [styles.rowContainer]: screens },
+                { [styles.rowContainerXs]: screens.xs }
+              )}
+            >
+              {/* second row, first image */}
+              <div className={styles.featuredProductContainer}>
+                <Link to={`/products/${featuredProducts[1].productId}`}>
+                  <img
+                    className={styles.imageStyle}
+                    src={featuredProducts[2].image.path}
+                    alt={featuredProducts[2].title}
+                  />
+                  <p className={styles.titleStyle}>
+                    {featuredProducts[2].title}
+                  </p>
+                </Link>
+              </div>
+              {/* second row, second image */}
+              <div className={styles.featuredProductContainer}>
+                <Link to={`/products/${featuredProducts[3].productId}`}>
+                  <img
+                    className={styles.imageStyle}
+                    src={featuredProducts[3].image.path}
+                    alt={featuredProducts[3].title}
+                  />
+                  <p className={styles.titleStyle}>
+                    {featuredProducts[3].title}
+                  </p>
+                </Link>
+              </div>
+            </div>
+          )}
         </section>
-        {/* flexbox end */}
-      </div>
+      ) : (
+        <Skeleton active />
+      )}
     </MainContainer>
   );
 }

@@ -29,7 +29,7 @@ export default function CreateFeaturedProductModal({
   return (
     <Modal
       visible={visible}
-      title="Add Carousel"
+      title="Add Featured Product"
       okText="Create"
       cancelText="Cancel"
       onCancel={onCancel}

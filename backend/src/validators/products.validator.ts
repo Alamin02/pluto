@@ -5,7 +5,7 @@ export const createProductSchema = Joi.object({
   price: Joi.number().required(),
   summary: Joi.string().required(),
   description: Joi.string().required(),
-  categoryId: Joi.string().required(),
+  categoryId: Joi.array().required(),
   offerId: Joi.string().allow("").optional(),
 }).options({ allowUnknown: true });
 

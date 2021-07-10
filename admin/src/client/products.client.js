@@ -15,8 +15,9 @@ export const createProduct = async (productData, token) => {
     method: "post",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
-    body: productData,
+    body: JSON.stringify(productData),
   });
 };
 

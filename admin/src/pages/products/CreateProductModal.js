@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Upload, Cascader, message, Select } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import {
+  Modal,
+  Form,
+  Input,
+  Upload,
+  Cascader,
+  message,
+  Select,
+  Spin,
+  Button,
+  Image,
+} from "antd";
+import {
+  InboxOutlined,
+  LoadingOutlined,
+  PlusOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 
-import { createProduct } from "../../client/products.client";
+import {
+  createProduct,
+  deleteProductImage,
+} from "../../client/products.client";
 import { getOffers } from "../../client/offers.client";
 import { getCategories } from "../../client/category.client";
 
@@ -16,7 +35,27 @@ const layout = {
     span: 18,
   },
 };
+const imageStyle = {
+  display: "inline-block",
+  position: "relative",
+};
 
+const titleStyle = {
+  display: "inline-block",
+  position: "absolute",
+  top: "40%",
+  width: "300px",
+  margin: "0px 20px",
+};
+
+const deleteButtonStyle = {
+  cursor: "pointer",
+  position: "absolute",
+  marginLeft: "325px",
+  top: "40%",
+  fontSize: "25px",
+  color: "red",
+};
 export default function ProductForm({
   productId,
   visible,
@@ -26,6 +65,7 @@ export default function ProductForm({
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
+  const [spinStatus, setSpinStatus] = useState(false);
 
   useEffect(() => {
     getCategories()
@@ -66,16 +106,31 @@ export default function ProductForm({
 
   const handleUpload = async (info) => {
     const { status } = info.file;
+
+    if (status === "uploading") {
+      setSpinStatus(true);
+    }
     if (status !== "uploading") {
-      console.log(info.file, info.fileList);
+      const { response } = info.file;
+      if (response) {
+        setProductImages([...productImages, ...response.data]);
+      }
     }
     if (status === "done") {
+      setSpinStatus(false);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
+      setSpinStatus(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
-
+  const handleImageFromState = (id) =>
+    setProductImages(
+      productImages.filter((productImage) => productImage.id !== id)
+    );
+  const handleImage = () => {
+    setProductImages([]);
+  };
   return (
     <div>
       <Modal
@@ -83,34 +138,19 @@ export default function ProductForm({
         title="Add User"
         okText="Create"
         cancelText="Cancel"
-        onCancel={onCancel}
+        onCancel={() => {
+          onCancel();
+          handleImage();
+        }}
         onOk={() => {
           const token = localStorage.getItem("token");
 
           form
             .validateFields()
             .then((values) => {
-              const formData = new FormData();
+              let newValues = { ...values, productImages };
 
-              formData.append("name", values.name);
-              formData.append("offerId", values.offer);
-              formData.append("price", values.price);
-              formData.append("summary", values.summary);
-              formData.append("description", values.description);
-
-              let categoryArray = values.categoryId;
-
-              if (categoryArray.length === 2) {
-                formData.append("categoryId", values.categoryId[1]);
-              } else {
-                formData.append("categoryId", values.categoryId[0]);
-              }
-
-              productImages.forEach((productImage) => {
-                formData.append("productImages", productImage);
-              });
-
-              createProduct(formData, token)
+              createProduct(newValues, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   if (success) {
@@ -224,41 +264,46 @@ export default function ProductForm({
                 ))}
             </Select>
           </Form.Item>
+          <br />
+          <br />
+          {productImages &&
+            productImages.map((productImage) => (
+              <div key={productImage.id}>
+                <div style={imageStyle}>
+                  <Image width={100} height={136} src={productImage.path} />
+                  <div style={titleStyle}>
+                    <p>{productImage.originalname}</p>
+                  </div>
 
-          <Form.Item label="Dragger">
-            <Form.Item
-              name="productImages"
-              valuePropName="fileList"
-              getValueFromEvent={normFile}
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: "Please input product photo",
-                },
-              ]}
-            >
-              <Upload.Dragger
-                name="files"
+                  <CloseCircleOutlined
+                    onClick={() => {
+                      deleteProductImage(productImage.id);
+                      handleImageFromState(productImage.id);
+                    }}
+                    style={deleteButtonStyle}
+                  />
+                </div>
+              </div>
+            ))}
+          <Form.Item>
+            {!spinStatus ? (
+              <Upload
+                name="productImages"
+                action="http://localhost:4000/api/v1/product-images"
                 onChange={handleUpload}
-                beforeUpload={(file, fileList) => {
-                  setProductImages(fileList);
-                  return false;
-                }}
-                accept="image/*"
+                showUploadList={false}
                 multiple={true}
+                accept="image/*"
               >
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">
-                  Click or drag file to this area to upload
-                </p>
-                <p className="ant-upload-hint">
-                  Support for a single or bulk upload.
-                </p>
-              </Upload.Dragger>
-            </Form.Item>
+                <Button icon={<PlusOutlined />}>
+                  add productImages to upload
+                </Button>
+              </Upload>
+            ) : (
+              <span>
+                <Spin indicator={<LoadingOutlined />} /> Uploading...
+              </span>
+            )}
           </Form.Item>
         </Form>
       </Modal>

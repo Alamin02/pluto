@@ -14,7 +14,7 @@ export async function getAllOffers(
     const offersRepository = getConnection().getRepository(Offer);
 
     const [offers, offerCount] = await offersRepository.findAndCount({
-      relations: ["offerImage", "products", "products.images"],
+      relations: ["offerImage", "products", "products.productImage"],
     });
 
     return res.status(200).json({
@@ -25,6 +25,7 @@ export async function getAllOffers(
       },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json("Something went wrong!");
   }
 }

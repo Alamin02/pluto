@@ -10,20 +10,21 @@ import { authenticationMiddleware, imageUpload } from "../middleware";
 
 const router = express.Router();
 
+// @GET //v1/api/product-images
 // Get all product images list
-router.post(
-  "/",
-  imageUpload.array("productImages", 4),
-  createProductImageController
-);
+// @POST //v1/api/product-images
+// create product images list
+router
+  .route("/")
+  .get(getAllProductsImagesController)
+  .post(imageUpload.array("productImages", 4), createProductImageController);
 
-// Get all product images list
-router.get("/", getAllProductsImagesController);
-
+// @POST //v1/api/product-images/:productId
 // Get a particular product image
-router.get("/:imageId", getSingleImageController);
-
 // delete a particular product image
-router.delete("/:imageId", deleteProductImageController);
+router
+  .route("/:productImageId")
+  .get(getSingleImageController)
+  .delete(deleteProductImageController);
 
 export default router;

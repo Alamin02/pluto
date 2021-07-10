@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, message, Upload, Button, Spin, Image } from "antd";
 import {
-  InboxOutlined,
   UploadOutlined,
   LoadingOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import { createOffer, deleteOfferImage } from "../../client/offers.client";
+
 const imageStyle = {
   display: "inline-block",
   position: "relative",
@@ -37,7 +37,7 @@ export default function CreateOfferModal({
 }) {
   const [form] = Form.useForm();
 
-  const [images, setImages] = useState([]);
+  const [offerImages, setOfferImages] = useState([]);
   const [uploadSpinner, setUploadSpinner] = useState(false);
 
   const onFinish = (values) => {
@@ -48,7 +48,7 @@ export default function CreateOfferModal({
     console.log("Failed:", errorInfo);
   };
   const handleImages = () => {
-    setImages([]);
+    setOfferImages([]);
   };
 
   const handleUpload = async (info) => {
@@ -56,7 +56,7 @@ export default function CreateOfferModal({
 
     if (response) {
       if (response.success) {
-        setImages([...images, ...response.data]);
+        setOfferImages([...offerImages, ...response.data]);
       }
     }
     const { status } = info.file;
@@ -71,8 +71,10 @@ export default function CreateOfferModal({
       message.error(`${info.file.name} file upload failed.`);
     }
   };
-  const handleImageUpload = (id) =>
-    setImages(images && images.filter((image) => image.id != id));
+  const handleImageFromState = (id) =>
+    setOfferImages(
+      offerImages && offerImages.filter((offerImage) => offerImage.id != id)
+    );
 
   return (
     <div>
@@ -90,7 +92,7 @@ export default function CreateOfferModal({
           form
             .validateFields()
             .then((values) => {
-              const newValues = { ...values, images };
+              const newValues = { ...values, offerImages };
 
               createOffer(newValues, token)
                 .then((res) => res.json())
@@ -159,8 +161,8 @@ export default function CreateOfferModal({
             <Input.TextArea />
           </Form.Item>
 
-          {images &&
-            images.map((offerImage) => (
+          {offerImages &&
+            offerImages.map((offerImage) => (
               <div key={offerImage.id}>
                 <div style={imageStyle}>
                   <Image width={100} height={136} src={offerImage.path} />
@@ -171,7 +173,7 @@ export default function CreateOfferModal({
                   <CloseCircleOutlined
                     onClick={() => {
                       deleteOfferImage(offerImage.id);
-                      handleImageUpload(offerImage.id);
+                      handleImageFromState(offerImage.id);
                     }}
                     style={deleteButtonStyle}
                   />

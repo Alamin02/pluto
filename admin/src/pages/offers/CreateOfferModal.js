@@ -29,12 +29,7 @@ const deleteButtonStyle = {
   color: "red",
 };
 
-export default function CreateOfferModal({
-  visible,
-  onCreate,
-  onCancel,
-  refetch,
-}) {
+export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
   const [offerImages, setOfferImages] = useState([]);
@@ -74,7 +69,7 @@ export default function CreateOfferModal({
   };
   const handleImageFromState = (id) =>
     setOfferImages(
-      offerImages && offerImages.filter((offerImage) => offerImage.id !==id)
+      offerImages && offerImages.filter((offerImage) => offerImage.id !== id)
     );
 
   return (

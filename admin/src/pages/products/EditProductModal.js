@@ -64,15 +64,6 @@ export default function EditProductModal({
       });
   };
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   useEffect(() => {
     form.resetFields();
     if (existingRecord) {
@@ -97,8 +88,8 @@ export default function EditProductModal({
 
             setCategoryOptions(processedData.flat());
           }
-          setProductImages(existingRecord.productImage);
         });
+      setProductImages(existingRecord.productImage);
 
       getOffers()
         .then((res) => res.json())
@@ -127,11 +118,13 @@ export default function EditProductModal({
       message.error(`${info.file.name} file upload failed.`);
     }
   };
+
   const handleImageFromState = (id) => {
     setProductImages(
       productImages.filter((productImage) => productImage.id !== id)
     );
   };
+
   return (
     <div>
       <Modal
@@ -273,13 +266,7 @@ export default function EditProductModal({
           </Form.Item>
 
           {/* image */}
-          <Form.Item
-            label="Product Images"
-            name="productImages"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            noStyle
-          >
+          <Form.Item noStyle>
             {productImages &&
               productImages.map((productImage) => (
                 <div key={productImage.id}>

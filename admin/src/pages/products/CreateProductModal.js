@@ -12,7 +12,6 @@ import {
   Image,
 } from "antd";
 import {
-  InboxOutlined,
   LoadingOutlined,
   PlusOutlined,
   CloseCircleOutlined,
@@ -27,14 +26,6 @@ import { getCategories } from "../../client/category.client";
 
 const { Option } = Select;
 
-const layout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 18,
-  },
-};
 const imageStyle = {
   display: "inline-block",
   position: "relative",
@@ -56,12 +47,7 @@ const deleteButtonStyle = {
   fontSize: "25px",
   color: "red",
 };
-export default function ProductForm({
-  productId,
-  visible,
-  onCreate,
-  onCancel,
-}) {
+export default function ProductForm({ visible, onCreate, onCancel }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
@@ -82,15 +68,6 @@ export default function ProductForm({
   }, []);
 
   const [form] = Form.useForm();
-
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -135,7 +112,7 @@ export default function ProductForm({
     <div>
       <Modal
         visible={visible}
-        title="Add User"
+        title="Add Product"
         okText="Create"
         cancelText="Cancel"
         onCancel={() => {
@@ -169,7 +146,7 @@ export default function ProductForm({
         }}
       >
         <Form
-          {...layout}
+          layout={"vertical"}
           form={form}
           // form loads initial values from here
           initialValues={
@@ -258,7 +235,7 @@ export default function ProductForm({
             <Select defaultValue="null">
               {offerOptions &&
                 offerOptions.map((offer) => (
-                  <Option value={offer.id} id={offer.id}>
+                  <Option value={offer.id} id={offer.id} key={offer.id}>
                     {offer.name}
                   </Option>
                 ))}
@@ -266,26 +243,27 @@ export default function ProductForm({
           </Form.Item>
           <br />
           <br />
-          {productImages &&
-            productImages.map((productImage) => (
-              <div key={productImage.id}>
-                <div style={imageStyle}>
-                  <Image width={100} height={136} src={productImage.path} />
-                  <div style={titleStyle}>
-                    <p>{productImage.originalname}</p>
-                  </div>
-
-                  <CloseCircleOutlined
-                    onClick={() => {
-                      deleteProductImage(productImage.id);
-                      handleImageFromState(productImage.id);
-                    }}
-                    style={deleteButtonStyle}
-                  />
-                </div>
-              </div>
-            ))}
           <Form.Item>
+            {productImages &&
+              productImages.map((productImage) => (
+                <div key={productImage.id}>
+                  <div style={imageStyle}>
+                    <Image width={100} height={136} src={productImage.path} />
+                    <div style={titleStyle}>
+                      <p>{productImage.originalname}</p>
+                    </div>
+
+                    <CloseCircleOutlined
+                      onClick={() => {
+                        deleteProductImage(productImage.id);
+                        handleImageFromState(productImage.id);
+                      }}
+                      style={deleteButtonStyle}
+                    />
+                  </div>
+                </div>
+              ))}
+
             {!spinStatus ? (
               <Upload
                 name="productImages"

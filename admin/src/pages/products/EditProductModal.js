@@ -139,7 +139,8 @@ export default function EditProductModal({
           form
             .validateFields()
             .then((values) => {
-              editProduct(existingRecord.id, values, token)
+              const newValues = { ...values, productImages };
+              editProduct(existingRecord.id, newValues, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   if (success) {
@@ -266,7 +267,7 @@ export default function EditProductModal({
           </Form.Item>
 
           {/* image */}
-          <Form.Item noStyle>
+          <Form.Item>
             {productImages &&
               productImages.map((productImage) => (
                 <div key={productImage.id}>

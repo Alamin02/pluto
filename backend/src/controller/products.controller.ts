@@ -191,14 +191,23 @@ export async function updateProduct(
 
     const id = req.params.productId;
 
-    const { name, price, summary, description, offerId, categoryId } = req.body;
+    const {
+      name,
+      price,
+      summary,
+      description,
+      offerId,
+      categoryId,
+      productImages,
+    } = req.body;
     const productsRepository = getConnection().getRepository(Product);
     const findProductById: any = await productsRepository.findOne({ id });
     const offersRepository = getConnection().getRepository(Offer);
     const categoriesRepository = getConnection().getRepository(Category);
     const offer = await offersRepository.findOne({ id: offerId });
-    const category = await categoriesRepository.findOne({ id: categoryId });
     const duplicate = await productsRepository.findOne({ name });
+
+    const category = await categoriesRepository.findOne({ id: categoryId });
 
     if (findProductById) {
       if (duplicate && duplicate.id !== id) {
@@ -207,27 +216,34 @@ export async function updateProduct(
           error: "Product with this title already exists!",
         });
       }
-      const newProduct = new Product();
+      if (productImages.length) {
+        const newProduct = new Product();
 
-      newProduct.name = name;
-      newProduct.description = description;
-      newProduct.price = price;
-      newProduct.summary = summary;
+        newProduct.name = name;
+        newProduct.description = description;
+        newProduct.price = price;
+        newProduct.summary = summary;
+        newProduct.productImage = productImages;
 
-      if (offer) {
-        newProduct.offer = offer;
+        if (offer) {
+          newProduct.offer = offer;
+        }
+
+        if (category) {
+          newProduct.category = category;
+        }
+
+        productsRepository.merge(findProductById, newProduct);
+
+        await productsRepository.save(findProductById);
+        return res
+          .status(200)
+          .json({ success: true, message: "Product updated!" });
+      } else {
+        return res
+          .status(200)
+          .json({ success: false, error: "ProductImage can not be empty!" });
       }
-
-      if (category) {
-        newProduct.category = category;
-      }
-
-      productsRepository.merge(findProductById, newProduct);
-
-      await productsRepository.save(findProductById);
-      return res
-        .status(200)
-        .json({ success: true, message: "Product updated!" });
     } else {
       return res
         .status(200)

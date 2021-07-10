@@ -41,8 +41,16 @@ export default function EditOfferModal({
   refetch,
 }) {
   const [form] = Form.useForm();
+
   const [offerImages, setOfferImages] = useState([]);
   const [spinStatus, setSpinStatus] = useState(false);
+
+  useEffect(() => {
+    form.resetFields();
+    if (existingRecord) {
+      setOfferImages(existingRecord.offerImage);
+    }
+  }, [existingRecord, form, refetch]);
 
   const deleteOfferImage = (offerImageId) => {
     deleteOfferImages(offerImageId)
@@ -73,9 +81,6 @@ export default function EditOfferModal({
     setOfferImages(
       offerImages && offerImages.filter((offerImage) => offerImage.id != id)
     );
-  // useEffect(() => {
-  //   form.resetFields();
-  // }, [existingRecord, form, refetch]);
 
   return (
     <div>

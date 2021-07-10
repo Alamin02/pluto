@@ -71,6 +71,8 @@ export default function CreateOfferModal({
       message.error(`${info.file.name} file upload failed.`);
     }
   };
+  const handleImageUpload = (id) =>
+    setImages(images && images.filter((image) => image.id != id));
 
   return (
     <div>
@@ -167,7 +169,10 @@ export default function CreateOfferModal({
                   </div>
 
                   <CloseCircleOutlined
-                    onClick={() => deleteOfferImage(offerImage.id)}
+                    onClick={() => {
+                      deleteOfferImage(offerImage.id);
+                      handleImageUpload(offerImage.id);
+                    }}
                     style={deleteButtonStyle}
                   />
                 </div>

@@ -8,13 +8,14 @@ import {
   Upload,
   Button,
   message,
+  Spin,
 } from "antd";
-import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
-  editProduct,
-  createProductImage,
-  deleteProductImage,
-} from "../../client/products.client";
+  CloseCircleOutlined,
+  PlusOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
+import { editProduct, deleteProductImage } from "../../client/products.client";
 import { getCategories } from "../../client/category.client";
 import { getOffers } from "../../client/offers.client";
 
@@ -53,6 +54,7 @@ export default function EditProductModal({
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
+  const [spinStatus, setspinStatus] = useState(false);
 
   const deleteImage = (productId) => {
     deleteProductImage(productId)
@@ -82,7 +84,7 @@ export default function EditProductModal({
               .filter((entry) => entry.children !== null)
               .map((entry) => {
                 const childrenList = [];
-                
+
                 for (const child of entry.children) {
                   childrenList.push({
                     id: child.id,
@@ -95,6 +97,7 @@ export default function EditProductModal({
 
             setCategoryOptions(processedData.flat());
           }
+          setProductImages(existingRecord.productImage);
         });
 
       getOffers()
@@ -107,25 +110,28 @@ export default function EditProductModal({
 
   const handleUpload = async (info) => {
     const { status } = info.file;
+    if (status === "uploading") {
+      setspinStatus(true);
+    }
     if (status !== "uploading") {
-      const formData = new FormData();
-      productImages.forEach((productImage) => {
-        formData.append("productImages", productImage);
-      });
-
-      formData.append("productId", existingRecord.id);
-
-      createProductImage(formData)
-        .then((res) => console.log(res))
-        .then(() => refetch());
+      const { response } = info.file;
+      if (response) {
+        setProductImages([...productImages, ...response.data]);
+      }
     }
     if (status === "done") {
+      setspinStatus(false);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
+      setspinStatus(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
-
+  const handleImageFromState = (id) => {
+    setProductImages(
+      productImages.filter((productImage) => productImage.id !== id)
+    );
+  };
   return (
     <div>
       <Modal
@@ -274,36 +280,43 @@ export default function EditProductModal({
             getValueFromEvent={normFile}
             noStyle
           >
-            {existingRecord &&
-              existingRecord.images &&
-              existingRecord.images.map((image) => (
-                <div key={image.id}>
+            {productImages &&
+              productImages.map((productImage) => (
+                <div key={productImage.id}>
                   <div style={imageStyle}>
-                    <Image width={100} height={136} src={image.path} />
+                    <Image width={100} height={136} src={productImage.path} />
                     <div style={titleStyle}>
-                      <p>{image.originalname}</p>
+                      <p>{productImage.originalname}</p>
                     </div>
                     <CloseCircleOutlined
-                      onClick={() => deleteImage(image.id)}
+                      onClick={() => {
+                        deleteImage(productImage.id);
+                        handleImageFromState(productImage.id);
+                      }}
                       style={deleteButtonStyle}
                     />
                   </div>
                 </div>
               ))}
             <br />
-            <Upload
-              name="files"
-              onChange={handleUpload}
-              beforeUpload={(file, fileList) => {
-                setProductImages(fileList);
-                return false;
-              }}
-              showUploadList={false}
-              accept="image/*"
-              multiple={true}
-            >
-              <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
-            </Upload>
+            {!spinStatus ? (
+              <Upload
+                name="productImages"
+                onChange={handleUpload}
+                action="http://localhost:4000/api/v1/product-images"
+                showUploadList={false}
+                accept="image/*"
+                multiple={true}
+              >
+                <Button icon={<PlusOutlined />}>
+                  Add more images to Upload
+                </Button>
+              </Upload>
+            ) : (
+              <span>
+                <Spin indicator={<LoadingOutlined />} /> Uploading...
+              </span>
+            )}
           </Form.Item>
         </Form>
       </Modal>

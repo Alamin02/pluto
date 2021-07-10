@@ -72,10 +72,9 @@ export {
 
 export {
   getAllOfferImages as getAllOfferImagesController,
-  createOfferImage as createOfferImageController,
-  updateOfferImage as updateOfferImageController,
+  createOfferImages as createOfferImageController,
   deleteOfferImage as deleteOfferImageController,
-} from "./offerImage";
+} from "./offerImage.controller";
 
 export {
   createCarousel as createCarouselController,

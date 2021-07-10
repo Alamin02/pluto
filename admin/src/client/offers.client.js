@@ -14,8 +14,9 @@ export const createOffer = async (offerData, token) => {
     method: "post",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
-    body: offerData,
+    body: JSON.stringify(offerData),
   });
 };
 
@@ -41,7 +42,7 @@ export const deleteOffer = async (token, offerId) => {
 };
 
 export const createOfferImage = async (data) => {
-  return fetch(`${baseUrl}/offer-image/`, {
+  return fetch(`${baseUrl}/offer-image`, {
     method: "post",
     body: data,
   });

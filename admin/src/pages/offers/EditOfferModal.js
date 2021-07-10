@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, message, Image, Upload, Button } from "antd";
-import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, message, Image, Upload, Button, Spin } from "antd";
+import {
+  CloseCircleOutlined,
+  UploadOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import {
   editOffer,
   deleteOfferImage as deleteOfferImages,
@@ -37,7 +41,16 @@ export default function EditOfferModal({
   refetch,
 }) {
   const [form] = Form.useForm();
+
   const [offerImages, setOfferImages] = useState([]);
+  const [spinStatus, setSpinStatus] = useState(false);
+
+  useEffect(() => {
+    form.resetFields();
+    if (existingRecord) {
+      setOfferImages(existingRecord.offerImage);
+    }
+  }, [existingRecord, form, refetch]);
 
   const deleteOfferImage = (offerImageId) => {
     deleteOfferImages(offerImageId)
@@ -45,39 +58,29 @@ export default function EditOfferModal({
       .then(({ data }) => refetch());
   };
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const handleUpload = async (info) => {
     const { status } = info.file;
+    const { response } = info.file;
+    if (status === "uploading") {
+      setSpinStatus(true);
+    }
     if (status !== "uploading") {
-      const formData = new FormData();
-      offerImages.forEach((offerImage) => {
-        formData.append("offerImages", offerImage);
-      });
-
-      formData.append("offerId", existingRecord.id);
-
-      createOfferImage(formData)
-        .then((res) => res.json())
-        .then(() => refetch());
+      if (response) {
+        setOfferImages([...offerImages, ...response.data]);
+      }
     }
     if (status === "done") {
+      setSpinStatus(false);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
+      setSpinStatus(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
-
-  useEffect(() => {
-    form.resetFields();
-  }, [existingRecord, form, refetch]);
+  const handleImageFromState = (id) =>
+    setOfferImages(
+      offerImages && offerImages.filter((offerImage) => offerImage.id != id)
+    );
 
   return (
     <div>
@@ -92,7 +95,9 @@ export default function EditOfferModal({
           form
             .validateFields()
             .then((values) => {
-              editOffer(values, token, existingRecord.id)
+              const valuesWithImages = { ...values, offerImages };
+
+              editOffer(valuesWithImages, token, existingRecord.id)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   if (success) {
@@ -156,44 +161,44 @@ export default function EditOfferModal({
           >
             <Input.TextArea />
           </Form.Item>
-          <Form.Item
-            label="Offer Images"
-            name="offerImages"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            noStyle
-          >
-            {existingRecord &&
-              existingRecord.offerImage &&
-              existingRecord.offerImage.map((offerImage) => (
-                <div key={offerImage.id}>
-                  <div style={imageStyle}>
-                    <Image width={100} height={136} src={offerImage.path} />
-                    <div style={titleStyle}>
-                      <p>{offerImage.originalname}</p>
-                    </div>
-                    <CloseCircleOutlined
-                      onClick={() => deleteOfferImage(offerImage.id)}
-                      style={deleteButtonStyle}
-                    />
+
+          {offerImages &&
+            offerImages.map((offerImage) => (
+              <div key={offerImage.id}>
+                <div style={imageStyle}>
+                  <Image width={100} height={136} src={offerImage.path} />
+                  <div style={titleStyle}>
+                    <p>{offerImage.originalname}</p>
                   </div>
+                  <CloseCircleOutlined
+                    onClick={() => {
+                      deleteOfferImage(offerImage.id);
+                      handleImageFromState(offerImage.id);
+                    }}
+                    style={deleteButtonStyle}
+                  />
                 </div>
-              ))}
-            <br />
+              </div>
+            ))}
+          <br />
+          {!spinStatus ? (
             <Upload
-              name="files"
+              name="offerImages"
+              action="http://localhost:4000/api/v1/offer-image"
               onChange={handleUpload}
-              beforeUpload={(file, fileList) => {
-                setOfferImages(fileList);
-                return false;
-              }}
               showUploadList={false}
               accept="image/*"
               multiple={true}
             >
-              <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
+              <Button icon={<UploadOutlined />}>
+                Add more images to Upload
+              </Button>
             </Upload>
-          </Form.Item>
+          ) : (
+            <span>
+              <Spin indicator={<LoadingOutlined />} /> Uploading...
+            </span>
+          )}
         </Form>
       </Modal>
     </div>

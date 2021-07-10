@@ -52,18 +52,12 @@ export const getProductImage = async (imageId) => {
   });
 };
 
-export const createProductImage = async (data) => {
-  return fetch(`${baseUrl}/product-images/`, {
-    method: "post",
-    body: data,
-  });
-};
-
-export const deleteProductImage = async (imageId) => {
+export const deleteProductImage = async (imageId, token) => {
   return fetch(`${baseUrl}/product-images/${imageId}`, {
     method: "delete",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 };

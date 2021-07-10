@@ -52,7 +52,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
   const [productImages, setProductImages] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
   const [spinStatus, setSpinStatus] = useState(false);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     getCategories()
       .then((res) => res.json())
@@ -255,7 +255,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
 
                     <CloseCircleOutlined
                       onClick={() => {
-                        deleteProductImage(productImage.id);
+                        deleteProductImage(productImage.id, token);
                         handleImageFromState(productImage.id);
                       }}
                       style={deleteButtonStyle}
@@ -268,6 +268,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
               <Upload
                 name="productImages"
                 action="http://localhost:4000/api/v1/product-images"
+                headers={{ Authorization: `Bearer ${token}` }}
                 onChange={handleUpload}
                 showUploadList={false}
                 multiple={true}

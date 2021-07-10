@@ -17,7 +17,11 @@ const router = express.Router();
 router
   .route("/")
   .get(getAllProductsImagesController)
-  .post(imageUpload.array("productImages", 4), createProductImageController);
+  .post(
+    authenticationMiddleware,
+    imageUpload.array("productImages", 4),
+    createProductImageController
+  );
 
 // @POST //v1/api/product-images/:productId
 // Get a particular product image
@@ -25,6 +29,6 @@ router
 router
   .route("/:productImageId")
   .get(getSingleImageController)
-  .delete(deleteProductImageController);
+  .delete(authenticationMiddleware, deleteProductImageController);
 
 export default router;

@@ -55,9 +55,9 @@ export default function EditProductModal({
   const [offerOptions, setOfferOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [spinStatus, setspinStatus] = useState(false);
-
-  const deleteImage = (productId) => {
-    deleteProductImage(productId)
+  const token = localStorage.getItem("token");
+  const deleteImage = (productId, token) => {
+    deleteProductImage(productId, token)
       .then((res) => res.json())
       .then(({ data }) => {
         refetch();
@@ -278,7 +278,7 @@ export default function EditProductModal({
                     </div>
                     <CloseCircleOutlined
                       onClick={() => {
-                        deleteImage(productImage.id);
+                        deleteImage(productImage.id, token);
                         handleImageFromState(productImage.id);
                       }}
                       style={deleteButtonStyle}
@@ -292,6 +292,7 @@ export default function EditProductModal({
                 name="productImages"
                 onChange={handleUpload}
                 action="http://localhost:4000/api/v1/product-images"
+                headers={{ Authorization: `Bearer ${token}` }}
                 showUploadList={false}
                 accept="image/*"
                 multiple={true}

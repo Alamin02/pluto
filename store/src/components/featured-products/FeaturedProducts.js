@@ -40,36 +40,40 @@ export default function FeaturedProducts() {
               )}
             >
               {/* first row, first image */}
-              <div className={styles.featuredProductContainer}>
-                <Link to={`/products/${featuredProducts[0].productId}`}>
-                  <img
-                    className={styles.imageStyle}
-                    src={featuredProducts[0].image.path}
-                    alt={featuredProducts[0].title}
-                  />
-                  <p className={styles.titleStyle}>
-                    {featuredProducts[0].title}
-                  </p>
-                </Link>
-              </div>
+              {featuredProducts[0] && (
+                <div className={styles.featuredProductContainer}>
+                  <Link to={`/products/${featuredProducts[0].productId}`}>
+                    <img
+                      className={styles.imageStyle}
+                      src={featuredProducts[0].image.path}
+                      alt={featuredProducts[0].title}
+                    />
+                    <p className={styles.titleStyle}>
+                      {featuredProducts[0].title}
+                    </p>
+                  </Link>
+                </div>
+              )}
               {/* first row, second image */}
-              <div className={styles.featuredProductContainer}>
-                <Link to={`/products/${featuredProducts[1].productId}`}>
-                  <img
-                    className={styles.imageStyle}
-                    src={featuredProducts[1].image.path}
-                    alt={featuredProducts[1].title}
-                  />
-                  <p className={styles.titleStyle}>
-                    {featuredProducts[0].title}
-                  </p>
-                </Link>
-              </div>
+              {featuredProducts[1](
+                <div className={styles.featuredProductContainer}>
+                  <Link to={`/products/${featuredProducts[1].productId}`}>
+                    <img
+                      className={styles.imageStyle}
+                      src={featuredProducts[1].image.path}
+                      alt={featuredProducts[1].title}
+                    />
+                    <p className={styles.titleStyle}>
+                      {featuredProducts[1].title}
+                    </p>
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 
           {/* second row */}
-          {featuredProducts[1] && (
+          {featuredProducts[2] && (
             <div
               className={classNames(
                 { [styles.rowContainer]: screens },
@@ -77,31 +81,35 @@ export default function FeaturedProducts() {
               )}
             >
               {/* second row, first image */}
-              <div className={styles.featuredProductContainer}>
-                <Link to={`/products/${featuredProducts[1].productId}`}>
-                  <img
-                    className={styles.imageStyle}
-                    src={featuredProducts[2].image.path}
-                    alt={featuredProducts[2].title}
-                  />
-                  <p className={styles.titleStyle}>
-                    {featuredProducts[2].title}
-                  </p>
-                </Link>
-              </div>
+              {featuredProducts[2] && (
+                <div className={styles.featuredProductContainer}>
+                  <Link to={`/products/${featuredProducts[2].productId}`}>
+                    <img
+                      className={styles.imageStyle}
+                      src={featuredProducts[2].image.path}
+                      alt={featuredProducts[2].title}
+                    />
+                    <p className={styles.titleStyle}>
+                      {featuredProducts[2].title}
+                    </p>
+                  </Link>
+                </div>
+              )}
               {/* second row, second image */}
-              <div className={styles.featuredProductContainer}>
-                <Link to={`/products/${featuredProducts[3].productId}`}>
-                  <img
-                    className={styles.imageStyle}
-                    src={featuredProducts[3].image.path}
-                    alt={featuredProducts[3].title}
-                  />
-                  <p className={styles.titleStyle}>
-                    {featuredProducts[3].title}
-                  </p>
-                </Link>
-              </div>
+              {featuredProducts[3] && (
+                <div className={styles.featuredProductContainer}>
+                  <Link to={`/products/${featuredProducts[3].productId}`}>
+                    <img
+                      className={styles.imageStyle}
+                      src={featuredProducts[3].image.path}
+                      alt={featuredProducts[3].title}
+                    />
+                    <p className={styles.titleStyle}>
+                      {featuredProducts[3].title}
+                    </p>
+                  </Link>
+                </div>
+              )}
             </div>
           )}
         </section>

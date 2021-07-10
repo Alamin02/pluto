@@ -39,6 +39,7 @@ export default function CreateOfferModal({
 
   const [offerImages, setOfferImages] = useState([]);
   const [uploadSpinner, setUploadSpinner] = useState(false);
+  const token = localStorage.getItem("token");
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -60,7 +61,7 @@ export default function CreateOfferModal({
       }
     }
     const { status } = info.file;
-    if (status == "uploading") {
+    if (status === "uploading") {
       setUploadSpinner(true);
     }
     if (status === "done") {
@@ -73,7 +74,7 @@ export default function CreateOfferModal({
   };
   const handleImageFromState = (id) =>
     setOfferImages(
-      offerImages && offerImages.filter((offerImage) => offerImage.id != id)
+      offerImages && offerImages.filter((offerImage) => offerImage.id !==id)
     );
 
   return (
@@ -172,7 +173,7 @@ export default function CreateOfferModal({
 
                   <CloseCircleOutlined
                     onClick={() => {
-                      deleteOfferImage(offerImage.id);
+                      deleteOfferImage(offerImage.id, token);
                       handleImageFromState(offerImage.id);
                     }}
                     style={deleteButtonStyle}
@@ -185,6 +186,7 @@ export default function CreateOfferModal({
               name="offerImages"
               action="http://localhost:4000/api/v1/offer-image"
               onChange={handleUpload}
+              headers={{ Authorization: `Bearer ${token}` }}
               showUploadList={false}
               accept="image/*"
               multiple={true}

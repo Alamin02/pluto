@@ -8,7 +8,6 @@ import {
 import {
   editOffer,
   deleteOfferImage as deleteOfferImages,
-  createOfferImage,
 } from "../../client/offers.client";
 
 const imageStyle = {
@@ -44,7 +43,7 @@ export default function EditOfferModal({
 
   const [offerImages, setOfferImages] = useState([]);
   const [spinStatus, setSpinStatus] = useState(false);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     form.resetFields();
     if (existingRecord) {
@@ -53,7 +52,7 @@ export default function EditOfferModal({
   }, [existingRecord, form, refetch]);
 
   const deleteOfferImage = (offerImageId) => {
-    deleteOfferImages(offerImageId)
+    deleteOfferImages(offerImageId, token)
       .then((res) => res.json())
       .then(({ data }) => refetch());
   };
@@ -79,7 +78,7 @@ export default function EditOfferModal({
   };
   const handleImageFromState = (id) =>
     setOfferImages(
-      offerImages && offerImages.filter((offerImage) => offerImage.id != id)
+      offerImages && offerImages.filter((offerImage) => offerImage.id !== id)
     );
 
   return (
@@ -90,6 +89,7 @@ export default function EditOfferModal({
         okText="Save"
         cancelText="Cancel"
         onCancel={onCancel}
+        forceRender
         onOk={() => {
           const token = localStorage.getItem("token");
           form

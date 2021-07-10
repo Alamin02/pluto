@@ -48,10 +48,11 @@ export const createOfferImage = async (data) => {
   });
 };
 
-export const deleteOfferImage = async (offerImageId) => {
+export const deleteOfferImage = async (offerImageId, token) => {
   return fetch(`${baseUrl}/offer-image/${offerImageId}`, {
     method: "delete",
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   });

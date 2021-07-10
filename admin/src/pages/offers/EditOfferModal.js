@@ -189,6 +189,7 @@ export default function EditOfferModal({
               showUploadList={false}
               accept="image/*"
               multiple={true}
+              headers={{ Authorization: `Bearer ${token}` }}
             >
               <Button icon={<UploadOutlined />}>
                 Add more images to Upload

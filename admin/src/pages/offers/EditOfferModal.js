@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, message, Image, Upload, Button } from "antd";
-import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, message, Image, Upload, Button, Spin } from "antd";
+import {
+  CloseCircleOutlined,
+  UploadOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import {
   editOffer,
   deleteOfferImage as deleteOfferImages,
@@ -38,6 +42,7 @@ export default function EditOfferModal({
 }) {
   const [form] = Form.useForm();
   const [offerImages, setOfferImages] = useState([]);
+  const [spinStatus, setSpinStatus] = useState(false);
 
   const deleteOfferImage = (offerImageId) => {
     deleteOfferImages(offerImageId)
@@ -45,30 +50,29 @@ export default function EditOfferModal({
       .then(({ data }) => refetch());
   };
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const handleUpload = async (info) => {
     const { status } = info.file;
     const { response } = info.file;
+    if (status === "uploading") {
+      setSpinStatus(true);
+    }
     if (status !== "uploading") {
       if (response) {
         setOfferImages([...offerImages, ...response.data]);
       }
     }
     if (status === "done") {
+      setSpinStatus(false);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
+      setSpinStatus(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
-
+  const handleImageFromState = (id) =>
+    setOfferImages(
+      offerImages && offerImages.filter((offerImage) => offerImage.id != id)
+    );
   // useEffect(() => {
   //   form.resetFields();
   // }, [existingRecord, form, refetch]);
@@ -162,23 +166,34 @@ export default function EditOfferModal({
                     <p>{offerImage.originalname}</p>
                   </div>
                   <CloseCircleOutlined
-                    onClick={() => deleteOfferImage(offerImage.id)}
+                    onClick={() => {
+                      deleteOfferImage(offerImage.id);
+                      handleImageFromState(offerImage.id);
+                    }}
                     style={deleteButtonStyle}
                   />
                 </div>
               </div>
             ))}
           <br />
-          <Upload
-            name="offerImages"
-            action="http://localhost:4000/api/v1/offer-image"
-            onChange={handleUpload}
-            showUploadList={false}
-            accept="image/*"
-            multiple={true}
-          >
-            <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
-          </Upload>
+          {!spinStatus ? (
+            <Upload
+              name="offerImages"
+              action="http://localhost:4000/api/v1/offer-image"
+              onChange={handleUpload}
+              showUploadList={false}
+              accept="image/*"
+              multiple={true}
+            >
+              <Button icon={<UploadOutlined />}>
+                Add more images to Upload
+              </Button>
+            </Upload>
+          ) : (
+            <span>
+              <Spin indicator={<LoadingOutlined />} /> Uploading...
+            </span>
+          )}
         </Form>
       </Modal>
     </div>

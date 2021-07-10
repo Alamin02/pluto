@@ -102,7 +102,7 @@ export async function updateOffer(req: express.Request, res: express.Response) {
     }
 
     const offerId = req.params.offerId;
-    const { name, discount, description } = req.body;
+    const { name, discount, description, offerImages } = req.body;
 
     const offersRepository = getConnection().getRepository(Offer);
     const offerToUpdate = await offersRepository.findOne({ id: offerId });
@@ -119,6 +119,7 @@ export async function updateOffer(req: express.Request, res: express.Response) {
       newOffer.name = name;
       newOffer.discount = discount;
       newOffer.description = description;
+      newOffer.offerImage = offerImages;
       offersRepository.merge(offerToUpdate, newOffer);
       await offersRepository.save(offerToUpdate);
 

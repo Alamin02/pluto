@@ -56,17 +56,11 @@ export default function EditOfferModal({
 
   const handleUpload = async (info) => {
     const { status } = info.file;
+    const { response } = info.file;
     if (status !== "uploading") {
-      const formData = new FormData();
-      offerImages.forEach((offerImage) => {
-        formData.append("offerImages", offerImage);
-      });
-
-      formData.append("offerId", existingRecord.id);
-
-      createOfferImage(formData)
-        .then((res) => res.json())
-        .then(() => refetch());
+      if (response) {
+        setOfferImages([...offerImages, ...response.data]);
+      }
     }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
@@ -75,9 +69,9 @@ export default function EditOfferModal({
     }
   };
 
-  useEffect(() => {
-    form.resetFields();
-  }, [existingRecord, form, refetch]);
+  // useEffect(() => {
+  //   form.resetFields();
+  // }, [existingRecord, form, refetch]);
 
   return (
     <div>
@@ -92,7 +86,9 @@ export default function EditOfferModal({
           form
             .validateFields()
             .then((values) => {
-              editOffer(values, token, existingRecord.id)
+              const valuesWithImages = { ...values, offerImages };
+
+              editOffer(valuesWithImages, token, existingRecord.id)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   if (success) {
@@ -156,44 +152,33 @@ export default function EditOfferModal({
           >
             <Input.TextArea />
           </Form.Item>
-          <Form.Item
-            label="Offer Images"
-            name="offerImages"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            noStyle
-          >
-            {existingRecord &&
-              existingRecord.offerImage &&
-              existingRecord.offerImage.map((offerImage) => (
-                <div key={offerImage.id}>
-                  <div style={imageStyle}>
-                    <Image width={100} height={136} src={offerImage.path} />
-                    <div style={titleStyle}>
-                      <p>{offerImage.originalname}</p>
-                    </div>
-                    <CloseCircleOutlined
-                      onClick={() => deleteOfferImage(offerImage.id)}
-                      style={deleteButtonStyle}
-                    />
+
+          {offerImages &&
+            offerImages.map((offerImage) => (
+              <div key={offerImage.id}>
+                <div style={imageStyle}>
+                  <Image width={100} height={136} src={offerImage.path} />
+                  <div style={titleStyle}>
+                    <p>{offerImage.originalname}</p>
                   </div>
+                  <CloseCircleOutlined
+                    onClick={() => deleteOfferImage(offerImage.id)}
+                    style={deleteButtonStyle}
+                  />
                 </div>
-              ))}
-            <br />
-            <Upload
-              name="files"
-              onChange={handleUpload}
-              beforeUpload={(file, fileList) => {
-                setOfferImages(fileList);
-                return false;
-              }}
-              showUploadList={false}
-              accept="image/*"
-              multiple={true}
-            >
-              <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
-            </Upload>
-          </Form.Item>
+              </div>
+            ))}
+          <br />
+          <Upload
+            name="offerImages"
+            action="http://localhost:4000/api/v1/offer-image"
+            onChange={handleUpload}
+            showUploadList={false}
+            accept="image/*"
+            multiple={true}
+          >
+            <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
+          </Upload>
         </Form>
       </Modal>
     </div>

@@ -44,7 +44,7 @@ export const deleteProduct = async (productId, token) => {
 };
 
 export const getProductImage = async (imageId) => {
-  return fetch(`${baseUrl}/images/${imageId}`, {
+  return fetch(`${baseUrl}/product-images/${imageId}`, {
     method: "get",
     headers: {
       "Content-Type": "application/json",
@@ -53,14 +53,14 @@ export const getProductImage = async (imageId) => {
 };
 
 export const createProductImage = async (data) => {
-  return fetch(`${baseUrl}/images/`, {
+  return fetch(`${baseUrl}/product-images/`, {
     method: "post",
     body: data,
   });
 };
 
 export const deleteProductImage = async (imageId) => {
-  return fetch(`${baseUrl}/images/${imageId}`, {
+  return fetch(`${baseUrl}/product-images/${imageId}`, {
     method: "delete",
     headers: {
       "Content-Type": "application/json",

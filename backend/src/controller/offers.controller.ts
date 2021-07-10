@@ -70,15 +70,23 @@ export async function createOffer(req: express.Request, res: express.Response) {
     const previousEntry = await offersRepository.findOne({ name });
 
     if (!previousEntry) {
-      const newOffer = new Offer();
-      newOffer.name = name;
-      newOffer.discount = discount;
-      newOffer.description = description;
-      newOffer.offerImage = offerImages;
+      if (offerImages.length) {
+        const newOffer = new Offer();
+        newOffer.name = name;
+        newOffer.discount = discount;
+        newOffer.description = description;
+        newOffer.offerImage = offerImages;
 
-      await offersRepository.save(newOffer);
+        await offersRepository.save(newOffer);
 
-      return res.status(201).json({ success: true, message: "Offer created!" });
+        return res
+          .status(201)
+          .json({ success: true, message: "Offer created!" });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, error: "offerImages not found!" });
+      }
     } else {
       return res
         .status(400)
@@ -115,15 +123,23 @@ export async function updateOffer(req: express.Request, res: express.Response) {
           error: "Offer with this name already exists!",
         });
       }
-      const newOffer = new Offer();
-      newOffer.name = name;
-      newOffer.discount = discount;
-      newOffer.description = description;
-      newOffer.offerImage = offerImages;
-      offersRepository.merge(offerToUpdate, newOffer);
-      await offersRepository.save(offerToUpdate);
+      if (offerImages.length) {
+        const newOffer = new Offer();
+        newOffer.name = name;
+        newOffer.discount = discount;
+        newOffer.description = description;
+        newOffer.offerImage = offerImages;
+        offersRepository.merge(offerToUpdate, newOffer);
+        await offersRepository.save(offerToUpdate);
 
-      return res.status(201).json({ success: true, message: "Offer updated!" });
+        return res
+          .status(201)
+          .json({ success: true, message: "Offer updated!" });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, error: "offerImage can not be empty!" });
+      }
     } else {
       return res.status(400).json({
         success: false,

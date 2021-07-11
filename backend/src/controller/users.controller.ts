@@ -11,12 +11,12 @@ const saltRounds = 10;
 export async function getUsers(req: express.Request, res: express.Response) {
   try {
     const userRepository = getConnection().getRepository(User);
-    const users = await userRepository.find({
+    const [users, usersCount] = await userRepository.findAndCount({
       select: ["id", "name", "email", "phone", "role"],
       relations: ["addresses", "image"],
     });
 
-    return res.status(200).json({ success: true, data: users });
+    return res.status(200).json({ success: true, data: { usersCount, users } });
   } catch (e) {
     console.error(e);
     return res.status(500).json({

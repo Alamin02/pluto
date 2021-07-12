@@ -6,6 +6,7 @@ import { createOffer } from "../../client/offers.client";
 export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
   const [offerImages, setOfferImages] = useState([]);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   const normFile = (e) => {
     console.log("Upload event:", e);
@@ -42,6 +43,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
         title="Add offer"
         okText="Create"
         cancelText="Cancel"
+        confirmLoading={confirmLoading}
         onCancel={onCancel}
         onOk={() => {
           const token = localStorage.getItem("token");
@@ -64,9 +66,13 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(msg);
+                    setConfirmLoading(false);
+
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    setConfirmLoading(false);
+
+                    message.error(error, 5);
                   }
                 });
             })

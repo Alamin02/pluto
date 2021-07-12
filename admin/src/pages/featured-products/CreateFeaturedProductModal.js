@@ -21,6 +21,7 @@ export default function CreateFeaturedProductModal({
   const [form] = Form.useForm();
 
   const [featuredProductImage, setFeaturedImage] = useState(null);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   const getImageFromDragger = (event) => {
     return event && event.file;
@@ -32,6 +33,7 @@ export default function CreateFeaturedProductModal({
       title="Add Featured Product"
       okText="Create"
       cancelText="Cancel"
+      confirmLoading={confirmLoading}
       onCancel={onCancel}
       onOk={() => {
         const token = localStorage.getItem("token");
@@ -49,11 +51,14 @@ export default function CreateFeaturedProductModal({
               .then((res) => res.json())
               .then(({ success, message: msg, error }) => {
                 if (success) {
-                  message.success(msg);
                   form.resetFields();
                   onCreate(values);
+                  setConfirmLoading(false);
+                  message.success(msg, 3);
                 } else {
-                  message.error(error);
+                  setConfirmLoading(false);
+
+                  message.error(error, 5);
                 }
               });
           })

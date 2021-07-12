@@ -17,6 +17,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
   const [carouselImage, setCarouselImage] = useState(null);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   const getImageFromDragger = (event) => {
     console.log("Upload event:", event);
@@ -30,6 +31,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
         title="Add Carousel"
         okText="Create"
         cancelText="Cancel"
+        confirmLoading={confirmLoading}
         onCancel={onCancel}
         onOk={() => {
           const token = localStorage.getItem("token");
@@ -47,11 +49,14 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   if (success) {
-                    message.success(msg);
                     form.resetFields();
                     onCreate(values);
+                    setConfirmLoading(false);
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    setConfirmLoading(false);
+
+                    message.error(error, 5);
                   }
                 });
             })

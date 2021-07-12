@@ -9,6 +9,7 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   function fetchCategories() {
     getCategories()
@@ -29,6 +30,7 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
         title="Add Category"
         okText="Create"
         cancelText="Cancel"
+        confirmLoading={confirmLoading}
         onCancel={onCancel}
         onOk={() => {
           const token = localStorage.getItem("token");
@@ -42,9 +44,13 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(msg);
+                    setConfirmLoading(false);
+
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    setConfirmLoading(false);
+
+                    message.error(error, 5);
                   }
                 });
             })

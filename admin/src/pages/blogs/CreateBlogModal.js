@@ -6,6 +6,7 @@ import { createBlog } from "../../client/blogs.client";
 
 export default function CreateBlogModal({ visible, onCreate, onCancel }) {
   const [blogImage, setBlogImage] = useState();
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   const [form] = Form.useForm();
   const normFile = (e) => {
@@ -35,6 +36,7 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
         title="Add blog"
         okText="Create"
         cancelText="Cancel"
+        confirmLoading={confirmLoading}
         onCancel={onCancel}
         onOk={() => {
           const token = localStorage.getItem("token");
@@ -54,9 +56,13 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
                   if (success) {
                     form.resetFields();
                     onCreate();
-                    message.success(msg);
+                    setConfirmLoading(false);
+
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    setConfirmLoading(false);
+
+                    message.error(error, 5);
                   }
                 });
             })

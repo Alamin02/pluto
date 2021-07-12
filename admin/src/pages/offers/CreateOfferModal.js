@@ -36,7 +36,7 @@ export default function CreateOfferModal({
   refetch,
 }) {
   const [form] = Form.useForm();
-
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [offerImages, setOfferImages] = useState([]);
   const [uploadSpinner, setUploadSpinner] = useState(false);
 
@@ -60,7 +60,7 @@ export default function CreateOfferModal({
       }
     }
     const { status } = info.file;
-    if (status == "uploading") {
+    if (status === "uploading") {
       setUploadSpinner(true);
     }
     if (status === "done") {
@@ -73,7 +73,7 @@ export default function CreateOfferModal({
   };
   const handleImageFromState = (id) =>
     setOfferImages(
-      offerImages && offerImages.filter((offerImage) => offerImage.id != id)
+      offerImages && offerImages.filter((offerImage) => offerImage.id !== id)
     );
 
   return (
@@ -83,6 +83,7 @@ export default function CreateOfferModal({
         title="Add offer"
         okText="Create"
         cancelText="Cancel"
+        confirmLoading={confirmLoading}
         onCancel={() => {
           onCancel();
           handleImages();
@@ -100,9 +101,13 @@ export default function CreateOfferModal({
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(msg);
+                    setConfirmLoading(false);
+
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    setConfirmLoading(false);
+
+                    message.error(error, 5);
                   }
                 });
             })

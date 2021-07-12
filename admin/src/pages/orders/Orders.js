@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Space, Button, Row, Col, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { getOrders } from "../../client/order.client";
+import { getOrders } from "../../client/orders.client";
 import { columns } from "./orderTableColumns";
 
 const { Title } = Typography;

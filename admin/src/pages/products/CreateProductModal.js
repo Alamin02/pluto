@@ -17,15 +17,11 @@ const layout = {
   },
 };
 
-export default function ProductForm({
-  productId,
-  visible,
-  onCreate,
-  onCancel,
-}) {
+export default function ProductForm({ visible, onCreate, onCancel }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   useEffect(() => {
     getCategories()
@@ -79,12 +75,15 @@ export default function ProductForm({
   return (
     <div>
       <Modal
+        form={form}
         visible={visible}
         title="Add User"
         okText="Create"
         cancelText="Cancel"
+        confirmLoading={confirmLoading}
         onCancel={onCancel}
         onOk={() => {
+          setConfirmLoading(true);
           const token = localStorage.getItem("token");
 
           form
@@ -116,9 +115,11 @@ export default function ProductForm({
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(msg);
+                    setConfirmLoading(false);
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    setConfirmLoading(false);
+                    message.error(error, 5);
                   }
                 });
             })
@@ -131,12 +132,6 @@ export default function ProductForm({
         <Form
           {...layout}
           form={form}
-          // form loads initial values from here
-          initialValues={
-            {
-              // productName: "Shirt",
-            }
-          }
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >

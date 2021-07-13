@@ -9,13 +9,13 @@ import {
   ShoppingOutlined,
   DownOutlined,
   LogoutOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 
 import { agent } from "../../helpers/agent";
 import styles from "./Navbar.module.css";
 import appStyles from "../../App.module.css";
 import { navbarMenus } from "./navbarInfo";
-import userInfo from "../user-profile/userInfo";
 
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
@@ -127,11 +127,14 @@ function Navbar() {
           ) : (
             <div className={styles.navbarTopRight}>
               <Dropdown overlay={menu} placement="bottomRight">
-                <Avatar
-                  className={styles.avatarStyle}
-                  // icon={<UserOutlined />}
-                  src={imageData ? imageData.path : userInfo.photo}
-                />
+                {imageData ? (
+                  <Avatar className={styles.avatarStyle} src={imageData.path} />
+                ) : (
+                  <Avatar
+                    className={styles.avatarStyle}
+                    icon={<UserOutlined />}
+                  />
+                )}
               </Dropdown>
               &nbsp;&nbsp;|&nbsp;&nbsp;
               <Link to={navbarMenus.cartUrl}>

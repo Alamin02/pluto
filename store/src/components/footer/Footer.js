@@ -22,7 +22,7 @@ function Footer() {
     <BrowserRouter>
       <div className={styles.footer}>
         <div className={styles.container}>
-          <Row
+          {/* <Row
             className={classNames(
               { [styles.footerSectionOne]: screens },
               { [styles.footerSectionOneXs]: screens.xs }
@@ -66,7 +66,7 @@ function Footer() {
                 <input type="text" placeholder="SUBSCRIBE" />
               </div>
             </Col>
-          </Row>
+          </Row> */}
           <Row className={styles.footerSectionTwo}>
             <Col xl={8} xs={24} className={styles.copyRight}>
               <p>Copyright &copy; 2020</p>

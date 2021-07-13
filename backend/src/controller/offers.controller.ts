@@ -39,7 +39,7 @@ export async function getSingleOffer(
     const offersRepository = getConnection().getRepository(Offer);
     const findByOffer = await offersRepository.findOne(
       { id: id },
-      { relations: ["products"] }
+      { relations: ["offerImage", "products", "products.images"] }
     );
 
     if (!findByOffer) {

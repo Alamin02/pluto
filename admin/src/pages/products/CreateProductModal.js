@@ -21,7 +21,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
     getCategories()
@@ -84,6 +84,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
         onCancel={onCancel}
         onOk={() => {
           setConfirmLoading(true);
+
           const token = localStorage.getItem("token");
 
           form
@@ -112,19 +113,19 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
               createProduct(formData, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
+                  setConfirmLoading(false);
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    setConfirmLoading(false);
                     message.success(msg, 3);
                   } else {
-                    setConfirmLoading(false);
                     message.error(error, 5);
                   }
                 });
             })
 
             .catch((info) => {
+              setConfirmLoading(false);
               console.log("Validate Failed:", info);
             });
         }}

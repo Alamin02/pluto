@@ -36,7 +36,7 @@ export default function CreateOfferModal({
   refetch,
 }) {
   const [form] = Form.useForm();
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [offerImages, setOfferImages] = useState([]);
   const [uploadSpinner, setUploadSpinner] = useState(false);
 
@@ -89,7 +89,10 @@ export default function CreateOfferModal({
           handleImages();
         }}
         onOk={() => {
+          setConfirmLoading(true);
+
           const token = localStorage.getItem("token");
+
           form
             .validateFields()
             .then((values) => {
@@ -98,20 +101,18 @@ export default function CreateOfferModal({
               createOffer(newValues, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
+                  setConfirmLoading(false);
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    setConfirmLoading(false);
-
                     message.success(msg, 3);
                   } else {
-                    setConfirmLoading(false);
-
                     message.error(error, 5);
                   }
                 });
             })
             .catch((info) => {
+              setConfirmLoading(false);
               console.log("Validate Failed");
             });
           handleImages();

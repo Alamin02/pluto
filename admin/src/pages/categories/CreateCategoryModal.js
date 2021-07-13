@@ -33,6 +33,8 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
         confirmLoading={confirmLoading}
         onCancel={onCancel}
         onOk={() => {
+          setConfirmLoading(true);
+
           const token = localStorage.getItem("token");
 
           form
@@ -41,20 +43,18 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
               createCategory(values, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
+                  setConfirmLoading(false);
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    setConfirmLoading(false);
-
                     message.success(msg, 3);
                   } else {
-                    setConfirmLoading(false);
-
                     message.error(error, 5);
                   }
                 });
             })
             .catch((info) => {
+              setConfirmLoading(false);
               console.log("Validate Failed:", info);
             });
         }}

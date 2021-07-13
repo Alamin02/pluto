@@ -6,7 +6,7 @@ import { createBlog } from "../../client/blogs.client";
 
 export default function CreateBlogModal({ visible, onCreate, onCancel }) {
   const [blogImage, setBlogImage] = useState();
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const [form] = Form.useForm();
   const normFile = (e) => {
@@ -39,7 +39,10 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
         confirmLoading={confirmLoading}
         onCancel={onCancel}
         onOk={() => {
+          setConfirmLoading(true);
+
           const token = localStorage.getItem("token");
+
           form
             .validateFields()
             .then((values) => {
@@ -53,20 +56,18 @@ export default function CreateBlogModal({ visible, onCreate, onCancel }) {
               createBlog(formData, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
+                  setConfirmLoading(false);
                   if (success) {
                     form.resetFields();
                     onCreate();
-                    setConfirmLoading(false);
-
                     message.success(msg, 3);
                   } else {
-                    setConfirmLoading(false);
-
                     message.error(error, 5);
                   }
                 });
             })
             .catch((info) => {
+              setConfirmLoading(false);
               console.log("Validate Failed:", info);
             });
         }}

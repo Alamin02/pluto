@@ -30,7 +30,7 @@ const Users = () => {
     getUsers(token)
       .then((res) => res.json())
       .then(({ data }) => {
-        setUserData(data);
+        setUserData(data.users);
       });
   }
 

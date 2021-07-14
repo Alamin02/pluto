@@ -42,6 +42,7 @@ const deleteButtonStyle = {
   fontSize: "25px",
   color: "red",
 };
+
 export default function ProductForm({ visible, onCreate, onCancel }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
@@ -49,6 +50,8 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
   const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
   const [uploadList, setUploadList] = useState([]);
   const token = localStorage.getItem("token");
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
 
   useEffect(() => {
     getCategories()
@@ -114,6 +117,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
   return (
     <div>
       <Modal
+        form={form}
         visible={visible}
         title="Add Product"
         okText="Create"
@@ -121,7 +125,12 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
         onCancel={() => {
           onCancel();
         }}
+
+        confirmLoading={confirmLoading}
+
         onOk={() => {
+          setConfirmLoading(true);
+
           const token = localStorage.getItem("token");
 
           form
@@ -132,18 +141,20 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
               createProduct(newValues, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
+                  setConfirmLoading(false);
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(msg);
                     handleImage();
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    message.error(error, 5);
                   }
                 });
             })
 
             .catch((info) => {
+              setConfirmLoading(false);
               console.log("Validate Failed:", info);
             });
         }}
@@ -151,12 +162,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
         <Form
           layout={"vertical"}
           form={form}
-          // form loads initial values from here
-          initialValues={
-            {
-              // productName: "Shirt",
-            }
-          }
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >

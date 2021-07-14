@@ -8,3 +8,12 @@ export const getOffers = async () => {
     },
   });
 };
+
+export const getOffer = async (offerId) => {
+  return fetch(`${baseUrl}/offers/${offerId}`, {
+    method: "get",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};

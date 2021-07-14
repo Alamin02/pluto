@@ -31,7 +31,7 @@ const deleteButtonStyle = {
 
 export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
-
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [offerImages, setOfferImages] = useState([]);
   const [uploadSpinner, setUploadSpinner] = useState(false);
   const token = localStorage.getItem("token");
@@ -79,12 +79,16 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
         title="Add offer"
         okText="Create"
         cancelText="Cancel"
+        confirmLoading={confirmLoading}
         onCancel={() => {
           onCancel();
           handleImages();
         }}
         onOk={() => {
+          setConfirmLoading(true);
+
           const token = localStorage.getItem("token");
+
           form
             .validateFields()
             .then((values) => {
@@ -93,16 +97,18 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
               createOffer(newValues, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
+                  setConfirmLoading(false);
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    message.success(msg);
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    message.error(error, 5);
                   }
                 });
             })
             .catch((info) => {
+              setConfirmLoading(false);
               console.log("Validate Failed");
             });
           handleImages();

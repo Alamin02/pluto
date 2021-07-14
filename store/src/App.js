@@ -21,6 +21,7 @@ import Blogs from "./pages/blog/Blogs";
 import CategoryProducts from "./pages/product/CategoryProducts";
 
 import Offers from "./pages/offer/Offers";
+import Offer from "./pages/offer/Offer";
 
 import Cart from "./pages/order/Cart";
 import CheckOut from "./pages/order/CheckOut";
@@ -48,7 +49,8 @@ function App() {
 
         <Route path="/category/:id" component={CategoryProducts} exact />
 
-        <Route path="/offers" component={Offers} />
+        <Route path="/offers" component={Offers} exact />
+        <Route path="/offers/:id" component={Offer} exact />
 
         <Route path="/cart" component={Cart} exact />
         <PrivateRoute path="/checkout" component={CheckOut} exact />

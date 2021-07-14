@@ -10,7 +10,7 @@ import {
   Button,
   Image,
 } from "antd";
-import { PlusOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 import {
   createProduct,
@@ -283,7 +283,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
               accept="image/*"
               maxCount={4}
             >
-              <Button icon={<PlusOutlined />} disabled={uploadButtonStatus}>
+              <Button icon={<UploadOutlined />} disabled={uploadButtonStatus}>
                 add productImages to upload (maximum: 4)
               </Button>
             </Upload>

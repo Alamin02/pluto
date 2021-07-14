@@ -249,7 +249,9 @@ export default function EditProductModal({
             label="Offer"
             name="offerId"
             initialValue={
-              existingRecord && existingRecord.offer && existingRecord.offer.id
+              existingRecord && existingRecord.offer
+                ? existingRecord.offer.id
+                : "null"
             }
           >
             {existingRecord && (

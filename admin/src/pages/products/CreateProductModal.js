@@ -7,15 +7,10 @@ import {
   Cascader,
   message,
   Select,
-  Spin,
   Button,
   Image,
 } from "antd";
-import {
-  LoadingOutlined,
-  PlusOutlined,
-  CloseCircleOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 import {
   createProduct,
@@ -51,8 +46,10 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
-  const [spinStatus, setSpinStatus] = useState(false);
+  const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
+  const [uploadList, setUploadList] = useState([]);
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     getCategories()
       .then((res) => res.json())
@@ -84,20 +81,15 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
   const handleUpload = async (info) => {
     const { status } = info.file;
 
-    if (status === "uploading") {
-      setSpinStatus(true);
-    }
-    if (status !== "uploading") {
+    setUploadList(info.fileList);
+    if (status === "done") {
       const { response } = info.file;
       if (response) {
         setProductImages([...productImages, ...response.data]);
       }
-    }
-    if (status === "done") {
-      setSpinStatus(false);
+
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
-      setSpinStatus(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
@@ -105,9 +97,20 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
     setProductImages(
       productImages.filter((productImage) => productImage.id !== id)
     );
+
   const handleImage = () => {
     setProductImages([]);
+    setUploadList([]);
   };
+
+  useEffect(() => {
+    if (uploadList.length === 4) {
+      setUploadButtonStatus(true);
+    } else {
+      setUploadButtonStatus(false);
+    }
+  }, [uploadList]);
+
   return (
     <div>
       <Modal
@@ -117,7 +120,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
         cancelText="Cancel"
         onCancel={() => {
           onCancel();
-          handleImage();
         }}
         onOk={() => {
           const token = localStorage.getItem("token");
@@ -134,6 +136,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
                     form.resetFields();
                     onCreate(values);
                     message.success(msg);
+                    handleImage();
                   } else {
                     message.error(error);
                   }
@@ -242,7 +245,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
             </Select>
           </Form.Item>
           <br />
-          <br />
           <Form.Item>
             {productImages &&
               productImages.map((productImage) => (
@@ -257,32 +259,34 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
                       onClick={() => {
                         deleteProductImage(productImage.id, token);
                         handleImageFromState(productImage.id);
+                        setUploadList(
+                          uploadList.filter(
+                            (image) => image.name !== productImage.originalname
+                          )
+                        );
                       }}
                       style={deleteButtonStyle}
                     />
                   </div>
                 </div>
               ))}
-
-            {!spinStatus ? (
-              <Upload
-                name="productImages"
-                action="http://localhost:4000/api/v1/product-images"
-                headers={{ Authorization: `Bearer ${token}` }}
-                onChange={handleUpload}
-                showUploadList={false}
-                multiple={true}
-                accept="image/*"
-              >
-                <Button icon={<PlusOutlined />}>
-                  add productImages to upload
-                </Button>
-              </Upload>
-            ) : (
-              <span>
-                <Spin indicator={<LoadingOutlined />} /> Uploading...
-              </span>
-            )}
+            <Upload
+              name="productImages"
+              action="http://localhost:4000/api/v1/product-images"
+              headers={{ Authorization: `Bearer ${token}` }}
+              onChange={handleUpload}
+              fileList={uploadList}
+              showUploadList={{
+                showRemoveIcon: false,
+              }}
+              multiple
+              accept="image/*"
+              maxCount={4}
+            >
+              <Button icon={<PlusOutlined />} disabled={uploadButtonStatus}>
+                add productImages to upload (maximum: 4)
+              </Button>
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>

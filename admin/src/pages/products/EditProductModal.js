@@ -8,13 +8,8 @@ import {
   Upload,
   Button,
   message,
-  Spin,
 } from "antd";
-import {
-  CloseCircleOutlined,
-  PlusOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { editProduct, deleteProductImage } from "../../client/products.client";
 import { getCategories } from "../../client/category.client";
 import { getOffers } from "../../client/offers.client";
@@ -54,15 +49,10 @@ export default function EditProductModal({
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
-  const [spinStatus, setspinStatus] = useState(false);
+  const [uploadList, setUploadList] = useState([]);
+  const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
+
   const token = localStorage.getItem("token");
-  const deleteImage = (productId, token) => {
-    deleteProductImage(productId, token)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        refetch();
-      });
-  };
 
   useEffect(() => {
     form.resetFields();
@@ -101,9 +91,7 @@ export default function EditProductModal({
 
   const handleUpload = async (info) => {
     const { status } = info.file;
-    if (status === "uploading") {
-      setspinStatus(true);
-    }
+    setUploadList(info.fileList);
     if (status !== "uploading") {
       const { response } = info.file;
       if (response) {
@@ -111,19 +99,19 @@ export default function EditProductModal({
       }
     }
     if (status === "done") {
-      setspinStatus(false);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
-      setspinStatus(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
 
-  const handleImageFromState = (id) => {
-    setProductImages(
-      productImages.filter((productImage) => productImage.id !== id)
-    );
-  };
+  useEffect(() => {
+    if (productImages.length === 4) {
+      setUploadButtonStatus(true);
+    } else {
+      setUploadButtonStatus(false);
+    }
+  }, [productImages]);
 
   return (
     <div>
@@ -133,25 +121,34 @@ export default function EditProductModal({
         okText="Save"
         forceRender={true}
         cancelText="Cancel"
-        onCancel={onCancel}
+        onCancel={() => {
+          onCancel();
+          setUploadList([]);
+        }}
         onOk={() => {
           const token = localStorage.getItem("token");
           form
             .validateFields()
             .then((values) => {
               const newValues = { ...values, productImages };
-              editProduct(existingRecord.id, newValues, token)
-                .then((res) => res.json())
-                .then(({ success, message: msg, error }) => {
-                  if (success) {
-                    form.resetFields();
-                    onCreate(values);
-                    message.success(msg);
-                    refetch();
-                  } else {
-                    message.error(error);
-                  }
-                });
+              if (productImages.length > 4) {
+                message.error("Only 4 images can be added!");
+              } else {
+                editProduct(existingRecord.id, newValues, token)
+                  .then((res) => res.json())
+                  .then(({ success, message: msg, error }) => {
+                    if (success) {
+                      setUploadList([]);
+                      setProductImages([]);
+                      form.resetFields();
+                      onCreate(values);
+                      message.success(msg);
+                      refetch();
+                    } else {
+                      message.error(error);
+                    }
+                  });
+              }
             })
             .catch((info) => {
               console.log("Validate Failed:", info);
@@ -278,8 +275,17 @@ export default function EditProductModal({
                     </div>
                     <CloseCircleOutlined
                       onClick={() => {
-                        deleteImage(productImage.id, token);
-                        handleImageFromState(productImage.id);
+                        deleteProductImage(productImage.id, token);
+                        setProductImages(
+                          productImages.filter(
+                            (image) => image.id !== productImage.id
+                          )
+                        );
+                        setUploadList(
+                          uploadList.filter(
+                            (image) => image.name !== productImage.originalname
+                          )
+                        );
                       }}
                       style={deleteButtonStyle}
                     />
@@ -287,25 +293,22 @@ export default function EditProductModal({
                 </div>
               ))}
             <br />
-            {!spinStatus ? (
-              <Upload
-                name="productImages"
-                onChange={handleUpload}
-                action="http://localhost:4000/api/v1/product-images"
-                headers={{ Authorization: `Bearer ${token}` }}
-                showUploadList={false}
-                accept="image/*"
-                multiple={true}
-              >
-                <Button icon={<PlusOutlined />}>
-                  Add more images to Upload
-                </Button>
-              </Upload>
-            ) : (
-              <span>
-                <Spin indicator={<LoadingOutlined />} /> Uploading...
-              </span>
-            )}
+
+            <Upload
+              name="productImages"
+              onChange={handleUpload}
+              action="http://localhost:4000/api/v1/product-images"
+              headers={{ Authorization: `Bearer ${token}` }}
+              fileList={uploadList}
+              showUploadList={{ showRemoveIcon: false }}
+              accept="image/*"
+              multiple
+              maxCount={4}
+            >
+              <Button icon={<PlusOutlined />} disabled={uploadButtonStatus}>
+                Add more images to Upload
+              </Button>
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>

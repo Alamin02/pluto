@@ -3,7 +3,7 @@ import { getConnection, Like } from "typeorm";
 
 import accessControl from "../utils/access-control";
 
-import { Product, Offer, Category, ProductImage } from "../entity";
+import { Product, Offer, Category } from "../entity";
 
 // @GET - baseUrl/products
 // Get all products list
@@ -80,6 +80,7 @@ export async function createProduct(
     const offersRepository = getConnection().getRepository(Offer);
 
     const previousEntry = await productsRepository.findOne({ name: name });
+
     let categoryId;
     if (categoryIdArray.length === 2) {
       categoryId = categoryIdArray[1];
@@ -108,11 +109,11 @@ export async function createProduct(
             .status(400)
             .json({ success: false, error: "Category not found!" });
         }
-
+        console.log(offerId);
         const offerCheck = await offersRepository.findOne({ id: offerId });
         if (offerCheck) {
           newProduct.offer = offerId;
-        } else if (offerId != "undefined") {
+        } else if (offerId !== undefined) {
           return res
             .status(400)
             .json({ success: false, error: "Offer not found" });

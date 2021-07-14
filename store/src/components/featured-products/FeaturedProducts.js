@@ -20,7 +20,7 @@ export default function FeaturedProducts() {
     );
   }, []);
 
-  console.log(featuredProducts[0]);
+ 
 
   const screens = useBreakpoint();
 

@@ -167,7 +167,7 @@ export async function getSingleCategory(
 
     const findCategoryById = await categoryRepository.findOne(
       { id },
-      { relations: ["products", "products.images"] }
+      { relations: ["products", "products.productImage"] }
     );
 
     if (!findCategoryById) {

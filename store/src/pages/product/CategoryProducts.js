@@ -5,7 +5,7 @@ import { Row, Col, Typography, Skeleton } from "antd";
 import ProductCard from "../../components/product/ProductCard";
 import MainContainer from "../../components/layout/MainContainer";
 import Loading from "../../components/Loading";
-import { agent } from "../../helpers/agent";
+import { getCategoryProducts } from "../../client/products.client";
 
 const { Title } = Typography;
 
@@ -16,8 +16,7 @@ function CategoryProducts() {
   const { id } = useParams();
 
   useEffect(() => {
-    agent
-      .getCategoryProducts(id)
+    getCategoryProducts(id)
       .then((res) => res.json())
       .then(({ data }) => {
         setCategoryInfo(data);
@@ -42,7 +41,7 @@ function CategoryProducts() {
                   <Link to={`/products/${product.id}`}>
                     <ProductCard
                       title={product.name}
-                      src={product.images[0].path}
+                      src={product.productImage[0].path}
                       price={product.price}
                       discount={product.offer && product.offer.discount}
                     />

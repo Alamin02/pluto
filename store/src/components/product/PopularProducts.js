@@ -6,7 +6,7 @@ import qs from "query-string";
 import MainContainer from "../layout/MainContainer";
 import CardItem from "./ProductCard";
 import HeaderSection from "../styled-components/HeaderSection";
-import { agent } from "../../helpers/agent";
+import { getProducts } from "../../client/products.client";
 
 function ProductList() {
   const [productsData, setProductsData] = useState([]);
@@ -19,8 +19,7 @@ function ProductList() {
 
   useEffect(() => {
     const fetchProducts = () => {
-      agent
-        .getProducts(queryString)
+      getProducts(queryString)
         .then((res) => res.json())
         .then(({ data }) => {
           setProductsData(data.products);

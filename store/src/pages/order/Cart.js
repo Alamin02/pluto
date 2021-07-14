@@ -63,7 +63,7 @@ function Cart() {
             id={item.id}
             productName={item.name}
             price={item.price}
-            imageUrl={item.images[0].path}
+            imageUrl={item.productImage[0].path}
             onRemove={handleRemoveProduct}
             description={item.description}
             quantity={item.quantity}

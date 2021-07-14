@@ -1,8 +1,8 @@
 import express = require("express");
 import { getConnection } from "typeorm";
 import accessControl from "../utils/access-control";
-import { Offer, OfferImage } from "../entity";
-import { JsonWebTokenError } from "jsonwebtoken";
+import { Offer } from "../entity";
+
 
 // @GET /v1/api/offers
 // all offers
@@ -40,7 +40,7 @@ export async function getSingleOffer(
     const offersRepository = getConnection().getRepository(Offer);
     const findByOffer = await offersRepository.findOne(
       { id: id },
-      { relations: ["offerImage", "products", "products.images"] }
+      { relations: ["offerImage", "products", "products.productImage"] }
     );
 
     if (!findByOffer) {

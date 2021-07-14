@@ -152,7 +152,7 @@ export async function getProduct(req: express.Request, res: express.Response) {
 
     const findProductById = await productRepository.findOne(
       { id },
-      { relations: ["images", "offer"] }
+      { relations: ["productImage", "offer"] }
     );
 
     if (!findProductById) {

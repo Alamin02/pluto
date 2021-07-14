@@ -9,7 +9,7 @@ import AddToCart from "./AddToCart";
 import Display from "./Display";
 
 function ProductView({ product }) {
-  const { name, offer, price, images, summary, description } = product;
+  const { name, offer, price, productImage, summary, description } = product;
 
   let offerPrice;
   if (offer) {
@@ -21,7 +21,7 @@ function ProductView({ product }) {
       <Row justify="center">
         <Col sm={18} md={12} lg={12}>
           <div style={{ padding: "20px" }}>
-            <Display images={images} />
+            <Display images={productImage} />
           </div>
         </Col>
         <Col sm={18} md={12} lg={12}>

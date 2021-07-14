@@ -19,6 +19,7 @@ const ProductDetails = () => {
         .getProduct(id)
         .then((res) => res.json())
         .then(({ data }) => {
+          
           setProduct(data);
           setIsLoading(false);
         });

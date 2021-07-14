@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Grid, Tag, Table } from "antd";
-import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
+import { Button, Grid, Tag, Table, Avatar } from "antd";
+import { MailOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import styles from "./UserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
-import userInfo from "../../components/user-profile/userInfo";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import { agent } from "../../helpers/agent";
 import Section from "../../components/styled-components/Section";
@@ -94,7 +93,7 @@ function UserProfile() {
   return (
     <MainContainer>
       <HeaderSection headerText="manage my account" />
-      <Section heading="Basic info" key={userInfo.key}>
+      <Section heading="Basic info">
         <div
           className={classNames(
             { [styles.basicInfo]: screens },
@@ -102,14 +101,18 @@ function UserProfile() {
           )}
         >
           <div className={styles.imageBox} key={1}>
-            <img
-              src={imageData ? imageData.path : userInfo.photo}
-              className={classNames(
-                { [styles.userAvatar]: screens },
-                { [styles.userAvatarXs]: screens.xs }
-              )}
-              alt="user_photo"
-            />
+            {imageData ? (
+              <img
+                src={imageData.path}
+                className={classNames(
+                  { [styles.userAvatar]: screens },
+                  { [styles.userAvatarXs]: screens.xs }
+                )}
+                alt={userData.name}
+              />
+            ) : (
+              <Avatar className={styles.avatarStyle} icon={<UserOutlined />} />
+            )}
           </div>
 
           <div

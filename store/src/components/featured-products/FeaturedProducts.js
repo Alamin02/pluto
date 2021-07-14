@@ -32,14 +32,14 @@ export default function FeaturedProducts() {
       {featuredProducts.length ? (
         <section>
           {/* first row */}
-          {featuredProducts[0] && (
-            <div
-              className={classNames(
-                { [styles.rowContainer]: screens },
-                { [styles.rowContainerXs]: screens.xs }
-              )}
-            >
-              {/* first row, first image */}
+          <div
+            className={classNames(
+              { [styles.rowContainer]: screens },
+              { [styles.rowContainerXs]: screens.xs }
+            )}
+          >
+            {/* first row, first image */}
+            {featuredProducts[0] && (
               <div className={styles.featuredProductContainer}>
                 <Link to={`/products/${featuredProducts[0].productId}`}>
                   <img
@@ -52,7 +52,9 @@ export default function FeaturedProducts() {
                   </p>
                 </Link>
               </div>
-              {/* first row, second image */}
+            )}
+            {/* first row, second image */}
+            {featuredProducts[1] && (
               <div className={styles.featuredProductContainer}>
                 <Link to={`/products/${featuredProducts[1].productId}`}>
                   <img
@@ -61,24 +63,24 @@ export default function FeaturedProducts() {
                     alt={featuredProducts[1].title}
                   />
                   <p className={styles.titleStyle}>
-                    {featuredProducts[0].title}
+                    {featuredProducts[1].title}
                   </p>
                 </Link>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* second row */}
-          {featuredProducts[1] && (
-            <div
-              className={classNames(
-                { [styles.rowContainer]: screens },
-                { [styles.rowContainerXs]: screens.xs }
-              )}
-            >
-              {/* second row, first image */}
+          <div
+            className={classNames(
+              { [styles.rowContainer]: screens },
+              { [styles.rowContainerXs]: screens.xs }
+            )}
+          >
+            {/* second row, first image */}
+            {featuredProducts[2] && (
               <div className={styles.featuredProductContainer}>
-                <Link to={`/products/${featuredProducts[1].productId}`}>
+                <Link to={`/products/${featuredProducts[2].productId}`}>
                   <img
                     className={styles.imageStyle}
                     src={featuredProducts[2].image.path}
@@ -89,7 +91,9 @@ export default function FeaturedProducts() {
                   </p>
                 </Link>
               </div>
-              {/* second row, second image */}
+            )}
+            {/* second row, second image */}
+            {featuredProducts[3] && (
               <div className={styles.featuredProductContainer}>
                 <Link to={`/products/${featuredProducts[3].productId}`}>
                   <img
@@ -102,8 +106,8 @@ export default function FeaturedProducts() {
                   </p>
                 </Link>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </section>
       ) : (
         <Skeleton active />

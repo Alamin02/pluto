@@ -1,78 +1,149 @@
-import React from "react";
-import { Statistic, Row, Col, Card, Typography } from "antd";
-import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
+import { useState, useEffect } from "react";
+import { Row, Col, Card, Typography } from "antd";
+import {
+  SkinOutlined,
+  UserOutlined,
+  ShoppingCartOutlined,
+  DollarOutlined,
+} from "@ant-design/icons";
 
-const { Title } = Typography;
+import { getProducts } from "../../client/products.client";
+import { getUsers } from "../../client/users.client";
+import { getOrders } from "../../client/orders.client";
 
-const siteStatisticCard = {
-  padding: "30px",
-  background: "#ececec",
-};
+const { Text, Title } = Typography;
 
-export default class Overview extends React.Component {
-  state = {
-    curTime: new Date().toDateString(),
-  };
+export default function Overview() {
+  const token = localStorage.getItem("token");
 
-  render() {
-    return (
-      <div>
-        <div style={{ marginBottom: -10 }}>
-          <p style={{ fontSize: "2rem" }}>Today is {this.state.curTime}</p>
-        </div>
-        <div style={siteStatisticCard}>
-          <Title level={3}>Current Site Status</Title>
-          <Row gutter={8}>
-            <Col span={12}>
-              <Card>
-                <Statistic
-                  style={{ width: "10rem" }}
-                  title="Active"
-                  value={11.28}
-                  precision={2}
-                  valueStyle={{ color: "#3f8600" }}
-                  prefix={<ArrowUpOutlined />}
-                  suffix="%"
-                />
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card>
-                <Statistic
-                  style={{ width: "10rem" }}
-                  title="Idle"
-                  value={9.3}
-                  precision={2}
-                  valueStyle={{ color: "#cf1322" }}
-                  prefix={<ArrowDownOutlined />}
-                  suffix="%"
-                />
-              </Card>
-            </Col>
-          </Row>
-        </div>
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
 
-        <br />
-        <div style={siteStatisticCard}>
-          <Title level={3}>User info</Title>
-          <Row gutter={8}>
-            <Col span={12}>
-              <Card>
-                <Statistic title="Active Users" value={112893} />
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card>
-                <Statistic
-                  title="Account Balance"
-                  value={112893}
-                  precision={2}
-                />
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      </div>
+  const [users, setUsers] = useState("");
+  const [usersLoading, setUsersLoading] = useState(true);
+
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(true);
+
+  useEffect(() => {
+    getProducts().then((res) =>
+      res
+        .json()
+        .then(({ data }) => setProducts(data))
+        .then(() => setProductsLoading(false))
     );
-  }
+  }, []);
+
+  useEffect(() => {
+    getUsers(token)
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setUsers(data);
+      })
+      .then(() => setUsersLoading(false));
+  }, [token]);
+
+  useEffect(() => {
+    getOrders(token)
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setOrders(data);
+      })
+      .then(() => setOrdersLoading(false));
+  }, [token]);
+
+  return (
+    <div>
+      <Title level={2}>Full system dashboard</Title>
+      <Row gutter={[16, 16]}>
+        {/* products info */}
+        <Col>
+          <Card style={{ width: 300 }} loading={productsLoading}>
+            <Row gutter={24} align="middle">
+              <Col>
+                <SkinOutlined
+                  style={{
+                    fontSize: "30px",
+                    marginBottom: "12px",
+                    color: "#1890ff",
+                  }}
+                />
+              </Col>
+              <Col>
+                <Text type="secondary">Total products</Text>
+                <br />
+                <Title level={3}>{products.productCount}</Title>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+        {/* users info */}
+        <Col>
+          <Card style={{ width: 300 }} loading={usersLoading}>
+            <Row gutter={24} align="middle">
+              <Col>
+                <UserOutlined
+                  style={{
+                    fontSize: "30px",
+                    marginBottom: "12px",
+                    color: "#1890ff",
+                  }}
+                />
+              </Col>
+              <Col>
+                <Text type="secondary">Total users</Text>
+                <br />
+                <Title level={3}>{users.usersCount}</Title>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+      <br />
+      <Row gutter={[16, 16]}>
+        {/* orders info */}
+        <Col>
+          <Card style={{ width: 300 }} loading={ordersLoading}>
+            <Row gutter={24} align="middle">
+              <Col>
+                <ShoppingCartOutlined
+                  style={{
+                    fontSize: "30px",
+                    marginBottom: "12px",
+                    color: "#1890ff",
+                  }}
+                />
+              </Col>
+              <Col>
+                <Text type="secondary">Total orders</Text>
+                <br />
+                <Title level={3}>{orders.orderCount}</Title>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+        {/* sale info */}
+        <Col>
+          <Card style={{ width: 300 }} loading={ordersLoading}>
+            <Row gutter={24} align="middle">
+              <Col>
+                <DollarOutlined
+                  style={{
+                    fontSize: "30px",
+                    marginBottom: "12px",
+                    color: "#1890ff",
+                  }}
+                />
+              </Col>
+              <Col>
+                <Text type="secondary">Total orders</Text>
+                <br />
+                <Title level={3}>{orders.orderCount + " BDT"}</Title>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
 }

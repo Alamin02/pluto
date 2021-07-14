@@ -12,10 +12,10 @@ import {
   Grid,
   Menu,
   Upload,
+  Avatar,
 } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, UserOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-import userInfo from "../../components/user-profile/userInfo";
 import styles from "./UpdateUserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
 import HeaderSection from "../../components/styled-components/HeaderSection";
@@ -217,14 +217,21 @@ export default function UpdateUserProfile() {
                 )}
               >
                 <div className={styles.imageBox} key={1}>
-                  <img
-                    src={imageData ? imageData.path : userInfo.photo}
-                    className={classNames(
-                      { [styles.userAvatar]: screens },
-                      { [styles.userAvatarXs]: screens.xs }
-                    )}
-                    alt="user_photo"
-                  />
+                  {imageData ? (
+                    <img
+                      src={imageData.path}
+                      className={classNames(
+                        { [styles.userAvatar]: screens },
+                        { [styles.userAvatarXs]: screens.xs }
+                      )}
+                      alt={userData.name}
+                    />
+                  ) : (
+                    <Avatar
+                      className={styles.avatarStyle}
+                      icon={<UserOutlined />}
+                    />
+                  )}
                   <div className={styles.editBox}>
                     <Dropdown overlay={editButtonClick} placement="bottomLeft">
                       <EditOutlined />

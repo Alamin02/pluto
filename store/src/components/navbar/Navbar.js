@@ -9,13 +9,13 @@ import {
   ShoppingOutlined,
   DownOutlined,
   LogoutOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 
 import { agent } from "../../helpers/agent";
 import styles from "./Navbar.module.css";
 import appStyles from "../../App.module.css";
-import { navbarMenus } from "./navbarInfo";
-import userInfo from "../user-profile/userInfo";
+import pluto_logo from "../../assets/logo/pluto_logo_transparent_bg.png";
 
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
@@ -100,10 +100,10 @@ function Navbar() {
             <PhoneOutlined /> +880 1234 123456
           </div>
           <div className={styles.logoContainer}>
-            <Link to={navbarMenus.homeUrl}>
+            <Link to="/">
               <img
-                src={navbarMenus.logoSrc}
-                alt={navbarMenus.logoAlt}
+                src={pluto_logo}
+                alt="Pluto"
                 className={classNames(
                   { [styles.logo]: screens },
                   { [styles.logoXs]: screens.xs }
@@ -115,7 +115,7 @@ function Navbar() {
             <div className={styles.navbarTopRight}>
               <Link to="/login">log in</Link>
               &nbsp;&nbsp;|&nbsp;&nbsp;
-              <Link to={navbarMenus.cartUrl}>
+              <Link to="/cart">
                 <Badge count={!!productList.length ? productList.length : 0}>
                   <Avatar
                     className={styles.avatarStyle}
@@ -127,14 +127,17 @@ function Navbar() {
           ) : (
             <div className={styles.navbarTopRight}>
               <Dropdown overlay={menu} placement="bottomRight">
-                <Avatar
-                  className={styles.avatarStyle}
-                  // icon={<UserOutlined />}
-                  src={imageData ? imageData.path : userInfo.photo}
-                />
+                {imageData ? (
+                  <Avatar className={styles.avatarStyle} src={imageData.path} />
+                ) : (
+                  <Avatar
+                    className={styles.avatarStyle}
+                    icon={<UserOutlined />}
+                  />
+                )}
               </Dropdown>
               &nbsp;&nbsp;|&nbsp;&nbsp;
-              <Link to={navbarMenus.cartUrl}>
+              <Link to="/cart">
                 <Badge count={!!productList.length ? productList.length : 0}>
                   <Avatar
                     className={styles.avatarStyle}
@@ -150,15 +153,15 @@ function Navbar() {
         {/* bottom navbar */}
         <Menu mode="horizontal" className={styles.navbarBottom}>
           <Menu.Item>
-            <Link to={navbarMenus.homeUrl} className={styles.menuStyle}>
-              {navbarMenus.home}
+            <Link to="/" className={styles.menuStyle}>
+              home
             </Link>
           </Menu.Item>
 
           <SubMenu
             title={
               <span>
-                {navbarMenus.shop}
+                Categories
                 <DownOutlined className={styles.downOutlinedStyle} />
               </span>
             }
@@ -197,20 +200,20 @@ function Navbar() {
           </SubMenu>
 
           <Menu.Item>
-            <Link to={navbarMenus.offersUrl} className={styles.menuStyle}>
-              {navbarMenus.offers}
+            <Link to="/products" className={styles.menuStyle}>
+              all products
             </Link>
           </Menu.Item>
 
           <Menu.Item>
-            <Link to={navbarMenus.blogUrl} className={styles.menuStyle}>
-              {navbarMenus.blog}
+            <Link to="/offers" className={styles.menuStyle}>
+              offers
             </Link>
           </Menu.Item>
 
           <Menu.Item>
-            <Link to={navbarMenus.contactUrl} className={styles.menuStyle}>
-              {navbarMenus.contact}
+            <Link to="/contact" className={styles.menuStyle}>
+              contact
             </Link>
           </Menu.Item>
         </Menu>

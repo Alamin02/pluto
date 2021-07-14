@@ -15,7 +15,7 @@
   text-transform: uppercase;
   font-size: 12px;
 }
-.footerSectionOneXs{
+.footerSectionOneXs {
   margin-top: 0rem;
 }
 .footerSectionTwo {
@@ -23,6 +23,7 @@
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
   font-size: 12px;
+  margin-top: 1rem; /* remove this in full footer */
 }
 .footerSectionOne ul {
   padding-left: 0px;

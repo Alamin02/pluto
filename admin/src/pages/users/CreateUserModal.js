@@ -6,6 +6,8 @@ const { Option } = Select;
 export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
+
   return (
     <div>
       <Modal
@@ -13,6 +15,7 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
         title="Add User"
         okText="Create"
         cancelText="Cancel"
+        confirmLoading={confirmLoading}
         onCancel={onCancel}
         onOk={() => {
           const token = localStorage.getItem("token");
@@ -24,11 +27,15 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   if (success) {
-                    message.success(msg);
                     form.resetFields();
                     onCreate(values);
+                    setConfirmLoading(false);
+
+                    message.success(msg, 3);
                   } else {
-                    message.error(error);
+                    setConfirmLoading(false);
+
+                    message.error(error, 5);
                   }
                 });
             })

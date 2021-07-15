@@ -20,7 +20,7 @@ router
   );
 
 // delete offer Image
-//DELETE /api/v1/offer/image/:offerImageId
+//DELETE /api/v1/offer-image/:offerImageId
 router
   .route("/:offerImageId")
   .delete(authenticationMiddleware, deleteOfferImageController);

@@ -42,19 +42,15 @@ export default function EditOfferModal({
   const [offerImages, setOfferImages] = useState([]);
   const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
   const [uploadList, setUploadList] = useState([]);
+
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     form.resetFields();
     if (existingRecord) {
       setOfferImages(existingRecord.offerImage);
     }
-  }, [existingRecord, form, refetch]);
-
-  // const deleteOfferImage = (offerImageId) => {
-  //   deleteOfferImages(offerImageId, token)
-  //     .then((res) => res.json())
-  //     .then(({ data }) => refetch());
-  // };
+  }, [existingRecord, form]);
 
   const handleUpload = async (info) => {
     const { status } = info.file;
@@ -72,6 +68,12 @@ export default function EditOfferModal({
       message.error(`${info.file.name} file upload failed.`);
     }
   };
+
+  const handleResetState = () => {
+    setOfferImages([]);
+    setUploadList([]);
+  };
+
   const handleImageFromState = (id, originalname) => {
     setOfferImages(
       offerImages && offerImages.filter((offerImage) => offerImage.id !== id)
@@ -100,7 +102,6 @@ export default function EditOfferModal({
           onCancel();
           setUploadList([]);
         }}
-        forceRender
         onOk={() => {
           const token = localStorage.getItem("token");
           form
@@ -114,9 +115,7 @@ export default function EditOfferModal({
                   .then(({ success, message: msg, error }) => {
                     if (success) {
                       message.success(msg);
-                      setOfferImages([]);
-                      setUploadList([]);
-                      // refetch();
+                      handleResetState();
                       form.resetFields();
                       onCreate(values);
                     } else {

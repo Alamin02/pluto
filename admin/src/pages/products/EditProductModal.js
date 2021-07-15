@@ -104,6 +104,10 @@ export default function EditProductModal({
       message.error(`${info.file.name} file upload failed.`);
     }
   };
+  const handleResetState = () => {
+    setProductImages([]);
+    setUploadList([]);
+  };
 
   useEffect(() => {
     if (productImages.length >= 4) {
@@ -139,9 +143,8 @@ export default function EditProductModal({
                   .then((res) => res.json())
                   .then(({ success, message: msg, error }) => {
                     if (success) {
-                      setUploadList([]);
-                      setProductImages([]);
                       form.resetFields();
+                      handleResetState();
                       onCreate(values);
                       message.success(msg);
                       refetch();

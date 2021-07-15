@@ -11,6 +11,7 @@ export { UserImage } from "./userImage";
 export { OfferImage } from "./offerImage";
 export { Carousel } from "./carousel";
 export { CarouselImage } from "./carouselImage";
+export { Image } from "./images";
 export { FeaturedProduct } from "./featuredProduct";
 export { FeaturedProductImage } from "./featuredProductImage";
 

@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from "typeorm";
 
-import { CarouselImage } from "../entity";
+import { CarouselImage, Image } from "../entity";
 
 @Entity("carousels")
 export class Carousel {
@@ -22,9 +22,15 @@ export class Carousel {
   @Column("varchar")
   link!: string;
 
-  @OneToOne(() => CarouselImage, (carouselImage) => carouselImage.carousel, {
+  // @OneToOne(() => CarouselImage, (carouselImage) => carouselImage.carousel, {
+  //   onDelete: "CASCADE",
+  // })
+  // @JoinColumn()
+  // image!: CarouselImage;
+
+  @OneToOne(() => Image, (image) => image.carousel, {
     onDelete: "CASCADE",
   })
   @JoinColumn()
-  image!: CarouselImage;
+  image!: Image;
 }

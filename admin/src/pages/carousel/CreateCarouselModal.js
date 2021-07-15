@@ -1,27 +1,58 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Upload, message } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Upload, message, Button, Image } from "antd";
+import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 
-import { createCarousel } from "../../client/carousels.client";
+import { createCarousel, deleteImage } from "../../client/carousels.client";
 
-const layout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 18,
-  },
+const imageStyle = {
+  display: "inline-block",
+  position: "relative",
+};
+
+const titleStyle = {
+  display: "inline-block",
+  position: "absolute",
+  top: "40%",
+  width: "300px",
+  margin: "0px 20px",
+};
+
+const deleteButtonStyle = {
+  cursor: "pointer",
+  position: "absolute",
+  marginLeft: "325px",
+  top: "40%",
+  fontSize: "25px",
+  color: "red",
 };
 
 export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
   const [carouselImage, setCarouselImage] = useState(null);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [uploadList, setUploadList] = useState([]);
 
-  const getImageFromDragger = (event) => {
-    console.log("Upload event:", event);
-    return event && event.file;
+  const token = localStorage.getItem("token");
+
+  const handleUpload = (info) => {
+    const { status, name, response } = info.file;
+    setUploadList(info.fileList);
+
+    if (status === "done") {
+      if (info.file && response) {
+        setCarouselImage(response.data);
+      }
+      message.success(`${name} file uploaded!`);
+    } else if (status === "error") {
+      message.error(`${name} file upload failed`);
+    }
+  };
+  const handleImageFromState = (originalname) => {
+    setUploadList(
+      uploadList.filter((image) => image.name !== carouselImage.originalname)
+    );
+    setCarouselImage(null);
   };
 
   return (
@@ -32,7 +63,10 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
         okText="Create"
         cancelText="Cancel"
         confirmLoading={confirmLoading}
-        onCancel={onCancel}
+        onCancel={() => {
+          onCancel();
+          setUploadList([]);
+        }}
         onOk={() => {
           setConfirmLoading(true);
 
@@ -41,18 +75,16 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
-              const formData = new FormData();
+              const valuesWithImage = { ...values, carouselImage };
 
-              formData.append("title", values.title);
-              formData.append("summary", values.summary);
-              formData.append("carouselImage", carouselImage);
-
-              createCarousel(formData, token)
+              createCarousel(valuesWithImage, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   setConfirmLoading(false);
                   if (success) {
                     form.resetFields();
+                    setUploadList([]);
+                    setCarouselImage(null);
                     onCreate(values);
                     message.success(msg, 3);
                   } else {
@@ -67,7 +99,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
             });
         }}
       >
-        <Form {...layout} form={form}>
+        <Form layout="vertical" form={form}>
           <Form.Item
             label="Title"
             name="title"
@@ -94,39 +126,38 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
             <Input.TextArea />
           </Form.Item>
 
-          <Form.Item label="Dragger">
-            <Form.Item
-              name="carouselImage"
-              valuePropName="file"
-              getValueFromEvent={getImageFromDragger}
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: "Please input carousel photo",
-                },
-              ]}
-            >
-              <Upload.Dragger
-                beforeUpload={(file, fileList) => {
-                  setCarouselImage(file);
-                  return false;
-                }}
-                accept="image/*"
-                multiple={false}
-              >
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">
-                  Click or drag file to this area to upload
-                </p>
-                <p className="ant-upload-hint">
-                  Support for a single or bulk upload.
-                </p>
-              </Upload.Dragger>
-            </Form.Item>
-          </Form.Item>
+          {carouselImage && (
+            <div>
+              <div style={imageStyle}>
+                <Image width={100} height={136} src={carouselImage.path} />
+                <div style={titleStyle}>
+                  <p>{carouselImage.originalname}</p>
+                </div>
+
+                <CloseCircleOutlined
+                  onClick={() => {
+                    deleteImage(carouselImage.id, token);
+                    handleImageFromState(carouselImage.originalname);
+                  }}
+                  style={deleteButtonStyle}
+                />
+              </div>
+            </div>
+          )}
+          <br />
+          <Upload
+            name="image"
+            action="http://localhost:4000/api/v1/image"
+            fileList={uploadList}
+            showUploadList={{ showRemoveIcon: false }}
+            onChange={(info) => handleUpload(info)}
+            accept="image/*"
+            maxCount={1}
+          >
+            <Button icon={<UploadOutlined />}>
+              Add carosel image to upload
+            </Button>
+          </Upload>
         </Form>
       </Modal>
     </div>

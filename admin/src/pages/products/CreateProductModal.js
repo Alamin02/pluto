@@ -52,7 +52,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
   const token = localStorage.getItem("token");
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-
   useEffect(() => {
     getCategories()
       .then((res) => res.json())
@@ -124,10 +123,9 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
         cancelText="Cancel"
         onCancel={() => {
           onCancel();
+          setUploadList([]);
         }}
-
         confirmLoading={confirmLoading}
-
         onOk={() => {
           setConfirmLoading(true);
 

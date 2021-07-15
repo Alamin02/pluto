@@ -106,13 +106,16 @@ export default function EditProductModal({
   };
 
   useEffect(() => {
-    if (productImages.length === 4) {
+    if (productImages.length >= 4) {
       setUploadButtonStatus(true);
     } else {
       setUploadButtonStatus(false);
     }
   }, [productImages]);
-
+  const handleImageFromState = (id, originalname) => {
+    setProductImages(productImages.filter((image) => image.id !== id));
+    setUploadList(uploadList.filter((image) => image.name !== originalname));
+  };
   return (
     <div>
       <Modal
@@ -131,9 +134,7 @@ export default function EditProductModal({
             .validateFields()
             .then((values) => {
               const newValues = { ...values, productImages };
-              if (productImages.length > 4) {
-                message.error("Only 4 images can be added!");
-              } else {
+              if (productImages.length <= 4) {
                 editProduct(existingRecord.id, newValues, token)
                   .then((res) => res.json())
                   .then(({ success, message: msg, error }) => {
@@ -148,6 +149,8 @@ export default function EditProductModal({
                       message.error(error);
                     }
                   });
+              } else {
+                message.error("Only 4 images can be added!");
               }
             })
             .catch((info) => {
@@ -278,15 +281,9 @@ export default function EditProductModal({
                     <CloseCircleOutlined
                       onClick={() => {
                         deleteProductImage(productImage.id, token);
-                        setProductImages(
-                          productImages.filter(
-                            (image) => image.id !== productImage.id
-                          )
-                        );
-                        setUploadList(
-                          uploadList.filter(
-                            (image) => image.name !== productImage.originalname
-                          )
+                        handleImageFromState(
+                          productImage.id,
+                          productImage.originalname
                         );
                       }}
                       style={deleteButtonStyle}

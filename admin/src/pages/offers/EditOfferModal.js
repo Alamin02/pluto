@@ -4,11 +4,9 @@ import {
   CloseCircleOutlined,
   UploadOutlined,
   LoadingOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
-import {
-  editOffer,
-  deleteOfferImage as deleteOfferImages,
-} from "../../client/offers.client";
+import { editOffer, deleteOfferImage } from "../../client/offers.client";
 
 const imageStyle = {
   display: "inline-block",
@@ -42,7 +40,8 @@ export default function EditOfferModal({
   const [form] = Form.useForm();
 
   const [offerImages, setOfferImages] = useState([]);
-  const [spinStatus, setSpinStatus] = useState(false);
+  const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
+  const [uploadList, setUploadList] = useState([]);
   const token = localStorage.getItem("token");
   useEffect(() => {
     form.resetFields();
@@ -51,35 +50,44 @@ export default function EditOfferModal({
     }
   }, [existingRecord, form, refetch]);
 
-  const deleteOfferImage = (offerImageId) => {
-    deleteOfferImages(offerImageId, token)
-      .then((res) => res.json())
-      .then(({ data }) => refetch());
-  };
+  // const deleteOfferImage = (offerImageId) => {
+  //   deleteOfferImages(offerImageId, token)
+  //     .then((res) => res.json())
+  //     .then(({ data }) => refetch());
+  // };
 
   const handleUpload = async (info) => {
     const { status } = info.file;
+    setUploadList(info.fileList);
     const { response } = info.file;
-    if (status === "uploading") {
-      setSpinStatus(true);
-    }
+
     if (status !== "uploading") {
       if (response) {
         setOfferImages([...offerImages, ...response.data]);
       }
     }
     if (status === "done") {
-      setSpinStatus(false);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
-      setSpinStatus(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
-  const handleImageFromState = (id) =>
+  const handleImageFromState = (id, originalname) => {
     setOfferImages(
       offerImages && offerImages.filter((offerImage) => offerImage.id !== id)
     );
+    setUploadList(
+      uploadList.filter((offerImage) => offerImage.name !== originalname)
+    );
+  };
+
+  useEffect(() => {
+    if (offerImages.length >= 4) {
+      setUploadButtonStatus(true);
+    } else {
+      setUploadButtonStatus(false);
+    }
+  }, [offerImages]);
 
   return (
     <div>
@@ -88,7 +96,10 @@ export default function EditOfferModal({
         title="Edit offer"
         okText="Save"
         cancelText="Cancel"
-        onCancel={onCancel}
+        onCancel={() => {
+          onCancel();
+          setUploadList([]);
+        }}
         forceRender
         onOk={() => {
           const token = localStorage.getItem("token");
@@ -97,18 +108,24 @@ export default function EditOfferModal({
             .then((values) => {
               const valuesWithImages = { ...values, offerImages };
 
-              editOffer(valuesWithImages, token, existingRecord.id)
-                .then((res) => res.json())
-                .then(({ success, message: msg, error }) => {
-                  if (success) {
-                    message.success(msg);
-                    refetch();
-                    form.resetFields();
-                    onCreate(values);
-                  } else {
-                    message.error(error);
-                  }
-                });
+              if (offerImages.length <= 4) {
+                editOffer(valuesWithImages, token, existingRecord.id)
+                  .then((res) => res.json())
+                  .then(({ success, message: msg, error }) => {
+                    if (success) {
+                      message.success(msg);
+                      setOfferImages([]);
+                      setUploadList([]);
+                      // refetch();
+                      form.resetFields();
+                      onCreate(values);
+                    } else {
+                      message.error(error);
+                    }
+                  });
+              } else {
+                message.error("Only 4 offerImages can be added!");
+              }
             })
             .catch((info) => {
               console.log("Validate Failed:", info);
@@ -172,8 +189,11 @@ export default function EditOfferModal({
                   </div>
                   <CloseCircleOutlined
                     onClick={() => {
-                      deleteOfferImage(offerImage.id);
-                      handleImageFromState(offerImage.id);
+                      deleteOfferImage(offerImage.id, token);
+                      handleImageFromState(
+                        offerImage.id,
+                        offerImage.originalname
+                      );
                     }}
                     style={deleteButtonStyle}
                   />
@@ -181,25 +201,22 @@ export default function EditOfferModal({
               </div>
             ))}
           <br />
-          {!spinStatus ? (
-            <Upload
-              name="offerImages"
-              action="http://localhost:4000/api/v1/offer-image"
-              onChange={handleUpload}
-              showUploadList={false}
-              accept="image/*"
-              multiple={true}
-              headers={{ Authorization: `Bearer ${token}` }}
-            >
-              <Button icon={<UploadOutlined />}>
-                Add more images to Upload
-              </Button>
-            </Upload>
-          ) : (
-            <span>
-              <Spin indicator={<LoadingOutlined />} /> Uploading...
-            </span>
-          )}
+
+          <Upload
+            name="offerImages"
+            action="http://localhost:4000/api/v1/offer-images"
+            headers={{ Authorization: `Bearer ${token}` }}
+            onChange={handleUpload}
+            fileList={uploadList}
+            showUploadList={{ showRemoveIcon: false }}
+            accept="image/*"
+            multiple={true}
+            maxCount={4}
+          >
+            <Button disabled={uploadButtonStatus} icon={<PlusOutlined />}>
+              Add more images to Upload
+            </Button>
+          </Upload>
         </Form>
       </Modal>
     </div>

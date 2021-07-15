@@ -12,11 +12,9 @@ export async function createCarousel(
   try {
     const { title, summary, link, carouselImage } = req.body;
     const carouselRepository = getConnection().getRepository(Carousel);
-    console.log(req.body);
+
     const duplicate = await carouselRepository.findOne({ title });
     if (!duplicate) {
-      // const file = req.file as Express.Multer.File;
-
       const newCarousel = new Carousel();
       newCarousel.title = title;
       newCarousel.summary = summary;

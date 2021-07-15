@@ -85,7 +85,14 @@ export default function EditOfferModal({
       setUploadButtonStatus(false);
     }
   }, [offerImages]);
-
+  const handleCancelForImage = () => {
+    if (offerImages.length) {
+      onCancel();
+      setUploadList([]);
+    } else {
+      message.error("Offers must have an offerImage!");
+    }
+  };
   return (
     <div>
       <Modal
@@ -94,8 +101,7 @@ export default function EditOfferModal({
         okText="Save"
         cancelText="Cancel"
         onCancel={() => {
-          onCancel();
-          setUploadList([]);
+          handleCancelForImage();
         }}
         onOk={() => {
           const token = localStorage.getItem("token");

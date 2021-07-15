@@ -104,6 +104,7 @@ export default function EditProductModal({
       message.error(`${info.file.name} file upload failed.`);
     }
   };
+
   const handleResetState = () => {
     setProductImages([]);
     setUploadList([]);
@@ -116,10 +117,21 @@ export default function EditProductModal({
       setUploadButtonStatus(false);
     }
   }, [productImages]);
+
   const handleImageFromState = (id, originalname) => {
     setProductImages(productImages.filter((image) => image.id !== id));
     setUploadList(uploadList.filter((image) => image.name !== originalname));
   };
+
+  const handleCancelForImage = () => {
+    if (productImages.length) {
+      onCancel();
+      setUploadList([]);
+    } else {
+      message.error("Products must have an productImage!");
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -129,8 +141,7 @@ export default function EditProductModal({
         forceRender={true}
         cancelText="Cancel"
         onCancel={() => {
-          onCancel();
-          setUploadList([]);
+          handleCancelForImage();
         }}
         onOk={() => {
           const token = localStorage.getItem("token");

@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, message, Upload, Button, Spin, Image } from "antd";
-import {
-  UploadOutlined,
-  LoadingOutlined,
-  CloseCircleOutlined,
-} from "@ant-design/icons";
+import { Modal, Form, Input, message, Upload, Button, Image } from "antd";
+import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { createOffer, deleteOfferImage } from "../../client/offers.client";
 
 const imageStyle = {

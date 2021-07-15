@@ -287,7 +287,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
               maxCount={4}
             >
               <Button icon={<UploadOutlined />} disabled={uploadButtonStatus}>
-                add productImages to upload (maximum: 4)
+                add productImages to upload (max: 4)
               </Button>
             </Upload>
           </Form.Item>

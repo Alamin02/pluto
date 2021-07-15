@@ -208,7 +208,7 @@ export default function EditOfferModal({
             maxCount={4}
           >
             <Button disabled={uploadButtonStatus} icon={<PlusOutlined />}>
-              Add more images to Upload
+              Add more offerImages to Upload (max:4)
             </Button>
           </Upload>
         </Form>

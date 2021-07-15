@@ -308,7 +308,7 @@ export default function EditProductModal({
               maxCount={4}
             >
               <Button icon={<PlusOutlined />} disabled={uploadButtonStatus}>
-                Add more images to Upload
+                Add more productImages to Upload (max: 4)
               </Button>
             </Upload>
           </Form.Item>

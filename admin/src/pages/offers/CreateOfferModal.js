@@ -209,7 +209,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
             accept="image/*"
           >
             <Button disabled={uploadButtonStatus} icon={<UploadOutlined />}>
-              Add offerImages (max: 4 )
+              Add offerImages to upload (max: 4 )
             </Button>
           </Upload>
         </Form>

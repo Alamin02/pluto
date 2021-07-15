@@ -14,6 +14,7 @@ import userImageRouter from "./userImages";
 import carouselRouter from "./carousels.route";
 import carouselImageRouter from "./carouselImages";
 import featuredProductRouter from "./featuredProducts.route";
+import imageRouter from "./images.route";
 
 const router = Router();
 
@@ -31,5 +32,6 @@ router.use("/user-image", userImageRouter);
 router.use("/carousels", carouselRouter);
 router.use("/carousel-image", carouselImageRouter);
 router.use("/featured-products", featuredProductRouter);
+router.use("/image", imageRouter);
 
 export default router;

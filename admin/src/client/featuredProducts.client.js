@@ -1,13 +1,14 @@
 const baseUrl = "http://localhost:4000/api/v1";
 
 // carousel
-export const createFeaturedProduct = async (formData, token) => {
+export const createFeaturedProduct = async (values, token) => {
   return fetch(`${baseUrl}/featured-products`, {
     method: "post",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
-    body: formData,
+    body: JSON.stringify(values),
   });
 };
 
@@ -22,6 +23,16 @@ export const getFeaturedProducts = async () => {
 
 export const deleteFeaturedProduct = async (token, producId) => {
   return fetch(`${baseUrl}/featured-products/${producId}`, {
+    method: "delete",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const deleteImage = async (imageId, token) => {
+  return fetch(`${baseUrl}/image/${imageId}`, {
     method: "delete",
     headers: {
       Authorization: `Bearer ${token}`,

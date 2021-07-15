@@ -9,26 +9,16 @@ export async function createFeaturedProduct(
   res: express.Response
 ) {
   try {
-    const { title, productId } = req.body;
+    const { title, productId, featuredProductImage } = req.body;
 
-    const productsRepository = getConnection().getRepository(Product);
     const featuredProductRepository =
       getConnection().getRepository(FeaturedProduct);
-    const featuredProductImageRepository =
-      getConnection().getRepository(FeaturedProductImage);
 
     const duplicate = await featuredProductRepository.findOne({ title });
     if (!duplicate) {
-      const file = req.file as Express.Multer.File;
-
-      const featuredProductImage = new FeaturedProductImage();
-      featuredProductImage.path = file.path;
-      featuredProductImage.originalName = file.originalname;
-
-      await featuredProductImageRepository.save(featuredProductImage);
-
       const newFeaturedProduct = new FeaturedProduct();
       newFeaturedProduct.title = title;
+      newFeaturedProduct.image = featuredProductImage;
 
       const productCheck = await featuredProductRepository.findOne({
         productId,
@@ -44,7 +34,7 @@ export async function createFeaturedProduct(
         });
       }
 
-      newFeaturedProduct.image = featuredProductImage;
+      // newFeaturedProduct.image = featuredProductImage;
 
       await featuredProductRepository.save(newFeaturedProduct);
       return res.status(200).json({

@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from "typeorm";
 
-import { FeaturedProductImage } from "../entity";
+import { FeaturedProductImage, Image } from "../entity";
 
 @Entity("featuredProducts")
 export class FeaturedProduct {
@@ -19,13 +19,18 @@ export class FeaturedProduct {
   @Column("varchar")
   productId!: string;
 
-  @OneToOne(
-    () => FeaturedProductImage,
-    (featuredProductImage) => featuredProductImage.featuredProduct,
-    {
-      onDelete: "CASCADE",
-    }
-  )
+  // @OneToOne(
+  //   () => FeaturedProductImage,
+  //   (featuredProductImage) => featuredProductImage.featuredProduct,
+  //   {
+  //     onDelete: "CASCADE",
+  //   }
+  // )
+  // @JoinColumn()
+  // image!: FeaturedProductImage;
+  @OneToOne(() => Image, (image) => image.featuredProduct, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
-  image!: FeaturedProductImage;
+  image!: Image;
 }

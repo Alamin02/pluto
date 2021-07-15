@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Upload, message, Button, Image } from "antd";
 import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 
@@ -32,6 +32,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
   const [carouselImage, setCarouselImage] = useState(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [uploadList, setUploadList] = useState([]);
+  const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -48,12 +49,21 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
       message.error(`${name} file upload failed`);
     }
   };
+
   const handleImageFromState = (originalname) => {
     setUploadList(
       uploadList.filter((image) => image.name !== carouselImage.originalname)
     );
     setCarouselImage(null);
   };
+
+  useEffect(() => {
+    if (carouselImage) {
+      setUploadButtonStatus(true);
+    } else {
+      setUploadButtonStatus(false);
+    }
+  }, [carouselImage]);
 
   return (
     <div>
@@ -77,20 +87,25 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
             .then((values) => {
               const valuesWithImage = { ...values, carouselImage };
 
-              createCarousel(valuesWithImage, token)
-                .then((res) => res.json())
-                .then(({ success, message: msg, error }) => {
-                  setConfirmLoading(false);
-                  if (success) {
-                    form.resetFields();
-                    setUploadList([]);
-                    setCarouselImage(null);
-                    onCreate(values);
-                    message.success(msg, 3);
-                  } else {
-                    message.error(error, 5);
-                  }
-                });
+              if (carouselImage) {
+                createCarousel(valuesWithImage, token)
+                  .then((res) => res.json())
+                  .then(({ success, message: msg, error }) => {
+                    setConfirmLoading(false);
+                    if (success) {
+                      form.resetFields();
+                      setUploadList([]);
+                      setCarouselImage(null);
+                      onCreate(values);
+                      message.success(msg, 3);
+                    } else {
+                      message.error(error, 5);
+                    }
+                  });
+              } else {
+                setConfirmLoading(false);
+                message.error("Carousel image required!");
+              }
             })
 
             .catch(({ errors }) => {
@@ -154,8 +169,8 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
             accept="image/*"
             maxCount={1}
           >
-            <Button icon={<UploadOutlined />}>
-              Add carosel image to upload
+            <Button disabled={uploadButtonStatus} icon={<UploadOutlined />}>
+              Add carousel image to upload
             </Button>
           </Upload>
         </Form>

@@ -21,7 +21,7 @@ router.use("/auth", authRouter);
 router.use("/users", userRouter);
 router.use("/products", productRouter);
 router.use("/offers", offersRouter);
-router.use("/offer-image", offerImageRouter);
+router.use("/offer-images", offerImageRouter);
 router.use("/category", categoryRouter);
 router.use("/blogs", blogRouter);
 router.use("/orders", orderRouter);

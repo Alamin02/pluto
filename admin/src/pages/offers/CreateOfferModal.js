@@ -204,7 +204,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
             ))}
           <Upload
             name="offerImages"
-            action="http://localhost:4000/api/v1/offer-image"
+            action="http://localhost:4000/api/v1/offer-images"
             headers={{ Authorization: `Bearer ${token}` }}
             onChange={(info) => handleUpload(info)}
             fileList={uploadList}

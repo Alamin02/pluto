@@ -3,28 +3,7 @@ import { Modal, Form, Input, Upload, message, Button, Image } from "antd";
 import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 
 import { createCarousel, deleteImage } from "../../client/carousels.client";
-
-const imageStyle = {
-  display: "inline-block",
-  position: "relative",
-};
-
-const titleStyle = {
-  display: "inline-block",
-  position: "absolute",
-  top: "40%",
-  width: "300px",
-  margin: "0px 20px",
-};
-
-const deleteButtonStyle = {
-  cursor: "pointer",
-  position: "absolute",
-  marginLeft: "325px",
-  top: "40%",
-  fontSize: "25px",
-  color: "red",
-};
+import DisplayImage from "../../components/DisplayImage";
 
 export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
@@ -141,24 +120,12 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
             <Input.TextArea />
           </Form.Item>
 
-          {carouselImage && (
-            <div>
-              <div style={imageStyle}>
-                <Image width={100} height={136} src={carouselImage.path} />
-                <div style={titleStyle}>
-                  <p>{carouselImage.originalname}</p>
-                </div>
-
-                <CloseCircleOutlined
-                  onClick={() => {
-                    deleteImage(carouselImage.id, token);
-                    handleImageFromState(carouselImage.originalname);
-                  }}
-                  style={deleteButtonStyle}
-                />
-              </div>
-            </div>
-          )}
+          <DisplayImage
+            imageArray={carouselImage ? [carouselImage] : []}
+            token={token}
+            deleteImage={deleteImage}
+            handleImageFromState={handleImageFromState}
+          />
           <br />
           <Upload
             name="image"

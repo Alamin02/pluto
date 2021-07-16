@@ -7,27 +7,7 @@ import {
   deleteImage,
 } from "../../client/featuredProducts.client";
 
-const imageStyle = {
-  display: "inline-block",
-  position: "relative",
-};
-
-const titleStyle = {
-  display: "inline-block",
-  position: "absolute",
-  top: "40%",
-  width: "300px",
-  margin: "0px 20px",
-};
-
-const deleteButtonStyle = {
-  cursor: "pointer",
-  position: "absolute",
-  marginLeft: "325px",
-  top: "40%",
-  fontSize: "25px",
-  color: "red",
-};
+import DisplayImage from "../../components/DisplayImage";
 
 export default function CreateFeaturedProductModal({
   visible,
@@ -56,7 +36,7 @@ export default function CreateFeaturedProductModal({
     }
   };
 
-  const handleImageFromState = (originalname) => {
+  const handleImageFromState = (id, originalname) => {
     setUploadList(uploadList.filter((image) => image.name !== originalname));
     setFeaturedImage(null);
   };
@@ -145,24 +125,12 @@ export default function CreateFeaturedProductModal({
         >
           <Input />
         </Form.Item>
-        {featuredProductImage && (
-          <div>
-            <div style={imageStyle}>
-              <Image width={100} height={136} src={featuredProductImage.path} />
-              <div style={titleStyle}>
-                <p>{featuredProductImage.originalname}</p>
-              </div>
-
-              <CloseCircleOutlined
-                onClick={() => {
-                  deleteImage(featuredProductImage.id, token);
-                  handleImageFromState(featuredProductImage.originalname);
-                }}
-                style={deleteButtonStyle}
-              />
-            </div>
-          </div>
-        )}
+        <DisplayImage
+          imageArray={featuredProductImage ? [featuredProductImage] : []}
+          token={token}
+          deleteImage={deleteImage}
+          handleImageFromState={handleImageFromState}
+        />
         <br />
         <Upload
           name="image"

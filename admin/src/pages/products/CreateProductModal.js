@@ -8,9 +8,8 @@ import {
   message,
   Select,
   Button,
-  Image,
 } from "antd";
-import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 
 import {
   createProduct,
@@ -18,30 +17,9 @@ import {
 } from "../../client/products.client";
 import { getOffers } from "../../client/offers.client";
 import { getCategories } from "../../client/category.client";
+import DisplayImage from "../../components/DisplayImage";
 
 const { Option } = Select;
-
-const imageStyle = {
-  display: "inline-block",
-  position: "relative",
-};
-
-const titleStyle = {
-  display: "inline-block",
-  position: "absolute",
-  top: "40%",
-  width: "300px",
-  margin: "0px 20px",
-};
-
-const deleteButtonStyle = {
-  cursor: "pointer",
-  position: "absolute",
-  marginLeft: "325px",
-  top: "40%",
-  fontSize: "25px",
-  color: "red",
-};
 
 export default function ProductForm({ visible, onCreate, onCancel }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
@@ -95,28 +73,31 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
       message.error(`${info.file.name} file upload failed.`);
     }
   };
-  const handleImageFromState = (id) =>
+  const handleImageFromState = (id, originalname) => {
     setProductImages(
       productImages.filter((productImage) => productImage.id !== id)
     );
+    setUploadList(uploadList.filter((image) => image.name !== originalname));
+  };
 
-  const handleImage = () => {
+  const handleResetState = () => {
     setProductImages([]);
     setUploadList([]);
   };
 
   useEffect(() => {
-    if (uploadList.length === 4) {
+    if (productImages.length >= 4) {
       setUploadButtonStatus(true);
     } else {
       setUploadButtonStatus(false);
     }
-  }, [uploadList]);
+  }, [productImages]);
 
   return (
     <div>
       <Modal
         form={form}
+        forceRender={true}
         visible={visible}
         title="Add Product"
         okText="Create"
@@ -143,7 +124,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
                   if (success) {
                     form.resetFields();
                     onCreate(values);
-                    handleImage();
+                    handleResetState();
                     message.success(msg, 3);
                   } else {
                     message.error(error, 5);
@@ -247,32 +228,15 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
                 ))}
             </Select>
           </Form.Item>
-          <br />
-          <Form.Item>
-            {productImages &&
-              productImages.map((productImage) => (
-                <div key={productImage.id}>
-                  <div style={imageStyle}>
-                    <Image width={100} height={136} src={productImage.path} />
-                    <div style={titleStyle}>
-                      <p>{productImage.originalname}</p>
-                    </div>
 
-                    <CloseCircleOutlined
-                      onClick={() => {
-                        deleteProductImage(productImage.id, token);
-                        handleImageFromState(productImage.id);
-                        setUploadList(
-                          uploadList.filter(
-                            (image) => image.name !== productImage.originalname
-                          )
-                        );
-                      }}
-                      style={deleteButtonStyle}
-                    />
-                  </div>
-                </div>
-              ))}
+          <Form.Item>
+            <DisplayImage
+              imageArray={productImages}
+              token={token}
+              deleteImage={deleteProductImage}
+              handleImageFromState={handleImageFromState}
+            />
+            <br />
             <Upload
               name="productImages"
               action="http://localhost:4000/api/v1/product-images"

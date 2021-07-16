@@ -1,42 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  Form,
-  Input,
-  Select,
-  Image,
-  Upload,
-  Button,
-  message,
-} from "antd";
-import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Select, Upload, Button, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { editProduct, deleteProductImage } from "../../client/products.client";
 import { getCategories } from "../../client/category.client";
 import { getOffers } from "../../client/offers.client";
+import DisplayImage from "../../components/DisplayImage";
 
 const { Option } = Select;
-
-const imageStyle = {
-  display: "inline-block",
-  position: "relative",
-};
-
-const titleStyle = {
-  display: "inline-block",
-  position: "absolute",
-  top: "40%",
-  width: "300px",
-  margin: "0px 20px",
-};
-
-const deleteButtonStyle = {
-  cursor: "pointer",
-  position: "absolute",
-  marginLeft: "325px",
-  top: "40%",
-  fontSize: "25px",
-  color: "red",
-};
 
 export default function EditProductModal({
   visible,
@@ -284,27 +254,12 @@ export default function EditProductModal({
 
           {/* image */}
           <Form.Item>
-            {productImages &&
-              productImages.map((productImage) => (
-                <div key={productImage.id}>
-                  <div style={imageStyle}>
-                    <Image width={100} height={136} src={productImage.path} />
-                    <div style={titleStyle}>
-                      <p>{productImage.originalname}</p>
-                    </div>
-                    <CloseCircleOutlined
-                      onClick={() => {
-                        deleteProductImage(productImage.id, token);
-                        handleImageFromState(
-                          productImage.id,
-                          productImage.originalname
-                        );
-                      }}
-                      style={deleteButtonStyle}
-                    />
-                  </div>
-                </div>
-              ))}
+            <DisplayImage
+              imageArray={productImages}
+              token={token}
+              deleteImage={deleteProductImage}
+              handleImageFromState={handleImageFromState}
+            />
             <br />
 
             <Upload

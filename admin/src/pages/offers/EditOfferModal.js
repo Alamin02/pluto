@@ -2,35 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, message, Image, Upload, Button, Spin } from "antd";
 import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { editOffer, deleteOfferImage } from "../../client/offers.client";
-
-const imageStyle = {
-  display: "inline-block",
-  position: "relative",
-};
-
-const titleStyle = {
-  display: "inline-block",
-  position: "absolute",
-  top: "40%",
-  width: "300px",
-  margin: "0px 20px",
-};
-
-const deleteButtonStyle = {
-  cursor: "pointer",
-  position: "absolute",
-  marginLeft: "325px",
-  top: "40%",
-  fontSize: "25px",
-  color: "red",
-};
+import DisplayImage from "../../components/DisplayImage";
 
 export default function EditOfferModal({
   visible,
   onCreate,
   onCancel,
   existingRecord,
-  refetch,
 }) {
   const [form] = Form.useForm();
 
@@ -179,27 +157,12 @@ export default function EditOfferModal({
             <Input.TextArea />
           </Form.Item>
 
-          {offerImages &&
-            offerImages.map((offerImage) => (
-              <div key={offerImage.id}>
-                <div style={imageStyle}>
-                  <Image width={100} height={136} src={offerImage.path} />
-                  <div style={titleStyle}>
-                    <p>{offerImage.originalname}</p>
-                  </div>
-                  <CloseCircleOutlined
-                    onClick={() => {
-                      deleteOfferImage(offerImage.id, token);
-                      handleImageFromState(
-                        offerImage.id,
-                        offerImage.originalname
-                      );
-                    }}
-                    style={deleteButtonStyle}
-                  />
-                </div>
-              </div>
-            ))}
+          <DisplayImage
+            imageArray={offerImages}
+            token={token}
+            deleteImage={deleteOfferImage}
+            handleImageFromState={handleImageFromState}
+          />
           <br />
 
           <Upload

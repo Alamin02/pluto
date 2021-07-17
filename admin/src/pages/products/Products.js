@@ -190,8 +190,17 @@ export default function Products() {
           bordered
           sticky
           scroll={{ y: 1330 }}
-          // pagination={{ pageSize: 10 }}
-          pagination={false}
+          pagination={{
+            position: ["bottomCenter"],
+            defaultCurrent: 1,
+            defaultPageSize: 5,
+            pageSizeOptions: [5, 10, 20],
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total, range) => {
+              return `${range[0]} to ${range[1]} of ${total} offers`;
+            },
+          }}
           title={() => (
             <Row justify="space-between">
               <Col>
@@ -211,7 +220,7 @@ export default function Products() {
             </div>
           )}
         />
-        <Pagination
+        {/* <Pagination
           style={{ display: "flex", justifyContent: "center", margin: "50px" }}
           showQuickJumper
           defaultCurrent={1}
@@ -224,7 +233,7 @@ export default function Products() {
           showTotal={(total, range) =>
             `${range[0]} to ${range[1]} of ${total} Products`
           }
-        />
+        /> */}
       </Space>
     </div>
   );

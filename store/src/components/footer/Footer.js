@@ -19,10 +19,9 @@ function Footer() {
   const screens = useBreakpoint();
 
   return (
-    <BrowserRouter>
-      <div className={styles.footer}>
-        <div className={styles.container}>
-          {/* <Row
+    <div className={styles.footer}>
+      <div className={styles.container}>
+        {/* <Row
             className={classNames(
               { [styles.footerSectionOne]: screens },
               { [styles.footerSectionOneXs]: screens.xs }
@@ -67,72 +66,71 @@ function Footer() {
               </div>
             </Col>
           </Row> */}
-          <Row className={styles.footerSectionTwo}>
-            <Col xl={8} xs={24} className={styles.copyRight}>
-              <p>Copyright &copy; 2020</p>
-            </Col>
-            <Col xl={8} xs={24} className={styles.allAbout}>
-              <ul>
-                <li>
-                  <Link to="#">blog</Link>
-                </li>
-                <li>
-                  <Link to="#">About us</Link>
-                </li>
-                <li>
-                  <Link to="#">contact us</Link>
-                </li>
-                <li>
-                  <Link to="#">faq</Link>
-                </li>
-                <li>
-                  <Link to="#">my account</Link>
-                </li>
-              </ul>
-            </Col>
-            <Col
-              xl={8}
-              sm={24}
-              xs={24}
-              className={classNames(
-                { [styles.iconSection]: screens },
-                { [styles.iconSectionXs]: screens.xs },
-                { [styles.iconSectionXs]: screens.sm },
-                { [styles.iconSection]: screens.md },
-                { [styles.iconSection]: screens.xl },
-                { [styles.iconSection]: screens.xxl }
-              )}
-            >
-              <span>
-                <Link to="#">
-                  <TwitterOutlined />
-                </Link>
-              </span>
-              <span>
-                <Link to="#">
-                  <FacebookOutlined />
-                </Link>
-              </span>
-              <span>
-                <Link to="#">
-                  <InstagramOutlined />
-                </Link>
-              </span>
-              <span>
-                <Link to="#">
-                  <WhatsAppOutlined />
-                </Link>
-              </span>
-              <span>
-                <Link to="#">
-                  <YoutubeOutlined />
-                </Link>
-              </span>
-            </Col>
-          </Row>
-        </div>
+        <Row className={styles.footerSectionTwo}>
+          <Col xl={8} xs={24} className={styles.copyRight}>
+            <p>Copyright &copy; 2021</p>
+          </Col>
+          <Col xl={8} xs={24} className={styles.allAbout}>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/products">All products</Link>
+              </li>
+              <li>
+                <Link to="/contact">contact us</Link>
+              </li>
+              <li>
+                <Link to="#">faq</Link>
+              </li>
+              <li>
+                <Link to="#">my account</Link>
+              </li>
+            </ul>
+          </Col>
+          <Col
+            xl={8}
+            sm={24}
+            xs={24}
+            className={classNames(
+              { [styles.iconSection]: screens },
+              { [styles.iconSectionXs]: screens.xs },
+              { [styles.iconSectionXs]: screens.sm },
+              { [styles.iconSection]: screens.md },
+              { [styles.iconSection]: screens.xl },
+              { [styles.iconSection]: screens.xxl }
+            )}
+          >
+            <span>
+              <Link to="#">
+                <TwitterOutlined />
+              </Link>
+            </span>
+            <span>
+              <Link to="#">
+                <FacebookOutlined />
+              </Link>
+            </span>
+            <span>
+              <Link to="#">
+                <InstagramOutlined />
+              </Link>
+            </span>
+            <span>
+              <Link to="#">
+                <WhatsAppOutlined />
+              </Link>
+            </span>
+            <span>
+              <Link to="#">
+                <YoutubeOutlined />
+              </Link>
+            </span>
+          </Col>
+        </Row>
       </div>
-    </BrowserRouter>
+    </div>
   );
 }
 

@@ -31,11 +31,13 @@ import Products from "./pages/product/Products";
 
 import UpdateUserProfile from "./pages/user/UpdateUserProfile";
 import UserProfile from "./pages/user/UserProfile";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <Router>
       <Navbar />
+      <ScrollToTop />
       <Switch>
         <Route path="/" component={Home} exact />
 

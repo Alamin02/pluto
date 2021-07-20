@@ -85,7 +85,17 @@ export default function Carousel() {
         dataSource={carouselData}
         columns={[...columns, actionColumn]}
         bordered
-        pagination={false}
+        pagination={{
+          position: ["bottomCenter"],
+          defaultCurrent: 1,
+          defaultPageSize: 5,
+          pageSizeOptions: [5, 10, 20],
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total, range) => {
+            return `${range[0]} to ${range[1]} of ${total} offers`;
+          },
+        }}
         title={() => (
           <Title
             level={4}

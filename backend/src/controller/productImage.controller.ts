@@ -1,43 +1,50 @@
 import express = require("express");
 import { getConnection } from "typeorm";
-import { ProductImage, Product } from "../entity";
+import { ProductImage } from "../entity";
 
-// @POST //v1/api/images/:productId
+// @POST //v1/api/product-images/:productId
 // create product image
 export async function createProductImage(
   req: express.Request,
   res: express.Response
 ) {
-  const id = req.body.productId;
-  const productsRepository = getConnection().getRepository(Product);
-  const product = await productsRepository.findOne({ id });
-  const productImageRepository = getConnection().getRepository(ProductImage);
+  try {
+    const productImageRepository = getConnection().getRepository(ProductImage);
 
-  const createProductImage = [];
-  const files = req.files as Express.Multer.File[];
+    const createProductImage = [];
+    const files = req.files as Express.Multer.File[];
 
-  if (files.length && product) {
-    for (let i = 0; i < files.length; i++) {
-      const productImage = new ProductImage();
-      productImage.path = files[i].path;
-      productImage.originalname = files[i].originalname;
-      productImage.product = product;
+    if (files.length) {
+      for (let i = 0; i < files.length; i++) {
+        const productImage = new ProductImage();
+        productImage.path = files[i].path;
+        productImage.originalname = files[i].originalname;
 
-      const savedProductImage = await productImageRepository.save(productImage);
-      createProductImage.push(savedProductImage);
+        const savedProductImage = await productImageRepository.save(
+          productImage
+        );
+        createProductImage.push(savedProductImage);
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "ProductImage added!",
+        data: createProductImage,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, error: "ProductImage not found!" });
     }
-
+  } catch (error) {
+    console.log(error);
     return res
-      .status(200)
-      .json({ success: true, message: "ProductImage added!" });
-  } else {
-    return res
-      .status(400)
-      .json({ success: false, error: "ProductImage not found!" });
+      .status(500)
+      .json({ success: false, error: "Something went wrong" });
   }
 }
 
-// @GET /v1/api/images
+// @GET /v1/api/product-images
 // all products images
 export async function getAllProductsImages(
   req: express.Request,
@@ -48,12 +55,13 @@ export async function getAllProductsImages(
   return res.status(200).json({ success: true, data: allProductsImages });
 }
 
+//@GET /api/v1/product-images/:productImageId
 // Get a particular product image
 export async function getSingleImage(
   req: express.Request,
   res: express.Response
 ) {
-  const id = req.params.imageId;
+  const id = req.params.productImageId;
 
   const productImageRepository = getConnection().getRepository(ProductImage);
 
@@ -72,17 +80,17 @@ export async function getSingleImage(
   });
 }
 
-// @DELETE /v1/api/images/:imageId
+// @DELETE /v1/api/images/:productImageId
 // delete a image
 export async function deleteProductImage(
   req: express.Request,
   res: express.Response
 ) {
   try {
-    const Id = req.params.imageId;
+    const Id = req.params.productImageId;
     const productImageRepository = getConnection().getRepository(ProductImage);
-    const imageToUpdate = await productImageRepository.findOne({ id: Id });
-    if (imageToUpdate) {
+    const imageToDelete = await productImageRepository.findOne({ id: Id });
+    if (imageToDelete) {
       await productImageRepository.delete(Id);
       return res
         .status(200)
@@ -94,6 +102,7 @@ export async function deleteProductImage(
       });
     }
   } catch (error) {
-    return res.status(400).json("Something went wrong");
+    console.log(error);
+    return res.status(500).json("Something went wrong");
   }
 }

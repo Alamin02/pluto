@@ -123,7 +123,6 @@ export default function Offers() {
           onCancel={() => {
             setVisible(false);
           }}
-          refetch={fetchOffers}
         />
 
         <EditOfferModal

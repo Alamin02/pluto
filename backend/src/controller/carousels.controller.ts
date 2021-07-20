@@ -10,25 +10,16 @@ export async function createCarousel(
   res: express.Response
 ) {
   try {
-    const { title, summary, link } = req.body;
+    const { title, summary, link, carouselImage } = req.body;
     const carouselRepository = getConnection().getRepository(Carousel);
-    const carouselImageRepository =
-      getConnection().getRepository(CarouselImage);
+
     const duplicate = await carouselRepository.findOne({ title });
     if (!duplicate) {
-      const file = req.file as Express.Multer.File;
-
-      const carouselImage = new CarouselImage();
-      carouselImage.path = file.path;
-      carouselImage.originalName = file.originalname;
-
-      await carouselImageRepository.save(carouselImage);
-
       const newCarousel = new Carousel();
       newCarousel.title = title;
       newCarousel.summary = summary;
-      newCarousel.link = link || "#";
       newCarousel.image = carouselImage;
+      newCarousel.link = link || "#";
 
       await carouselRepository.save(newCarousel);
       return res.status(200).json({

@@ -1,44 +1,38 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, message, Upload, Button, Spin, Image } from "antd";
-import {
-  UploadOutlined,
-  LoadingOutlined,
-  CloseCircleOutlined,
-} from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Modal, Form, Input, message, Upload, Button, Image } from "antd";
+import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { createOffer, deleteOfferImage } from "../../client/offers.client";
+import DisplayImage from "../../components/DisplayImage";
 
-const imageStyle = {
-  display: "inline-block",
-  position: "relative",
-};
+// const imageStyle = {
+//   display: "inline-block",
+//   position: "relative",
+// };
 
-const titleStyle = {
-  display: "inline-block",
-  position: "absolute",
-  top: "40%",
-  width: "300px",
-  margin: "0px 20px",
-};
+// const titleStyle = {
+//   display: "inline-block",
+//   position: "absolute",
+//   top: "40%",
+//   width: "300px",
+//   margin: "0px 20px",
+// };
 
-const deleteButtonStyle = {
-  cursor: "pointer",
-  position: "absolute",
-  marginLeft: "325px",
-  top: "40%",
-  fontSize: "25px",
-  color: "red",
-};
+// const deleteButtonStyle = {
+//   cursor: "pointer",
+//   position: "absolute",
+//   marginLeft: "325px",
+//   top: "40%",
+//   fontSize: "25px",
+//   color: "red",
+// };
 
-export default function CreateOfferModal({
-  visible,
-  onCreate,
-  onCancel,
-  refetch,
-}) {
+export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [offerImages, setOfferImages] = useState([]);
-  const [uploadSpinner, setUploadSpinner] = useState(false);
+  const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
+  const [uploadList, setUploadList] = useState([]);
+  const token = localStorage.getItem("token");
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -47,34 +41,45 @@ export default function CreateOfferModal({
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const handleImages = () => {
+
+  const handleResetState = () => {
     setOfferImages([]);
+    setUploadList([]);
   };
 
   const handleUpload = async (info) => {
     const { response } = info.file;
-
+    setUploadList(info.fileList);
     if (response) {
       if (response.success) {
         setOfferImages([...offerImages, ...response.data]);
       }
     }
     const { status } = info.file;
-    if (status === "uploading") {
-      setUploadSpinner(true);
-    }
+
     if (status === "done") {
-      setUploadSpinner(false);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
-      setUploadSpinner(false);
       message.error(`${info.file.name} file upload failed.`);
     }
   };
-  const handleImageFromState = (id) =>
+  const handleImageFromState = (id, originalname) => {
     setOfferImages(
       offerImages && offerImages.filter((offerImage) => offerImage.id !== id)
     );
+    setUploadList(
+      uploadList &&
+        uploadList.filter((offerImage) => offerImage.name !== originalname)
+    );
+  };
+
+  useEffect(() => {
+    if (offerImages.length >= 4) {
+      setUploadButtonStatus(true);
+    } else {
+      setUploadButtonStatus(false);
+    }
+  }, [offerImages]);
 
   return (
     <div>
@@ -86,7 +91,7 @@ export default function CreateOfferModal({
         confirmLoading={confirmLoading}
         onCancel={() => {
           onCancel();
-          handleImages();
+          setUploadList([]);
         }}
         onOk={() => {
           setConfirmLoading(true);
@@ -98,24 +103,29 @@ export default function CreateOfferModal({
             .then((values) => {
               const newValues = { ...values, offerImages };
 
-              createOffer(newValues, token)
-                .then((res) => res.json())
-                .then(({ success, message: msg, error }) => {
-                  setConfirmLoading(false);
-                  if (success) {
-                    form.resetFields();
-                    onCreate(values);
-                    message.success(msg, 3);
-                  } else {
-                    message.error(error, 5);
-                  }
-                });
+              if (offerImages.length <= 4) {
+                createOffer(newValues, token)
+                  .then((res) => res.json())
+                  .then(({ success, message: msg, error }) => {
+                    setConfirmLoading(false);
+                    if (success) {
+                      form.resetFields();
+                      handleResetState();
+                      onCreate(values);
+                      message.success(msg, 3);
+                    } else {
+                      message.error(error, 5);
+                    }
+                  });
+              } else {
+                setConfirmLoading(false);
+                message.error("Only 4 offerImages can be added!");
+              }
             })
             .catch((info) => {
               setConfirmLoading(false);
               console.log("Validate Failed");
             });
-          handleImages();
         }}
       >
         <Form
@@ -167,7 +177,7 @@ export default function CreateOfferModal({
             <Input.TextArea />
           </Form.Item>
 
-          {offerImages &&
+          {/* {offerImages &&
             offerImages.map((offerImage) => (
               <div key={offerImage.id}>
                 <div style={imageStyle}>
@@ -178,30 +188,39 @@ export default function CreateOfferModal({
 
                   <CloseCircleOutlined
                     onClick={() => {
-                      deleteOfferImage(offerImage.id);
-                      handleImageFromState(offerImage.id);
+                      deleteOfferImage(offerImage.id, token);
+                      handleImageFromState(
+                        offerImage.id,
+                        offerImage.originalname
+                      );
                     }}
                     style={deleteButtonStyle}
                   />
                 </div>
               </div>
-            ))}
-          {!uploadSpinner ? (
-            <Upload
-              name="offerImages"
-              action="http://localhost:4000/api/v1/offer-image"
-              onChange={handleUpload}
-              showUploadList={false}
-              accept="image/*"
-              multiple={true}
-            >
-              <Button icon={<UploadOutlined />}>Add offer Images</Button>
-            </Upload>
-          ) : (
-            <span>
-              <Spin indicator={<LoadingOutlined />} /> Uploading...
-            </span>
-          )}
+            ))} */}
+
+          <DisplayImage
+            imageArray={offerImages}
+            token={token}
+            deleteImage={deleteOfferImage}
+            handleImageFromState={handleImageFromState}
+          />
+
+          <Upload
+            name="offerImages"
+            action="http://localhost:4000/api/v1/offer-images"
+            headers={{ Authorization: `Bearer ${token}` }}
+            onChange={(info) => handleUpload(info)}
+            fileList={uploadList}
+            showUploadList={{ showRemoveIcon: false }}
+            multiple
+            accept="image/*"
+          >
+            <Button disabled={uploadButtonStatus} icon={<UploadOutlined />}>
+              Add offerImages to upload (max: 4 )
+            </Button>
+          </Upload>
         </Form>
       </Modal>
     </div>

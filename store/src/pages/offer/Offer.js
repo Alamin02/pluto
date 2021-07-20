@@ -44,7 +44,7 @@ export default function Offer() {
                     <Link to={`/products/${product.id}`}>
                       <ProductCard
                         title={product.name}
-                        src={product.images[0].path}
+                        src={product.productImage[0].path}
                         price={product.price}
                         discount={offer.discount}
                       />

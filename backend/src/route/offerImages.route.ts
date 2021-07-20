@@ -5,7 +5,7 @@ import {
   createOfferImageController,
   deleteOfferImageController,
 } from "../controller";
-import { imageUpload } from "../middleware";
+import { authenticationMiddleware, imageUpload } from "../middleware";
 
 // get offer Images
 //create offerImages
@@ -13,10 +13,16 @@ import { imageUpload } from "../middleware";
 router
   .route("/")
   .get(getAllOfferImagesController)
-  .post(imageUpload.array("offerImages", 4), createOfferImageController);
+  .post(
+    imageUpload.array("offerImages", 4),
+    authenticationMiddleware,
+    createOfferImageController
+  );
 
 // delete offer Image
-//DELETE /api/v1/offer/image/:offerImageId
-router.route("/:offerImageId").delete(deleteOfferImageController);
+//DELETE /api/v1/offer-image/:offerImageId
+router
+  .route("/:offerImageId")
+  .delete(authenticationMiddleware, deleteOfferImageController);
 
 export default router;

@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Upload, Cascader, message, Select } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import {
+  Modal,
+  Form,
+  Input,
+  Upload,
+  Cascader,
+  message,
+  Select,
+  Button,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
-import { createProduct } from "../../client/products.client";
+import {
+  createProduct,
+  deleteProductImage,
+} from "../../client/products.client";
 import { getOffers } from "../../client/offers.client";
 import { getCategories } from "../../client/category.client";
+import DisplayImage from "../../components/DisplayImage";
 
 const { Option } = Select;
-
-const layout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 18,
-  },
-};
 
 export default function ProductForm({ visible, onCreate, onCancel }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
+  const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
+  const [uploadList, setUploadList] = useState([]);
+  const token = localStorage.getItem("token");
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
@@ -39,15 +46,6 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
 
   const [form] = Form.useForm();
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -62,26 +60,53 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
 
   const handleUpload = async (info) => {
     const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
+
+    setUploadList(info.fileList);
     if (status === "done") {
+      const { response } = info.file;
+      if (response) {
+        setProductImages([...productImages, ...response.data]);
+      }
+
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
   };
+  const handleImageFromState = (id, originalname) => {
+    setProductImages(
+      productImages.filter((productImage) => productImage.id !== id)
+    );
+    setUploadList(uploadList.filter((image) => image.name !== originalname));
+  };
+
+  const handleResetState = () => {
+    setProductImages([]);
+    setUploadList([]);
+  };
+
+  useEffect(() => {
+    if (productImages.length >= 4) {
+      setUploadButtonStatus(true);
+    } else {
+      setUploadButtonStatus(false);
+    }
+  }, [productImages]);
 
   return (
     <div>
       <Modal
         form={form}
+        forceRender={true}
         visible={visible}
-        title="Add User"
+        title="Add Product"
         okText="Create"
         cancelText="Cancel"
+        onCancel={() => {
+          onCancel();
+          setUploadList([]);
+        }}
         confirmLoading={confirmLoading}
-        onCancel={onCancel}
         onOk={() => {
           setConfirmLoading(true);
 
@@ -90,33 +115,16 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
           form
             .validateFields()
             .then((values) => {
-              const formData = new FormData();
+              let newValues = { ...values, productImages };
 
-              formData.append("name", values.name);
-              formData.append("offerId", values.offer);
-              formData.append("price", values.price);
-              formData.append("summary", values.summary);
-              formData.append("description", values.description);
-
-              let categoryArray = values.categoryId;
-
-              if (categoryArray.length === 2) {
-                formData.append("categoryId", values.categoryId[1]);
-              } else {
-                formData.append("categoryId", values.categoryId[0]);
-              }
-
-              productImages.forEach((productImage) => {
-                formData.append("productImages", productImage);
-              });
-
-              createProduct(formData, token)
+              createProduct(newValues, token)
                 .then((res) => res.json())
                 .then(({ success, message: msg, error }) => {
                   setConfirmLoading(false);
                   if (success) {
                     form.resetFields();
                     onCreate(values);
+                    handleResetState();
                     message.success(msg, 3);
                   } else {
                     message.error(error, 5);
@@ -131,7 +139,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
         }}
       >
         <Form
-          {...layout}
+          layout={"vertical"}
           form={form}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -214,47 +222,38 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
             <Select defaultValue="null">
               {offerOptions &&
                 offerOptions.map((offer) => (
-                  <Option value={offer.id} id={offer.id}>
+                  <Option value={offer.id} id={offer.id} key={offer.id}>
                     {offer.name}
                   </Option>
                 ))}
             </Select>
           </Form.Item>
 
-          <Form.Item label="Dragger">
-            <Form.Item
+          <Form.Item>
+            <DisplayImage
+              imageArray={productImages}
+              token={token}
+              deleteImage={deleteProductImage}
+              handleImageFromState={handleImageFromState}
+            />
+            <br />
+            <Upload
               name="productImages"
-              valuePropName="fileList"
-              getValueFromEvent={normFile}
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: "Please input product photo",
-                },
-              ]}
+              action="http://localhost:4000/api/v1/product-images"
+              headers={{ Authorization: `Bearer ${token}` }}
+              onChange={handleUpload}
+              fileList={uploadList}
+              showUploadList={{
+                showRemoveIcon: false,
+              }}
+              multiple
+              accept="image/*"
+              maxCount={4}
             >
-              <Upload.Dragger
-                name="files"
-                onChange={handleUpload}
-                beforeUpload={(file, fileList) => {
-                  setProductImages(fileList);
-                  return false;
-                }}
-                accept="image/*"
-                multiple={true}
-              >
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">
-                  Click or drag file to this area to upload
-                </p>
-                <p className="ant-upload-hint">
-                  Support for a single or bulk upload.
-                </p>
-              </Upload.Dragger>
-            </Form.Item>
+              <Button icon={<UploadOutlined />} disabled={uploadButtonStatus}>
+                add productImages to upload (max: 4)
+              </Button>
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>

@@ -1,46 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  Form,
-  Input,
-  Select,
-  Image,
-  Upload,
-  Button,
-  message,
-} from "antd";
-import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  editProduct,
-  createProductImage,
-  deleteProductImage,
-} from "../../client/products.client";
+import { Modal, Form, Input, Select, Upload, Button, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { editProduct, deleteProductImage } from "../../client/products.client";
 import { getCategories } from "../../client/category.client";
 import { getOffers } from "../../client/offers.client";
+import DisplayImage from "../../components/DisplayImage";
 
 const { Option } = Select;
-
-const imageStyle = {
-  display: "inline-block",
-  position: "relative",
-};
-
-const titleStyle = {
-  display: "inline-block",
-  position: "absolute",
-  top: "40%",
-  width: "300px",
-  margin: "0px 20px",
-};
-
-const deleteButtonStyle = {
-  cursor: "pointer",
-  position: "absolute",
-  marginLeft: "325px",
-  top: "40%",
-  fontSize: "25px",
-  color: "red",
-};
 
 export default function EditProductModal({
   visible,
@@ -53,23 +19,10 @@ export default function EditProductModal({
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [offerOptions, setOfferOptions] = useState([]);
   const [productImages, setProductImages] = useState([]);
+  const [uploadList, setUploadList] = useState([]);
+  const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
 
-  const deleteImage = (productId) => {
-    deleteProductImage(productId)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        refetch();
-      });
-  };
-
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     form.resetFields();
@@ -82,7 +35,7 @@ export default function EditProductModal({
               .filter((entry) => entry.children !== null)
               .map((entry) => {
                 const childrenList = [];
-                
+
                 for (const child of entry.children) {
                   childrenList.push({
                     id: child.id,
@@ -96,6 +49,7 @@ export default function EditProductModal({
             setCategoryOptions(processedData.flat());
           }
         });
+      setProductImages(existingRecord.productImage);
 
       getOffers()
         .then((res) => res.json())
@@ -107,22 +61,44 @@ export default function EditProductModal({
 
   const handleUpload = async (info) => {
     const { status } = info.file;
+    setUploadList(info.fileList);
     if (status !== "uploading") {
-      const formData = new FormData();
-      productImages.forEach((productImage) => {
-        formData.append("productImages", productImage);
-      });
-
-      formData.append("productId", existingRecord.id);
-
-      createProductImage(formData)
-        .then((res) => console.log(res))
-        .then(() => refetch());
+      const { response } = info.file;
+      if (response) {
+        setProductImages([...productImages, ...response.data]);
+      }
     }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
+    }
+  };
+
+  const handleResetState = () => {
+    setProductImages([]);
+    setUploadList([]);
+  };
+
+  useEffect(() => {
+    if (productImages.length >= 4) {
+      setUploadButtonStatus(true);
+    } else {
+      setUploadButtonStatus(false);
+    }
+  }, [productImages]);
+
+  const handleImageFromState = (id, originalname) => {
+    setProductImages(productImages.filter((image) => image.id !== id));
+    setUploadList(uploadList.filter((image) => image.name !== originalname));
+  };
+
+  const handleCancelForImage = () => {
+    if (productImages.length) {
+      onCancel();
+      setUploadList([]);
+    } else {
+      message.error("Products must have an productImage!");
     }
   };
 
@@ -134,24 +110,32 @@ export default function EditProductModal({
         okText="Save"
         forceRender={true}
         cancelText="Cancel"
-        onCancel={onCancel}
+        onCancel={() => {
+          handleCancelForImage();
+        }}
         onOk={() => {
           const token = localStorage.getItem("token");
           form
             .validateFields()
             .then((values) => {
-              editProduct(existingRecord.id, values, token)
-                .then((res) => res.json())
-                .then(({ success, message: msg, error }) => {
-                  if (success) {
-                    form.resetFields();
-                    onCreate(values);
-                    message.success(msg);
-                    refetch();
-                  } else {
-                    message.error(error);
-                  }
-                });
+              const newValues = { ...values, productImages };
+              if (productImages.length <= 4) {
+                editProduct(existingRecord.id, newValues, token)
+                  .then((res) => res.json())
+                  .then(({ success, message: msg, error }) => {
+                    if (success) {
+                      form.resetFields();
+                      handleResetState();
+                      onCreate(values);
+                      message.success(msg);
+                      refetch();
+                    } else {
+                      message.error(error);
+                    }
+                  });
+              } else {
+                message.error("Only 4 images can be added!");
+              }
             })
             .catch((info) => {
               console.log("Validate Failed:", info);
@@ -252,7 +236,9 @@ export default function EditProductModal({
             label="Offer"
             name="offerId"
             initialValue={
-              existingRecord && existingRecord.offer && existingRecord.offer.id
+              existingRecord && existingRecord.offer
+                ? existingRecord.offer.id
+                : "null"
             }
           >
             {existingRecord && (
@@ -267,42 +253,29 @@ export default function EditProductModal({
           </Form.Item>
 
           {/* image */}
-          <Form.Item
-            label="Product Images"
-            name="productImages"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            noStyle
-          >
-            {existingRecord &&
-              existingRecord.images &&
-              existingRecord.images.map((image) => (
-                <div key={image.id}>
-                  <div style={imageStyle}>
-                    <Image width={100} height={136} src={image.path} />
-                    <div style={titleStyle}>
-                      <p>{image.originalname}</p>
-                    </div>
-                    <CloseCircleOutlined
-                      onClick={() => deleteImage(image.id)}
-                      style={deleteButtonStyle}
-                    />
-                  </div>
-                </div>
-              ))}
+          <Form.Item>
+            <DisplayImage
+              imageArray={productImages}
+              token={token}
+              deleteImage={deleteProductImage}
+              handleImageFromState={handleImageFromState}
+            />
             <br />
+
             <Upload
-              name="files"
+              name="productImages"
               onChange={handleUpload}
-              beforeUpload={(file, fileList) => {
-                setProductImages(fileList);
-                return false;
-              }}
-              showUploadList={false}
+              action="http://localhost:4000/api/v1/product-images"
+              headers={{ Authorization: `Bearer ${token}` }}
+              fileList={uploadList}
+              showUploadList={{ showRemoveIcon: false }}
               accept="image/*"
-              multiple={true}
+              multiple
+              maxCount={4}
             >
-              <Button icon={<PlusOutlined />}>Add more images to Upload</Button>
+              <Button icon={<PlusOutlined />} disabled={uploadButtonStatus}>
+                Add more productImages to Upload (max: 4)
+              </Button>
             </Upload>
           </Form.Item>
         </Form>

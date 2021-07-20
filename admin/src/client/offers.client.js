@@ -42,16 +42,17 @@ export const deleteOffer = async (token, offerId) => {
 };
 
 export const createOfferImage = async (data) => {
-  return fetch(`${baseUrl}/offer-image`, {
+  return fetch(`${baseUrl}/offer-images`, {
     method: "post",
     body: data,
   });
 };
 
-export const deleteOfferImage = async (offerImageId) => {
-  return fetch(`${baseUrl}/offer-image/${offerImageId}`, {
+export const deleteOfferImage = async (offerImageId, token) => {
+  return fetch(`${baseUrl}/offer-images/${offerImageId}`, {
     method: "delete",
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   });

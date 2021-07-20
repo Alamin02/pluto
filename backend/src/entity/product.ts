@@ -29,7 +29,7 @@ export class Product {
   description!: string;
 
   @OneToMany(() => ProductImage, (productImage) => productImage.product)
-  images!: ProductImage[];
+  productImage!: ProductImage[];
 
   @ManyToOne(() => Offer, (offer) => offer.products, { onDelete: "CASCADE" })
   offer!: Offer;

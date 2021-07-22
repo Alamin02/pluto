@@ -1,13 +1,5 @@
 const baseUrl = "http://localhost:4000/api/v1";
 
-export const getMe = async (token) => {
-  return fetch(`${baseUrl}/users/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-};
 
 export const getProfile = async (token) => {
   return fetch(`${baseUrl}/users/profile`, {

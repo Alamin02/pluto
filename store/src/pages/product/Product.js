@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import ProductView from "../../components/product-view/ProductView";
 import HeaderSection from "../../components/styled-components/HeaderSection";
-import { agent } from "../../helpers/agent";
+import { getProduct } from "../../client/products.client";
 import MainContainer from "../../components/layout/MainContainer";
 import Loading from "../../components/Loading";
 
@@ -15,8 +15,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchProduct = () => {
-      agent
-        .getProduct(id)
+      getProduct(id)
         .then((res) => res.json())
         .then(({ data }) => {
           setProduct(data);

@@ -46,7 +46,6 @@ export default function Products() {
     getProducts(queryString)
       .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data.productCount);
         setTotalProductsInfo(data);
         setProductData(data.products);
         if (selectedProduct)
@@ -77,7 +76,6 @@ export default function Products() {
   const onEdit = (record) => {
     setSelectedProduct(record);
     setVisibleEditProduct(true);
-    console.log(record);
   };
 
   // delete button message
@@ -107,7 +105,6 @@ export default function Products() {
       getProducts(queryString)
         .then((res) => res.json())
         .then(({ data }) => {
-          console.log(data.productCount);
           setTotalProductsInfo(data);
           setProductData(data.products);
           if (selectedProduct)

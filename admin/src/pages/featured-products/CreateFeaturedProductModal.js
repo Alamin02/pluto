@@ -1,17 +1,13 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Upload, message } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Modal, Form, Input, Upload, message, Button, Image } from "antd";
+import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 
-import { createFeaturedProduct } from "../../client/featuredProducts.client";
+import {
+  createFeaturedProduct,
+  deleteImage,
+} from "../../client/featuredProducts.client";
 
-const layout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 18,
-  },
-};
+import DisplayImage from "../../components/DisplayImage";
 
 export default function CreateFeaturedProductModal({
   visible,
@@ -21,11 +17,37 @@ export default function CreateFeaturedProductModal({
   const [form] = Form.useForm();
 
   const [featuredProductImage, setFeaturedImage] = useState(null);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [uploadList, setUploadList] = useState([]);
+  const [uploadButtonStatus, setUploadButtonStatus] = useState(false);
 
-  const getImageFromDragger = (event) => {
-    return event && event.file;
+  const token = localStorage.getItem("token");
+
+  const handleUpload = (info) => {
+    setUploadList(info.fileList);
+    const { status, name, response } = info.file;
+    if (status === "done") {
+      if (response) {
+        setFeaturedImage(response.data);
+      }
+      message.success(`${name} file uploaded!`);
+    } else if (status === "error") {
+      message.error(`${name} file upload failed!`);
+    }
   };
+
+  const handleImageFromState = (id, originalname) => {
+    setUploadList(uploadList.filter((image) => image.name !== originalname));
+    setFeaturedImage(null);
+  };
+
+  useEffect(() => {
+    if (featuredProductImage) {
+      setUploadButtonStatus(true);
+    } else {
+      setUploadButtonStatus(false);
+    }
+  }, [featuredProductImage]);
 
   return (
     <Modal
@@ -34,7 +56,10 @@ export default function CreateFeaturedProductModal({
       okText="Create"
       cancelText="Cancel"
       confirmLoading={confirmLoading}
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel();
+        setUploadList([]);
+      }}
       onOk={() => {
         setConfirmLoading(true);
 
@@ -43,24 +68,27 @@ export default function CreateFeaturedProductModal({
         form
           .validateFields()
           .then((values) => {
-            const formData = new FormData();
+            const valuesWithImage = { ...values, featuredProductImage };
 
-            formData.append("title", values.title);
-            formData.append("productId", values.productId);
-            formData.append("featuredProductImage", featuredProductImage);
-
-            createFeaturedProduct(formData, token)
-              .then((res) => res.json())
-              .then(({ success, message: msg, error }) => {
-                setConfirmLoading(false);
-                if (success) {
-                  form.resetFields();
-                  onCreate(values);
-                  message.success(msg, 3);
-                } else {
-                  message.error(error, 5);
-                }
-              });
+            if (featuredProductImage) {
+              setConfirmLoading(false);
+              createFeaturedProduct(valuesWithImage, token)
+                .then((res) => res.json())
+                .then(({ success, message: msg, error }) => {
+                  if (success) {
+                    form.resetFields();
+                    setUploadList([]);
+                    setFeaturedImage(null);
+                    onCreate(values);
+                    message.success(msg, 3);
+                  } else {
+                    message.error(error, 5);
+                  }
+                });
+            } else {
+              setConfirmLoading(false);
+              message.error("FeaturedProductImage required!");
+            }
           })
 
           .catch(({ errors }) => {
@@ -69,7 +97,7 @@ export default function CreateFeaturedProductModal({
           });
       }}
     >
-      <Form {...layout} form={form}>
+      <Form layout="vertical" form={form}>
         <Form.Item
           label="Product Id"
           name="productId"
@@ -97,40 +125,26 @@ export default function CreateFeaturedProductModal({
         >
           <Input />
         </Form.Item>
-
-        <Form.Item label="Dragger">
-          <Form.Item
-            name="carouselImage"
-            valuePropName="file"
-            getValueFromEvent={getImageFromDragger}
-            noStyle
-            rules={[
-              {
-                required: true,
-                message: "Please input featured product photo",
-              },
-            ]}
-          >
-            <Upload.Dragger
-              beforeUpload={(file, fileList) => {
-                setFeaturedImage(file);
-                return false;
-              }}
-              accept="image/*"
-              multiple={false}
-            >
-              <p className="ant-upload-drag-icon">
-                <InboxOutlined />
-              </p>
-              <p className="ant-upload-text">
-                Click or drag file to this area to upload
-              </p>
-              <p className="ant-upload-hint">
-                Support for a single or bulk upload.
-              </p>
-            </Upload.Dragger>
-          </Form.Item>
-        </Form.Item>
+        <DisplayImage
+          imageArray={featuredProductImage ? [featuredProductImage] : []}
+          token={token}
+          deleteImage={deleteImage}
+          handleImageFromState={handleImageFromState}
+        />
+        <br />
+        <Upload
+          name="image"
+          action="http://localhost:4000/api/v1/image"
+          headers={{ Authorization: `Bearer ${token}` }}
+          onChange={(info) => handleUpload(info)}
+          fileList={uploadList}
+          showUploadList={{ showRemoveIcon: false }}
+          accept="image/*"
+        >
+          <Button disabled={uploadButtonStatus} icon={<UploadOutlined />}>
+            add image to upload
+          </Button>
+        </Upload>
       </Form>
     </Modal>
   );

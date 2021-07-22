@@ -3,7 +3,7 @@ import { getConnection, Like } from "typeorm";
 
 import accessControl from "../utils/access-control";
 
-import { Product, Offer, Category, ProductImage } from "../entity";
+import { Product, Offer, Category } from "../entity";
 
 // @GET - baseUrl/products
 // Get all products list
@@ -21,7 +21,7 @@ export async function getAllProducts(
 
     const [products, productCount] = await productRepository.findAndCount({
       select: ["id", "name", "description", "price", "summary", "createdAt"],
-      relations: ["category", "offer", "images"],
+      relations: ["category", "offer", "productImage"],
       where: {
         name: Like(`%${search}%`),
       },
@@ -66,66 +66,68 @@ export async function createProduct(
       return res.status(403).json({ success: false, error: "Not authorized" });
     }
 
-    const { name, price, summary, description, offerId, categoryId } = req.body;
+    const {
+      name,
+      price,
+      summary,
+      description,
+      offer: offerId,
+      categoryId: categoryIdArray,
+      productImages,
+    } = req.body;
     const productsRepository = getConnection().getRepository(Product);
     const categoryRepository = getConnection().getRepository(Category);
     const offersRepository = getConnection().getRepository(Offer);
-    const productImageRepository = getConnection().getRepository(ProductImage);
 
     const previousEntry = await productsRepository.findOne({ name: name });
 
+    let categoryId;
+    if (categoryIdArray.length === 2) {
+      categoryId = categoryIdArray[1];
+    } else {
+      categoryId = categoryIdArray[0];
+    }
+
     if (!previousEntry) {
-      const categoryCheck = await categoryRepository.findOne({
-        id: categoryId,
-      });
+      if (productImages.length) {
+        const categoryCheck = await categoryRepository.findOne({
+          id: categoryId,
+        });
 
-      const productImages = [];
-      const files = req.files as Express.Multer.File[];
+        const newProduct = new Product();
 
-      if (files.length) {
-        for (let i = 0; i < files.length; i++) {
-          const productImage = new ProductImage();
-          productImage.path = files[i].path;
-          productImage.originalname = files[i].originalname;
+        newProduct.name = name;
+        newProduct.description = description;
+        newProduct.price = price;
+        newProduct.summary = summary;
+        newProduct.productImage = productImages;
 
-          const savedProductImage = await productImageRepository.save(
-            productImage
-          );
-          productImages.push(savedProductImage);
+        if (categoryCheck) {
+          newProduct.category = categoryId;
+        } else {
+          return res
+            .status(400)
+            .json({ success: false, error: "Category not found!" });
         }
-      } else {
-        return res.json({ success: false, error: "Image not found" });
-      }
+        console.log(offerId);
+        const offerCheck = await offersRepository.findOne({ id: offerId });
+        if (offerCheck) {
+          newProduct.offer = offerId;
+        } else if (offerId !== undefined) {
+          return res
+            .status(400)
+            .json({ success: false, error: "Offer not found" });
+        }
 
-      const newProduct = new Product();
-
-      newProduct.name = name;
-      newProduct.description = description;
-      newProduct.price = price;
-      newProduct.summary = summary;
-      newProduct.images = productImages;
-
-      if (categoryCheck) {
-        newProduct.category = categoryId;
+        await productsRepository.save(newProduct);
+        return res
+          .status(200)
+          .json({ success: true, message: "New product added!" });
       } else {
         return res
           .status(400)
-          .json({ success: false, error: "Category not found!" });
+          .json({ success: false, error: "ProductImage can not be empty " });
       }
-
-      const offerCheck = await offersRepository.findOne({ id: offerId });
-      if (offerCheck) {
-        newProduct.offer = offerId;
-      } else if (offerId != "undefined") {
-        return res
-          .status(400)
-          .json({ success: false, error: "Offer not found" });
-      }
-
-      await productsRepository.save(newProduct);
-      return res
-        .status(200)
-        .json({ success: true, message: "New product added!" });
     } else {
       return res
         .status(400)
@@ -150,7 +152,7 @@ export async function getProduct(req: express.Request, res: express.Response) {
 
     const findProductById = await productRepository.findOne(
       { id },
-      { relations: ["images","offer"] }
+      { relations: ["productImage", "offer"] }
     );
 
     if (!findProductById) {
@@ -190,14 +192,23 @@ export async function updateProduct(
 
     const id = req.params.productId;
 
-    const { name, price, summary, description, offerId, categoryId } = req.body;
+    const {
+      name,
+      price,
+      summary,
+      description,
+      offerId,
+      categoryId,
+      productImages,
+    } = req.body;
     const productsRepository = getConnection().getRepository(Product);
     const findProductById: any = await productsRepository.findOne({ id });
     const offersRepository = getConnection().getRepository(Offer);
     const categoriesRepository = getConnection().getRepository(Category);
     const offer = await offersRepository.findOne({ id: offerId });
-    const category = await categoriesRepository.findOne({ id: categoryId });
     const duplicate = await productsRepository.findOne({ name });
+
+    const category = await categoriesRepository.findOne({ id: categoryId });
 
     if (findProductById) {
       if (duplicate && duplicate.id !== id) {
@@ -206,27 +217,34 @@ export async function updateProduct(
           error: "Product with this title already exists!",
         });
       }
-      const newProduct = new Product();
+      if (productImages.length) {
+        const newProduct = new Product();
 
-      newProduct.name = name;
-      newProduct.description = description;
-      newProduct.price = price;
-      newProduct.summary = summary;
+        newProduct.name = name;
+        newProduct.description = description;
+        newProduct.price = price;
+        newProduct.summary = summary;
+        newProduct.productImage = productImages;
 
-      if (offer) {
-        newProduct.offer = offer;
+        if (offer) {
+          newProduct.offer = offer;
+        }
+
+        if (category) {
+          newProduct.category = category;
+        }
+
+        productsRepository.merge(findProductById, newProduct);
+
+        await productsRepository.save(findProductById);
+        return res
+          .status(200)
+          .json({ success: true, message: "Product updated!" });
+      } else {
+        return res
+          .status(200)
+          .json({ success: false, error: "ProductImage can not be empty!" });
       }
-
-      if (category) {
-        newProduct.category = category;
-      }
-
-      productsRepository.merge(findProductById, newProduct);
-
-      await productsRepository.save(findProductById);
-      return res
-        .status(200)
-        .json({ success: true, message: "Product updated!" });
     } else {
       return res
         .status(200)

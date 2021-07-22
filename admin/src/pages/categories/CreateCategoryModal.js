@@ -5,23 +5,14 @@ import { getCategories, createCategory } from "../../client/category.client";
 
 const { Option } = Select;
 
-export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
+export default function CreateCategoryModal({
+  visible,
+  onCreate,
+  onCancel,
+  categoryData,
+}) {
   const [form] = Form.useForm();
-
-  const [categoryOptions, setCategoryOptions] = useState([]);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
-
-  function fetchCategories() {
-    getCategories()
-      .then((res) => res.json())
-      .then(({ data }) => {
-        setCategoryOptions(data);
-      });
-  }
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   return (
     <div>
@@ -75,8 +66,8 @@ export default function CreateCategoryModal({ visible, onCreate, onCancel }) {
 
           <Form.Item name="parentId" label="Parent&nbsp;:">
             <Select defaultValue="null">
-              {categoryOptions &&
-                categoryOptions.map((category) => (
+              {categoryData &&
+                categoryData.map((category) => (
                   <Option value={category.id} id={category.id}>
                     {category.name}
                   </Option>

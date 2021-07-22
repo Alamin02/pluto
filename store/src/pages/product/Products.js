@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Row, Col, Pagination, Input, Select, Skeleton } from "antd";
 import qs from "query-string";
 
-import { agent } from "../../helpers/agent";
+import { getProducts } from "../../client/products.client";
 import MainHeader from "../../components/main-header/MainHeader";
 import ProductMenu from "../../components/product/ProductMenu";
 import CardItem from "../../components/product/ProductCard";
@@ -58,8 +58,7 @@ export default function Products() {
         sort,
       });
 
-      agent
-        .getProducts(queryString)
+      getProducts(queryString)
         .then((res) => res.json())
         .then(({ data }) => {
           setTotalProductsInfo(data);
@@ -120,7 +119,7 @@ export default function Products() {
                     <Link to={`/products/${product.id}`}>
                       <CardItem
                         title={product.name}
-                        src={product.images[0].path}
+                        src={product.productImage[0].path}
                         price={product.price}
                         discount={product.offer && product.offer.discount}
                       />

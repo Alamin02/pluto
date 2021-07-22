@@ -68,7 +68,7 @@ export {
   getSingleImage as getSingleImageController,
   deleteProductImage as deleteProductImageController,
   createProductImage as createProductImageController,
-} from "./productImage";
+} from "./productImage.controller";
 
 export {
   getAllOfferImages as getAllOfferImagesController,
@@ -89,3 +89,9 @@ export {
   getFeaturedProducts as getFeaturedProductsController,
   deleteFeaturedProduct as deleteFeaturedProductController,
 } from "./featuredProducts.controller";
+
+export {
+  createImage as createImageController,
+  getImage as getImageController,
+  deleteImage as deleteImageController,
+} from "./images.controller";

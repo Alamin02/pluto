@@ -113,6 +113,7 @@ export default function Catagories() {
           onCancel={() => {
             setVisibleCreateModal(false);
           }}
+          categoryData={categoryData}
         />
 
         <EditCategoryModal

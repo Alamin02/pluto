@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Select, Modal, Radio } from "antd";
+import { Form, Input, Button, Select, Modal, Radio, message } from "antd";
 import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
@@ -8,9 +8,13 @@ import MainContainer from "../../components/layout/MainContainer";
 import HeaderSection from "../../components/styled-components/HeaderSection";
 import styles from "./CheckOut.module.css";
 import Section from "../../components/styled-components/Section";
-import { agent } from "../../helpers/agent";
+
 import OrderedProducts from "../../components/check-out/OrderedProducts";
 import CreateNewAddressModal from "../../components/address/CreateNewAddressModal";
+
+import { getUserAddress } from "../../client/address.client";
+import { createOrder } from "../../client/orders.client";
+import { getMe } from "../../client/auth.client";
 
 const { Option } = Select;
 
@@ -42,8 +46,7 @@ export default function CheckOut() {
   const [userAddress, setUserAddress] = useState([]);
 
   const fetchAddresses = (token) => {
-    agent
-      .getUserAddress(token)
+    getUserAddress(token)
       .then((res) => res.json())
       .then(({ data }) => setUserAddress(data));
   };
@@ -62,40 +65,39 @@ export default function CheckOut() {
     const newOrderedProducts = [];
     for (const orderedProduct of productList) {
       newOrderedProducts.push({
-        product: {
-          id: orderedProduct.id,
-        },
+        product: { id: orderedProduct.id },
         quantity: orderedProduct.quantity,
       });
     }
 
     const order = {
       ...values,
-      user: {
-        id: user.id,
-      },
+      user: { id: user.id },
       orderedProducts: newOrderedProducts,
-      address: {
-        id: values.shippingAddress,
-      },
+      // address: {
+      //   id: values.shippingAddress,
+      // },
     };
 
-    agent
-      .createOrder(order, token)
+    createOrder(order, token)
       .then((res) => res.json())
-      .then(() =>
-        Modal.success({
-          visible: true,
-          title: "Success",
-          icon: <ExclamationCircleOutlined />,
-          content: "Your order has been placed.",
-          okText: "See your orders",
-          cancelText: "Cancel",
-          onOk() {
-            history.push("/profile");
-          },
-        })
-      )
+      .then(({ success, error }) => {
+        if (success) {
+          Modal.success({
+            visible: true,
+            title: "Success",
+            icon: <ExclamationCircleOutlined />,
+            content: "Your order has been placed.",
+            okText: "See your orders",
+            cancelText: "Cancel",
+            onOk() {
+              history.push("/profile");
+            },
+          });
+        } else {
+          message.error(error);
+        }
+      })
       .catch((error) => {
         console.log("Error while creating order.", error);
       });
@@ -103,11 +105,10 @@ export default function CheckOut() {
 
   useEffect(() => {
     if (token)
-      agent
-        .getMe(token)
+      getMe(token)
         .then((res) => res.json())
-        .then(({ data, error }) => {
-          if (error) {
+        .then(({ data, success }) => {
+          if (!success) {
             localStorage.removeItem("token");
           }
           setUser(data);
@@ -184,7 +185,7 @@ export default function CheckOut() {
         <Section heading="shipping info">
           <Form.Item
             {...tailLayout}
-            name="shippingAddress"
+            name="address"
             label="Address"
             rules={[
               {

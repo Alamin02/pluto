@@ -19,9 +19,14 @@ import classNames from "classnames";
 import styles from "./UpdateUserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
 import HeaderSection from "../../components/styled-components/HeaderSection";
-import { agent } from "../../helpers/agent";
 import ResetPasswordForm from "../auth/ForgetPassword";
 import AddressUpdateUserProfile from "../../components/address/AddressUpdateUserProfile";
+
+import {
+  getProfile,
+  updateUserInfo,
+  createUserImage,
+} from "../../client/users.client";
 
 const { useBreakpoint } = Grid;
 
@@ -55,8 +60,7 @@ export default function UpdateUserProfile() {
 
   useEffect(() => {
     if (token)
-      agent
-        .getProfile(token)
+      getProfile(token)
         .then((res) => res.json())
         .then(({ data }) => {
           if (data) {
@@ -69,8 +73,7 @@ export default function UpdateUserProfile() {
 
   const onFinish = (values) => {
     console.log(values);
-    agent
-      .updateUserInfo(values, userId, token)
+    updateUserInfo(values, userId, token)
       .then((res) => res.json())
       .then(({ token }) => {
         if (token) {
@@ -92,8 +95,7 @@ export default function UpdateUserProfile() {
         formData.append("userImage", userImage);
       });
 
-      agent
-        .createUserImage(formData, token)
+      createUserImage(formData, token)
         .then((res) => res.json())
         .then(({ data }) => {
           localStorage.setItem("data", data);

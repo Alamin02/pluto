@@ -1,6 +1,5 @@
 const baseUrl = "http://localhost:4000/api/v1";
 
-
 export const getProfile = async (token) => {
   return fetch(`${baseUrl}/users/profile`, {
     method: "get",
@@ -28,11 +27,12 @@ export const createUserImage = async (data, token) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    body: data,
   });
 };
 
 export const updateUserInfo = async (data, userId, token) => {
-  return fetch(`${baseUrl}/users/update/${userId}`, {
+  return fetch(`${baseUrl}/users/${userId}`, {
     method: "put",
     headers: {
       "Content-Type": "application/json",

@@ -1,8 +1,9 @@
 import React from "react";
 import { Modal, Form, Input, message, Select } from "antd";
+import { createAddress } from "../../client/address.client";
 
-import { agent } from "../../helpers/agent";
 const { Option } = Select;
+
 export default function CreateNewAddressModal({
   visible,
   onCreate,
@@ -27,24 +28,18 @@ export default function CreateNewAddressModal({
             .then((values) => {
               const addressData = {
                 ...values,
-                user: {
-                  id: userId,
-                },
+                user: userId,
               };
-
-              agent
-                .createAddress(addressData, token)
+              createAddress(addressData, token)
                 .then((res) => res.json())
-                .then((data) => {
-                  if (!data.errors) {
-                    message.success("New address added successfully");
+                .then(({ success, error, message: msg, data }) => {
+                  if (success) {
+                    message.success(msg);
 
                     onCreate(values);
                     form.resetFields();
                   } else {
-                    for (let error of data.errors) {
-                      message.error(error.msg);
-                    }
+                    message.error(error);
                   }
                 });
 

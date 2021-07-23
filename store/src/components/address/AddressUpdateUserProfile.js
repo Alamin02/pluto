@@ -8,6 +8,7 @@ import Section from "../../components/styled-components/Section";
 import { columns } from "../../components/address/addressTableColumns";
 import CreateNewAddressModal from "../../components/address/CreateNewAddressModal";
 import EditAddressModal from "../../components/address/EditAddressModal";
+import { getUserAddress } from "../../client/address.client.js";
 
 export default function AddressUpdateUserProfile() {
   const [visibleCreateModal, setVisibleCreateModal] = useState(false);
@@ -18,8 +19,7 @@ export default function AddressUpdateUserProfile() {
   const token = useSelector((state) => state.auth.tokenValue);
 
   const fetchAddresses = (token) => {
-    agent
-      .getUserAddress(token)
+    getUserAddress(token)
       .then((res) => res.json())
       .then(({ data }) => setUserAddress(data));
   };

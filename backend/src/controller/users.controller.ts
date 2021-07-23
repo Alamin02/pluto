@@ -28,7 +28,7 @@ export async function getUsers(req: express.Request, res: express.Response) {
 
 // @GET - baseUrl/users/:userId
 export async function getUser(req: express.Request, res: express.Response) {
-  const id = req.params.userId;
+  const { id } = res.locals.user;
 
   try {
     const userRepository = getConnection().getRepository(User);
@@ -87,16 +87,16 @@ export async function createUser(req: express.Request, res: express.Response) {
       }
 
       await userRepository.save(newUser);
+      return res.status(200).json({
+        success: true,
+        message: "New user added.",
+      });
     } catch (e) {
       console.error(e);
       return res
         .status(400)
         .json({ success: false, error: "New user could not be added" });
     }
-    return res.status(200).json({
-      success: true,
-      message: "New user added.",
-    });
   } catch (e) {
     console.error(e);
     return res.status(500).json({
@@ -205,6 +205,34 @@ export async function updateUserPassword(
       success: false,
       error: "Something went wrong",
     });
+  }
+}
+
+export async function getUserProfile(
+  req: express.Request,
+  res: express.Response
+) {
+  const { id } = res.locals.user;
+  try {
+    const userRepository = getConnection().getRepository(User);
+    const findUserById = await userRepository.findOne({
+      select: ["id", "name", "email", "phone", "role"],
+      relations: ["addresses", "image"],
+      where: {
+        id: id,
+      },
+    });
+
+    if (!findUserById) {
+      return res.status(400).json({ success: false, error: "user not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "user found", data: findUserById });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json("Something went wrong");
   }
 }
 

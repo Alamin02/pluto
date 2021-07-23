@@ -57,7 +57,7 @@ const RegistrationForm = () => {
           dispatch({ type: "auth/login", payload: token });
           message.success(msg);
           form.resetFields();
-          history.push("/");
+          history.push("/login");
         } else {
           message.error(error);
         }

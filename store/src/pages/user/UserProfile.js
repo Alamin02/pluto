@@ -7,9 +7,10 @@ import classNames from "classnames";
 import styles from "./UserProfile.module.css";
 import MainContainer from "../../components/layout/MainContainer";
 import HeaderSection from "../../components/styled-components/HeaderSection";
-import { agent } from "../../helpers/agent";
 import Section from "../../components/styled-components/Section";
 import Address from "../../components/address/Address";
+
+import { getProfile, getUserOrder } from "../../client/users.client";
 
 const { useBreakpoint } = Grid;
 
@@ -66,8 +67,7 @@ function UserProfile() {
 
   useEffect(() => {
     if (token) {
-      agent
-        .getProfile(token)
+      getProfile(token)
         .then((res) => res.json())
         .then(({ data }) => {
           if (data) {
@@ -81,8 +81,7 @@ function UserProfile() {
 
   useEffect(() => {
     if (token)
-      agent
-        .getUserOrder(token)
+      getUserOrder(token)
         .then((res) => res.json())
         .then(({ data }) => setUserOrders(data.orders))
         .catch((error) => {

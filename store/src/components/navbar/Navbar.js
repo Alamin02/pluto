@@ -17,6 +17,9 @@ import styles from "./Navbar.module.css";
 import appStyles from "../../App.module.css";
 import pluto_logo from "../../assets/logo/pluto_logo_transparent_bg.png";
 
+import { getProfile } from "../../client/users.client";
+import { getCategories } from "../../client/category.client";
+
 const { useBreakpoint } = Grid;
 const { SubMenu } = Menu;
 
@@ -31,8 +34,7 @@ function Navbar() {
   const imageData = useSelector((state) => state.file.image);
 
   function fetchProductsCategory() {
-    agent
-      .getCategories()
+    getCategories()
       .then((res) => res.json())
       .then(({ data }) => {
         setProductsCategory(data);
@@ -45,11 +47,10 @@ function Navbar() {
 
   useEffect(() => {
     if (token) {
-      agent
-        .getProfile(token)
+      getProfile(token)
         .then((res) => res.json())
-        .then(({ data, errors }) => {
-          if (errors) {
+        .then(({ data, success }) => {
+          if (!success) {
             localStorage.removeItem("token");
           }
           setUser(data);

@@ -4,7 +4,7 @@ export const createOrderSchema = Joi.object({
   user: Joi.object().required(),
   orderedProducts: Joi.array().required(),
   paymentMethod: Joi.string().required(),
-  address: Joi.object().required(),
+  address: Joi.string().required(),
 });
 
 export const updateOrderSchema = Joi.object({

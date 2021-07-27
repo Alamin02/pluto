@@ -22,7 +22,12 @@ authRouter.post(
 
 // @GET - /api/v1/auth/me
 authRouter.get("/me", authenticationMiddleware, (req, res) => {
-  res.json({ data: res.locals.user });
+  try {
+    const user = res.locals.user;
+    return res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    return res.status(500).json("Something went wrong");
+  }
 });
 
 export default authRouter;

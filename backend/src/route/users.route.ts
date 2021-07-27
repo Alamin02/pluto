@@ -25,7 +25,6 @@ userRouter
 userRouter
   .route("/:userId")
   // @GET - baseUrl/users/:userId
-  .get(authenticationMiddleware, getUserController)
   // @PUT - baseUrl/users/:userId
   .put(
     validationMiddleware(updateUserSchema),
@@ -43,5 +42,6 @@ userRouter
     authenticationMiddleware,
     updateUserPasswordController
   );
+userRouter.route("/profile").get(authenticationMiddleware, getUserController);
 
 export default userRouter;

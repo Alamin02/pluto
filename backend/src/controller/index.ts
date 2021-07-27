@@ -61,7 +61,10 @@ export {
   deleteAddress as deleteAddressController,
 } from "./addresses.controller";
 
-export { createUserImage as createUserImageController } from "./userImage";
+export {
+  createUserImage as createUserImageController,
+  getUseeImages as getUseeImagesController,
+} from "./userImage";
 
 export {
   getAllProductsImages as getAllProductsImagesController,

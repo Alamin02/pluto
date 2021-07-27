@@ -6,6 +6,8 @@ import MainContainer from "../../layout/MainContainer";
 import HeaderSection from "../../styled-components/HeaderSection";
 import styles from "./RegistrationForm.module.css";
 
+import { register } from "../../../client/auth.client";
+
 const { Link } = Typography;
 
 const formItemLayout = {
@@ -46,23 +48,18 @@ const RegistrationForm = () => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
     values.role = "user";
-    fetch("http://localhost:4000/api/v1/users/register", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
+
+    register(values)
       .then((res) => res.json())
-      .then(({ token }) => {
-        if (token) {
+      .then(({ success, error, message: msg, token }) => {
+        if (success && token) {
           localStorage.setItem("token", token);
           dispatch({ type: "auth/login", payload: token });
-          message.success("New account has been created");
+          message.success(msg);
           form.resetFields();
-          history.push("/");
+          history.push("/login");
         } else {
-          message.error("Account with similar email already exists");
+          message.error(error);
         }
       });
   };

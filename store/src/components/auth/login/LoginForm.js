@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import styles from "./LoginForm.module.css";
 import MainContainer from "../../layout/MainContainer";
 import HeaderSection from "../../styled-components/HeaderSection";
+import { login } from "../../../client/auth.client";
 
 const Login = () => {
   let history = useHistory();
@@ -16,23 +17,17 @@ const Login = () => {
   const { from } = location.state || { from: { pathname: "/" } };
 
   const onFinish = (values) => {
-    fetch("http://localhost:4000/api/v1/users/login", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
+    login(values)
       .then((res) => res.json())
-      .then(({ token }) => {
+      .then(({ success, error, message: msg, token }) => {
         if (token) {
           localStorage.setItem("token", token);
           dispatch({ type: "auth/login", payload: token });
-          message.success("Login successful");
+          message.success(msg);
           form.resetFields();
           history.replace(from);
         } else {
-          message.error("Could not login, check credentials");
+          message.error(error);
         }
       });
   };

@@ -18,6 +18,7 @@ export default function Settings() {
   return (
     <div style={{ width: "40vw" }}>
       <h1>Settings</h1>
+      <hr />
       <Form
         {...formLayout}
         size="large"

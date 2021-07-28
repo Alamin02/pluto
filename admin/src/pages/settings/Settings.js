@@ -1,4 +1,5 @@
 import { Form, Input, Button } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
 
 const formLayout = {
   labelCol: { span: 8 },
@@ -17,7 +18,10 @@ export default function Settings() {
   };
   return (
     <div style={{ width: "40vw" }}>
-      <h1>Settings</h1>
+      <h1>
+        <SettingOutlined />
+        &nbsp; Settings
+      </h1>
       <hr />
       <Form
         {...formLayout}

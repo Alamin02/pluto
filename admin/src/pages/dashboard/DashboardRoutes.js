@@ -11,8 +11,9 @@ import Blogs from "../blogs/Blogs";
 import Addresses from "../addresses/Addresses";
 import Carousel from "../carousel/Carousel";
 import FeaturedProducts from "../featured-products/FeaturedProducts";
+import Settings from "../settings/Settings";
 
-export default function DashboardContent() {
+export default function DashboardRoutes() {
   return (
     <div>
       <Switch>
@@ -28,6 +29,7 @@ export default function DashboardContent() {
         <Route path="/addresses" component={Addresses} exact />
         <Route path="/carousel" component={Carousel} exact />
         <Route path="/featured-products" component={FeaturedProducts} exact />
+        <Route path="/settings" component={Settings} exact />
       </Switch>
     </div>
   );

@@ -5,6 +5,7 @@ ac.grant("user").readAny("blog");
 ac.grant("user").readAny("product");
 ac.grant("user").readAny("category");
 ac.grant("user").readAny("offer");
+ac.grant("user").readAny("settings");
 
 ac.grant("admin")
   .readAny("blog")
@@ -29,5 +30,7 @@ ac.grant("admin")
   .createAny("offer")
   .updateAny("offer")
   .deleteAny("offer");
+
+ac.grant("admin").readAny("settings").updateAny("settings");
 
 export default ac;

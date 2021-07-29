@@ -14,5 +14,6 @@ export { CarouselImage } from "./carouselImage";
 export { Image } from "./images";
 export { FeaturedProduct } from "./featuredProduct";
 export { FeaturedProductImage } from "./featuredProductImage";
+export { Settings } from "./settings";
 
 // all entities in one file for easier managerment

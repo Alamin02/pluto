@@ -34,6 +34,6 @@ router.use("/carousels", carouselRouter);
 router.use("/carousel-image", carouselImageRouter);
 router.use("/featured-products", featuredProductRouter);
 router.use("/image", imageRouter);
-router.use("./settings", settingsRouter);
+router.use("/settings", settingsRouter);
 
 export default router;

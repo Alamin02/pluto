@@ -7,11 +7,17 @@ export async function getSettings(req: express.Request, res: express.Response) {
   try {
     const settingsRepository = getConnection().getRepository(Settings);
 
-    const settings = await settingsRepository.find();
+    const settings = (await settingsRepository.find()) || [];
+
+    const settingsObject: { [key: string]: string } = {};
+
+    settings.map((entry) => {
+      settingsObject[entry.key] = entry.value;
+    });
 
     return res.status(200).json({
       success: true,
-      data: settings,
+      data: settingsObject,
     });
   } catch (e) {
     console.error(e);
@@ -27,7 +33,7 @@ export async function updateSettings(
   res: express.Response
 ) {
   try {
-    const allowedParams = ["phone", "email", "logo", "phone"];
+    const allowedParams = ["phone", "email", "logo", "address"];
 
     const settingsRepository = getConnection().getRepository(Settings);
 

@@ -1,7 +1,8 @@
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 
-import { getSettings } from "../../client/settings.client";
+import { getSettings, updateSettings } from "../../client/settings.client";
+import { useEffect, useState } from "react";
 
 const formLayout = {
   labelCol: { span: 8 },
@@ -12,12 +13,32 @@ const formTailout = {
 };
 
 export default function Settings() {
+  const [form] = Form.useForm();
+
+  const [settings, setSettings] = useState({});
+
+  useEffect(() => {
+    getSettings()
+      .then((res) => res.json())
+      .then(({ data }) => {
+        setSettings(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    form.resetFields();
+  }, [settings]);
+
   const onFinish = (value) => {
-    console.log("success", value);
+    updateSettings(value).then(() => {
+      message.success("Settings updated");
+    });
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("error", errorInfo);
   };
+
   return (
     <div style={{ width: "40vw" }}>
       <h1>
@@ -31,6 +52,8 @@ export default function Settings() {
         name="settings"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        initialValues={settings}
+        form={form}
       >
         <Form.Item
           label="Phone"

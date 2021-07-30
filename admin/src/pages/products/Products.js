@@ -9,7 +9,6 @@ import {
   Typography,
   Row,
   Col,
-  Pagination,
 } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import qs from "query-string";

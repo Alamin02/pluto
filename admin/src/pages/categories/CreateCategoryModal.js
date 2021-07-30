@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Modal, Form, Input, Select, message } from "antd";
 
-import { getCategories, createCategory } from "../../client/category.client";
+import { createCategory } from "../../client/category.client";
 
 const { Option } = Select;
 

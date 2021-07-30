@@ -12,7 +12,6 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
 import styles from "./Navbar.module.css";
 import appStyles from "../../App.module.css";
 import pluto_logo from "../../assets/logo/pluto_logo_transparent_bg.png";
@@ -27,6 +26,8 @@ function Navbar() {
   const history = useHistory();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.tokenValue);
+  const { phone } = useSelector((state) => state.settings);
+
   const [productsCategory, setProductsCategory] = useState([]);
   const [user, setUser] = useState("");
   const screens = useBreakpoint();
@@ -98,7 +99,7 @@ function Navbar() {
       <div className={appStyles.containerMain}>
         <nav className={styles.navbarTop}>
           <div>
-            <PhoneOutlined /> +880 1234 123456
+            <PhoneOutlined /> {phone || "+880 1234 123456"}
           </div>
           <div className={styles.logoContainer}>
             <Link to="/">

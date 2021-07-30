@@ -247,7 +247,7 @@ export async function updateProduct(
       }
     } else {
       return res
-        .status(200)
+        .status(400)
         .json({ success: false, error: "Invalid productId" });
     }
   } catch (e) {

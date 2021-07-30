@@ -15,11 +15,12 @@ import {
   EnvironmentOutlined,
   PicCenterOutlined,
   FileImageOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 
 import styles from "./Dashboard.module.css";
 
-import DashboardContent from "./DashboardContent";
+import DashboardRoutes from "./DashboardRoutes";
 
 const sidebarInfo = [
   {
@@ -82,11 +83,16 @@ const sidebarInfo = [
     itemUrl: "/featured-products",
     icon: <FileImageOutlined />,
   },
+  {
+    id: 11,
+    itemName: "Settings",
+    itemUrl: "/settings",
+    icon: <SettingOutlined />,
+  },
 ];
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
-  // const [menuId, setMenuId] = useState(1);
 
   return (
     <div className={styles.dashboard}>
@@ -120,7 +126,7 @@ export default function Dashboard() {
 
       {/* content */}
       <div className={styles.contentContainer}>
-        <DashboardContent />
+        <DashboardRoutes />
       </div>
     </div>
   );

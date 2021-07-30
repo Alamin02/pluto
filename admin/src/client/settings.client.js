@@ -3,20 +3,21 @@ const baseUrl =
     ? process.env.REACT_APP_DEV_API_URL
     : process.env.REACT_APP_PROD_API_URL;
 
-export const logIn = async (values) => {
-  return fetch(`${baseUrl}/auth/login`, {
-    method: "post",
+export async function getSettings() {
+  return fetch(`${baseUrl}/settings`, {
+    method: "get",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(values),
   });
-};
-export const getMe = async (token) => {
-  return fetch(`${baseUrl}/auth/me`, {
+}
+
+export async function updateSettings(updatedSettings) {
+  return fetch(`${baseUrl}/settings`, {
+    method: "put",
     headers: {
-      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(updatedSettings),
   });
-};
+}

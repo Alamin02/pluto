@@ -17,6 +17,7 @@ import {
   FeaturedProduct,
   FeaturedProductImage,
   Image,
+  Settings,
 } from "../entity";
 
 export function connectDatabase() {
@@ -40,6 +41,7 @@ export function connectDatabase() {
       FeaturedProduct,
       FeaturedProductImage,
       Image,
+      Settings,
     ],
     synchronize: true,
   });

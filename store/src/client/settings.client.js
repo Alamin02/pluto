@@ -3,11 +3,11 @@ const baseUrl =
     ? process.env.REACT_APP_DEV_API_URL
     : process.env.REACT_APP_PROD_API_URL;
 
-export const getCarousels = async () => {
-  return fetch(`${baseUrl}/carousels`, {
+export async function getSettings() {
+  return fetch(`${baseUrl}/settings`, {
     method: "get",
     headers: {
       "Content-Type": "application/json",
     },
   });
-};
+}

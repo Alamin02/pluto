@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
 
 import PrivateRoute from "./components/routes/PrivateRoute";
 
@@ -32,8 +34,22 @@ import Products from "./pages/product/Products";
 import UpdateUserProfile from "./pages/user/UpdateUserProfile";
 import UserProfile from "./pages/user/UserProfile";
 import ScrollToTop from "./components/ScrollToTop";
+import { getSettings } from "./client/settings.client";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getSettings()
+      .then((res) => res.json())
+      .then(({ data }) => {
+        dispatch({
+          type: "settings/update",
+          payload: data,
+        });
+      });
+  }, []);
+
   return (
     <Router>
       <Navbar />

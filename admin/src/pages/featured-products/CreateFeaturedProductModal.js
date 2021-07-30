@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, Upload, message, Button, Image } from "antd";
-import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Upload, message, Button } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 import {
   createFeaturedProduct,

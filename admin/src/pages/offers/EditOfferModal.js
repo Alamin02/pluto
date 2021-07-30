@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, message, Image, Upload, Button, Spin } from "antd";
-import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, message, Upload, Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { editOffer, deleteOfferImage } from "../../client/offers.client";
 import DisplayImage from "../../components/DisplayImage";
 

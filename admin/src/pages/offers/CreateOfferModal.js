@@ -1,30 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, message, Upload, Button, Image } from "antd";
-import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, message, Upload, Button } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import { createOffer, deleteOfferImage } from "../../client/offers.client";
 import DisplayImage from "../../components/DisplayImage";
-
-// const imageStyle = {
-//   display: "inline-block",
-//   position: "relative",
-// };
-
-// const titleStyle = {
-//   display: "inline-block",
-//   position: "absolute",
-//   top: "40%",
-//   width: "300px",
-//   margin: "0px 20px",
-// };
-
-// const deleteButtonStyle = {
-//   cursor: "pointer",
-//   position: "absolute",
-//   marginLeft: "325px",
-//   top: "40%",
-//   fontSize: "25px",
-//   color: "red",
-// };
 
 export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();

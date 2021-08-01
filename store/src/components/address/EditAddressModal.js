@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Input, message } from "antd";
 
-import { agent } from "../../helpers/agent";
+import { updateAddress } from "../../client/address.client";
 
 export default function EditAddressModal({
   visible,
@@ -29,8 +29,7 @@ export default function EditAddressModal({
           form
             .validateFields()
             .then((values) => {
-              agent
-                .updateAddress(values, token, currentAddress.id)
+              updateAddress(values, token, currentAddress.id)
                 .then((res) => res.json())
                 .then((data) => {
                   if (!data.errors) {

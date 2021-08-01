@@ -1,7 +1,7 @@
 import { Form, Input, Button, message } from "antd";
 import styles from "./ResetPasswordForm.module.css";
 import Section from "../../styled-components/Section";
-import { agent } from "../../../helpers/agent";
+// import { agent } from "../../../helpers/agent";
 
 const ResetPasswordForm = ({ id }) => {
   const [form] = Form.useForm();
@@ -22,20 +22,20 @@ const ResetPasswordForm = ({ id }) => {
   };
 
   const onFinishForPassword = (values) => {
-    agent
-      .updateUserPassword(values, id)
-      .then((res) => res.json())
-      .then(({ info }) => {
-        if (info) {
-          message.success(" Password updated successfully");
-          form.resetFields();
-        } else {
-          message.error(
-            " The password you entered doesn't match with the older one"
-          );
-          form.resetFields();
-        }
-      });
+    // agent
+    //   .updateUserPassword(values, id)
+    //   .then((res) => res.json())
+    //   .then(({ info }) => {
+    //     if (info) {
+    //       message.success(" Password updated successfully");
+    //       form.resetFields();
+    //     } else {
+    //       message.error(
+    //         " The password you entered doesn't match with the older one"
+    //       );
+    //       form.resetFields();
+    //     }
+    //   });
   };
 
   return (

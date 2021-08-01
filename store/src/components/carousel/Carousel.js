@@ -6,8 +6,8 @@ import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/swiper-bundle.css";
 
 import MainContainer from "../layout/MainContainer";
-import { agent } from "../../helpers/agent";
 import "./Carousel.css";
+import { getCarousels } from "../../client/carousels.client";
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -15,8 +15,7 @@ export default function Carousel() {
   const [carousels, setCarousels] = useState([]);
 
   useEffect(() => {
-    agent
-      .getCarousels()
+    getCarousels()
       .then((res) => res.json())
       .then(({ data }) => setCarousels(data));
   }, []);

@@ -3,6 +3,7 @@ import { Modal, Form, Input, message, Upload, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { editOffer, deleteOfferImage } from "../../client/offers.client";
 import DisplayImage from "../../components/DisplayImage";
+import baseUrl from "../../client/base-url";
 
 export default function EditOfferModal({
   visible,
@@ -167,7 +168,7 @@ export default function EditOfferModal({
 
           <Upload
             name="offerImages"
-            action="http://localhost:4000/api/v1/offer-images"
+            action={`${baseUrl}/offer-images`}
             headers={{ Authorization: `Bearer ${token}` }}
             onChange={handleUpload}
             fileList={uploadList}

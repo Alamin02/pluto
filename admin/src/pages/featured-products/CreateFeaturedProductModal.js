@@ -9,6 +9,8 @@ import {
 
 import DisplayImage from "../../components/DisplayImage";
 
+import baseUrl from "../../client/base-url";
+
 export default function CreateFeaturedProductModal({
   visible,
   onCreate,
@@ -134,7 +136,7 @@ export default function CreateFeaturedProductModal({
         <br />
         <Upload
           name="image"
-          action="http://localhost:4000/api/v1/image"
+          action={`${baseUrl}/image`}
           headers={{ Authorization: `Bearer ${token}` }}
           onChange={(info) => handleUpload(info)}
           fileList={uploadList}

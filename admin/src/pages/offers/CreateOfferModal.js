@@ -4,6 +4,8 @@ import { UploadOutlined } from "@ant-design/icons";
 import { createOffer, deleteOfferImage } from "../../client/offers.client";
 import DisplayImage from "../../components/DisplayImage";
 
+import baseUrl from "../../client/base-url";
+
 export default function CreateOfferModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -155,29 +157,6 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
             <Input.TextArea />
           </Form.Item>
 
-          {/* {offerImages &&
-            offerImages.map((offerImage) => (
-              <div key={offerImage.id}>
-                <div style={imageStyle}>
-                  <Image width={100} height={136} src={offerImage.path} />
-                  <div style={titleStyle}>
-                    <p>{offerImage.originalname}</p>
-                  </div>
-
-                  <CloseCircleOutlined
-                    onClick={() => {
-                      deleteOfferImage(offerImage.id, token);
-                      handleImageFromState(
-                        offerImage.id,
-                        offerImage.originalname
-                      );
-                    }}
-                    style={deleteButtonStyle}
-                  />
-                </div>
-              </div>
-            ))} */}
-
           <DisplayImage
             imageArray={offerImages}
             token={token}
@@ -187,7 +166,7 @@ export default function CreateOfferModal({ visible, onCreate, onCancel }) {
 
           <Upload
             name="offerImages"
-            action="http://localhost:4000/api/v1/offer-images"
+            action={`${baseUrl}/offer-images`}
             headers={{ Authorization: `Bearer ${token}` }}
             onChange={(info) => handleUpload(info)}
             fileList={uploadList}

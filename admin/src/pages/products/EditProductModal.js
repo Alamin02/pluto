@@ -5,6 +5,7 @@ import { editProduct, deleteProductImage } from "../../client/products.client";
 import { getCategories } from "../../client/category.client";
 import { getOffers } from "../../client/offers.client";
 import DisplayImage from "../../components/DisplayImage";
+import baseUrl from "../../client/base-url";
 
 const { Option } = Select;
 
@@ -265,7 +266,7 @@ export default function EditProductModal({
             <Upload
               name="productImages"
               onChange={handleUpload}
-              action="http://localhost:4000/api/v1/product-images"
+              action={`${baseUrl}/offer-images`}
               headers={{ Authorization: `Bearer ${token}` }}
               fileList={uploadList}
               showUploadList={{ showRemoveIcon: false }}

@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Table } from "antd";
 import { Link } from "react-router-dom";
 
-import { agent } from "../../helpers/agent";
 import { columns } from "./addressTableColumns";
+import { getUserAddress } from "../../client/address.client";
 
 export default function Addresses() {
   const token = localStorage.getItem("token");
   const [addressData, setAddressData] = useState([]);
 
   const fetchOrders = (token) => {
-    agent
-      .getUserAddress(token)
+    getUserAddress(token)
       .then((res) => res.json())
       .then(({ data }) => {
         setAddressData(data);

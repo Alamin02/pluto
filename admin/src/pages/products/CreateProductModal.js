@@ -18,6 +18,7 @@ import {
 import { getOffers } from "../../client/offers.client";
 import { getCategories } from "../../client/category.client";
 import DisplayImage from "../../components/DisplayImage";
+import baseUrl from "../../client/base-url";
 
 const { Option } = Select;
 
@@ -239,7 +240,7 @@ export default function ProductForm({ visible, onCreate, onCancel }) {
             <br />
             <Upload
               name="productImages"
-              action="http://localhost:4000/api/v1/product-images"
+              action={`${baseUrl}/product-images`}
               headers={{ Authorization: `Bearer ${token}` }}
               onChange={handleUpload}
               fileList={uploadList}

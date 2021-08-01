@@ -3,12 +3,12 @@ import { useSelector } from "react-redux";
 import { Table, Button } from "antd";
 import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { agent } from "../../helpers/agent";
+import { getProfile } from "../../client/users.client";
 import Section from "../../components/styled-components/Section";
 import { columns } from "../../components/address/addressTableColumns";
 import CreateNewAddressModal from "../../components/address/CreateNewAddressModal";
 import EditAddressModal from "../../components/address/EditAddressModal";
-import { getUserAddress } from "../../client/address.client.js";
+import { getUserAddress } from "../../client/address.client";
 
 export default function AddressUpdateUserProfile() {
   const [visibleCreateModal, setVisibleCreateModal] = useState(false);
@@ -45,8 +45,7 @@ export default function AddressUpdateUserProfile() {
 
   useEffect(() => {
     if (token)
-      agent
-        .getProfile(token)
+      getProfile(token)
         .then((res) => res.json())
         .then(({ data }) => {
           if (data) {

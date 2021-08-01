@@ -5,6 +5,8 @@ import { UploadOutlined } from "@ant-design/icons";
 import { createCarousel, deleteImage } from "../../client/carousels.client";
 import DisplayImage from "../../components/DisplayImage";
 
+import baseUrl from "../../client/base-url";
+
 export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
   const [form] = Form.useForm();
 
@@ -129,7 +131,7 @@ export default function CreateCarouselModal({ visible, onCreate, onCancel }) {
           <br />
           <Upload
             name="image"
-            action="http://localhost:4000/api/v1/image"
+            action={`${baseUrl}/image`}
             fileList={uploadList}
             showUploadList={{ showRemoveIcon: false }}
             onChange={(info) => handleUpload(info)}

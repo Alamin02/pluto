@@ -18,9 +18,7 @@ export class Category {
   @Column("varchar")
   name!: string;
 
-  @ManyToOne((type) => Category, (category) => category.children, {
-    onDelete: "CASCADE",
-  })
+  @ManyToOne((type) => Category, (category) => category.children)
   parent!: Category;
 
   @OneToMany((type) => Category, (category) => category.parent, {

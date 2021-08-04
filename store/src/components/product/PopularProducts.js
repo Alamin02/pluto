@@ -40,7 +40,12 @@ function ProductList() {
                   <Link to={`/products/${product.id}`}>
                     <CardItem
                       title={product.name}
-                      src={product.productImage[0].path}
+                      src={
+                        (product.productImage &&
+                          product.productImage.length &&
+                          product.productImage[0].path) ||
+                        "#"
+                      }
                       price={product.price}
                       discount={product.offer && product.offer.discount}
                     />

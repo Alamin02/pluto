@@ -266,7 +266,7 @@ export default function EditProductModal({
             <Upload
               name="productImages"
               onChange={handleUpload}
-              action={`${baseUrl}/offer-images`}
+              action={`${baseUrl}/product-images`}
               headers={{ Authorization: `Bearer ${token}` }}
               fileList={uploadList}
               showUploadList={{ showRemoveIcon: false }}

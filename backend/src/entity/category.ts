@@ -24,7 +24,7 @@ export class Category {
   parent!: Category;
 
   @OneToMany((type) => Category, (category) => category.parent, {
-    cascade: true,
+    cascade: false,
   })
   children!: Category[];
 

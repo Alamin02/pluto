@@ -38,7 +38,8 @@ export class Product {
   orderedProducts!: OrderedProduct[];
 
   @ManyToOne(() => Category, (category) => category.products, {
-    onDelete: "CASCADE",
+    nullable: true,
+    onDelete: "SET NULL",
   })
   category!: Category;
 

@@ -15,9 +15,7 @@ export async function getCategory(req: express.Request, res: express.Response) {
     if (categoryTrees.length) {
       return res.status(200).json({ success: true, data: categoryTrees });
     } else {
-      return res
-        .status(400)
-        .json({ success: false, error: "No category created !" });
+      return res.status(200).json({ success: true, data: [] });
     }
   } catch (error) {
     return res.status(500).json("Something went wrong!");
@@ -208,6 +206,10 @@ export async function deleteCategory(
         .json({ success: false, error: "Invalid categoryId!" });
     }
   } catch (error) {
-    return res.status(500).json("Something went wrong!");
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      error: "Something went wrong!",
+    });
   }
 }

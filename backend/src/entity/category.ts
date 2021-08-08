@@ -18,11 +18,13 @@ export class Category {
   @Column("varchar")
   name!: string;
 
-  @ManyToOne((type) => Category, (category) => category.children)
+  @ManyToOne((type) => Category, (category) => category.children, {
+    onDelete: "CASCADE",
+  })
   parent!: Category;
 
   @OneToMany((type) => Category, (category) => category.parent, {
-    cascade: false,
+    cascade: true,
   })
   children!: Category[];
 

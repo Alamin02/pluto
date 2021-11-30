@@ -1,7 +1,11 @@
 import multer = require("multer");
 import path from "path";
 const cloudinary = require("cloudinary").v2;
-import { CloudinaryStorage } from "multer-storage-cloudinary";
+import {
+  CloudinaryStorage,
+  Options,
+  OptionCallback,
+} from "multer-storage-cloudinary";
 import express = require("express");
 require("dotenv").config();
 cloudinary.config({
@@ -10,7 +14,14 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-const cloudinaryStorage = new CloudinaryStorage({
+declare interface cloudinaryOptions extends Options {
+  params: {
+    folder: string;
+    public_id?: OptionCallback<string>;
+  };
+}
+
+const multerOptions: cloudinaryOptions = {
   cloudinary: cloudinary,
   params: {
     folder: "product-images",
@@ -19,7 +30,9 @@ const cloudinaryStorage = new CloudinaryStorage({
       // file.fieldname + "-" + Date.now() + path.extname(file.originalname),
       file.fieldname + "-" + Date.now(),
   },
-});
+};
+
+const cloudinaryStorage = new CloudinaryStorage(multerOptions);
 
 const fileFilter = (req: any, file: any, cb: any) => {
   if (
